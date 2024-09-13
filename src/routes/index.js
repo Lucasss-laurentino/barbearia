@@ -1,17 +1,20 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { PageIndex } from "../Components/PageIndex";
 import { PageLogin } from "../Components/PageLogin";
 import { AnimationLoginProvider } from "../Context/AnimationLoginContext";
+import { Index } from "../Components/Index";
+import { MenuProvider } from "../Context/MenuContext";
 
 export default function appRouter() {
   return (
     <AnimationLoginProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<PageIndex />} />
-          <Route path="/login" element={<PageLogin />} />
-        </Routes>
-      </Router>
+      <MenuProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<PageLogin />} />
+            <Route path="/index" element={<Index />} />
+          </Routes>
+        </Router>
+      </MenuProvider>
     </AnimationLoginProvider>
   );
 }
