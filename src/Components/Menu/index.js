@@ -1,25 +1,28 @@
-import { useContext } from 'react';
-import './index.css';
-import { MenuContext } from '../../Context/MenuContext';
+import { useContext } from "react";
+import "./index.css";
+import { MenuContext } from "../../Context/MenuContext";
 
 export const Menu = () => {
+  const { classMenu } = useContext(MenuContext);
 
-    const { classMenu } = useContext(MenuContext);
-
-    return (
-        <>
-            <div className={!classMenu ? "menu-escondido" : "show-menu"}>
-                <div className="row justify-content-end">
-                    <div className="col-6 p-0">
-                        <ul className="col-12 list-menu">
-                            <li className='col-12'>Item 1</li>
-                            <li className='col-12'>Item 2</li>
-                            <li className='col-12'>Item 3</li>
-                            <li className='col-12'>Item 4</li>
-                        </ul>
-                    </div>
-                </div>
+  return (
+    <>
+      <div className="container-fluid">
+        <div className="row position-relative justify-content-end">
+          <div className={!classMenu ? "menu-escondido col-8" : "show-menu col-8"}>
+            <div className="row justify-content-end">
+              <div className="p-0">
+                <ul className="list-menu">
+                  <li className="col-12">Item 1</li>
+                  <li className="col-12">Item 2</li>
+                  <li className="col-12">Item 3</li>
+                  <li className="col-12">Item 4</li>
+                </ul>
+              </div>
             </div>
-        </>
-    )
-}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};

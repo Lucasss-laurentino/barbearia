@@ -1,0 +1,60 @@
+.head-horarios {
+    height: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.quantia-agendamento-horarios {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.align-qnt-agendamento {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 15px 10px;
+    border-radius: 4px;
+    background-color:  #373c41;
+    font-size: 13px;
+}
+
+.background-claro {
+    height: 45px;
+    border-radius: 4px  ;
+    background-color: #51585f;
+}
+
+.adicionar {
+    position: fixed;
+    background-color: white;
+    border-radius: 100%;
+    bottom: 10%;
+    left: 80%;
+}
+
+.list-horarios {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+}
+
+.itens-list-horarios {
+    width: 90%;
+    background-color: #32373b;
+    border-radius: 8px;
+    margin: 5px 0px;
+}
+.itens-list-horarios:last-child {
+
+    margin-bottom: 22%;
+
+}

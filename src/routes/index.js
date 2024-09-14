@@ -1,12 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { PageLogin } from "../Components/PageLogin";
-import { AnimationLoginProvider } from "../Context/AnimationLoginContext";
 import { Index } from "../Components/Index";
 import { MenuProvider } from "../Context/MenuContext";
+import { AbaBottomProvider } from "../Context/AbaBottomContext";
 
 export default function appRouter() {
   return (
-    <AnimationLoginProvider>
+    <AbaBottomProvider>
       <MenuProvider>
         <Router>
           <Routes>
@@ -15,6 +15,6 @@ export default function appRouter() {
           </Routes>
         </Router>
       </MenuProvider>
-    </AnimationLoginProvider>
+    </AbaBottomProvider>
   );
 }
