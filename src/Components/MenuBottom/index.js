@@ -17,15 +17,15 @@ export const MenuBottom = () => {
                     className={active === 1 ? "fundo-branco" : "fundo-preto"}
                   >
                     <img
-                      src={active === 1 ? "servicos_dark.png" : "servicos.png"}
-                      className="img-fluid"
+                      src={active === 1 ? "horarios_dark.png" : "horarios.png"}
+                      className="img-fluid p-1"
                       width="30%"
                       alt=""
                     />
                     <p
                       className={active === 1 ? "texto-preto" : "texto-branco"}
                     >
-                      Serviços
+                      Horários
                     </p>
                   </div>
                 </li>
@@ -34,15 +34,15 @@ export const MenuBottom = () => {
                     className={active === 2 ? "fundo-branco" : "fundo-preto"}
                   >
                     <img
-                      src={active === 2 ? "horarios_dark.png" : "horarios.png"}
-                      className="img-fluid p-1"
+                      src={active === 2 ? "servicos_dark.png" : "servicos.png"}
+                      className="img-fluid"
                       width="30%"
                       alt=""
                     />
                     <p
                       className={active === 2 ? "texto-preto" : "texto-branco"}
                     >
-                      Horários
+                      Serviços
                     </p>
                   </div>
                 </li>

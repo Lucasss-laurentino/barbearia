@@ -21,8 +21,7 @@
   flex-direction: column;
 
   list-style: none;
-
-  background-color: #212529;
+  backdrop-filter: blur(25px);
   color: white;
 }
 

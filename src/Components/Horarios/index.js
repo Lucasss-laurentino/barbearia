@@ -6,9 +6,9 @@ export const Horarios = () => {
       <span className="adicionar">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="50"
-          height="50"
-          fill="currentColor"
+          width="45"
+          height="45"
+          fill="#fff"
           className="bi bi-plus-circle"
           viewBox="0 0 16 16"
         >
@@ -21,7 +21,7 @@ export const Horarios = () => {
           <div className="col-12 p-0">
             <div className="col-12 head-horarios">
               <div className="col-5 quantia-agendamento-horarios">
-                <div className="col-9 align-qnt-agendamento">
+                <div className="col-11 px-1 align-qnt-agendamento">
                   <h5 className="">4</h5>
                   <p className="m-0">Agendamentos</p>
                 </div>

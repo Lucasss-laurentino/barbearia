@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { ListService } from "../ListServices";
 import { Menu } from "../Menu"
 import { MenuBottom } from "../MenuBottom";
@@ -16,8 +16,8 @@ export const Index = () => {
         <div className="body">
           <Navbar />
           <Menu />
-          {active === 1 && <ListService />}
-          {active === 2 && <Horarios/>}
+          {active === 1 && <Horarios/>}
+          {active === 2 && <ListService />}
           <MenuBottom />
         </div>
       </>
