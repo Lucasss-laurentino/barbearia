@@ -11,3 +11,16 @@
 .text-claro {
     color: #8b8a8a;
 }
+
+.border-radius-personalizada {
+    width: 25%;
+    height: 70px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.img-corte {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
