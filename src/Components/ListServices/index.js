@@ -1,48 +1,16 @@
 import "./index.css";
-import { useState, Fragment } from "react";
-import { Watch } from "react-loader-spinner";
+import { Fragment, useContext, useEffect } from "react";
+import { ServicoContext } from "../../Context/ServicoContext";
 
 export const ListService = () => {
-  const [servicos, setServicos] = useState([
-    {
-      ID: 1,
-      NOME: "Cabelo",
-      PRAZO: "30/40 min.",
-      PRECO: "R$ 20,00",
-      IMG: "servicos/cabelo.jpeg",
-    },
-    {
-      ID: 2,
-      NOME: "Cabelo/Reflexo",
-      PRAZO: "1h/1h:30 min",
-      PRECO: "R$ 50,00",
-      IMG: "servicos/reflexo.jpg",
-    },
-    {
-      ID: 3,
-      NOME: "Cabelo/barba",
-      PRAZO: "40/50 min",
-      PRECO: "R$ 35,00",
-      IMG: "servicos/cabelo_barba.jpeg",
-    },
-    {
-      ID: 4,
-      NOME: "Cabelo/pigmentação",
-      PRAZO: "40/50 min",
-      PRECO: "R$ 30,00",
-      IMG: "servicos/corte_pigmentacao.jpeg",
-    },
-    {
-      ID: 5,
-      NOME: "Pézinho",
-      PRAZO: "10 min",
-      PRECO: "R$ 10,00",
-      IMG: "servicos/pezinho.jpeg",
-    },
-  ]);
+  const { servicos, servicoEscolhido, setServicoEscolhido } =
+    useContext(ServicoContext);
 
-  const [loaderEscolher, setLoaderEscolher] = useState(false);
-
+  
+  useEffect(() => {
+    console.log(servicoEscolhido)
+  }, [servicoEscolhido])
+  
   return (
     <>
       <div className="container-fluid bg-dark height-main">
@@ -73,26 +41,21 @@ export const ListService = () => {
                         <div className="d-flex justify-content-end align-items-center col-4">
                           <div className="col-9">
                             <h6 className="m-0">{servico.PRECO}</h6>
-                            {loaderEscolher ? (
-                              <div className="col-12 mx-3 mt-2">
-                                <div className="col-3">
-                                  <Watch
-                                    visible={true}
-                                    height="25"
-                                    width="25"
-                                    radius="48"
-                                    color="#4fa94d"
-                                    ariaLabel="watch-loading"
-                                    wrapperStyle={{}}
-                                    wrapperClass=""
-                                  />
-                                </div>
+                            {servicoEscolhido?.contratado &&
+                            servicoEscolhido?.id === servico.ID ? (
+                                <div className="container">
+                                  <img src="icones_menu_bottom/verificado.gif" className="img-fluid mx-3" width="40%" alt="" />
                               </div>
                             ) : (
                               <a
                                 href="#"
-                                className="d-block m-0 mt-2 text-success"
-                                onClick={() => setLoaderEscolher(true)}
+                                className="d-block m-0 mt-2 text-success text-decoration-none"
+                                onClick={() =>
+                                  setServicoEscolhido({
+                                    id: servico.ID,
+                                    contratado: true,
+                                  })
+                                }
                               >
                                 Escolher
                               </a>
