@@ -13,29 +13,29 @@ import { LoginProvider } from "../Context/LoginContext";
 
 export default function appRouter() {
   return (
-    <LoginProvider>
-      <UserProvider>
-        <ServicoProvider>
-          <BarbeiroProvider>
-            <HorarioProvider>
-              <MeuHorarioProvider>
-                <AnimacaoProvider>
-                  <AbaBottomProvider>
-                    <MenuProvider>
-                      <Router>
+    <UserProvider>
+      <ServicoProvider>
+        <BarbeiroProvider>
+          <HorarioProvider>
+            <MeuHorarioProvider>
+              <AnimacaoProvider>
+                <AbaBottomProvider>
+                  <MenuProvider>
+                    <Router>
+                      <LoginProvider>
                         <Routes>
                           <Route path="/" element={<PageLogin />} />
                           <Route path="/index" element={<Index />} />
                         </Routes>
-                      </Router>
-                    </MenuProvider>
-                  </AbaBottomProvider>
-                </AnimacaoProvider>
-              </MeuHorarioProvider>
-            </HorarioProvider>
-          </BarbeiroProvider>
-        </ServicoProvider>
-      </UserProvider>
-    </LoginProvider>
+                      </LoginProvider>
+                    </Router>
+                  </MenuProvider>
+                </AbaBottomProvider>
+              </AnimacaoProvider>
+            </MeuHorarioProvider>
+          </HorarioProvider>
+        </BarbeiroProvider>
+      </ServicoProvider>
+    </UserProvider>
   );
 }

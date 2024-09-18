@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ListService } from "../ListServices";
 import { Menu } from "../Menu"
 import { MenuBottom } from "../MenuBottom";
@@ -13,6 +13,10 @@ export const Index = () => {
 
   const { active } = useContext(AbaBottomContext);
   const { user, setUser } = useContext(UserContext);
+
+  useEffect(() => {
+    
+  }, []);
 
     return (
       <>

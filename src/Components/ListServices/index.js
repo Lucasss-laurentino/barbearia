@@ -13,10 +13,10 @@ export const ListService = () => {
   
   return (
     <>
-      <div className="container-fluid bg-dark height-main">
+      <div className="container-fluid bg-dark">
         <div className="row">
           <div className="col-12 p-0">
-            <ul className="m-0 p-0 list-servicos-tamanho">
+            <ul className="list-servicos-tamanho">
               {servicos.map((servico) => {
                 return (
                   <Fragment key={servico.ID}>

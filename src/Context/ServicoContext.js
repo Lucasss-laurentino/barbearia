@@ -38,7 +38,7 @@ export const ServicoProvider = ({ children }) => {
       PRAZO: "10 min",
       PRECO: "R$ 10,00",
       IMG: "servicos/pezinho.jpeg",
-    },
+    }
   ]);
 
   const [servicoEscolhido, setServicoEscolhido] = useState();

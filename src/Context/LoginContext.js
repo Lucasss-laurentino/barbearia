@@ -1,18 +1,19 @@
 import { createContext } from "react";
 import { http } from "../http";
+import { useNavigate } from "react-router-dom";
 
 export const LoginContext = createContext();
 
 export const LoginProvider = ({ children }) => {
-  const criarUsuario = (user) => {
-    http
-      .post("login/criarUsuario", { user })
-      .then((response) => {
-        window.location.href = '/index';
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  const navigate = useNavigate();
+
+  const criarUsuario = async (user) => {
+    try {
+      http.post("login/criarUsuario", { user });
+      navigate("/index")
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

@@ -1,7 +1,4 @@
-.height-main {
-    height: 73vh;
-    overflow-y: auto;
-}
+
 
 .border-list-services {
     border-top: 1px solid rgb(107, 107, 107);
@@ -24,4 +21,12 @@
     height: 100%;
     object-fit: cover;
 }
+.list-servicos-tamanho {
+    height: 80vh;
+    margin: 0;
+    list-style: none;
+    padding-bottom: 15%;
+    padding-left: 0px;
+    overflow-y: scroll;
 
+}
