@@ -8,7 +8,7 @@ export const ImgLogo = () => {
               <img
                 src="/logo_preto.png"
                 className="img-fluid"
-                width="75%"
+                width="63%"
                 alt=""
               />
             </div>

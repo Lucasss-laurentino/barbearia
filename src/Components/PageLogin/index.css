@@ -1,6 +1,6 @@
 .tela-toda-fundo-preto-show {
   width: 100%;
-  height: 100vh;
+  height: auto;
   background-color: rgb(24, 24, 24);
 }
 .div-btn-form-login {
@@ -35,6 +35,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
+  list-style: none;
 }
 .lista-icon-social > li {
   text-align: center;
@@ -75,4 +77,9 @@
   color: white;
   top: -13px;
   background-color: rgb(24, 24, 24);
+}
+
+.form-control:focus {
+    border-color: #fff; /* Cor da borda quando o input está em foco */
+    box-shadow: 0 0 0 0.2rem #7a7a7a; /* Cor da sombra ao redor do input */
 }

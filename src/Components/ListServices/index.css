@@ -1,5 +1,5 @@
 .height-main {
-    height: 81vh;
+    height: 73vh;
     overflow-y: auto;
 }
 
@@ -24,3 +24,4 @@
     height: 100%;
     object-fit: cover;
 }
+

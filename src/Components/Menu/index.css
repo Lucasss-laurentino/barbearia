@@ -1,13 +1,15 @@
 .menu-escondido {
- position: absolute;
- margin-right: -100%;
- transition: 600ms;
+  position: absolute;
+  margin-right: -100%;
+  transition: 600ms;
+  z-index: 10;
 }
 
 .show-menu {
   position: absolute;
   margin-right: 0%;
   transition: 600ms;
+  z-index: 10;
 }
 
 .list-menu {

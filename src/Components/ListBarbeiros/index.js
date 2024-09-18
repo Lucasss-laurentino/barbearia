@@ -1,152 +1,19 @@
 import { AnimacaoContext } from "../../Context/AnimacaoHorarios";
+import { BarbeiroContext } from "../../Context/BarbeiroContext";
+import { HorarioContext } from "../../Context/HorarioContext";
 import "./index.css";
-import { useState, Fragment, useEffect, useContext } from "react";
+import { Fragment, useContext, useEffect } from "react";
 
 export const ListBarbeiros = () => {
-  const [barbeiros, setBarbeiros] = useState([
-    {
-      ID: 1,
-      NOME: "LC",
-      IMG: "barbeiros/barbeiro1.jpg",
-    },
-    {
-      ID: 2,
-      NOME: "Jota",
-      IMG: "barbeiros/barbeiro2.jpg",
-    },
-  ]);
-
-  const [horarios, setHorarios] = useState([
-    {
-      ID: 1,
-      HORA: "08:00",
-      DISPONIVEL: true,
-      BARBEIRO_ID: 1,
-    },
-    {
-      ID: 1,
-      HORA: "09:00",
-      DISPONIVEL: true,
-      BARBEIRO_ID: 1,
-    },
-
-    {
-      ID: 1,
-      HORA: "10:00",
-      DISPONIVEL: true,
-      BARBEIRO_ID: 1,
-    },
-
-    {
-      ID: 1,
-      HORA: "11:00",
-      DISPONIVEL: true,
-      BARBEIRO_ID: 1,
-    },
-
-    {
-      ID: 1,
-      HORA: "12:00",
-      DISPONIVEL: true,
-      BARBEIRO_ID: 1,
-    },
-
-    {
-      ID: 1,
-      HORA: "14:00",
-      DISPONIVEL: true,
-      BARBEIRO_ID: 1,
-    },
-
-    {
-      ID: 1,
-      HORA: "15:00",
-      DISPONIVEL: true,
-      BARBEIRO_ID: 1,
-    },
-
-    {
-      ID: 1,
-      HORA: "16:00",
-      DISPONIVEL: true,
-      BARBEIRO_ID: 1,
-    },
-
-    {
-      ID: 1,
-      HORA: "17:00",
-      DISPONIVEL: true,
-      BARBEIRO_ID: 1,
-    },
-    {
-      ID: 1,
-      HORA: "08:00",
-      DISPONIVEL: true,
-      BARBEIRO_ID: 2,
-    },
-    {
-      ID: 1,
-      HORA: "09:00",
-      DISPONIVEL: true,
-      BARBEIRO_ID: 2,
-    },
-
-    {
-      ID: 1,
-      HORA: "10:00",
-      DISPONIVEL: true,
-      BARBEIRO_ID: 2,
-    },
-
-    {
-      ID: 1,
-      HORA: "11:00",
-      DISPONIVEL: true,
-      BARBEIRO_ID: 2,
-    },
-
-    {
-      ID: 1,
-      HORA: "12:00",
-      DISPONIVEL: true,
-      BARBEIRO_ID: 2,
-    },
-
-    {
-      ID: 1,
-      HORA: "14:00",
-      DISPONIVEL: true,
-      BARBEIRO_ID: 2,
-    },
-
-    {
-      ID: 1,
-      HORA: "15:00",
-      DISPONIVEL: true,
-      BARBEIRO_ID: 2,
-    },
-
-    {
-      ID: 1,
-      HORA: "16:00",
-      DISPONIVEL: true,
-      BARBEIRO_ID: 2,
-    },
-
-    {
-      ID: 1,
-      HORA: "17:00",
-      DISPONIVEL: true,
-      BARBEIRO_ID: 2,
-    },
-  ]);
-
-  const [horariosAberto, setHorariosAberto] = useState({
-    ABERTO: false,
-    BARBEIRO_ID: 0,
-  });
+  
+  const { barbeiros } = useContext(BarbeiroContext);
+  const { horarios, horariosAberto, setHorariosAberto, marcarHorario } = useContext(HorarioContext);
 
   const { abrirListaHorarios } = useContext(AnimacaoContext);
+
+  useEffect(() => {
+    console.log(horarios)
+  }, [horarios])
 
   return (
     <>
@@ -208,16 +75,16 @@ export const ListBarbeiros = () => {
                       </div>
                       <div className="d-flex justify-content-center align-items-center">
                         <ul className="horarios-fechado" id={barbeiro.ID}>
-                          {horarios.map((horarios) => {
+                          {horarios.map((horario) => {
                             if (
-                              horarios.BARBEIRO_ID === barbeiro.ID &&
-                              horarios.DISPONIVEL
+                              horario.BARBEIRO_ID === barbeiro.ID &&
+                              horario.DISPONIVEL
                             ) {
                               return (
                                 <>
                                   <li className="d-flex justify-content-around align-items-center">
-                                    <p className="m-0 p-0">{horarios.HORA}</p>
-                                    <button className="btn btn-sm bg-transparent text-white">
+                                    <p className="m-0 p-0">{horario.HORA}</p>
+                                    <button className="btn btn-sm bg-transparent text-white" onClick={() => marcarHorario(horario.ID, horario.BARBEIRO_ID)}>
                                       Marcar
                                     </button>
                                   </li>

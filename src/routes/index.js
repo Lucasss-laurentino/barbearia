@@ -6,24 +6,36 @@ import { AbaBottomProvider } from "../Context/AbaBottomContext";
 import { UserProvider } from "../Context/UserContext";
 import { AnimacaoProvider } from "../Context/AnimacaoHorarios";
 import { ServicoProvider } from "../Context/ServicoContext";
+import { BarbeiroProvider } from "../Context/BarbeiroContext";
+import { HorarioProvider } from "../Context/HorarioContext";
+import { MeuHorarioProvider } from "../Context/MeuHorario";
+import { LoginProvider } from "../Context/LoginContext";
 
 export default function appRouter() {
   return (
-    <UserProvider>
-      <ServicoProvider>
-        <AnimacaoProvider>
-          <AbaBottomProvider>
-            <MenuProvider>
-              <Router>
-                <Routes>
-                  <Route path="/" element={<PageLogin />} />
-                  <Route path="/index" element={<Index />} />
-                </Routes>
-              </Router>
-            </MenuProvider>
-          </AbaBottomProvider>
-        </AnimacaoProvider>
-      </ServicoProvider>
-    </UserProvider>
+    <LoginProvider>
+      <UserProvider>
+        <ServicoProvider>
+          <BarbeiroProvider>
+            <HorarioProvider>
+              <MeuHorarioProvider>
+                <AnimacaoProvider>
+                  <AbaBottomProvider>
+                    <MenuProvider>
+                      <Router>
+                        <Routes>
+                          <Route path="/" element={<PageLogin />} />
+                          <Route path="/index" element={<Index />} />
+                        </Routes>
+                      </Router>
+                    </MenuProvider>
+                  </AbaBottomProvider>
+                </AnimacaoProvider>
+              </MeuHorarioProvider>
+            </HorarioProvider>
+          </BarbeiroProvider>
+        </ServicoProvider>
+      </UserProvider>
+    </LoginProvider>
   );
 }

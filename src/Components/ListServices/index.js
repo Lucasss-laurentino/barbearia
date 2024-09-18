@@ -16,7 +16,7 @@ export const ListService = () => {
       <div className="container-fluid bg-dark height-main">
         <div className="row">
           <div className="col-12 p-0">
-            <ul className="m-0 p-0">
+            <ul className="m-0 p-0 list-servicos-tamanho">
               {servicos.map((servico) => {
                 return (
                   <Fragment key={servico.ID}>
@@ -44,7 +44,7 @@ export const ListService = () => {
                             {servicoEscolhido?.contratado &&
                             servicoEscolhido?.id === servico.ID ? (
                                 <div className="container">
-                                  <img src="icones_menu_bottom/verificado.gif" className="img-fluid mx-3" width="40%" alt="" />
+                                  <img src="icones_menu_bottom/verificado.gif" className="img-fluid mx-3" width="40%" alt="" onClick={() => setServicoEscolhido({})} />
                               </div>
                             ) : (
                               <a
