@@ -6,10 +6,11 @@ export const createUserSchema = yup.object({
     .email("Formato de email inválido")
     .required("Campo obrigatório"),
 
+  NOME: yup.string().required("Campo obrigatório"),
+
   SENHA: yup
     .string()
     .min(6, "Senha muito curta")
     .max(20, "Senha muito longa")
     .required("Campo obrigatório"),
-
 });

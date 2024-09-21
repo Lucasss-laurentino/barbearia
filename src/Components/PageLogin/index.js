@@ -1,10 +1,11 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ImgLogo } from "../ImgLogo";
 import "./index.css";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { createUserSchema } from "../../validations/createUserValidation";
 import { LoginContext } from "../../Context/LoginContext";
+import { loginSchema } from "../../validations/loginValidation";
 
 export const PageLogin = () => {
   const [hiddenLogin, setHiddenLogin] = useState("div-login");
@@ -12,7 +13,9 @@ export const PageLogin = () => {
   const [showCadastro, setShowCadastro] = useState("form-login-escondido");
 
   // contexts
-  const { criarUsuario } = useContext(LoginContext);
+  const { criarUsuario, login } = useContext(LoginContext);
+
+  const [formAberto, setFormAberto] = useState(0);
 
   // react-hook-form
     const {
@@ -20,14 +23,9 @@ export const PageLogin = () => {
       handleSubmit,
       formState: { errors },
     } = useForm({
-      resolver: yupResolver(createUserSchema),
+      resolver: yupResolver(formAberto === 1 ? createUserSchema : loginSchema),
     });
-
-  // handle change
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-  }
-
+    
   return (
     <>
       <div className="tela-toda-fundo-preto-show position-relative">
@@ -46,6 +44,7 @@ export const PageLogin = () => {
                         setHiddenLogin("d-none");
                         setShowLogin("form-login-show");
                       }, 351);
+                      setFormAberto(2);
                     }}
                   >
                     Entrar
@@ -58,6 +57,7 @@ export const PageLogin = () => {
                         setHiddenLogin("d-none");
                         setShowCadastro("form-login-show");
                       }, 351);
+                      setFormAberto(1);
                     }}
                   >
                     Cadastrar
@@ -95,23 +95,34 @@ export const PageLogin = () => {
           <div className="container-fluid">
             <div className="row height-row">
               <div className="col-12 d-flex justify-content-center align-items-center pb-5 mb-5 flex-column">
-                <form className="col-10">
+                <form className="col-10" onSubmit={handleSubmit(login)}>
                   <div className="form-group">
                     <label className="text-white">Email</label>
                     <input
                       type="email"
                       className="form-control"
                       placeholder="Email"
+                      {...register("EMAIL_LOGIN")}
                     />
+                    {errors.EMAIL_LOGIN && (
+                      <p className="m-0 my-1 text-white">
+                        *{errors.EMAIL_LOGIN.message}
+                      </p>
+                    )}
                   </div>
                   <div className="form-group">
                     <label className="text-white">Senha</label>
                     <input
                       type="password"
-                      class="form-control"
-                      id="exampleInputPassword1"
-                      placeholder="Senha"
+                      className="form-control"
+                      placeholder="Email"
+                      {...register("SENHA_LOGIN")}
                     />
+                    {errors.SENHA_LOGIN && (
+                      <p className="m-0 my-1 text-white">
+                        *{errors.SENHA_LOGIN.message}
+                      </p>
+                    )}
                   </div>
                   <button
                     type="submit"
@@ -167,6 +178,20 @@ export const PageLogin = () => {
                     )}
                   </div>
                   <div className="form-group">
+                    <label className="text-white">Nome</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Nome"
+                      {...register("NOME")}
+                    />
+                    {errors.NOME && (
+                      <p className="m-0 my-1 text-white">
+                        *{errors.NOME.message}
+                      </p>
+                    )}
+                  </div>
+                  <div className="form-group">
                     <label className="text-white">Senha</label>
                     <input
                       type="password"
@@ -174,7 +199,6 @@ export const PageLogin = () => {
                       id="exampleInputPassword1"
                       placeholder="Senha"
                       {...register("SENHA")}
-                      onChange={(e) => handleChange(e)}
                     />
                     {errors.SENHA && (
                       <p className="m-0 my-1 text-white">

@@ -15,8 +15,8 @@ export const Index = () => {
   const { user, setUser } = useContext(UserContext);
 
   useEffect(() => {
-    
-  }, []);
+      console.log(user)
+  }, [user]);
 
     return (
       <>
