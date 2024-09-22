@@ -17,10 +17,6 @@ export const Index = () => {
     pegarUsuario();
   }, []);
 
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
-
   return (
     <>
       {

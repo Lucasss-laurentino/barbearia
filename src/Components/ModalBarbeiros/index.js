@@ -3,7 +3,7 @@ import Modal from "react-bootstrap/Modal";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { barbeiroSchema } from "../../validations/barbeiroValidation";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { BarbeiroContext } from "../../Context/BarbeiroContext";
 
 export const ModalBarbeiros = ({ show, setShow, handleClose }) => {
@@ -23,6 +23,7 @@ export const ModalBarbeiros = ({ show, setShow, handleClose }) => {
         show={show}
         onHide={handleClose}
         backdrop="static"
+        centered
         keyboard={false}
       >
         <Modal.Header closeButton>
@@ -48,9 +49,9 @@ export const ModalBarbeiros = ({ show, setShow, handleClose }) => {
             </div>
             <div className="form-group">
               <label for="exampleInputPassword1">Foto</label>
-              <div class="mb-3">
+              <div className="mb-3">
                 <input
-                  class="form-control form-control-sm"
+                  className="form-control form-control-sm"
                   id="formFileSm"
                   type="file"
                   {...register("IMAGEM")}

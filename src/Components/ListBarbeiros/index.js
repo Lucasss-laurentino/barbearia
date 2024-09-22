@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import { AnimacaoContext } from "../../Context/AnimacaoHorarios";
 import { BarbeiroContext } from "../../Context/BarbeiroContext";
 import { HorarioContext } from "../../Context/HorarioContext";
+import { UserContext } from "../../Context/UserContext";
 import { ModalBarbeiros } from "../ModalBarbeiros";
 import "./index.css";
 import { Fragment, useContext } from "react";
+import { ModalHorarios } from "../ModalHorarios";
 
 export const ListBarbeiros = () => {
   const { barbeiros } = useContext(BarbeiroContext);
@@ -12,20 +14,30 @@ export const ListBarbeiros = () => {
     useContext(HorarioContext);
 
   const { abrirListaHorarios } = useContext(AnimacaoContext);
+  const { user } = useContext(UserContext);
   const [show, setShow] = useState(false);
+  const [showHorarios, setShowHorarios] = useState(false);
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
-
+  const handleCloseHorario = () => setShowHorarios(false);
+  const [barbeiro, setBarbeiro] = useState({});
   const { pegarBarbeiros } = useContext(BarbeiroContext);
+  const { pegarHorarios } = useContext(HorarioContext);
 
   useEffect(() => {
     pegarBarbeiros();
-  }, [])
-
+    pegarHorarios();
+  }, []);
 
   return (
     <>
-    <ModalBarbeiros  show={show} setShow={setShow} handleClose={handleClose}/>
+      <ModalHorarios
+        show={showHorarios}
+        setShow={setShowHorarios}
+        handleClose={handleCloseHorario}
+        barbeiro={barbeiro}
+      />
+      <ModalBarbeiros show={show} setShow={setShow} handleClose={handleClose} />
       <span className="adc-barbeiro" onClick={() => handleShow()}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -80,7 +92,7 @@ export const ListBarbeiros = () => {
                                 width="30"
                                 height="30"
                                 fill="currentColor"
-                                class="bi bi-clock-fill mx-3"
+                                className="bi bi-clock-fill mx-3"
                                 viewBox="0 0 16 16"
                               >
                                 <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z" />
@@ -95,11 +107,11 @@ export const ListBarbeiros = () => {
                                 width="20"
                                 height="20"
                                 fill="currentColor"
-                                class="bi bi-arrow-down-short"
+                                className="bi bi-arrow-down-short"
                                 viewBox="0 0 16 16"
                               >
                                 <path
-                                  fill-rule="evenodd"
+                                  fillRule="evenodd"
                                   d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4"
                                 />
                               </svg>
@@ -109,31 +121,57 @@ export const ListBarbeiros = () => {
                       </div>
                       <div className="d-flex justify-content-center align-items-center">
                         <ul className="horarios-fechado" id={barbeiro.ID}>
-                          {horarios.map((horario) => {
-                            if (
-                              horario.BARBEIRO_ID === barbeiro.ID &&
-                              horario.DISPONIVEL
-                            ) {
-                              return (
-                                <>
-                                  <li className="d-flex justify-content-around align-items-center">
-                                    <p className="m-0 p-0">{horario.HORA}</p>
-                                    <button
-                                      className="btn btn-sm bg-transparent text-white"
-                                      onClick={() =>
-                                        marcarHorario(
-                                          horario.ID,
-                                          horario.BARBEIRO_ID
-                                        )
-                                      }
-                                    >
-                                      Marcar
-                                    </button>
-                                  </li>
-                                </>
-                              );
-                            }
-                          })}
+                          {horarios.length > 0 ? (
+                            horarios.map((horario) => {
+                              if (
+                                horario.BARBEIRO_ID === barbeiro.ID &&
+                                horario.DISPONIVEL
+                              ) {
+                                return (
+                                  <Fragment key={horario.ID}>
+                                    <li className="d-flex justify-content-around align-items-center">
+                                      <p className="m-0 p-0">{horario.HORA}</p>
+                                      <button
+                                        className="btn btn-sm bg-transparent text-white"
+                                        onClick={() =>
+                                          marcarHorario(
+                                            horario.ID,
+                                            horario.BARBEIRO_ID
+                                          )
+                                        }
+                                      >
+                                        Marcar
+                                      </button>
+                                    </li>
+                                  </Fragment>
+                                );
+                              }
+                            })
+                          ) : (
+                            <div className="container heig d-flex justify-content-center align-items-center">
+                              <h5
+                                className="text-white d-flex"
+                                onClick={() => {
+                                  setBarbeiro(barbeiro);
+                                  setShowHorarios(true);
+                                }}
+                              >
+                                Nenhum horário disponível
+                                {user.BARBEIRO && (
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="19"
+                                    height="19"
+                                    fill="currentColor"
+                                    className="bi bi-plus"
+                                    viewBox="0 0 16 16"
+                                  >
+                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                                  </svg>
+                                )}
+                              </h5>
+                            </div>
+                          )}
                         </ul>
                       </div>
                     </li>

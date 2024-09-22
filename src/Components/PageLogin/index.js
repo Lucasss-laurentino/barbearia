@@ -126,13 +126,13 @@ export const PageLogin = () => {
                   </div>
                   <button
                     type="submit"
-                    class="btn btn-dark border border-white mt-3"
+                    className="btn btn-dark border border-white mt-3"
                   >
                     Entrar
                   </button>
                   <button
                     type="button"
-                    class="btn btn-secondary border border-white mt-3 mx-2"
+                    className="btn btn-secondary border border-white mt-3 mx-2"
                     onClick={() => {
                       setShowLogin("hidden-form");
                       setTimeout(() => {
@@ -195,7 +195,7 @@ export const PageLogin = () => {
                     <label className="text-white">Senha</label>
                     <input
                       type="password"
-                      class="form-control"
+                      className="form-control"
                       id="exampleInputPassword1"
                       placeholder="Senha"
                       {...register("SENHA")}
@@ -208,13 +208,13 @@ export const PageLogin = () => {
                   </div>
                   <button
                     type="submit"
-                    class="btn btn-dark border border-white mt-3"
+                    className="btn btn-dark border border-white mt-3"
                   >
                     Cadastrar
                   </button>
                   <button
                     type="button"
-                    class="btn btn-secondary border border-white mt-3 mx-2"
+                    className="btn btn-secondary border border-white mt-3 mx-2"
                     onClick={() => {
                       setShowCadastro("hidden-form");
                       setTimeout(() => {

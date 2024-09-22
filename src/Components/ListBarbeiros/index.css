@@ -47,6 +47,7 @@
 
 .fechar-horarios {
   width: 100%;
+  height: 290px;
   padding: 0;
   list-style: none;
   overflow-y: auto;
@@ -80,4 +81,8 @@
 
 .icone_mais_aberto {
   color: white;
+}
+
+.heig {
+  height: 290px;
 }
