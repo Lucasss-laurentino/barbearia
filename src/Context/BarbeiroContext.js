@@ -1,43 +1,12 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useState } from "react";
 import { http } from "../http";
 
 export const BarbeiroContext = createContext();
 
 export const BarbeiroProvider = ({ children }) => {
-  const [barbeiros, setBarbeiros] = useState([
-    {
-      ID: 1,
-      NOME: "LC",
-      IMG: "barbeiros/barbeiro1.jpg",
-    },
-    {
-      ID: 2,
-      NOME: "Jota",
-      IMG: "barbeiros/barbeiro2.jpg",
-    },
-    {
-      ID: 3,
-      NOME: "LC",
-      IMG: "barbeiros/barbeiro1.jpg",
-    },
-    {
-      ID: 4,
-      NOME: "Jota",
-      IMG: "barbeiros/barbeiro2.jpg",
-    },
-    {
-      ID: 5,
-      NOME: "LC",
-      IMG: "barbeiros/barbeiro1.jpg",
-    },
-    {
-      ID: 6,
-      NOME: "Jota",
-      IMG: "barbeiros/barbeiro2.jpg",
-    },
-  ]);
+  const [barbeiros, setBarbeiros] = useState([]);
   const [imagem, setImagem] = useState();
-  const criarBarbeiro = async (data) => {
+  const criarBarbeiro = async (data, setShow) => {
     
     try {
       const formData = new FormData();
@@ -50,10 +19,21 @@ export const BarbeiroProvider = ({ children }) => {
         }
       })
       setBarbeiros([...barbeiros, response.data.barbeiro]);
+      setShow(false);
     } catch(error) {
 
     }
   };
+
+  const pegarBarbeiros = async () => {
+    try {
+      const response = await http.get("barbeiro/pegarBarbeiros", {withCredentials: true});
+      if(!response) throw "Erro ao buscar barbeiros";
+      setBarbeiros([...response.data.barbeiros])
+    } catch(erro) {
+
+    }
+  }
 
 
   return (
@@ -62,7 +42,8 @@ export const BarbeiroProvider = ({ children }) => {
           setBarbeiros,
           criarBarbeiro,  
           imagem,
-          setImagem
+          setImagem,
+          pegarBarbeiros
     }}>{children}</BarbeiroContext.Provider>
   );
 };

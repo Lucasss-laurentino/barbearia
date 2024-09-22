@@ -6,7 +6,7 @@ import { barbeiroSchema } from "../../validations/barbeiroValidation";
 import { useContext, useState } from "react";
 import { BarbeiroContext } from "../../Context/BarbeiroContext";
 
-export const ModalBarbeiros = ({ show, handleClose }) => {
+export const ModalBarbeiros = ({ show, setShow, handleClose }) => {
   const {
     register,
     handleSubmit,
@@ -31,7 +31,7 @@ export const ModalBarbeiros = ({ show, handleClose }) => {
         <Modal.Body>
           <form
             encType="multipart/form-data"
-            onSubmit={handleSubmit(criarBarbeiro)}
+            onSubmit={handleSubmit((data) => criarBarbeiro(data, setShow))}
           >
             <div className="form-group">
               <label for="exampleInputEmail1">Nome</label>

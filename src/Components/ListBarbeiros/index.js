@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimacaoContext } from "../../Context/AnimacaoHorarios";
 import { BarbeiroContext } from "../../Context/BarbeiroContext";
 import { HorarioContext } from "../../Context/HorarioContext";
@@ -16,10 +16,16 @@ export const ListBarbeiros = () => {
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
 
+  const { pegarBarbeiros } = useContext(BarbeiroContext);
+
+  useEffect(() => {
+    pegarBarbeiros();
+  }, [])
+
 
   return (
     <>
-    <ModalBarbeiros  show={show} handleClose={handleClose}/>
+    <ModalBarbeiros  show={show} setShow={setShow} handleClose={handleClose}/>
       <span className="adc-barbeiro" onClick={() => handleShow()}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -46,7 +52,7 @@ export const ListBarbeiros = () => {
                           <div className="col-3 mx-3 border-radius-personalizada">
                             <img
                               className="img-fluid img-corte"
-                              src={barbeiro.IMG}
+                              src={barbeiro.IMAGEM}
                               width="87%"
                             />
                           </div>
