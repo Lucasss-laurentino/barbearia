@@ -1,3 +1,19 @@
+.adc-barbeiro {
+  position: absolute;
+  bottom: 12%;
+  right: 7%;
+  backdrop-filter: blur(10px);
+  border-radius: 50%;
+}
+
+.lista-barbeiros {
+  overflow-y: auto;
+  padding-bottom: 13%;
+  padding-left: 0;
+  margin-bottom: 0px;
+  height: 77vh;
+}
+
 .horarios-fechado {
   width: 100%;
   height: 0;

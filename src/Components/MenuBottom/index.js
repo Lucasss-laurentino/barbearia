@@ -61,7 +61,7 @@ export const MenuBottom = () => {
                     alt=""
                   />
                   <p className={active === 3 ? "texto-preto" : "texto-branco"}>
-                    Clientes
+                    {user.BARBEIRO ? 'Barbeiros' : 'Clientes'}
                   </p>
                 </div>
               </li>

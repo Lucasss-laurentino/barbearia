@@ -12,11 +12,13 @@ export const LoginProvider = ({ children }) => {
 
   const criarUsuario = async (user) => {
     try {
-     await http.post("login/criarUsuario", { user })
-     .then((response) => {
-      setUser(response.data.user)
-     });
-      navigate("/index")
+      const response = await http.post(
+        "login/criarUsuario",
+        { user },
+        { withCredentials: true }
+      );
+      setUser(response.data.user);
+      navigate("/index");
     } catch (error) {
       console.log(error);
     }
@@ -24,22 +26,20 @@ export const LoginProvider = ({ children }) => {
 
   const login = async (user) => {
     try {
-      await http.post('/login/login', {user}).then((response) => {
-        setUser(response.data.user);
-        navigate("/index")
-
-      })
-
-    } catch(error) {
-
-    }
-  }
+      await http
+        .post("/login/login", { user }, { withCredentials: true })
+        .then((response) => {
+          setUser(response.data.user);
+          navigate("/index");
+        });
+    } catch (error) {}
+  };
 
   return (
     <LoginContext.Provider
       value={{
         criarUsuario,
-        login
+        login,
       }}
     >
       {children}

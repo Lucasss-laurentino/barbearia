@@ -6,6 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { createUserSchema } from "../../validations/createUserValidation";
 import { LoginContext } from "../../Context/LoginContext";
 import { loginSchema } from "../../validations/loginValidation";
+import { UserContext } from "../../Context/UserContext";
 
 export const PageLogin = () => {
   const [hiddenLogin, setHiddenLogin] = useState("div-login");
@@ -14,18 +15,17 @@ export const PageLogin = () => {
 
   // contexts
   const { criarUsuario, login } = useContext(LoginContext);
-
+  const { user, pegarUsuario } = useContext(UserContext);
   const [formAberto, setFormAberto] = useState(0);
-
   // react-hook-form
-    const {
-      register,
-      handleSubmit,
-      formState: { errors },
-    } = useForm({
-      resolver: yupResolver(formAberto === 1 ? createUserSchema : loginSchema),
-    });
-    
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(formAberto === 1 ? createUserSchema : loginSchema),
+  });
+
   return (
     <>
       <div className="tela-toda-fundo-preto-show position-relative">
