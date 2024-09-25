@@ -42,7 +42,7 @@ export const ModalHorarios = ({ show, setShow, handleClose, barbeiro }) => {
             onSubmit={handleSubmit((data) => criarHorario(data, barbeiro, setShow))}
           >
             <div className="form-group my-2">
-              <label for="exampleInputEmail1">Nome</label>
+              <label>Nome</label>
               <input
                 type="text"
                 className="form-control"

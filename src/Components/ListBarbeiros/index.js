@@ -121,57 +121,78 @@ export const ListBarbeiros = () => {
                       </div>
                       <div className="d-flex justify-content-center align-items-center">
                         <ul className="horarios-fechado" id={barbeiro.ID}>
-                          {horarios.length > 0 ? (
-                            horarios.map((horario) => {
-                              if (
-                                horario.BARBEIRO_ID === barbeiro.ID &&
-                                horario.DISPONIVEL
-                              ) {
-                                return (
-                                  <Fragment key={horario.ID}>
-                                    <li className="d-flex justify-content-around align-items-center">
-                                      <p className="m-0 p-0">{horario.HORA}</p>
-                                      <button
-                                        className="btn btn-sm bg-transparent text-white"
-                                        onClick={() =>
-                                          marcarHorario(
-                                            horario.ID,
-                                            horario.BARBEIRO_ID
-                                          )
-                                        }
-                                      >
-                                        Marcar
-                                      </button>
-                                    </li>
-                                  </Fragment>
-                                );
-                              }
-                            })
-                          ) : (
-                            <div className="container heig d-flex justify-content-center align-items-center">
-                              <h5
-                                className="text-white d-flex"
-                                onClick={() => {
-                                  setBarbeiro(barbeiro);
-                                  setShowHorarios(true);
-                                }}
-                              >
-                                Nenhum horário disponível
-                                {user.BARBEIRO && (
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="19"
-                                    height="19"
-                                    fill="currentColor"
-                                    className="bi bi-plus"
-                                    viewBox="0 0 16 16"
-                                  >
-                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                                  </svg>
-                                )}
-                              </h5>
-                            </div>
+                          {horarios.some(
+                            (h) => h.BARBEIRO_ID === barbeiro.ID
+                          ) && (
+                            <li
+                              className="d-flex justify-content-center align-items-center my-3 text-white"
+                              onClick={() => {
+                                setBarbeiro(barbeiro);
+                                setShowHorarios(true);
+                              }}
+                            >
+                              adicionar horário +
+                            </li>
                           )}
+                          {
+                            // se esse barbeiro tiver horarios cadastrado
+                            horarios.some(
+                              (horario) => horario.BARBEIRO_ID === barbeiro.ID
+                            ) ? (
+                              // execute esse loopin pra pegar os horarios desse barbeiro
+                              horarios.map((horario) => {
+                                if (
+                                  horario.BARBEIRO_ID === barbeiro.ID &&
+                                  horario.DISPONIVEL
+                                ) {
+                                  return (
+                                    <Fragment key={horario.ID}>
+                                      <li className="d-flex justify-content-around align-items-center">
+                                        <p className="m-0 p-0">
+                                          {horario.HORA}
+                                        </p>
+                                        <button
+                                          className="btn btn-sm bg-transparent text-white"
+                                          onClick={() =>
+                                            marcarHorario(
+                                              horario.ID,
+                                              horario.BARBEIRO_ID
+                                            )
+                                          }
+                                        >
+                                          Marcar
+                                        </button>
+                                      </li>
+                                    </Fragment>
+                                  );
+                                }
+                              })
+                            ) : (
+                              <div className="container heig d-flex justify-content-center align-items-center">
+                                <h5
+                                  className="text-white d-flex"
+                                  onClick={() => {
+                                    setBarbeiro(barbeiro);
+                                    setShowHorarios(true);
+                                  }}
+                                >
+                                  Nenhum horário disponível
+                                  {user.BARBEIRO && (
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      width="19"
+                                      height="19"
+                                      fill="currentColor"
+                                      className="bi bi-plus"
+                                      viewBox="0 0 16 16"
+                                    >
+                                      <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                                    </svg>
+                                  )}
+                                </h5>
+                              </div>
+                            )
+                          }
                         </ul>
                       </div>
                     </li>

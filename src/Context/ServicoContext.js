@@ -1,47 +1,53 @@
 import { createContext, useEffect, useState } from "react";
+import { http } from "../http";
 
 export const ServicoContext = createContext();
 
 export const ServicoProvider = ({ children }) => {
-  const [servicos, setServicos] = useState([
-    {
-      ID: 1,
-      NOME: "Cabelo",
-      PRAZO: "30/40 min.",
-      PRECO: "R$ 20,00",
-      IMG: "servicos/cabelo.jpeg",
-    },
-    {
-      ID: 2,
-      NOME: "Cabelo/Reflexo",
-      PRAZO: "1h/1h:30 min",
-      PRECO: "R$ 50,00",
-      IMG: "servicos/reflexo.jpg",
-    },
-    {
-      ID: 3,
-      NOME: "Cabelo/barba",
-      PRAZO: "40/50 min",
-      PRECO: "R$ 35,00",
-      IMG: "servicos/cabelo_barba.jpeg",
-    },
-    {
-      ID: 4,
-      NOME: "Cabelo/pigmentação",
-      PRAZO: "40/50 min",
-      PRECO: "R$ 30,00",
-      IMG: "servicos/corte_pigmentacao.jpeg",
-    },
-    {
-      ID: 5,
-      NOME: "Pézinho",
-      PRAZO: "10 min",
-      PRECO: "R$ 10,00",
-      IMG: "servicos/pezinho.jpeg",
-    }
-  ]);
+  const [servicos, setServicos] = useState([]);
 
   const [servicoEscolhido, setServicoEscolhido] = useState();
+
+  const criarServico = async (data, imagem, setShow) => {
+    try {
+      const formData = new FormData();
+
+      formData.append("NOME_SERVICO", data.NOME_SERVICO);
+      formData.append("PRAZO", data.PRAZO);
+      formData.append("PRECO", data.PRECO);
+      formData.append("IMAGEM_SERVICO", imagem);
+    
+      const response = await http.post("servico/criarServico", formData, {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      setServicos([...servicos, response.data]);
+      setShow(false)
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const pegarServicos = async () => {
+    try {
+      const response = await http.get('servico/pegarServicos', { withCredentials: true });
+      setServicos([...response.data]);
+      console.log(response.data)
+    } catch (error) {
+      
+    }
+  }
+
+  const excluirServico = async (servico) => {
+    try {
+      const response = await http.delete(`servico/excluirServico/${servico.ID}`, {withCredentials: true})
+      setServicos([...response.data]);
+    } catch (error) {
+      
+    }
+  }
 
   return (
     <ServicoContext.Provider
@@ -49,7 +55,10 @@ export const ServicoProvider = ({ children }) => {
         servicos,
         setServicos,
         servicoEscolhido,
-        setServicoEscolhido
+        setServicoEscolhido,
+        criarServico,
+        pegarServicos,
+        excluirServico
       }}
     >
       {children}

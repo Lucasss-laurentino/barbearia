@@ -35,7 +35,7 @@ export const ModalBarbeiros = ({ show, setShow, handleClose }) => {
             onSubmit={handleSubmit((data) => criarBarbeiro(data, setShow))}
           >
             <div className="form-group">
-              <label for="exampleInputEmail1">Nome</label>
+              <label>Nome</label>
               <input
                 type="text"
                 className="form-control"
@@ -48,7 +48,7 @@ export const ModalBarbeiros = ({ show, setShow, handleClose }) => {
               )}
             </div>
             <div className="form-group">
-              <label for="exampleInputPassword1">Foto</label>
+              <label>Foto</label>
               <div className="mb-3">
                 <input
                   className="form-control form-control-sm"
