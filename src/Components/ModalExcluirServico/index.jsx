@@ -1,10 +1,12 @@
+import './index.css';
 import { useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { ServicoContext } from "../../Context/ServicoContext";
+import { MutatingDots } from "react-loader-spinner";
 
 export const ModalExcluirServico = ({ show, handleClose, servico }) => {
-  const { excluirServico } = useContext(ServicoContext);
+  const { excluirServico, loadCriarServico } = useContext(ServicoContext);
 
   const excluirEFecharModal = () => {
     excluirServico(servico);
@@ -31,13 +33,31 @@ export const ModalExcluirServico = ({ show, handleClose, servico }) => {
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Não
-          </Button>
+          {loadCriarServico ? (
+            <div className="h-loader-excluir-servico">
+              <MutatingDots
+                visible={true}
+                height={"100"}
+                width="100"
+                color="#6d6d6d"
+                secondaryColor="#6d6d6d"
+                radius="12.5"
+                ariaLabel="mutating-dots-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
+              />
+            </div>
+          ) : (
+            <>
+              <Button variant="secondary" onClick={handleClose}>
+                Não
+              </Button>
 
-          <Button variant="danger" onClick={() => excluirEFecharModal()}>
-            Sim
-          </Button>
+              <Button variant="danger" onClick={() => excluirEFecharModal()}>
+                Sim
+              </Button>
+            </>
+          )}
         </Modal.Footer>
       </Modal>
     </>

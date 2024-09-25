@@ -126,25 +126,41 @@ export const PageLogin = () => {
                       </p>
                     )}
                   </div>
-                  <button
-                    type="submit"
-                    className="btn btn-dark border border-white mt-3"
-                  >
-                    Entrar
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-secondary border border-white mt-3 mx-2"
-                    onClick={() => {
-                      setShowLogin("hidden-form");
-                      setTimeout(() => {
-                        setShowLogin("d-none");
-                        setHiddenLogin("div-login");
-                      }, 353);
-                    }}
-                  >
-                    Voltar
-                  </button>
+                  {loadLogin ? (
+                      <MutatingDots
+                        visible={true}
+                        height="100"
+                        width="100"
+                        color="#6d6d6d"
+                        secondaryColor="#6d6d6d"
+                        radius="12.5"
+                        ariaLabel="mutating-dots-loading"
+                        wrapperStyle={{}}
+                        wrapperClass=""
+                      />
+                  ) : (
+                    <>
+                      <button
+                        type="submit"
+                        className="btn btn-dark border border-white mt-3"
+                      >
+                        Entrar
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-secondary border border-white mt-3 mx-2"
+                        onClick={() => {
+                          setShowLogin("hidden-form");
+                          setTimeout(() => {
+                            setShowLogin("d-none");
+                            setHiddenLogin("div-login");
+                          }, 353);
+                        }}
+                      >
+                        Voltar
+                      </button>
+                    </>
+                  )}
                 </form>
                 <div className="row-white">
                   <span className="span-login-rapido">Login rápido</span>
@@ -208,7 +224,7 @@ export const PageLogin = () => {
                       </p>
                     )}
                   </div>
-                  {loadLogin ? ( 
+                  {loadLogin ? (
                     <MutatingDots
                       visible={true}
                       height="100"

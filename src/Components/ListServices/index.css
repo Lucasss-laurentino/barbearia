@@ -30,3 +30,7 @@
     overflow-y: scroll;
 
 }
+
+.h-loader {
+    height: 70vh;
+}

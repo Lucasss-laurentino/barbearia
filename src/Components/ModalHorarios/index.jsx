@@ -5,6 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useContext } from "react";
 import { horariosSchema } from "../../validations/horariosValidation";
 import { HorarioContext } from "../../Context/HorarioContext";
+import { MutatingDots } from "react-loader-spinner";
 
 export const ModalHorarios = ({ show, setShow, handleClose, barbeiro }) => {
   const {
@@ -16,7 +17,7 @@ export const ModalHorarios = ({ show, setShow, handleClose, barbeiro }) => {
     resolver: yupResolver(horariosSchema),
   });
 
-  const { criarHorario } = useContext(HorarioContext);
+  const { criarHorario, loadHorarios } = useContext(HorarioContext);
 
   const handleTimeChange = (e) => {
     const value = e.target.value.replace(/\D/g, ""); // Remove caracteres não numéricos
@@ -39,7 +40,9 @@ export const ModalHorarios = ({ show, setShow, handleClose, barbeiro }) => {
         <Modal.Body>
           <form
             encType="multipart/form-data"
-            onSubmit={handleSubmit((data) => criarHorario(data, barbeiro, setShow))}
+            onSubmit={handleSubmit((data) =>
+              criarHorario(data, barbeiro, setShow)
+            )}
           >
             <div className="form-group my-2">
               <label>Nome</label>
@@ -55,9 +58,23 @@ export const ModalHorarios = ({ show, setShow, handleClose, barbeiro }) => {
                 <p className="m-0 my-1 text-danger">*{errors.HORA.message}</p>
               )}
             </div>
-            <button type="submit" className="btn btn-primary">
-              Cadastrar
-            </button>
+            {loadHorarios ? (
+              <MutatingDots
+                visible={true}
+                height={"100"}
+                width="100"
+                color="#6d6d6d"
+                secondaryColor="#6d6d6d"
+                radius="12.5"
+                ariaLabel="mutating-dots-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
+              />
+            ) : (
+              <button type="submit" className="btn btn-primary">
+                Cadastrar
+              </button>
+            )}
           </form>
         </Modal.Body>
         <Modal.Footer>

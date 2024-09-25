@@ -5,6 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { barbeiroSchema } from "../../validations/barbeiroValidation";
 import { useContext } from "react";
 import { BarbeiroContext } from "../../Context/BarbeiroContext";
+import { MutatingDots } from "react-loader-spinner";
 
 export const ModalBarbeiros = ({ show, setShow, handleClose }) => {
   const {
@@ -15,7 +16,7 @@ export const ModalBarbeiros = ({ show, setShow, handleClose }) => {
     resolver: yupResolver(barbeiroSchema),
   });
 
-  const { criarBarbeiro, imagem, setImagem } = useContext(BarbeiroContext);
+  const { criarBarbeiro, imagem, setImagem, loadBarbeiro } = useContext(BarbeiroContext);
 
   return (
     <>
@@ -64,9 +65,23 @@ export const ModalBarbeiros = ({ show, setShow, handleClose }) => {
                 )}
               </div>
             </div>
-            <button type="submit" className="btn btn-primary">
-              Cadastrar
-            </button>
+            {loadBarbeiro ? (
+              <MutatingDots
+                visible={true}
+                height={"100"}
+                width="100"
+                color="#6d6d6d"
+                secondaryColor="#6d6d6d"
+                radius="12.5"
+                ariaLabel="mutating-dots-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
+              />
+            ) : (
+              <button type="submit" className="btn btn-primary">
+                Cadastrar
+              </button>
+            )}
           </form>
         </Modal.Body>
         <Modal.Footer>

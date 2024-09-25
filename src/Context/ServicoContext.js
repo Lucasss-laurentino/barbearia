@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
 import { http } from "../http";
 
 export const ServicoContext = createContext();
@@ -7,9 +7,11 @@ export const ServicoProvider = ({ children }) => {
   const [servicos, setServicos] = useState([]);
 
   const [servicoEscolhido, setServicoEscolhido] = useState();
+  const [loadCriarServico, setLoadCriarServico] = useState(false);
 
   const criarServico = async (data, imagem, setShow) => {
     try {
+      setLoadCriarServico(true);
       const formData = new FormData();
 
       formData.append("NOME_SERVICO", data.NOME_SERVICO);
@@ -24,6 +26,7 @@ export const ServicoProvider = ({ children }) => {
         },
       });
       setServicos([...servicos, response.data]);
+      setLoadCriarServico(false);
       setShow(false);
     } catch (error) {
       console.log(error);
@@ -32,25 +35,30 @@ export const ServicoProvider = ({ children }) => {
 
   const pegarServicos = async () => {
     try {
+      setLoadCriarServico(true)
       const response = await http.get("servico/pegarServicos", {
         withCredentials: true,
       });
       setServicos([...response.data]);
+      setLoadCriarServico(false);
     } catch (error) {}
   };
 
   const excluirServico = async (servico) => {
     try {
+      setLoadCriarServico(true);
       const response = await http.delete(
         `servico/excluirServico/${servico.ID}`,
         { withCredentials: true }
       );
       setServicos([...response.data]);
+      setLoadCriarServico(false);
     } catch (error) {}
   };
 
   const editarServico = async (data, imagem, setShow, servico) => {
     try {
+      setLoadCriarServico(true);
       const formData = new FormData();
 
       formData.append("NOME_SERVICO", data.NOME_SERVICO);
@@ -69,6 +77,7 @@ export const ServicoProvider = ({ children }) => {
         }
       );
       setServicos([...response.data]);
+      setLoadCriarServico(false);
       setShow(false);
     } catch (error) {}
   };
@@ -84,6 +93,8 @@ export const ServicoProvider = ({ children }) => {
         pegarServicos,
         excluirServico,
         editarServico,
+        loadCriarServico,
+        setLoadCriarServico,
       }}
     >
       {children}

@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { servicoSchema } from "../../validations/servicoValidation";
 import { ServicoContext } from "../../Context/ServicoContext";
+import { MutatingDots } from "react-loader-spinner";
 
 export const ModalServico = ({
   show,
@@ -21,7 +22,8 @@ export const ModalServico = ({
     resolver: yupResolver(servicoSchema),
   });
 
-  const { criarServico, editarServico } = useContext(ServicoContext);
+  const { criarServico, editarServico, loadCriarServico } =
+    useContext(ServicoContext);
 
   const [imagem, setImagem] = useState();
 
@@ -56,6 +58,10 @@ export const ModalServico = ({
       setValue("IMAGEM_SERVICO", servico.IMAGEM_SERVICO);
     }
   }, [servico, setValue]);
+
+  useEffect(() => {
+    if (!show) limparCampos();
+  }, [show]);
 
   return (
     <>
@@ -141,9 +147,23 @@ export const ModalServico = ({
                 )}
               </div>
             </div>
-            <button type="submit" className="btn btn-primary">
-              Cadastrar
-            </button>
+            {loadCriarServico ? (
+              <MutatingDots
+                visible={true}
+                height="100"
+                width="100"
+                color="#6d6d6d"
+                secondaryColor="#6d6d6d"
+                radius="12.5"
+                ariaLabel="mutating-dots-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
+              />
+            ) : (
+              <button type="submit" className="btn btn-primary">
+                  {servico !== null ? "Editar" : "Cadastrar"}
+              </button>
+            )}
           </form>
         </Modal.Body>
         <Modal.Footer>

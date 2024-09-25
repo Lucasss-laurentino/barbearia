@@ -29,10 +29,12 @@ export const LoginProvider = ({ children }) => {
 
   const login = async (user) => {
     try {
+      setLoadLogin(true)
       await http
         .post("/login/login", { user }, { withCredentials: true })
         .then((response) => {
           setUser(response.data.user);
+          setLoadLogin(false);
           navigate("/index");
         });
     } catch (error) {}

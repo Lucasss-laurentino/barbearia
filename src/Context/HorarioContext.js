@@ -11,8 +11,11 @@ export const HorarioProvider = ({ children }) => {
     BARBEIRO_ID: 0,
   });
 
+  const [loadHorarios, setLoadHorarios] = useState(false);
+
   const criarHorario = async (data, barbeiro, setShow) => {
     try {
+      setHorarios(true);
       const response = await http.post(
         "horario/criarHorario",
         { horario: data, barbeiro },
@@ -20,6 +23,7 @@ export const HorarioProvider = ({ children }) => {
       );
       if (!response) throw "Erro ao criar horario";
       setHorarios([...horarios, response.data]);
+      setHorarios(false);
       setShow(false);
     } catch (erro) {}
   };
@@ -55,6 +59,8 @@ export const HorarioProvider = ({ children }) => {
         marcarHorario,
         criarHorario,
         pegarHorarios,
+        loadHorarios,
+        setLoadHorarios
       }}
     >
       {children}
