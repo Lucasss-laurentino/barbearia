@@ -1,12 +1,17 @@
+import { useContext, useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useContext, useState } from "react";
 import { servicoSchema } from "../../validations/servicoValidation";
 import { ServicoContext } from "../../Context/ServicoContext";
 
-export const ModalServico = ({ show, setShow, handleClose }) => {
+export const ModalServico = ({
+  show,
+  setShow,
+  handleClose,
+  servico = null,
+}) => {
   const {
     register,
     handleSubmit,
@@ -16,7 +21,7 @@ export const ModalServico = ({ show, setShow, handleClose }) => {
     resolver: yupResolver(servicoSchema),
   });
 
-  const { criarServico } = useContext(ServicoContext);
+  const { criarServico, editarServico } = useContext(ServicoContext);
 
   const [imagem, setImagem] = useState();
 
@@ -34,24 +39,48 @@ export const ModalServico = ({ show, setShow, handleClose }) => {
     event.target.value = `R$ ${value}`; // Prepara o valor final
   };
 
+  const limparCampos = () => {
+    setValue("NOME_SERVICO", "");
+    setValue("PRAZO", "");
+    setValue("PRECO", "");
+    setValue("IMAGEM_SERVICO", "");
+    handleClose();
+  };
+
+  // Efeito para preencher os campos se for edição
+  useEffect(() => {
+    if (servico) {
+      setValue("NOME_SERVICO", servico.NOME_SERVICO);
+      setValue("PRAZO", servico.PRAZO);
+      setValue("PRECO", servico.PRECO);
+      setValue("IMAGEM_SERVICO", servico.IMAGEM_SERVICO);
+    }
+  }, [servico, setValue]);
+
   return (
     <>
       <Modal
         show={show}
-        onHide={handleClose}
+        onHide={() => limparCampos()}
         backdrop="static"
         centered
         keyboard={false}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Cadastre um serviço</Modal.Title>
+          <Modal.Title>
+            {servico ? "Editar Serviço" : "Cadastre um serviço"}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form
             encType="multipart/form-data"
-            onSubmit={handleSubmit((data) =>
-              criarServico(data, imagem, setShow)
-            )}
+            onSubmit={handleSubmit((data) => {
+              if (servico) {
+                editarServico(data, imagem, setShow, servico);
+              } else {
+                criarServico(data, imagem, setShow);
+              }
+            })}
           >
             <div className="form-group my-2">
               <label>Nome do serviço</label>

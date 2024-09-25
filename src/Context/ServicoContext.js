@@ -16,7 +16,7 @@ export const ServicoProvider = ({ children }) => {
       formData.append("PRAZO", data.PRAZO);
       formData.append("PRECO", data.PRECO);
       formData.append("IMAGEM_SERVICO", imagem);
-    
+
       const response = await http.post("servico/criarServico", formData, {
         withCredentials: true,
         headers: {
@@ -24,7 +24,7 @@ export const ServicoProvider = ({ children }) => {
         },
       });
       setServicos([...servicos, response.data]);
-      setShow(false)
+      setShow(false);
     } catch (error) {
       console.log(error);
     }
@@ -32,22 +32,46 @@ export const ServicoProvider = ({ children }) => {
 
   const pegarServicos = async () => {
     try {
-      const response = await http.get('servico/pegarServicos', { withCredentials: true });
+      const response = await http.get("servico/pegarServicos", {
+        withCredentials: true,
+      });
       setServicos([...response.data]);
-      console.log(response.data)
-    } catch (error) {
-      
-    }
-  }
+    } catch (error) {}
+  };
 
   const excluirServico = async (servico) => {
     try {
-      const response = await http.delete(`servico/excluirServico/${servico.ID}`, {withCredentials: true})
+      const response = await http.delete(
+        `servico/excluirServico/${servico.ID}`,
+        { withCredentials: true }
+      );
       setServicos([...response.data]);
-    } catch (error) {
-      
-    }
-  }
+    } catch (error) {}
+  };
+
+  const editarServico = async (data, imagem, setShow, servico) => {
+    try {
+      const formData = new FormData();
+
+      formData.append("NOME_SERVICO", data.NOME_SERVICO);
+      formData.append("PRAZO", data.PRAZO);
+      formData.append("PRECO", data.PRECO);
+      formData.append("IMAGEM_SERVICO", imagem);
+
+      const response = await http.put(
+        `servico/editarServico/${servico.ID}`,
+        formData,
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      setServicos([...response.data]);
+      setShow(false);
+    } catch (error) {}
+  };
 
   return (
     <ServicoContext.Provider
@@ -58,7 +82,8 @@ export const ServicoProvider = ({ children }) => {
         setServicoEscolhido,
         criarServico,
         pegarServicos,
-        excluirServico
+        excluirServico,
+        editarServico,
       }}
     >
       {children}
