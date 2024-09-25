@@ -7,6 +7,7 @@ import { createUserSchema } from "../../validations/createUserValidation";
 import { LoginContext } from "../../Context/LoginContext";
 import { loginSchema } from "../../validations/loginValidation";
 import { UserContext } from "../../Context/UserContext";
+import { MutatingDots } from "react-loader-spinner";
 
 export const PageLogin = () => {
   const [hiddenLogin, setHiddenLogin] = useState("div-login");
@@ -14,7 +15,8 @@ export const PageLogin = () => {
   const [showCadastro, setShowCadastro] = useState("form-login-escondido");
 
   // contexts
-  const { criarUsuario, login } = useContext(LoginContext);
+  const { criarUsuario, login, loadLogin, setLoadLogin } =
+    useContext(LoginContext);
   const { user, pegarUsuario } = useContext(UserContext);
   const [formAberto, setFormAberto] = useState(0);
   // react-hook-form
@@ -206,25 +208,41 @@ export const PageLogin = () => {
                       </p>
                     )}
                   </div>
-                  <button
-                    type="submit"
-                    className="btn btn-dark border border-white mt-3"
-                  >
-                    Cadastrar
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-secondary border border-white mt-3 mx-2"
-                    onClick={() => {
-                      setShowCadastro("hidden-form");
-                      setTimeout(() => {
-                        setShowCadastro("d-none");
-                        setHiddenLogin("div-login");
-                      }, 353);
-                    }}
-                  >
-                    Voltar
-                  </button>
+                  {loadLogin ? ( 
+                    <MutatingDots
+                      visible={true}
+                      height="100"
+                      width="100"
+                      color="#6d6d6d"
+                      secondaryColor="#6d6d6d"
+                      radius="12.5"
+                      ariaLabel="mutating-dots-loading"
+                      wrapperStyle={{}}
+                      wrapperClass=""
+                    />
+                  ) : (
+                    <>
+                      <button
+                        type="submit"
+                        className="btn btn-dark border border-white mt-3"
+                      >
+                        Cadastrar
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-secondary border border-white mt-3 mx-2"
+                        onClick={() => {
+                          setShowCadastro("hidden-form");
+                          setTimeout(() => {
+                            setShowCadastro("d-none");
+                            setHiddenLogin("div-login");
+                          }, 353);
+                        }}
+                      >
+                        Voltar
+                      </button>
+                    </>
+                  )}
                 </form>
                 <div className="row-white">
                   <span className="span-login-rapido">Cadastre-se com</span>
