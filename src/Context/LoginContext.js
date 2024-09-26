@@ -10,7 +10,7 @@ export const LoginProvider = ({ children }) => {
 
   const { setUser } = useContext(UserContext);
   const [loadLogin, setLoadLogin] = useState(false);
-
+  const [loginError, setLoginError] = useState(null);
   const criarUsuario = async (user) => {
     try {
       setLoadLogin(true)
@@ -24,12 +24,14 @@ export const LoginProvider = ({ children }) => {
       navigate("/index");
     } catch (error) {
       console.log(error);
+      setLoadLogin(false);
     }
   };
 
   const login = async (user) => {
     try {
       setLoadLogin(true)
+      console.log(user);
       await http
         .post("/login/login", { user }, { withCredentials: true })
         .then((response) => {
@@ -37,7 +39,11 @@ export const LoginProvider = ({ children }) => {
           setLoadLogin(false);
           navigate("/index");
         });
-    } catch (error) {}
+    } catch (error) {
+      setLoadLogin(false);
+      const erro = error.response?.data
+      setLoginError("Algo deu errado ao fazer login, verifique seus dados e tente novamente !");
+    }
   };
 
   return (
@@ -46,7 +52,8 @@ export const LoginProvider = ({ children }) => {
         criarUsuario,
         login,
         loadLogin,
-        setLoadLogin
+        setLoadLogin,
+        loginError
       }}
     >
       {children}

@@ -2,12 +2,12 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { horariosSchema } from "../../validations/horariosValidation";
 import { HorarioContext } from "../../Context/HorarioContext";
 import { MutatingDots } from "react-loader-spinner";
 
-export const ModalHorarios = ({ show, setShow, handleClose, barbeiro }) => {
+export const ModalHorarios = ({ show, setShow, handleClose, barbeiro, horario = null, setHorarioSelecionado }) => {
   const {
     register,
     handleSubmit,
@@ -17,13 +17,34 @@ export const ModalHorarios = ({ show, setShow, handleClose, barbeiro }) => {
     resolver: yupResolver(horariosSchema),
   });
 
-  const { criarHorario, loadHorarios } = useContext(HorarioContext);
+  const { criarHorario, loadHorarios, editarHorario } = useContext(HorarioContext);
 
   const handleTimeChange = (e) => {
     const value = e.target.value.replace(/\D/g, ""); // Remove caracteres não numéricos
     const formattedValue = value.replace(/(\d{2})(\d{2})/, "$1:$2"); // Formata como HH:MM
     setValue("HORA", formattedValue.slice(0, 5));
   };
+
+  const editarOuCriar = (data) => {
+    if(horario !== null) {
+      editarHorario(data, horario, setShow, setValue);
+    } else {
+      criarHorario(data, barbeiro, setShow, setValue)
+    }
+  }
+
+  useEffect(() => {
+    if(horario) {
+      setValue("HORA", horario.HORA)
+    }
+  }, [horario, setValue])
+
+  useEffect(() => {
+    if (!show) {
+      setValue("HORA", "")
+      setHorarioSelecionado(null)
+    };
+  }, [show]);
 
   return (
     <>
@@ -40,12 +61,10 @@ export const ModalHorarios = ({ show, setShow, handleClose, barbeiro }) => {
         <Modal.Body>
           <form
             encType="multipart/form-data"
-            onSubmit={handleSubmit((data) =>
-              criarHorario(data, barbeiro, setShow)
-            )}
+            onSubmit={handleSubmit(editarOuCriar)}
           >
             <div className="form-group my-2">
-              <label>Nome</label>
+              <label>Hora</label>
               <input
                 type="text"
                 className="form-control"
@@ -72,7 +91,9 @@ export const ModalHorarios = ({ show, setShow, handleClose, barbeiro }) => {
               />
             ) : (
               <button type="submit" className="btn btn-primary">
-                Cadastrar
+                {
+                  horario !== null ? "Editar" : "Cadastrar"
+                }
               </button>
             )}
           </form>

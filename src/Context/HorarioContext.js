@@ -13,9 +13,9 @@ export const HorarioProvider = ({ children }) => {
 
   const [loadHorarios, setLoadHorarios] = useState(false);
 
-  const criarHorario = async (data, barbeiro, setShow) => {
+  const criarHorario = async (data, barbeiro, setShow, setValue) => {
     try {
-      setHorarios(true);
+      setLoadHorarios(true);
       const response = await http.post(
         "horario/criarHorario",
         { horario: data, barbeiro },
@@ -23,7 +23,8 @@ export const HorarioProvider = ({ children }) => {
       );
       if (!response) throw "Erro ao criar horario";
       setHorarios([...horarios, response.data]);
-      setHorarios(false);
+      setLoadHorarios(false);
+      setValue("HORA", "");
       setShow(false);
     } catch (erro) {}
   };
@@ -38,6 +39,20 @@ export const HorarioProvider = ({ children }) => {
     } catch (erro) {}
   };
 
+  const editarHorario = async (data, horario, setShow, setValue) => {
+    try {
+      setLoadHorarios(true);
+      const response = await http.put(`horario/editarHorario/${horario.ID}`, data,
+        {
+          withCredentials: true,
+        }
+      );
+      setHorarios([...response.data]);
+      setLoadHorarios(false);
+      setShow(false);
+    } catch (error) {}
+  };
+
   const marcarHorario = (horario_id, barbeiro_id) => {
     const horariosNovo = horarios.map((horario) => {
       if (horario.ID === horario_id) {
@@ -47,6 +62,19 @@ export const HorarioProvider = ({ children }) => {
     });
 
     setHorarios([...horariosNovo]);
+  };
+
+  const excluirHorario = async (horario, handleClose) => {
+    try {
+      setLoadHorarios(true);
+      const response = await http.delete(
+        `horario/excluirHorario/${horario.ID}`,
+        { withCredentials: true }
+      );
+      setHorarios([...response.data]);
+      setLoadHorarios(false);
+      handleClose();
+    } catch (error) {}
   };
 
   return (
@@ -60,7 +88,9 @@ export const HorarioProvider = ({ children }) => {
         criarHorario,
         pegarHorarios,
         loadHorarios,
-        setLoadHorarios
+        setLoadHorarios,
+        excluirHorario,
+        editarHorario,
       }}
     >
       {children}

@@ -3,6 +3,9 @@
   height: auto;
   background-color: rgb(24, 24, 24);
 }
+.font-s {
+  font-size: 14px;
+}
 .div-btn-form-login {
   height: 48vh;
   display: flex;

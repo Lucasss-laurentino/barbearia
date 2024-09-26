@@ -34,6 +34,7 @@
   list-style: none;
   overflow-y: hidden;
   animation: abrir 300ms linear 2ms 1 normal forwards;
+  overflow-y: auto;
 }
 
 @keyframes abrir {
@@ -41,13 +42,13 @@
     height: 0px;
   }
   100% {
-    height: 290px;
+    height: 150px;
   }
 }
 
 .fechar-horarios {
   width: 100%;
-  height: 290px;
+  height: 150px;
   padding: 0;
   list-style: none;
   overflow-y: auto;
@@ -56,7 +57,7 @@
 
 @keyframes fechar {
   0% {
-    height: 290px;
+    height: 150px;
   }
   100% {
     height: 0px;

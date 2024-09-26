@@ -15,7 +15,7 @@ export const PageLogin = () => {
   const [showCadastro, setShowCadastro] = useState("form-login-escondido");
 
   // contexts
-  const { criarUsuario, login, loadLogin, setLoadLogin } =
+  const { criarUsuario, login, loadLogin, loginError } =
     useContext(LoginContext);
   const { user, pegarUsuario } = useContext(UserContext);
   const [formAberto, setFormAberto] = useState(0);
@@ -140,6 +140,12 @@ export const PageLogin = () => {
                       />
                   ) : (
                     <>
+                    {
+                      loginError &&
+                      <div className="container">
+                        <p className="m-0 my-1 text-white font-s">*{loginError}</p>
+                      </div>
+                    }
                       <button
                         type="submit"
                         className="btn btn-dark border border-white mt-3"
