@@ -3,37 +3,64 @@ import Modal from "react-bootstrap/Modal";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { barbeiroSchema } from "../../validations/barbeiroValidation";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { BarbeiroContext } from "../../Context/BarbeiroContext";
 import { MutatingDots } from "react-loader-spinner";
 
-export const ModalBarbeiros = ({ show, setShow, handleClose }) => {
+export const ModalBarbeiros = ({ show, setShow, handleClose, barbeiro = null }) => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(barbeiroSchema),
   });
 
-  const { criarBarbeiro, imagem, setImagem, loadBarbeiro } = useContext(BarbeiroContext);
+  const { criarBarbeiro, imagem, setImagem, loadBarbeiro, editarBarbeiro } =
+    useContext(BarbeiroContext);
+
+   const limparCampos = () => {
+     setValue("NOME", "");
+     setValue("IMAGEM", "");
+     handleClose();
+  };
+  
+  // Efeito para preencher os campos se for edição
+  useEffect(() => {
+    if (barbeiro) {
+      setValue("NOME", barbeiro.NOME);
+      setValue("IMAGEM", imagem);
+    }
+  }, [barbeiro, setValue]);
 
   return (
     <>
       <Modal
         show={show}
-        onHide={handleClose}
+        onHide={limparCampos}
         backdrop="static"
         centered
         keyboard={false}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Cadastre um Barbeiro</Modal.Title>
+          <Modal.Title>
+            {barbeiro !== null
+              ? `Editar ${barbeiro.NOME}`
+              : "Cadastre um Barbeiro"}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form
             encType="multipart/form-data"
-            onSubmit={handleSubmit((data) => criarBarbeiro(data, setShow))}
+            onSubmit={handleSubmit((data) => {
+              if (!barbeiro) {
+                criarBarbeiro(data, setShow);              
+              } else {
+                editarBarbeiro(barbeiro, data, setShow)
+              }
+            
+            })}
           >
             <div className="form-group">
               <label>Nome</label>
@@ -79,13 +106,13 @@ export const ModalBarbeiros = ({ show, setShow, handleClose }) => {
               />
             ) : (
               <button type="submit" className="btn btn-primary">
-                Cadastrar
+                {barbeiro !== null ? "Editar" : "Cadastrar"}
               </button>
             )}
           </form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={limparCampos}>
             Fechar
           </Button>
         </Modal.Footer>

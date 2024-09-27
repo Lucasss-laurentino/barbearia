@@ -36,6 +36,42 @@ export const BarbeiroProvider = ({ children }) => {
     } catch (erro) {}
   };
 
+  const editarBarbeiro = async (barbeiro, data, setShow) => {
+    try {
+      setLoadBarbeiro(true);
+      const formData = new FormData();
+      formData.append("NOME", data.NOME);
+      formData.append("IMAGEM", imagem);
+      
+      const response = await http.put(
+        `barbeiro/editarBarbeiro/${barbeiro.ID}`,
+        formData,
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        } 
+      );
+      setBarbeiros([...response.data]);
+      setLoadBarbeiro(false);
+      setShow(false);
+    } catch (error) {}
+  };
+
+  const excluirBarbeiro = async (barbeiro, handleClose, setLoadExcluir) => {
+    try {
+      setLoadExcluir(true);
+      const response = await http.delete(
+        `barbeiro/excluirBarbeiro/${barbeiro.ID}`,
+        { withCredentials: true }
+      );
+      setBarbeiros([...response.data]);
+      setLoadExcluir(false);
+      handleClose();
+    } catch (error) {}
+  };
+
   return (
     <BarbeiroContext.Provider
       value={{
@@ -47,6 +83,8 @@ export const BarbeiroProvider = ({ children }) => {
         pegarBarbeiros,
         loadBarbeiro,
         setLoadBarbeiro,
+        editarBarbeiro,
+        excluirBarbeiro,
       }}
     >
       {children}

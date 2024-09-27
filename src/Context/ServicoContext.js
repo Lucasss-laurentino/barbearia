@@ -44,15 +44,15 @@ export const ServicoProvider = ({ children }) => {
     } catch (error) {}
   };
 
-  const excluirServico = async (servico) => {
+  const excluirServico = async (servico, setLoadExcluir) => {
     try {
-      setLoadCriarServico(true);
+      setLoadExcluir(true);
       const response = await http.delete(
         `servico/excluirServico/${servico.ID}`,
         { withCredentials: true }
       );
       setServicos([...response.data]);
-      setLoadCriarServico(false);
+      setLoadExcluir(false);
     } catch (error) {}
   };
 

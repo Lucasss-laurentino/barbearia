@@ -7,7 +7,7 @@ import { ModalBarbeiros } from "../ModalBarbeiros";
 import "./index.css";
 import { Fragment, useContext } from "react";
 import { ModalHorarios } from "../ModalHorarios";
-import { ModalExcluirHorario } from "../ModalExcluirHorario";
+import { ModalExcluir } from "../ModalExcluir";
 
 export const ListBarbeiros = () => {
   const { abrirListaHorarios } = useContext(AnimacaoContext);
@@ -15,13 +15,18 @@ export const ListBarbeiros = () => {
   const [show, setShow] = useState(false);
   const [showHorarios, setShowHorarios] = useState(false);
   const handleShow = () => setShow(true);
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    setBarbeiroSelecionado(null);
+  };
   const handleCloseHorario = () => setShowHorarios(false);
   const [barbeiro, setBarbeiro] = useState({});
   const [showExcluirHorario, setExcluirHorario] = useState(false);
   const handleCloseExcluirHorario = () => setExcluirHorario(false);
   const [horarioSelecionado, setHorarioSelecionado] = useState(null);
+  const [barbeiroSelecionado, setBarbeiroSelecionado] = useState(null);
   const { pegarBarbeiros, barbeiros } = useContext(BarbeiroContext);
+  const [id, setId] = useState();
   const {
     pegarHorarios,
     horarios,
@@ -36,8 +41,8 @@ export const ListBarbeiros = () => {
   }, []);
 
   useEffect(() => {
-    console.log(horarios);
-  }, [horarios]);
+    if (!showExcluirHorario) setHorarioSelecionado(null);
+  }, [showExcluirHorario]);
 
   return (
     <>
@@ -49,13 +54,21 @@ export const ListBarbeiros = () => {
         horario={horarioSelecionado}
         setHorarioSelecionado={setHorarioSelecionado}
       />
-      <ModalBarbeiros show={show} setShow={setShow} handleClose={handleClose} />
-      <ModalExcluirHorario 
-        show={showExcluirHorario} 
-        setShow={setExcluirHorario} 
-        handleClose={handleCloseExcluirHorario}
-        horario={horarioSelecionado}
+      <ModalBarbeiros
+        show={show}
+        setShow={setShow}
+        handleClose={handleClose}
+        barbeiro={barbeiroSelecionado}
       />
+      <ModalExcluir
+        show={showExcluirHorario}
+        handleClose={handleCloseExcluirHorario}
+        itemParaExclusao={
+          (id === 2 && horarioSelecionado) || (id === 3 && barbeiroSelecionado)
+        }
+        idItemExclusao={id}
+      />
+
       <span className="adc-barbeiro" onClick={() => handleShow()}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -93,7 +106,44 @@ export const ListBarbeiros = () => {
                             <h6 className="m-0">{barbeiro.NOME}</h6>
                           </div>
                         </div>
-                        <div className="d-flex justify-content-end align-items-center col-4">
+                        {/* ICONE RELOGIO */}
+                        <div className="d-flex justify-content-end align-items-center col-4 flex-column">
+                          <div className="container-fluid d-flex justify-content-center align-items-center mt-1 mb-3">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="18"
+                              height="18"
+                              fill="currentColor"
+                              class="bi bi-trash3-fill mx-3"
+                              viewBox="0 0 16 16"
+                              onClick={() => {
+                                setExcluirHorario(true);
+                                setBarbeiroSelecionado(barbeiro);
+                                setId(3);
+                              }}
+                            >
+                              <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5" />
+                            </svg>
+
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="18"
+                              height="18"
+                              fill="currentColor"
+                              class="bi bi-pencil-square mx-3"
+                              viewBox="0 0 16 16"
+                              onClick={() => {
+                                setBarbeiroSelecionado(barbeiro);
+                                setShow(true);
+                              }}
+                            >
+                              <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                              <path
+                                fill-rule="evenodd"
+                                d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"
+                              />
+                            </svg>
+                          </div>
                           <div
                             className="col-9 px-1"
                             onClick={() =>
@@ -174,10 +224,14 @@ export const ListBarbeiros = () => {
                                       </button>
                                       {user.BARBEIRO && (
                                         <>
-                                          <button className="btn btn-sm bg-transparent text-white" onClick={() => {
-                                            setHorarioSelecionado(horario);
-                                            setExcluirHorario(true);
-                                            }}>
+                                          <button
+                                            className="btn btn-sm bg-transparent text-white"
+                                            onClick={() => {
+                                              setHorarioSelecionado(horario);
+                                              setExcluirHorario(true);
+                                              setId(2)
+                                            }}
+                                          >
                                             <svg
                                               xmlns="http://www.w3.org/2000/svg"
                                               width="16"
@@ -189,10 +243,13 @@ export const ListBarbeiros = () => {
                                               <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5" />
                                             </svg>
                                           </button>
-                                          <button className="btn btn-sm bg-transparent text-white" onClick={() => {
-                                            setHorarioSelecionado(horario)
-                                            setShowHorarios(true);
-                                          }}>
+                                          <button
+                                            className="btn btn-sm bg-transparent text-white"
+                                            onClick={() => {
+                                              setHorarioSelecionado(horario);
+                                              setShowHorarios(true);
+                                            }}
+                                          >
                                             <svg
                                               xmlns="http://www.w3.org/2000/svg"
                                               width="16"

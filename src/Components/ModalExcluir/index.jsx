@@ -1,16 +1,31 @@
-import './index.css';
-import { useContext } from "react";
+import "./index.css";
+import { useContext, useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { ServicoContext } from "../../Context/ServicoContext";
 import { MutatingDots } from "react-loader-spinner";
+import { HorarioContext } from "../../Context/HorarioContext";
+import { BarbeiroContext } from "../../Context/BarbeiroContext";
 
-export const ModalExcluirServico = ({ show, handleClose, servico }) => {
-  const { excluirServico, loadCriarServico } = useContext(ServicoContext);
-
+export const ModalExcluir = ({
+  show,
+  handleClose,
+  itemParaExclusao,
+  idItemExclusao /* idItemExclusao é um id unico pra diferenciar itemParaExclusao decidindo entao qual rumo a requisição deve tomar */,
+}) => {
+  const { excluirServico } = useContext(ServicoContext);
+  const { excluirHorario } = useContext(HorarioContext);
+  const { excluirBarbeiro } = useContext(BarbeiroContext);
+  const [loadExcluir, setLoadExcluir] = useState(false);
   const excluirEFecharModal = () => {
-    excluirServico(servico);
-    handleClose();
+    if (idItemExclusao === 1) {
+      excluirServico(itemParaExclusao, setLoadExcluir);
+      handleClose();
+    }
+    if (idItemExclusao === 2)
+      excluirHorario(itemParaExclusao, handleClose, setLoadExcluir);
+    if (idItemExclusao === 3)
+      excluirBarbeiro(itemParaExclusao, handleClose, setLoadExcluir);
   };
 
   return (
@@ -27,13 +42,19 @@ export const ModalExcluirServico = ({ show, handleClose, servico }) => {
           <div className="container-fluid">
             <div className="row">
               <div className="col-12 text-center">
-                <h6 className="m-0">Deseja excluir esse serviço ?</h6>
+                <h6 className="m-0">
+                  Deseja excluir esse{" "}
+                  {(idItemExclusao === 1 && "Serviço") ||
+                    (idItemExclusao === 2 && "Horario") ||
+                    (idItemExclusao === 3 && "Barbeiro")}{" "}
+                  ?
+                </h6>
               </div>
             </div>
           </div>
         </Modal.Body>
         <Modal.Footer>
-          {loadCriarServico ? (
+          {loadExcluir ? (
             <div className="h-loader-excluir-servico">
               <MutatingDots
                 visible={true}

@@ -3,7 +3,7 @@ import { Fragment, useContext, useEffect, useState } from "react";
 import { ServicoContext } from "../../Context/ServicoContext";
 import { ModalServico } from "../ModalServico";
 import { UserContext } from "../../Context/UserContext";
-import { ModalExcluirServico } from "../ModalExcluirServico";
+import { ModalExcluir } from "../ModalExcluir";
 import { MutatingDots } from "react-loader-spinner";
 
 export const ListService = () => {
@@ -41,10 +41,11 @@ export const ListService = () => {
         handleClose={handleClose}
         servico={editarServico}
       />
-      <ModalExcluirServico
+      <ModalExcluir
         show={showModalExcluirServico}
         handleClose={handleCloseExcluirServico}
-        servico={servicoASerExcluido}
+        itemParaExclusao={servicoASerExcluido}
+        idItemExclusao={1}
       />
       {loadCriarServico ? (
         <div className="container-fluid">

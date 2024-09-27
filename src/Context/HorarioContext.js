@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
 import { http } from "../http";
 
 export const HorarioContext = createContext();
@@ -64,15 +64,15 @@ export const HorarioProvider = ({ children }) => {
     setHorarios([...horariosNovo]);
   };
 
-  const excluirHorario = async (horario, handleClose) => {
+  const excluirHorario = async (horario, handleClose, setLoadExcluir) => {
     try {
-      setLoadHorarios(true);
+      setLoadExcluir(true);
       const response = await http.delete(
         `horario/excluirHorario/${horario.ID}`,
         { withCredentials: true }
       );
       setHorarios([...response.data]);
-      setLoadHorarios(false);
+      setLoadExcluir(false);
       handleClose();
     } catch (error) {}
   };
