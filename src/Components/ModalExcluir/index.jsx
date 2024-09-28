@@ -15,7 +15,7 @@ export const ModalExcluir = ({
 }) => {
   const { excluirServico } = useContext(ServicoContext);
   const { excluirHorario } = useContext(HorarioContext);
-  const { excluirBarbeiro } = useContext(BarbeiroContext);
+  const { excluirBarbeiro, setBarbeiroSelecionado, barbeiroSelecionado } = useContext(BarbeiroContext);
   const [loadExcluir, setLoadExcluir] = useState(false);
   const excluirEFecharModal = () => {
     if (idItemExclusao === 1) {
@@ -28,11 +28,16 @@ export const ModalExcluir = ({
       excluirBarbeiro(itemParaExclusao, handleClose, setLoadExcluir);
   };
 
+  const reiniciarVariaveisEFecharModal = () => {
+    handleClose();
+    setBarbeiroSelecionado(null);
+  }
+
   return (
     <>
       <Modal
         show={show}
-        onHide={handleClose}
+        onHide={reiniciarVariaveisEFecharModal}
         backdrop="static"
         centered
         keyboard={false}

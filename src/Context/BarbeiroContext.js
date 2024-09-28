@@ -7,6 +7,7 @@ export const BarbeiroProvider = ({ children }) => {
   const [barbeiros, setBarbeiros] = useState([]);
   const [imagem, setImagem] = useState();
   const [loadBarbeiro, setLoadBarbeiro] = useState(false);
+  const [barbeiroSelecionado, setBarbeiroSelecionado] = useState(null);
 
   const criarBarbeiro = async (data, setShow) => {
     try {
@@ -21,7 +22,7 @@ export const BarbeiroProvider = ({ children }) => {
         },
       });
       setBarbeiros([...barbeiros, response.data.barbeiro]);
-      setLoadBarbeiro(false);
+      setLoadBarbeiro(false); setBarbeiroSelecionado(null);
       setShow(false);
     } catch (error) {}
   };
@@ -42,7 +43,7 @@ export const BarbeiroProvider = ({ children }) => {
       const formData = new FormData();
       formData.append("NOME", data.NOME);
       formData.append("IMAGEM", imagem);
-      
+
       const response = await http.put(
         `barbeiro/editarBarbeiro/${barbeiro.ID}`,
         formData,
@@ -51,7 +52,7 @@ export const BarbeiroProvider = ({ children }) => {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        } 
+        }
       );
       setBarbeiros([...response.data]);
       setLoadBarbeiro(false);
@@ -68,8 +69,15 @@ export const BarbeiroProvider = ({ children }) => {
       );
       setBarbeiros([...response.data]);
       setLoadExcluir(false);
+      setBarbeiroSelecionado(null);
       handleClose();
     } catch (error) {}
+  };
+
+  const limparCampos = (setValue, handleClose) => {
+    setValue("NOME", "");
+    setValue("IMAGEM", "");
+    handleClose();
   };
 
   return (
@@ -85,6 +93,9 @@ export const BarbeiroProvider = ({ children }) => {
         setLoadBarbeiro,
         editarBarbeiro,
         excluirBarbeiro,
+        barbeiroSelecionado,
+        setBarbeiroSelecionado,
+        limparCampos
       }}
     >
       {children}

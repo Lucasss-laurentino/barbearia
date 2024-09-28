@@ -24,8 +24,7 @@ export const ListBarbeiros = () => {
   const [showExcluirHorario, setExcluirHorario] = useState(false);
   const handleCloseExcluirHorario = () => setExcluirHorario(false);
   const [horarioSelecionado, setHorarioSelecionado] = useState(null);
-  const [barbeiroSelecionado, setBarbeiroSelecionado] = useState(null);
-  const { pegarBarbeiros, barbeiros } = useContext(BarbeiroContext);
+  const { pegarBarbeiros, barbeiros, barbeiroSelecionado, setBarbeiroSelecionado } = useContext(BarbeiroContext);
   const [id, setId] = useState();
   const {
     pegarHorarios,
@@ -98,7 +97,7 @@ export const ListBarbeiros = () => {
                           <div className="col-3 mx-3 border-radius-personalizada">
                             <img
                               className="img-fluid img-corte"
-                              src={barbeiro.IMAGEM}
+                              src={process.env.REACT_APP_API_URL+barbeiro.IMAGEM}
                               width="87%"
                             />
                           </div>
@@ -229,7 +228,7 @@ export const ListBarbeiros = () => {
                                             onClick={() => {
                                               setHorarioSelecionado(horario);
                                               setExcluirHorario(true);
-                                              setId(2)
+                                              setId(2);
                                             }}
                                           >
                                             <svg

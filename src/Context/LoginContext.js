@@ -31,7 +31,6 @@ export const LoginProvider = ({ children }) => {
   const login = async (user) => {
     try {
       setLoadLogin(true)
-      console.log(user);
       await http
         .post("/login/login", { user }, { withCredentials: true })
         .then((response) => {

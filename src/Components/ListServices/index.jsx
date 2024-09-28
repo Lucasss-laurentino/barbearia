@@ -87,7 +87,7 @@ export const ListService = () => {
             <div className="row">
               <div className="col-12 p-0">
                 <ul className="list-servicos-tamanho">
-                  {servicos.map((servico) => {
+                    {servicos.map((servico) => {
                     return (
                       <Fragment key={servico.ID}>
                         <li

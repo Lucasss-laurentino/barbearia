@@ -2,7 +2,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { barbeiroSchema } from "../../validations/barbeiroValidation";
+import { barbeiroEditarSchema, barbeiroSchema } from "../../validations/barbeiroValidation";
 import { useContext, useEffect } from "react";
 import { BarbeiroContext } from "../../Context/BarbeiroContext";
 import { MutatingDots } from "react-loader-spinner";
@@ -14,17 +14,11 @@ export const ModalBarbeiros = ({ show, setShow, handleClose, barbeiro = null }) 
     setValue,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(barbeiroSchema),
+      resolver: yupResolver( barbeiro !== null ? barbeiroEditarSchema : barbeiroSchema),
   });
 
-  const { criarBarbeiro, imagem, setImagem, loadBarbeiro, editarBarbeiro } =
+  const { criarBarbeiro, imagem, setImagem, loadBarbeiro, editarBarbeiro, limparCampos, barbeiros, barbeiroSelecionado } =
     useContext(BarbeiroContext);
-
-   const limparCampos = () => {
-     setValue("NOME", "");
-     setValue("IMAGEM", "");
-     handleClose();
-  };
   
   // Efeito para preencher os campos se for edição
   useEffect(() => {
@@ -34,11 +28,21 @@ export const ModalBarbeiros = ({ show, setShow, handleClose, barbeiro = null }) 
     }
   }, [barbeiro, setValue]);
 
+  useEffect(() => {
+    barbeiroSelecionado === null && limparCampos(setValue, handleClose);
+  }, [barbeiros, barbeiroSelecionado])
+
+  useEffect(() => {
+    console.log(barbeiro)
+  }, [barbeiro])
+
+  
+
   return (
     <>
       <Modal
         show={show}
-        onHide={limparCampos}
+        onHide={() => limparCampos(setValue, handleClose)}
         backdrop="static"
         centered
         keyboard={false}
@@ -55,11 +59,10 @@ export const ModalBarbeiros = ({ show, setShow, handleClose, barbeiro = null }) 
             encType="multipart/form-data"
             onSubmit={handleSubmit((data) => {
               if (!barbeiro) {
-                criarBarbeiro(data, setShow);              
+                criarBarbeiro(data, setShow);
               } else {
-                editarBarbeiro(barbeiro, data, setShow)
+                editarBarbeiro(barbeiro, data, setShow);
               }
-            
             })}
           >
             <div className="form-group">
@@ -112,7 +115,10 @@ export const ModalBarbeiros = ({ show, setShow, handleClose, barbeiro = null }) 
           </form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={limparCampos}>
+          <Button
+            variant="secondary"
+            onClick={() => limparCampos(setValue, handleClose)}
+          >
             Fechar
           </Button>
         </Modal.Footer>
