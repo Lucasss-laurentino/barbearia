@@ -36,12 +36,15 @@ export const ModalHorarios = ({ show, setShow, handleClose, barbeiro, horario = 
   useEffect(() => {
     if(horario) {
       setValue("HORA", horario.HORA)
+      console.log(horario)
     }
   }, [horario, setValue])
 
   useEffect(() => {
     if (!show) {
       setValue("HORA", "")
+      console.log(horario)
+
       setHorarioSelecionado(null)
     };
   }, [show]);

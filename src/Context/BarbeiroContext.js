@@ -43,7 +43,6 @@ export const BarbeiroProvider = ({ children }) => {
       const formData = new FormData();
       formData.append("NOME", data.NOME);
       formData.append("IMAGEM", imagem);
-
       const response = await http.put(
         `barbeiro/editarBarbeiro/${barbeiro.ID}`,
         formData,
@@ -57,6 +56,7 @@ export const BarbeiroProvider = ({ children }) => {
       setBarbeiros([...response.data]);
       setLoadBarbeiro(false);
       setShow(false);
+      setImagem(undefined)
     } catch (error) {}
   };
 
@@ -78,6 +78,7 @@ export const BarbeiroProvider = ({ children }) => {
     setValue("NOME", "");
     setValue("IMAGEM", "");
     handleClose();
+    setImagem(undefined);
   };
 
   return (

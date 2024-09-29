@@ -29,20 +29,14 @@ export const ModalBarbeiros = ({ show, setShow, handleClose, barbeiro = null }) 
   }, [barbeiro, setValue]);
 
   useEffect(() => {
-    barbeiroSelecionado === null && limparCampos(setValue, handleClose);
-  }, [barbeiros, barbeiroSelecionado])
-
-  useEffect(() => {
-    console.log(barbeiro)
-  }, [barbeiro])
-
-  
+    barbeiroSelecionado === null && limparCampos(setValue, handleClose, setImagem);
+  }, [barbeiros, barbeiroSelecionado]) 
 
   return (
     <>
       <Modal
         show={show}
-        onHide={() => limparCampos(setValue, handleClose)}
+        onHide={() => limparCampos(setValue, handleClose, setImagem)}
         backdrop="static"
         centered
         keyboard={false}
@@ -61,7 +55,7 @@ export const ModalBarbeiros = ({ show, setShow, handleClose, barbeiro = null }) 
               if (!barbeiro) {
                 criarBarbeiro(data, setShow);
               } else {
-                editarBarbeiro(barbeiro, data, setShow);
+                editarBarbeiro(barbeiro, data, setShow, setImagem);
               }
             })}
           >
@@ -117,7 +111,7 @@ export const ModalBarbeiros = ({ show, setShow, handleClose, barbeiro = null }) 
         <Modal.Footer>
           <Button
             variant="secondary"
-            onClick={() => limparCampos(setValue, handleClose)}
+            onClick={() => limparCampos(setValue, handleClose, setImagem)}
           >
             Fechar
           </Button>

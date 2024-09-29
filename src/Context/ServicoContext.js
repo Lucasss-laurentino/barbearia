@@ -9,7 +9,7 @@ export const ServicoProvider = ({ children }) => {
   const [servicoEscolhido, setServicoEscolhido] = useState();
   const [loadCriarServico, setLoadCriarServico] = useState(false);
 
-  const criarServico = async (data, imagem, setShow) => {
+  const criarServico = async (data, imagem, setShow, setImagem) => {
     try {
       setLoadCriarServico(true);
       const formData = new FormData();
@@ -26,6 +26,7 @@ export const ServicoProvider = ({ children }) => {
         },
       });
       setServicos([...servicos, response.data]);
+      setImagem(undefined)
       setLoadCriarServico(false);
       setShow(false);
     } catch (error) {
@@ -56,7 +57,7 @@ export const ServicoProvider = ({ children }) => {
     } catch (error) {}
   };
 
-  const editarServico = async (data, imagem, setShow, servico) => {
+  const editarServico = async (data, imagem, setShow, servico, setImagem) => {
     try {
       setLoadCriarServico(true);
       const formData = new FormData();
@@ -78,6 +79,7 @@ export const ServicoProvider = ({ children }) => {
       );
       setServicos([...response.data]);
       setLoadCriarServico(false);
+      setImagem(undefined);
       setShow(false);
     } catch (error) {}
   };

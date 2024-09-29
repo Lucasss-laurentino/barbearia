@@ -99,7 +99,7 @@ export const ListService = () => {
                               <div className="col-3 mx-3 border-radius-personalizada">
                                 <img
                                   className="img-fluid img-corte"
-                                  src={servico.IMAGEM_SERVICO}
+                                  src={process.env.REACT_APP_API_URL+servico.IMAGEM_SERVICO}
                                   width="87%"
                                 />
                               </div>

@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { http } from "../http";
 
 export const HorarioContext = createContext();
@@ -13,6 +13,27 @@ export const HorarioProvider = ({ children }) => {
 
   const [loadHorarios, setLoadHorarios] = useState(false);
 
+  const ordenarHorarios = (horario, horarios_) => {
+    if (horario) {
+      const horariosCopia = [...horarios, horario];
+      const sortedAppointments = horariosCopia.sort((a, b) => {
+        if (a.HORA < b.HORA) return -1; // a vem antes de b
+        if (a.HORA > b.HORA) return 1; // b vem antes de a
+        return 0; // são iguais
+      });
+      setHorarios([...sortedAppointments]);
+    }
+    if(horarios_.length > 0){
+      const horariosCopia = [...horarios_];
+      const sortedAppointments = horariosCopia.sort((a, b) => {
+        if (a.HORA < b.HORA) return -1; // a vem antes de b
+        if (a.HORA > b.HORA) return 1; // b vem antes de a
+        return 0; // são iguais
+      });
+      setHorarios([...sortedAppointments]);
+    }
+  };
+
   const criarHorario = async (data, barbeiro, setShow, setValue) => {
     try {
       setLoadHorarios(true);
@@ -22,7 +43,7 @@ export const HorarioProvider = ({ children }) => {
         { withCredentials: true }
       );
       if (!response) throw "Erro ao criar horario";
-      setHorarios([...horarios, response.data]);
+      ordenarHorarios(response.data);
       setLoadHorarios(false);
       setValue("HORA", "");
       setShow(false);
@@ -35,19 +56,21 @@ export const HorarioProvider = ({ children }) => {
         withCredentials: true,
       });
       if (!response) throw "Erro ao buscar horarios";
-      setHorarios([...response.data]);
+      ordenarHorarios(undefined, response.data)
     } catch (erro) {}
   };
 
   const editarHorario = async (data, horario, setShow, setValue) => {
     try {
       setLoadHorarios(true);
-      const response = await http.put(`horario/editarHorario/${horario.ID}`, data,
+      const response = await http.put(
+        `horario/editarHorario/${horario.ID}`,
+        data,
         {
           withCredentials: true,
         }
       );
-      setHorarios([...response.data]);
+      ordenarHorarios(undefined, response.data)
       setLoadHorarios(false);
       setShow(false);
     } catch (error) {}
@@ -71,7 +94,7 @@ export const HorarioProvider = ({ children }) => {
         `horario/excluirHorario/${horario.ID}`,
         { withCredentials: true }
       );
-      setHorarios([...response.data]);
+      ordenarHorarios(undefined, response.data);
       setLoadExcluir(false);
       handleClose();
     } catch (error) {}

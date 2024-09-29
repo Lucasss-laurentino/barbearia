@@ -3,7 +3,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { servicoSchema } from "../../validations/servicoValidation";
+import { servicoEditarSchema, servicoSchema } from "../../validations/servicoValidation";
 import { ServicoContext } from "../../Context/ServicoContext";
 import { MutatingDots } from "react-loader-spinner";
 
@@ -19,7 +19,7 @@ export const ModalServico = ({
     setValue,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(servicoSchema),
+    resolver: yupResolver(servico !== null ? servicoEditarSchema : servicoSchema),
   });
 
   const { criarServico, editarServico, loadCriarServico } =
@@ -55,13 +55,17 @@ export const ModalServico = ({
       setValue("NOME_SERVICO", servico.NOME_SERVICO);
       setValue("PRAZO", servico.PRAZO);
       setValue("PRECO", servico.PRECO);
-      setValue("IMAGEM_SERVICO", servico.IMAGEM_SERVICO);
+      setValue("IMAGEM_SERVICO", imagem);
     }
   }, [servico, setValue]);
 
   useEffect(() => {
     if (!show) limparCampos();
   }, [show]);
+
+  useEffect(() => {
+    console.log(imagem)
+  }, [imagem])
 
   return (
     <>
@@ -82,9 +86,9 @@ export const ModalServico = ({
             encType="multipart/form-data"
             onSubmit={handleSubmit((data) => {
               if (servico) {
-                editarServico(data, imagem, setShow, servico);
+                editarServico(data, imagem, setShow, servico, setImagem);
               } else {
-                criarServico(data, imagem, setShow);
+                criarServico(data, imagem, setShow, setImagem);
               }
             })}
           >
