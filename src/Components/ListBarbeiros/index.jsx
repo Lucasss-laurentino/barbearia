@@ -35,7 +35,6 @@ export const ListBarbeiros = () => {
   const {
     pegarHorarios,
     horarios,
-    setHorarios,
     horariosAberto,
     setHorariosAberto,
     marcarHorario,

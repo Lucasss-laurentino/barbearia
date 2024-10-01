@@ -63,10 +63,6 @@ export const ModalServico = ({
     if (!show) limparCampos();
   }, [show]);
 
-  useEffect(() => {
-    console.log(imagem)
-  }, [imagem])
-
   return (
     <>
       <Modal

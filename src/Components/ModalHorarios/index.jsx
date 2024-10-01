@@ -17,7 +17,8 @@ export const ModalHorarios = ({ show, setShow, handleClose, barbeiro, horario = 
     resolver: yupResolver(horariosSchema),
   });
 
-  const { criarHorario, loadHorarios, editarHorario } = useContext(HorarioContext);
+  const { criarHorario, loadHorarios, editarHorario, limparHoraAposExclusao, setLimparHoraAposExclusao
+} = useContext(HorarioContext);
 
   const handleTimeChange = (e) => {
     const value = e.target.value.replace(/\D/g, ""); // Remove caracteres não numéricos
@@ -36,18 +37,26 @@ export const ModalHorarios = ({ show, setShow, handleClose, barbeiro, horario = 
   useEffect(() => {
     if(horario) {
       setValue("HORA", horario.HORA)
-      console.log(horario)
     }
   }, [horario, setValue])
 
   useEffect(() => {
     if (!show) {
       setValue("HORA", "")
-      console.log(horario)
-
       setHorarioSelecionado(null)
     };
   }, [show]);
+
+  // acionado quando um horario for excluido
+  useEffect(() => {
+    // limparHoraAposExclusao é setado em horarioContext.excluirHorario, é um gatilho pra limpar o campo HORA
+    // modal de excluir nao tem acesso a setValue, por isso criei esse gatilho
+    if(limparHoraAposExclusao) {
+      setValue("HORA", "")
+      setLimparHoraAposExclusao(false);
+    }
+
+  }, [limparHoraAposExclusao]);
 
   return (
     <>

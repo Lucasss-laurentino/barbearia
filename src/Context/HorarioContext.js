@@ -5,7 +5,7 @@ export const HorarioContext = createContext();
 
 export const HorarioProvider = ({ children }) => {
   const [horarios, setHorarios] = useState([]);
-
+  const [limparHoraAposExclusao, setLimparHoraAposExclusao] = useState(false);
   const [horariosAberto, setHorariosAberto] = useState({
     ABERTO: false,
     BARBEIRO_ID: 0,
@@ -13,26 +13,12 @@ export const HorarioProvider = ({ children }) => {
 
   const [loadHorarios, setLoadHorarios] = useState(false);
 
-  const ordenarHorarios = (horario, horarios_) => {
-    if (horario) {
-      const horariosCopia = [...horarios, horario];
-      const sortedAppointments = horariosCopia.sort((a, b) => {
-        if (a.HORA < b.HORA) return -1; // a vem antes de b
-        if (a.HORA > b.HORA) return 1; // b vem antes de a
-        return 0; // são iguais
-      });
-      setHorarios([...sortedAppointments]);
-    }
-    if(horarios_.length > 0){
-      const horariosCopia = [...horarios_];
-      const sortedAppointments = horariosCopia.sort((a, b) => {
-        if (a.HORA < b.HORA) return -1; // a vem antes de b
-        if (a.HORA > b.HORA) return 1; // b vem antes de a
-        return 0; // são iguais
-      });
-      setHorarios([...sortedAppointments]);
-    }
-  };
+  const ordenarHorarios = async (horariosResponse) => {
+    const horariosOrdenados = await horariosResponse.sort((a, b) => {
+      return a.HORA.localeCompare(b.HORA);
+    });
+    setHorarios([...horariosOrdenados]);
+  }
 
   const criarHorario = async (data, barbeiro, setShow, setValue) => {
     try {
@@ -43,9 +29,10 @@ export const HorarioProvider = ({ children }) => {
         { withCredentials: true }
       );
       if (!response) throw "Erro ao criar horario";
-      ordenarHorarios(response.data);
-      setLoadHorarios(false);
-      setValue("HORA", "");
+      const horariosResponse = [...horarios, response.data]
+      ordenarHorarios(horariosResponse);
+      setValue("HORA", "")
+      setLoadHorarios(false)
       setShow(false);
     } catch (erro) {}
   };
@@ -56,7 +43,7 @@ export const HorarioProvider = ({ children }) => {
         withCredentials: true,
       });
       if (!response) throw "Erro ao buscar horarios";
-      ordenarHorarios(undefined, response.data)
+      ordenarHorarios(response.data)
     } catch (erro) {}
   };
 
@@ -70,8 +57,9 @@ export const HorarioProvider = ({ children }) => {
           withCredentials: true,
         }
       );
-      ordenarHorarios(undefined, response.data)
-      setLoadHorarios(false);
+      ordenarHorarios(response.data);
+      setValue("HORA", "")
+      setLoadHorarios(false)
       setShow(false);
     } catch (error) {}
   };
@@ -94,7 +82,8 @@ export const HorarioProvider = ({ children }) => {
         `horario/excluirHorario/${horario.ID}`,
         { withCredentials: true }
       );
-      ordenarHorarios(undefined, response.data);
+      ordenarHorarios(response.data)
+      setLimparHoraAposExclusao(true);
       setLoadExcluir(false);
       handleClose();
     } catch (error) {}
@@ -114,6 +103,8 @@ export const HorarioProvider = ({ children }) => {
         setLoadHorarios,
         excluirHorario,
         editarHorario,
+        limparHoraAposExclusao,
+        setLimparHoraAposExclusao,
       }}
     >
       {children}
