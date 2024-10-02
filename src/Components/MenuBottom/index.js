@@ -53,15 +53,15 @@ export const MenuBottom = () => {
                   <img
                     src={
                       active === 3
-                        ? "icones_menu_bottom/cliente_dark.png"
-                        : "icones_menu_bottom/cliente.png"
+                        ? "icones_menu_bottom/relogio_preto.png"
+                        : "icones_menu_bottom/relogio_branco.png"
                     }
                     className="img-fluid p-1"
                     width="30%"
                     alt=""
                   />
                   <p className={active === 3 ? "texto-preto" : "texto-branco"}>
-                    {user.BARBEIRO ? 'Barbeiros' : 'Clientes'}
+                    {user.BARBEIRO ? 'Barbeiros' : 'Meus Horários'}
                   </p>
                 </div>
               </li>

@@ -21,9 +21,14 @@ export const BarbeiroProvider = ({ children }) => {
           "Content-Type": "multipart/form-data",
         },
       });
+      console.log(response.data)
       setBarbeiros([...barbeiros, response.data.barbeiro]);
+      console.log('1')
       setLoadBarbeiro(false); setBarbeiroSelecionado(null);
+      console.log('2')
       setShow(false);
+      console.log('3')
+
     } catch (error) {}
   };
 

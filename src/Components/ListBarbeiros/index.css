@@ -87,3 +87,25 @@
 .heig {
   height: 290px;
 }
+
+.personalizar-item-desmarcar-horario {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: rgb(255, 255, 255, 0.8);
+  border-radius: 4px;
+  margin-top: 10px;
+}
+.personalizar-item-desmarcar-horario > .hora > p {
+  font-size: 14px;
+  font-weight: 500;
+  color: black;
+}
+
+.personalizar-item-desmarcar-horario > .desmarcar > a {
+  text-decoration: none;
+  color: rgb(243, 38, 38);
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+}

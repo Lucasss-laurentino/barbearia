@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { http } from "../http";
 
 export const UserContext = createContext();
@@ -11,11 +11,25 @@ export const UserProvider = ({ children }) => {
     BARBEIRO: false,
   });
 
+  // esse objeto controla oque o usuário vai setando durante a navegação pelo sistema
+  const [userContrata, setUserContrata] = useState({ user: null });
+
   const pegarUsuario = async () => {
     
     try {
       const response = await http.get(`/user/getUser`, { withCredentials: true });
-      setUser(response.data)
+      if(!response.data || !response.data.ID) throw new Error("Usuário não encontrado");
+      setUser({
+        ID: response.data.ID,
+        NOME: response.data.NOME,
+        BARBEIRO: response.data.BARBEIRO
+      })
+
+      setUserContrata(prevState => ({
+        ...prevState,
+        user: response.data
+      }));
+      
     } catch(error) {
       window.location.href = '/';
     }
@@ -27,6 +41,8 @@ export const UserProvider = ({ children }) => {
         user,
         setUser,
         pegarUsuario,
+        userContrata,
+        setUserContrata
       }}
     >
       {children}

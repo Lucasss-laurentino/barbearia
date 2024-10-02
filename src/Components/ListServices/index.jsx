@@ -14,7 +14,7 @@ export const ListService = () => {
     pegarServicos,
     loadCriarServico,
   } = useContext(ServicoContext);
-  const { user } = useContext(UserContext);
+  const { user, setUserContrata } = useContext(UserContext);
 
   const [showModalServico, setShowModalServico] = useState(false);
   const [showModalExcluirServico, setShowModalExcluirServico] = useState(false);
@@ -32,6 +32,20 @@ export const ListService = () => {
   useEffect(() => {
     pegarServicos();
   }, []);
+
+  useEffect(() => {
+    if (servicoEscolhido?.id) {
+      setUserContrata((prevState) => ({
+        ...prevState,
+        servicoEscolhido,
+      }));
+    } else {
+      setUserContrata((prevState) => ({
+        ...prevState,
+        servicoEscolhido: {},
+      }));
+    }
+  }, [servicoEscolhido]);
 
   return (
     <>
@@ -67,27 +81,29 @@ export const ListService = () => {
         </div>
       ) : (
         <>
-          <span
-            className="adc-barbeiro"
-            onClick={() => setShowModalServico(true)}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="45"
-              height="45"
-              fill="#fff"
-              className="bi bi-plus-circle"
-              viewBox="0 0 16 16"
+          {user.BARBEIRO && (
+            <span
+              className="adc-barbeiro"
+              onClick={() => setShowModalServico(true)}
             >
-              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-              <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-            </svg>
-          </span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="45"
+                height="45"
+                fill="#fff"
+                className="bi bi-plus-circle"
+                viewBox="0 0 16 16"
+              >
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+              </svg>
+            </span>
+          )}
           <div className="container-fluid bg-dark">
             <div className="row">
               <div className="col-12 p-0">
                 <ul className="list-servicos-tamanho">
-                    {servicos.map((servico) => {
+                  {servicos.map((servico) => {
                     return (
                       <Fragment key={servico.ID}>
                         <li
@@ -99,7 +115,10 @@ export const ListService = () => {
                               <div className="col-3 mx-3 border-radius-personalizada">
                                 <img
                                   className="img-fluid img-corte"
-                                  src={process.env.REACT_APP_API_URL+servico.IMAGEM_SERVICO}
+                                  src={
+                                    process.env.REACT_APP_API_URL +
+                                    servico.IMAGEM_SERVICO
+                                  }
                                   width="87%"
                                 />
                               </div>
