@@ -10,13 +10,23 @@ import { ModalHorarios } from "../ModalHorarios";
 import { ModalExcluir } from "../ModalExcluir";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { HorarioMarcadoContext } from "../../Context/HorarioMarcadoContext";
 
 export const ListBarbeiros = () => {
-  const { abrirListaHorarios } = useContext(AnimacaoContext);
-  const { user, setUserContrata, userContrata } = useContext(UserContext);
+  // STATES
+
   const [show, setShow] = useState(false);
   const [showHorarios, setShowHorarios] = useState(false);
-  const handleShow = () => setShow(true);
+  const [barbeiro, setBarbeiro] = useState({});
+  const [showExcluirHorario, setExcluirHorario] = useState(false);
+  const [horarioSelecionado, setHorarioSelecionado] = useState(null);
+
+  // HANDLES
+
+  const handleCloseExcluirHorario = () => {
+    setExcluirHorario(false);
+    setHorarioSelecionado(null);
+  };
   const handleClose = () => {
     setShow(false);
     setBarbeiroSelecionado(null);
@@ -25,13 +35,10 @@ export const ListBarbeiros = () => {
     setShowHorarios(false);
     setHorarioSelecionado(null);
   };
-  const [barbeiro, setBarbeiro] = useState({});
-  const [showExcluirHorario, setExcluirHorario] = useState(false);
-  const handleCloseExcluirHorario = () => {
-    setExcluirHorario(false);
-    setHorarioSelecionado(null);
-  };
-  const [horarioSelecionado, setHorarioSelecionado] = useState(null);
+  const handleShow = () => setShow(true);
+
+  // CONTEXTS
+
   const {
     pegarBarbeiros,
     barbeiros,
@@ -41,19 +48,34 @@ export const ListBarbeiros = () => {
   const [id, setId] = useState();
   const [marcarEsseHorario, setMarcarEsseHorario] = useState({ horario: null });
 
+  const { 
+    buscarMeuHorarioMarcado, 
+    setHorarioMarcado, 
+    usuarioTemHorarioMarcado, 
+    horarioMarcado,
+    verificaAntesDeMarcar,
+    desmarcarHorario
+  } = useContext(HorarioMarcadoContext);
+
   const {
     pegarHorarios,
     horarios,
     horariosAberto,
     setHorariosAberto,
-    verificaAntesDeMarcar,
     errosHorarios,
     setErrosHorarios,
   } = useContext(HorarioContext);
 
+  const { abrirListaHorarios } = useContext(AnimacaoContext);
+
+  const { user, setUserContrata, userContrata } = useContext(UserContext);
+
+  // USE EFECTS
+
   useEffect(() => {
     pegarBarbeiros();
     pegarHorarios();
+    buscarMeuHorarioMarcado();
   }, []);
 
   useEffect(() => {
@@ -84,6 +106,11 @@ export const ListBarbeiros = () => {
   useEffect(() => {
     setHorariosAberto(false);
   }, []);
+
+  useEffect(() => {
+    const horario = horarios.find(h => h.DISPONIVEL === false);
+    setHorarioMarcado(horario);
+  }, [horarios]);
 
   return (
     <>
@@ -348,16 +375,20 @@ export const ListBarbeiros = () => {
                             );
                           })}
                         </ul>
-                        <div className="container">
-                          <div className="personalizar-item-desmarcar-horario">
-                            <div className="hora">
-                              <p className="m-0">15:00</p>
-                            </div>
-                            <div className="desmarcar">
-                              <a href="#" className="btn-desmarcar">Desmarcar</a>
+                        {usuarioTemHorarioMarcado && horarioMarcado?.BARBEIRO_ID === barbeiro?.ID && (
+                          <div className="container">
+                            <div className="personalizar-item-desmarcar-horario">
+                              <div className="hora">
+                                <p className="m-0">{horarioMarcado.HORA}</p>
+                              </div>
+                              <div className="desmarcar">
+                                <a  className="btn-desmarcar" onClick={() => desmarcarHorario()}>
+                                  Desmarcar
+                                </a>
+                              </div>
                             </div>
                           </div>
-                        </div>
+                        )}
                       </div>
                     </li>
                   </Fragment>

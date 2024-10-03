@@ -1,9 +1,12 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { http } from "../http";
 
 export const HorarioContext = createContext();
 
 export const HorarioProvider = ({ children }) => {
+
+  // STATES
+
   const [horarios, setHorarios] = useState([]);
   const [limparHoraAposExclusao, setLimparHoraAposExclusao] = useState(false);
   const [errosHorarios, setErrosHorarios] = useState({
@@ -14,8 +17,9 @@ export const HorarioProvider = ({ children }) => {
     ABERTO: false,
     BARBEIRO_ID: 0,
   });
-
   const [loadHorarios, setLoadHorarios] = useState(false);
+
+  // FUNÇÕES
 
   const ordenarHorarios = async (horariosResponse) => {
     const horariosOrdenados = await horariosResponse.sort((a, b) => {
@@ -68,38 +72,6 @@ export const HorarioProvider = ({ children }) => {
     } catch (error) {}
   };
 
-  const marcarHorario = async (userContrata) => {
-    try {
-      const response = await http.post('horario/marcarHorario', {userContrata}, {withCredentials: true});
-      if(!response) throw "Erro ao marcar horario";
-      ordenarHorarios(response.data);
-    } catch(error) {
-      console.log(error);
-    }
-  }
-
-  const verificaAntesDeMarcar = (horario_id, userContrata) => {
-      // verifica se o usuario marcou um serviço antes de agendar um horario
-      if(Object.keys(userContrata.servicoEscolhido).length < 1) { 
-        setErrosHorarios({
-        erro: true,
-        menssagem: "Selecione um serviço antes de agendar um horário"
-        });
-      } else {
-        // futuramente será necessario verificar se o usuario ja possui um horario marcado
-        marcarHorario(userContrata);
-      }
-  };
-
-  buscarMeuHorarioMarcado = async () => {
-    try {
-      const response = await http.get("horario/buscarMeuHorarioMarcado", {withCredentials: true});
-      console.log(response.data);
-    } catch(error) {
-      console.log(error);
-    }
-  }
-
   const excluirHorario = async (horario, handleClose, setLoadExcluir) => {
     try {
       setLoadExcluir(true);
@@ -121,7 +93,6 @@ export const HorarioProvider = ({ children }) => {
         setHorarios,
         horariosAberto,
         setHorariosAberto,
-        verificaAntesDeMarcar,
         criarHorario,
         pegarHorarios,
         loadHorarios,
@@ -131,7 +102,8 @@ export const HorarioProvider = ({ children }) => {
         limparHoraAposExclusao,
         setLimparHoraAposExclusao,
         errosHorarios,
-        setErrosHorarios
+        setErrosHorarios,
+        ordenarHorarios
       }}
     >
       {children}

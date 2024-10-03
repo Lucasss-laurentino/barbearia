@@ -52,9 +52,10 @@ export const MenuBottom = () => {
                 <div className={active === 3 ? "fundo-branco" : "fundo-preto"}>
                   <img
                     src={
-                      active === 3
-                        ? "icones_menu_bottom/relogio_preto.png"
-                        : "icones_menu_bottom/relogio_branco.png"
+                      active === 3 && user.BARBEIRO && "icones_menu_bottom/cliente_dark.png" ||
+                      active !== 3 && user.BARBEIRO && "icones_menu_bottom/cliente.png" ||
+                      active === 3 && !user.BARBEIRO && "icones_menu_bottom/relogio_preto.png" ||
+                      active !== 3 && !user.BARBEIRO && "icones_menu_bottom/relogio_branco.png"
                     }
                     className="img-fluid p-1"
                     width="30%"
