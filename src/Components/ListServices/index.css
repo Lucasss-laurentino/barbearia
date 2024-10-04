@@ -25,7 +25,16 @@
     height: 80vh;
     margin: 0;
     list-style: none;
-    padding-bottom: 15%;
+    padding-bottom: 20%;
+    padding-left: 0px;
+    overflow-y: scroll;
+}
+
+.list-servicos-tamanho-sem-margin-bottom {
+    height: 80vh;
+    margin: 0;
+    list-style: none;
+    padding-bottom: 10%;
     padding-left: 0px;
     overflow-y: scroll;
 

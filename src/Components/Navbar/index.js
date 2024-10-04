@@ -11,7 +11,7 @@ export const Navbar = () => {
         <div className="row">
           <div className="col-12 py-2 bg-dark d-flex justify-content-between align-items-center">
             <div className="img-logo">
-              <img src="logo_preto.png" width="20%" alt="" />
+              <img src="/logo_preto.png" width="20%" alt="" />
             </div>
             <div className="icon-menu" onClick={() => setClassMenu(!classMenu)}>
               <svg

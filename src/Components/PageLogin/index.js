@@ -202,16 +202,16 @@ export const PageLogin = () => {
                     )}
                   </div>
                   <div className="form-group">
-                    <label className="text-white">Nome</label>
+                    <label className="text-white">Barbearia</label>
                     <input
                       type="text"
                       className="form-control"
-                      placeholder="Nome"
-                      {...register("NOME")}
+                      placeholder="Nome da sua barbearia"
+                      {...register("NOME_BARBEARIA")}
                     />
-                    {errors.NOME && (
+                    {errors.NOME_BARBEARIA && (
                       <p className="m-0 my-1 text-white">
-                        *{errors.NOME.message}
+                        *{errors.NOME_BARBEARIA.message}
                       </p>
                     )}
                   </div>

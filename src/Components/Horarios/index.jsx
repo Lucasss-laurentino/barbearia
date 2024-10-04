@@ -1,6 +1,34 @@
+import { useContext, useEffect, useState } from "react";
+import { HorarioMarcadoContext } from "../../Context/HorarioMarcadoContext";
 import "./index.css";
+import { ServicoContext } from "../../Context/ServicoContext";
 
 export const Horarios = () => {
+  const { buscarHorariosAgendado, horariosMarcado, setHorariosMarcado } = useContext(HorarioMarcadoContext);
+  const { servicos } = useContext(ServicoContext);
+  const [faturamentoPrevistoDoDia, setFaturamentoPrevistoDoDia] = useState(0);
+  // calculando faturamento do dia
+  const faturamentoPrevisto = () => {
+    const horariosMarcadoConfigurado = horariosMarcado.map((horarioMarcado) => {
+      const preco = servicos.find((s) => s.ID === horarioMarcado.SERVICO_ID);
+      const valorLimpo = preco?.PRECO.replace(/R\$|\s/g, "") // Remove "R$" e espaços
+        .replace(",", ".") // Substitui a vírgula por ponto
+        .replace(/\.(?=\d{3})/g, ""); // Remove o ponto usado como separador de milhar
+
+      return parseFloat(valorLimpo); // Converte a string para um número
+    });
+    const soma = horariosMarcadoConfigurado.reduce((acc, valor) => acc + valor, 0);
+    console.log(soma)
+  };
+
+  useEffect(() => {
+    buscarHorariosAgendado();
+  }, []);
+
+  useEffect(() => {
+    faturamentoPrevisto();
+  }, [horariosMarcado]);
+
   return (
     <>
       <div className="container-fluid bg-dark height-main">

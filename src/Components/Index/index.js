@@ -8,13 +8,18 @@ import { AbaBottomContext } from "../../Context/AbaBottomContext";
 import { Horarios } from "../Horarios";
 import { ListBarbeiros } from "../ListBarbeiros";
 import { UserContext } from "../../Context/UserContext";
+import { ServicoContext } from "../../Context/ServicoContext";
+import { useParams } from "react-router-dom";
 
 export const Index = () => {
   const { active } = useContext(AbaBottomContext);
   const { user, pegarUsuario } = useContext(UserContext);
+  const { pegarServicos } = useContext(ServicoContext);
+  const { barbearia } = useParams();
 
   useEffect(() => {
     pegarUsuario();
+    pegarServicos();
   }, []);
 
   return (

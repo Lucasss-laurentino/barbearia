@@ -7,7 +7,7 @@ export const UserProvider = ({ children }) => {
 
   const [user, setUser] = useState({
     ID: "",
-    NOME: "",
+    NOME_BARBEARIA: "",
     BARBEIRO: false,
   });
 
@@ -21,7 +21,7 @@ export const UserProvider = ({ children }) => {
       if(!response.data || !response.data.ID) throw new Error("Usuário não encontrado");
       setUser({
         ID: response.data.ID,
-        NOME: response.data.NOME,
+        NOME_BARBEARIA: response.data.NOME_BARBEARIA,
         BARBEIRO: response.data.BARBEIRO
       })
 

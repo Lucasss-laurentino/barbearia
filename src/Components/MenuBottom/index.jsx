@@ -19,8 +19,8 @@ export const MenuBottom = () => {
                   <img
                     src={
                       active === 2
-                        ? "icones_menu_bottom/horarios_dark.png"
-                        : "icones_menu_bottom/horarios.png"
+                        ? "/icones_menu_bottom/horarios_dark.png"
+                        : "/icones_menu_bottom/horarios.png"
                     }
                     className="img-fluid p-1"
                     width="30%"
@@ -36,8 +36,8 @@ export const MenuBottom = () => {
                   <img
                     src={
                       active === 1
-                        ? "icones_menu_bottom/servicos_dark.png"
-                        : "icones_menu_bottom/servicos.png"
+                        ? "/icones_menu_bottom/servicos_dark.png"
+                        : "/icones_menu_bottom/servicos.png"
                     }
                     className="img-fluid"
                     width="30%"
@@ -52,10 +52,10 @@ export const MenuBottom = () => {
                 <div className={active === 3 ? "fundo-branco" : "fundo-preto"}>
                   <img
                     src={
-                      active === 3 && user.BARBEIRO && "icones_menu_bottom/cliente_dark.png" ||
-                      active !== 3 && user.BARBEIRO && "icones_menu_bottom/cliente.png" ||
-                      active === 3 && !user.BARBEIRO && "icones_menu_bottom/relogio_preto.png" ||
-                      active !== 3 && !user.BARBEIRO && "icones_menu_bottom/relogio_branco.png"
+                      active === 3 && user.BARBEIRO && "/icones_menu_bottom/cliente_dark.png" ||
+                      active !== 3 && user.BARBEIRO && "/icones_menu_bottom/cliente.png" ||
+                      active === 3 && !user.BARBEIRO && "/icones_menu_bottom/relogio_preto.png" ||
+                      active !== 3 && !user.BARBEIRO && "/icones_menu_bottom/relogio_branco.png"
                     }
                     className="img-fluid p-1"
                     width="30%"
@@ -71,8 +71,8 @@ export const MenuBottom = () => {
                   <img
                     src={
                       active === 4
-                        ? "icones_menu_bottom/configuracao_dark.png"
-                        : "icones_menu_bottom/configuracao.png"
+                        ? "/icones_menu_bottom/configuracao_dark.png"
+                        : "/icones_menu_bottom/configuracao.png"
                     }
                     className="img-fluid p-1"
                     width="30%"

@@ -1,6 +1,6 @@
 .adc-barbeiro {
   position: absolute;
-  bottom: 12%;
+  bottom: 10%;
   right: 7%;
   backdrop-filter: blur(10px);
   border-radius: 50%;
@@ -8,7 +8,15 @@
 
 .lista-barbeiros {
   overflow-y: auto;
-  padding-bottom: 13%;
+  padding-bottom: 20%;
+  padding-left: 0;
+  margin-bottom: 0px;
+  height: 77vh;
+}
+
+.lista-barbeiros-sem-margin-bottom {
+  overflow-y: auto;
+  padding-bottom: 10%;
   padding-left: 0;
   margin-bottom: 0px;
   height: 77vh;

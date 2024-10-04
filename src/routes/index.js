@@ -27,7 +27,7 @@ export default function appRouter() {
                         <LoginProvider>
                           <Routes>
                             <Route path="/" element={<PageLogin />} />
-                            <Route path="/index" element={<Index />} />
+                            <Route path="/:barbearia" element={<Index />} />
                           </Routes>
                         </LoginProvider>
                       </Router>

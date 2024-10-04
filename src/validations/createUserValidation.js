@@ -6,7 +6,7 @@ export const createUserSchema = yup.object({
     .email("Formato de email inválido")
     .required("Campo obrigatório"),
 
-  NOME: yup.string().required("Campo obrigatório"),
+  NOME_BARBEARIA: yup.string().required("Campo obrigatório"),
 
   SENHA: yup
     .string()

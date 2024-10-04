@@ -169,7 +169,7 @@ export const ListBarbeiros = () => {
       <div className="container-fluid bg-dark height-main">
         <div className="row">
           <div className="col-12 p-0">
-            <ul className="lista-barbeiros">
+            <ul className={user.BARBEIRO ? "lista-barbeiros" : "lista-barbeiros-sem-margin-bottom"}>
               {barbeiros.map((barbeiro) => {
                 const horariosFiltrado = horarios.filter(
                   (h) => h.BARBEIRO_ID === barbeiro.ID

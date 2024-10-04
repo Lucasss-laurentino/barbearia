@@ -5,11 +5,20 @@ import { HorarioContext } from "./HorarioContext";
 export const HorarioMarcadoContext = createContext();
 
 export const HorarioMarcadoProvider = ({ children }) => {
-  const [usuarioTemHorarioMarcado, setUsuarioTemHorarioMarcado] =
-    useState(false);
+  const [usuarioTemHorarioMarcado, setUsuarioTemHorarioMarcado] = useState(false);
   const [horarioMarcado, setHorarioMarcado] = useState();
-
+  const [horariosMarcado, setHorariosMarcado] = useState([]);
   const { ordenarHorarios, setErrosHorarios } = useContext(HorarioContext);
+
+  const buscarHorariosAgendado = async () => {
+    try {
+      const response = await http.get("horario/pegarHorariosAgendado", {withCredentials: true});
+      if(!response) throw "Erro ao buscar horários";
+      setHorariosMarcado(response.data);
+    } catch(error) {
+
+    }
+  }
 
   const marcarHorario = async (userContrata) => {
     try {
@@ -74,7 +83,10 @@ export const HorarioMarcadoProvider = ({ children }) => {
         setHorarioMarcado,
         verificaAntesDeMarcar,
         buscarMeuHorarioMarcado,
-        desmarcarHorario
+        desmarcarHorario,
+        buscarHorariosAgendado,
+        horariosMarcado,
+        setHorariosMarcado
       }}
     >
       {children}

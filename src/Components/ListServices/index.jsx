@@ -30,10 +30,6 @@ export const ListService = () => {
   };
 
   useEffect(() => {
-    pegarServicos();
-  }, []);
-
-  useEffect(() => {
     if (servicoEscolhido?.id) {
       setUserContrata((prevState) => ({
         ...prevState,
@@ -102,7 +98,7 @@ export const ListService = () => {
           <div className="container-fluid bg-dark">
             <div className="row">
               <div className="col-12 p-0">
-                <ul className="list-servicos-tamanho">
+                <ul className={user.BARBEIRO ? "list-servicos-tamanho" : "list-servicos-tamanho-sem-margin-bottom"}>
                   {servicos.map((servico) => {
                     return (
                       <Fragment key={servico.ID}>

@@ -21,7 +21,7 @@ export const LoginProvider = ({ children }) => {
       );
       setUser(response.data.user);
       setLoadLogin(false);
-      navigate("/index");
+      navigate(`/${response.data.user.NOME_BARBEARIA}`);
     } catch (error) {
       console.log(error);
       setLoadLogin(false);
