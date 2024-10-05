@@ -45,11 +45,9 @@ export const HorarioProvider = ({ children }) => {
     } catch (erro) {}
   };
 
-  const pegarHorarios = async () => {
+  const pegarHorarios = async (barbearia) => {
     try {
-      const response = await http.get("horario/pegarHorarios", {
-        withCredentials: true,
-      });
+      const response = await http.get(`horario/pegarHorarios/${barbearia}`);
       if (!response) throw "Erro ao buscar horarios";
       ordenarHorarios(response.data)
     } catch (erro) {}

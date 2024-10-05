@@ -1,5 +1,6 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
 import { http } from "../http";
+import { useNavigate } from "react-router-dom";
 
 export const UserContext = createContext();
 
@@ -14,6 +15,7 @@ export const UserProvider = ({ children }) => {
   // esse objeto controla oque o usuário vai setando durante a navegação pelo sistema
   const [userContrata, setUserContrata] = useState({ user: null });
 
+  const navigate = useNavigate();
   const pegarUsuario = async () => {
     
     try {
@@ -31,7 +33,16 @@ export const UserProvider = ({ children }) => {
       }));
       
     } catch(error) {
-      window.location.href = '/';
+      setUser({});
+      setUserContrata({});
+    }
+  }
+
+  const buscarBarbearia = async (barbearia) => {
+    try {
+      const response = await http.get(`user/buscarBarbearia/${barbearia}`);
+    } catch(error) {
+      navigate('/naoEncontrado');
     }
   }
 
@@ -42,7 +53,8 @@ export const UserProvider = ({ children }) => {
         setUser,
         pegarUsuario,
         userContrata,
-        setUserContrata
+        setUserContrata,
+        buscarBarbearia,
       }}
     >
       {children}

@@ -11,6 +11,7 @@ import { ModalExcluir } from "../ModalExcluir";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { HorarioMarcadoContext } from "../../Context/HorarioMarcadoContext";
+import { ModalPagamentoAgendamento } from "../ModalPagamentoAgendamento";
 
 export const ListBarbeiros = () => {
   // STATES
@@ -20,6 +21,7 @@ export const ListBarbeiros = () => {
   const [barbeiro, setBarbeiro] = useState({});
   const [showExcluirHorario, setExcluirHorario] = useState(false);
   const [horarioSelecionado, setHorarioSelecionado] = useState(null);
+  const [showModalPagamentoAgendamento, setShowModalPagamentoAgendamento] = useState(false);
 
   // HANDLES
 
@@ -37,6 +39,8 @@ export const ListBarbeiros = () => {
   };
   const handleShow = () => setShow(true);
 
+  const closeModalPagamentoAgendamento = () => setShowModalPagamentoAgendamento(false);
+
   // CONTEXTS
 
   const {
@@ -46,10 +50,9 @@ export const ListBarbeiros = () => {
     setBarbeiroSelecionado,
   } = useContext(BarbeiroContext);
   const [id, setId] = useState();
-  const [marcarEsseHorario, setMarcarEsseHorario] = useState({ horario: null });
+  const [ setMarcarEsseHorario] = useState({ horario: null });
 
   const { 
-    buscarMeuHorarioMarcado, 
     setHorarioMarcado, 
     usuarioTemHorarioMarcado, 
     horarioMarcado,
@@ -58,7 +61,6 @@ export const ListBarbeiros = () => {
   } = useContext(HorarioMarcadoContext);
 
   const {
-    pegarHorarios,
     horarios,
     horariosAberto,
     setHorariosAberto,
@@ -68,16 +70,9 @@ export const ListBarbeiros = () => {
 
   const { abrirListaHorarios } = useContext(AnimacaoContext);
 
-  const { user, setUserContrata, userContrata } = useContext(UserContext);
+  const { user, setUserContrata } = useContext(UserContext);
 
   // USE EFECTS
-
-  useEffect(() => {
-    pegarBarbeiros();
-    pegarHorarios();
-    buscarMeuHorarioMarcado();
-  }, []);
-
   useEffect(() => {
     if (!showExcluirHorario) setHorarioSelecionado(null);
   }, [showExcluirHorario]);
@@ -114,6 +109,11 @@ export const ListBarbeiros = () => {
 
   return (
     <>
+    <ModalPagamentoAgendamento
+      show={showModalPagamentoAgendamento}    
+      handleClose={closeModalPagamentoAgendamento}
+      horarioSelecionado={horarioSelecionado}
+    />
       <ModalHorarios
         show={showHorarios}
         setShow={setShowHorarios}
@@ -305,6 +305,9 @@ export const ListBarbeiros = () => {
                                         <button
                                           className="btn btn-sm bg-transparent text-white"
                                           onClick={() => {
+                                            setHorarioSelecionado(horario);
+                                            setShowModalPagamentoAgendamento(true)
+                                            /*
                                             setMarcarEsseHorario(horario);
                                             setUserContrata((prevState) => {
                                               const novoEstado = {
@@ -318,7 +321,9 @@ export const ListBarbeiros = () => {
                                               );
                                               return novoEstado;
                                             });
+                                            */
                                           }}
+
                                         >
                                           Marcar
                                         </button>

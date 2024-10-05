@@ -11,7 +11,6 @@ export const ListService = () => {
     servicos,
     servicoEscolhido,
     setServicoEscolhido,
-    pegarServicos,
     loadCriarServico,
   } = useContext(ServicoContext);
   const { user, setUserContrata } = useContext(UserContext);

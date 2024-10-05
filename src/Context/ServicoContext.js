@@ -34,15 +34,15 @@ export const ServicoProvider = ({ children }) => {
     }
   };
 
-  const pegarServicos = async () => {
+  const pegarServicos = async (barbearia) => {
     try {
       setLoadCriarServico(true)
-      const response = await http.get("servico/pegarServicos", {
-        withCredentials: true,
-      });
+      const response = await http.get(`servico/pegarServicos/${barbearia}`);
       setServicos([...response.data]);
       setLoadCriarServico(false);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   const excluirServico = async (servico, setLoadExcluir) => {

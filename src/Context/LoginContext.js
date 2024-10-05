@@ -36,8 +36,8 @@ export const LoginProvider = ({ children }) => {
         .then((response) => {
           setUser(response.data.user);
           setLoadLogin(false);
-          navigate("/index");
-        });
+          navigate(`/${response.data.user.NOME_BARBEARIA}`);
+      });
     } catch (error) {
       setLoadLogin(false);
       const erro = error.response?.data

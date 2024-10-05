@@ -11,34 +11,39 @@ import { HorarioProvider } from "../Context/HorarioContext";
 import { MeuHorarioProvider } from "../Context/MeuHorario";
 import { LoginProvider } from "../Context/LoginContext";
 import { HorarioMarcadoProvider } from "../Context/HorarioMarcadoContext";
+import { NotFound } from "../Components/NotFound";
 
 export default function appRouter() {
   return (
-    <UserProvider>
-      <ServicoProvider>
-        <BarbeiroProvider>
-          <HorarioProvider>
-            <MeuHorarioProvider>
-              <HorarioMarcadoProvider>
-                <AnimacaoProvider>
-                  <AbaBottomProvider>
-                    <MenuProvider>
-                      <Router>
+    <Router>
+      <UserProvider>
+        <ServicoProvider>
+          <BarbeiroProvider>
+            <HorarioProvider>
+              <MeuHorarioProvider>
+                <HorarioMarcadoProvider>
+                  <AnimacaoProvider>
+                    <AbaBottomProvider>
+                      <MenuProvider>
                         <LoginProvider>
                           <Routes>
+                            <Route
+                              path="/naoEncontrado"
+                              element={<NotFound />}
+                            />
                             <Route path="/" element={<PageLogin />} />
                             <Route path="/:barbearia" element={<Index />} />
                           </Routes>
                         </LoginProvider>
-                      </Router>
-                    </MenuProvider>
-                  </AbaBottomProvider>
-                </AnimacaoProvider>
-              </HorarioMarcadoProvider>
-            </MeuHorarioProvider>
-          </HorarioProvider>
-        </BarbeiroProvider>
-      </ServicoProvider>
-    </UserProvider>
+                      </MenuProvider>
+                    </AbaBottomProvider>
+                  </AnimacaoProvider>
+                </HorarioMarcadoProvider>
+              </MeuHorarioProvider>
+            </HorarioProvider>
+          </BarbeiroProvider>
+        </ServicoProvider>
+      </UserProvider>
+    </Router>
   );
 }

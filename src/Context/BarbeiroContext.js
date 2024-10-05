@@ -32,11 +32,9 @@ export const BarbeiroProvider = ({ children }) => {
     } catch (error) {}
   };
 
-  const pegarBarbeiros = async () => {
+  const pegarBarbeiros = async (barbearia) => {
     try {
-      const response = await http.get("barbeiro/pegarBarbeiros", {
-        withCredentials: true,
-      });
+      const response = await http.get(`barbeiro/pegarBarbeiros/${barbearia}`);
       if (!response) throw "Erro ao buscar barbeiros";
       setBarbeiros([...response.data.barbeiros]);
     } catch (erro) {}
