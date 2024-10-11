@@ -43,13 +43,13 @@ export const Index = () => {
         <div className="body">
           <Navbar />
           <Menu />
-          {active === 1 && !user.BARBEIRO && <ListBarbeiros />}
-          {active === 1 && user.BARBEIRO && <ListService />}
+          {active === 1 && !user.ADM && <ListBarbeiros />}
+          {active === 1 && user.ADM && <ListService />}
 
-          {active === 2 && user.BARBEIRO && <Horarios />}
-          {active === 2 && !user.BARBEIRO && <ListService />}
+          {active === 2 && user.ADM && <Horarios />}
+          {active === 2 && !user.ADM && <ListService />}
 
-          {active === 3 && user.BARBEIRO && <ListBarbeiros />}
+          {active === 3 && user.ADM && <ListBarbeiros />}
           <MenuBottom />
         </div>
       ) : (

@@ -76,7 +76,7 @@ export const ListService = () => {
         </div>
       ) : (
         <>
-          {user.BARBEIRO && (
+          {user.ADM && (
             <span
               className="adc-barbeiro"
               onClick={() => setShowModalServico(true)}
@@ -97,7 +97,7 @@ export const ListService = () => {
           <div className="container-fluid bg-dark">
             <div className="row">
               <div className="col-12 p-0">
-                <ul className={user.BARBEIRO ? "list-servicos-tamanho" : "list-servicos-tamanho-sem-margin-bottom"}>
+                <ul className={user.ADM ? "list-servicos-tamanho" : "list-servicos-tamanho-sem-margin-bottom"}>
                   {servicos.map((servico) => {
                     return (
                       <Fragment key={servico.ID}>
@@ -150,7 +150,7 @@ export const ListService = () => {
                                     Escolher
                                   </a>
                                 )}
-                                {user.BARBEIRO && (
+                                {user.ADM && (
                                   <div className="d-flex justify-content-start align-items-center mt-2">
                                     <div
                                       className="edit m-0 p-0"

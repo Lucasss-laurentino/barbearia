@@ -24,6 +24,7 @@ export const UserProvider = ({ children }) => {
       setUser({
         ID: response.data.ID,
         NOME_BARBEARIA: response.data.NOME_BARBEARIA,
+        ADM: response.data.ADM,
         BARBEIRO: response.data.BARBEIRO
       })
 

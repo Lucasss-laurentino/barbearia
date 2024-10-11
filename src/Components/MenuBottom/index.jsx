@@ -27,7 +27,7 @@ export const MenuBottom = () => {
                     alt=""
                   />
                   <p className={active === 2 ? "texto-preto" : "texto-branco"}>
-                    {user.BARBEIRO ? "Horários" : "Serviços"}
+                    {user.ADM ? "Horários" : "Serviços"}
                   </p>
                 </div>
               </li>
@@ -44,7 +44,7 @@ export const MenuBottom = () => {
                     alt=""
                   />
                   <p className={active === 1 ? "texto-preto" : "texto-branco"}>
-                    {user.BARBEIRO ? "Serviços" : "Agendamento"}
+                    {user.ADM ? "Serviços" : "Agendamento"}
                   </p>
                 </div>
               </li>
@@ -52,17 +52,17 @@ export const MenuBottom = () => {
                 <div className={active === 3 ? "fundo-branco" : "fundo-preto"}>
                   <img
                     src={
-                      active === 3 && user.BARBEIRO && "/icones_menu_bottom/cliente_dark.png" ||
-                      active !== 3 && user.BARBEIRO && "/icones_menu_bottom/cliente.png" ||
-                      active === 3 && !user.BARBEIRO && "/icones_menu_bottom/relogio_preto.png" ||
-                      active !== 3 && !user.BARBEIRO && "/icones_menu_bottom/relogio_branco.png"
+                      active === 3 && user.ADM && "/icones_menu_bottom/cliente_dark.png" ||
+                      active !== 3 && user.ADM && "/icones_menu_bottom/cliente.png" ||
+                      active === 3 && !user.ADM && "/icones_menu_bottom/relogio_preto.png" ||
+                      active !== 3 && !user.ADM && "/icones_menu_bottom/relogio_branco.png"
                     }
                     className="img-fluid p-1"
                     width="30%"
                     alt=""
                   />
                   <p className={active === 3 ? "texto-preto" : "texto-branco"}>
-                    {user.BARBEIRO ? 'Barbeiros' : 'Meus Horários'}
+                    {user.ADM ? 'Barbeiros' : 'Meus Horários'}
                   </p>
                 </div>
               </li>
