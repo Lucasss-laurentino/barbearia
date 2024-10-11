@@ -1,4 +1,7 @@
-import { Fragment } from "react";
+import { Fragment, useContext, useState } from "react";
+import { ModalMarcarHorarioDeslogado } from "../ModalMarcarHorarioDeslogado";
+import { ServicoContext } from "../../../Context/ServicoContext";
+import { toast, Bounce } from "react-toastify";
 
 export const ListaHorarios = ({
   barbeiro,
@@ -7,11 +10,24 @@ export const ListaHorarios = ({
   setBarbeiro,
   setShowHorarios,
   setHorarioSelecionado,
+  horarioSelecionado,
   setExcluirHorario,
   setId,
 }) => {
+  const [showModalMarcarHorarioDeslogado, setShowModalMarcarHorarioDeslogado] =
+    useState(false);
+
+  const { servicoEscolhido } = useContext(ServicoContext);
+
   return (
     <>
+      {/* Modal abre se o usuário tentar marcar um horario sem ter feito login antes */}
+      <ModalMarcarHorarioDeslogado
+        show={showModalMarcarHorarioDeslogado}
+        setShow={setShowModalMarcarHorarioDeslogado}
+        horarioSelecionado={horarioSelecionado}
+        servicoEscolhido={servicoEscolhido}
+      />
       <ul className="horarios-fechado" id={barbeiro.ID}>
         {horariosFiltrado.length < 23 && user.ADM && (
           <li
@@ -38,29 +54,24 @@ export const ListaHorarios = ({
                       <button
                         className="btn btn-sm bg-transparent text-white"
                         onClick={() => {
-                          if (!user?.ID) alert("Não logado");
-                          if (user?.ID) alert("logado");
-
-                          /*
-                                            setHorarioSelecionado(horario);
-                                            setShowModalPagamentoAgendamento(
-                                              true
-                                            );
-                                            
-                                            setMarcarEsseHorario(horario);
-                                            setUserContrata((prevState) => {
-                                              const novoEstado = {
-                                                ...prevState,
-                                                horarioMarcado: horario,
-                                              };
-                                              // futuramente preciso arrumar um jeito de fazer a requisição fora da atualização do estado
-                                              verificaAntesDeMarcar(
-                                                horario.ID,
-                                                novoEstado
-                                              );
-                                              return novoEstado;
-                                            });
-                                            */
+                          if (servicoEscolhido) {
+                            if (!user?.ID) {
+                              setHorarioSelecionado(horario);
+                              setShowModalMarcarHorarioDeslogado(true);
+                            }
+                          } else {
+                            toast.error("Escolha um serviço antes de agendar um horário !", {
+                              position: "bottom-right",
+                              autoClose: 5000,
+                              hideProgressBar: false,
+                              closeOnClick: true,
+                              pauseOnHover: true,
+                              draggable: true,
+                              progress: undefined,
+                              theme: "colored",
+                              transition: Bounce,
+                            });
+                          }
                         }}
                       >
                         Marcar

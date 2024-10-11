@@ -29,8 +29,7 @@ export const ListBarbeiros = () => {
   const [barbeiro, setBarbeiro] = useState({});
   const [showExcluirHorario, setExcluirHorario] = useState(false);
   const [horarioSelecionado, setHorarioSelecionado] = useState(null);
-  const [showModalPagamentoAgendamento, setShowModalPagamentoAgendamento] =
-    useState(false);
+  const [showModalPagamentoAgendamento, setShowModalPagamentoAgendamento] = useState(false);
   
   // HANDLES
   const handleCloseExcluirHorario = () => {
@@ -190,6 +189,7 @@ export const ListBarbeiros = () => {
                           setBarbeiro={setBarbeiro}
                           setShowHorarios={setShowHorarios}
                           setHorarioSelecionado={setHorarioSelecionado}
+                          horarioSelecionado={horarioSelecionado}
                           setExcluirHorario={setExcluirHorario}
                           setId={setId}
                         />
