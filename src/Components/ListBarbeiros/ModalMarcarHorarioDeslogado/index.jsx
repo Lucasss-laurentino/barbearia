@@ -2,44 +2,21 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Modal from "react-bootstrap/Modal";
 import { useForm } from "react-hook-form";
 import { agendarDeslogadoSchema } from "../../../validations/agendarDeslogado";
-import { http } from "../../../http";
+import { useContext, useEffect } from "react";
+import { HorarioContext } from "../../../Context/HorarioContext";
 
 export const ModalMarcarHorarioDeslogado = ({
   show,
   setShow,
   horarioSelecionado,
-  servicoEscolhido
+  servicoEscolhido,
 }) => {
   const handleClose = () => {
     setValue("NOME_CLIENTE", "");
     setShow(false);
   };
 
-  const agendar = async (data) => {
-    try {
-      const { NOME_CLIENTE } = data;
-      // preparando obj
-      const agendamentoObje = {
-        NOME_CLIENTE,
-        HORA: horarioSelecionado.HORA,
-        SERVICO: servicoEscolhido,
-        STATUS: 1, // 0 = marcado, 1 = pendente e 2 = nao marcado
-      };
-      // enviando pro backend
-
-      // antes de enviar preciso configurar um servidor web socket com um id unico 
-      // e envialo pro backend, lá quando o administrador aceitar o agendamento
-      // responderei pelo websocket pra conexao aberta que corresponde ao id unico desse usuario
-
-      const response = await http.post("agendarDeslogado", { agendamentoObje });
-      console.log(response);
-      
-      localStorage.setItem(
-        "agendamento",
-        JSON.stringify(agendamentoObje)
-      );
-    } catch (error) {}
-  };
+  const { agendar } = useContext(HorarioContext);
 
   const {
     register,
@@ -50,6 +27,9 @@ export const ModalMarcarHorarioDeslogado = ({
     resolver: yupResolver(agendarDeslogadoSchema),
   });
 
+  const onSubmit = (data) => {
+    agendar(data, horarioSelecionado, servicoEscolhido);
+  }
   return (
     <>
       <Modal
@@ -66,7 +46,7 @@ export const ModalMarcarHorarioDeslogado = ({
           <div className="container-fluid">
             <div className="row">
               <div className="col-12">
-                <form onSubmit={handleSubmit(agendar)}>
+                <form onSubmit={handleSubmit(onSubmit)}>
                   <div className="form-group">
                     <label for="nomeCliente">Seu nome</label>
                     <input

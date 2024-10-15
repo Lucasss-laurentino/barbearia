@@ -5,7 +5,10 @@ import { HorarioContext } from "./HorarioContext";
 export const HorarioMarcadoContext = createContext();
 
 export const HorarioMarcadoProvider = ({ children }) => {
-  const [usuarioTemHorarioMarcado, setUsuarioTemHorarioMarcado] = useState(false);
+
+
+  const { setUsuarioTemHorarioMarcado } = useContext(HorarioContext);
+
   const [horarioMarcado, setHorarioMarcado] = useState();
   const [horariosMarcado, setHorariosMarcado] = useState([]);
   const { ordenarHorarios, setErrosHorarios } = useContext(HorarioContext);
@@ -77,8 +80,6 @@ export const HorarioMarcadoProvider = ({ children }) => {
   return (
     <HorarioMarcadoContext.Provider
       value={{
-        usuarioTemHorarioMarcado,
-        setUsuarioTemHorarioMarcado,
         horarioMarcado,
         setHorarioMarcado,
         verificaAntesDeMarcar,

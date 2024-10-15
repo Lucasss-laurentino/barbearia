@@ -2,6 +2,7 @@ import { Fragment, useContext, useState } from "react";
 import { ModalMarcarHorarioDeslogado } from "../ModalMarcarHorarioDeslogado";
 import { ServicoContext } from "../../../Context/ServicoContext";
 import { toast, Bounce } from "react-toastify";
+import { HorarioContext } from "../../../Context/HorarioContext";
 
 export const ListaHorarios = ({
   barbeiro,
@@ -14,11 +15,10 @@ export const ListaHorarios = ({
   setExcluirHorario,
   setId,
 }) => {
-  const [showModalMarcarHorarioDeslogado, setShowModalMarcarHorarioDeslogado] =
-    useState(false);
 
   const { servicoEscolhido } = useContext(ServicoContext);
-
+  const { showModalMarcarHorarioDeslogado, setShowModalMarcarHorarioDeslogado } = useContext(HorarioContext);
+  
   return (
     <>
       {/* Modal abre se o usuário tentar marcar um horario sem ter feito login antes */}

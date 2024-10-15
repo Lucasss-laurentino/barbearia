@@ -1,4 +1,10 @@
-export const HoraMarcada = ({horarioMarcado, desmarcarHorario}) => {
+import { useEffect } from "react";
+
+export const HoraMarcada = ({ horarioMarcado, desmarcarHorario }) => {
+  useEffect(() => {
+   // console.log(horarioMarcado);
+  }, []);
+
   return (
     <>
       <div className="container">

@@ -22,15 +22,15 @@ import { HorarioMarcadoContext } from "../../Context/HorarioMarcadoContext";
 
 // COMPONENTE
 export const ListBarbeiros = () => {
-
   // STATES
   const [show, setShow] = useState(false);
   const [showHorarios, setShowHorarios] = useState(false);
   const [barbeiro, setBarbeiro] = useState({});
   const [showExcluirHorario, setExcluirHorario] = useState(false);
   const [horarioSelecionado, setHorarioSelecionado] = useState(null);
-  const [showModalPagamentoAgendamento, setShowModalPagamentoAgendamento] = useState(false);
-  
+  const [showModalPagamentoAgendamento, setShowModalPagamentoAgendamento] =
+    useState(false);
+
   // HANDLES
   const handleCloseExcluirHorario = () => {
     setExcluirHorario(false);
@@ -61,7 +61,6 @@ export const ListBarbeiros = () => {
 
   const {
     setHorarioMarcado,
-    usuarioTemHorarioMarcado,
     horarioMarcado,
     verificaAntesDeMarcar,
     desmarcarHorario,
@@ -71,6 +70,8 @@ export const ListBarbeiros = () => {
     horarios,
     horariosAberto,
     setHorariosAberto,
+    usuarioTemHorarioMarcado,
+    setUsuarioTemHorarioMarcado,
     errosHorarios,
     setErrosHorarios,
   } = useContext(HorarioContext);
@@ -79,7 +80,7 @@ export const ListBarbeiros = () => {
 
   const { user, setUserContrata } = useContext(UserContext);
 
-  // USE EFECTS
+  // USE EFFECTS
   useEffect(() => {
     if (!showExcluirHorario) setHorarioSelecionado(null);
   }, [showExcluirHorario]);
@@ -113,6 +114,22 @@ export const ListBarbeiros = () => {
     const horario = horarios.find((h) => h.DISPONIVEL === false);
     setHorarioMarcado(horario);
   }, [horarios]);
+
+  // verifica se o localStorage tem algum horario marcado
+  useEffect(() => {
+    if (localStorage.getItem("agendamento")) {
+      const obj = JSON.parse(localStorage.getItem("agendamento"));
+      if (obj?.RESERVADO !== 0) {
+        setUsuarioTemHorarioMarcado(true);
+        setHorarioMarcado(obj.HORA);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log(usuarioTemHorarioMarcado);
+    console.log(horarioMarcado);
+  }, [usuarioTemHorarioMarcado]);
 
   return (
     <>
@@ -162,7 +179,13 @@ export const ListBarbeiros = () => {
       <div className="container-fluid bg-dark height-main">
         <div className="row">
           <div className="col-12 p-0">
-            <ul className={user.ADM ? "lista-barbeiros" : "lista-barbeiros-sem-margin-bottom"}>
+            <ul
+              className={
+                user.ADM
+                  ? "lista-barbeiros"
+                  : "lista-barbeiros-sem-margin-bottom"
+              }
+            >
               {barbeiros.map((barbeiro) => {
                 const horariosFiltrado = horarios.filter(
                   (h) => h.BARBEIRO_ID === barbeiro.ID
