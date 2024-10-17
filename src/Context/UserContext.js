@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-
   const [user, setUser] = useState({
     ID: "",
     NOME_BARBEARIA: "",
@@ -16,35 +15,36 @@ export const UserProvider = ({ children }) => {
   const [userContrata, setUserContrata] = useState({ user: null });
   const navigate = useNavigate();
   const pegarUsuario = async () => {
-    
     try {
-      const response = await http.get(`/user/getUser`, { withCredentials: true });
-      if(!response.data || !response.data.ID) throw new Error("Usuário não encontrado");
+      const response = await http.get(`/user/getUser`, {
+        withCredentials: true,
+      });
+      if (!response.data || !response.data.ID)
+        throw new Error("Usuário não encontrado");
       setUser({
         ID: response.data.ID,
         NOME_BARBEARIA: response.data.NOME_BARBEARIA,
         ADM: response.data.ADM,
-        BARBEIRO: response.data.BARBEIRO
-      })
+        BARBEIRO: response.data.BARBEIRO,
+      });
 
-      setUserContrata(prevState => ({
+      setUserContrata((prevState) => ({
         ...prevState,
-        user: response.data
+        user: response.data,
       }));
-      
-    } catch(error) {
+    } catch (error) {
       setUser({});
       setUserContrata({});
     }
-  }
+  };
 
   const buscarBarbearia = async (barbearia) => {
     try {
       const response = await http.get(`user/buscarBarbearia/${barbearia}`);
-    } catch(error) {
-      navigate('/naoEncontrado');
+    } catch (error) {
+      navigate("/naoEncontrado");
     }
-  }
+  };
 
   return (
     <UserContext.Provider

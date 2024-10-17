@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { http } from "../http";
 import { HorarioContext } from "./HorarioContext";
 import { ServicoContext } from "./ServicoContext";
@@ -6,11 +6,11 @@ import { ServicoContext } from "./ServicoContext";
 export const HorarioMarcadoContext = createContext();
 
 export const HorarioMarcadoProvider = ({ children }) => {
-  const { setUsuarioTemHorarioMarcado, setHorarios } = useContext(HorarioContext);
+  const { setUsuarioTemHorarioMarcado, setHorarios } =
+    useContext(HorarioContext);
   const { setServicoEscolhido } = useContext(ServicoContext);
   const [horarioMarcado, setHorarioMarcado] = useState();
   const [horariosMarcado, setHorariosMarcado] = useState([]);
-
   const { ordenarHorarios, setErrosHorarios } = useContext(HorarioContext);
 
   const buscarHorariosAgendado = async (barbearia) => {
@@ -71,18 +71,19 @@ export const HorarioMarcadoProvider = ({ children }) => {
 
   const cancelarMeuHorarioPendente = async (meuHorarioPendente) => {
     try {
-      const response = await http.post("horario/cancelarHorarioPendente", { meuHorarioPendente });
+      const response = await http.post("horario/cancelarHorarioPendente", {
+        meuHorarioPendente,
+      });
       if (!response) throw "Não foi possivel cancelar seu horário";
-      console.log(response.data);
       setUsuarioTemHorarioMarcado(false);
       setHorarios(response.data.horarios);
       setHorarioMarcado({});
       localStorage.setItem("agendamento", "");
-      setServicoEscolhido({})
+      setServicoEscolhido({});
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   return (
     <HorarioMarcadoContext.Provider
@@ -94,7 +95,7 @@ export const HorarioMarcadoProvider = ({ children }) => {
         buscarHorariosAgendado,
         horariosMarcado,
         setHorariosMarcado,
-        cancelarMeuHorarioPendente
+        cancelarMeuHorarioPendente,
       }}
     >
       {children}
