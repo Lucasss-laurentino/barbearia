@@ -117,3 +117,16 @@
   font-size: 14px;
   cursor: pointer;
 }
+
+.desmarcar {
+  width: 40%;
+  font-size: 15px;
+}
+
+.pendente {
+  margin: 5px 0px;
+  padding: 0px 10px;
+  border-radius: 4px;
+  color: white;
+
+}

@@ -1,27 +1,28 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { http } from "../http";
 import { HorarioContext } from "./HorarioContext";
 
 export const HorarioMarcadoContext = createContext();
 
 export const HorarioMarcadoProvider = ({ children }) => {
-
-
   const { setUsuarioTemHorarioMarcado } = useContext(HorarioContext);
 
   const [horarioMarcado, setHorarioMarcado] = useState();
   const [horariosMarcado, setHorariosMarcado] = useState([]);
+
   const { ordenarHorarios, setErrosHorarios } = useContext(HorarioContext);
 
-  const buscarHorariosAgendado = async () => {
+  const buscarHorariosAgendado = async (barbearia) => {
     try {
-      const response = await http.get("horario/pegarHorariosAgendado", {withCredentials: true});
-      if(!response) throw "Erro ao buscar horários";
+      const response = await http.get(
+        `horario/pegarHorariosAgendado/${barbearia}`
+      );
+      if (!response) throw "Erro ao buscar horários";
       setHorariosMarcado(response.data);
-    } catch(error) {
-
+    } catch (error) {
+      console.log(error);
     }
-  }
+  };
 
   const marcarHorario = async (userContrata) => {
     try {
@@ -51,31 +52,21 @@ export const HorarioMarcadoProvider = ({ children }) => {
     }
   };
 
-  const buscarMeuHorarioMarcado = async () => {
-    try {
-      const response = await http.get("horario/buscarMeuHorarioMarcado", {
-        withCredentials: true,
-      });
-      const horario = response.data;
-      console.log(horario);
-      setHorarioMarcado(response.data);
-      setUsuarioTemHorarioMarcado(true);
-    } catch (error) {
-      setUsuarioTemHorarioMarcado(false);
-    }
-  };
-
   const desmarcarHorario = async () => {
     try {
-        const response = await http.post("horario/desmarcarHorario", {}, {
+      const response = await http.post(
+        "horario/desmarcarHorario",
+        {},
+        {
           withCredentials: true,
-        });
-        ordenarHorarios(response.data);
-        setUsuarioTemHorarioMarcado(false);
-      } catch (error) {
-        console.log(error);
-      }
-  }
+        }
+      );
+      ordenarHorarios(response.data);
+      setUsuarioTemHorarioMarcado(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <HorarioMarcadoContext.Provider
@@ -83,11 +74,10 @@ export const HorarioMarcadoProvider = ({ children }) => {
         horarioMarcado,
         setHorarioMarcado,
         verificaAntesDeMarcar,
-        buscarMeuHorarioMarcado,
         desmarcarHorario,
         buscarHorariosAgendado,
         horariosMarcado,
-        setHorariosMarcado
+        setHorariosMarcado,
       }}
     >
       {children}

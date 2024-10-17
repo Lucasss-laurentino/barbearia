@@ -3,7 +3,6 @@ import { http } from "../http";
 import { socket } from "../socket";
 import { BarbeiroContext } from "./BarbeiroContext";
 import { ServicoContext } from "./ServicoContext";
-import { HorarioMarcadoContext } from "./HorarioMarcadoContext";
 
 export const HorarioContext = createContext();
 
@@ -25,6 +24,8 @@ export const HorarioProvider = ({ children }) => {
     ABERTO: false,
     BARBEIRO_ID: 0,
   });
+
+  // novoHorarioAgendado guarda o horario agendado no useEffect do web socket
   const [loadHorarios, setLoadHorarios] = useState(false);
   const [iniciarConexaoSocket, setIniciarConexaoSocket] = useState(false);
   // ao renderizar ja é conectado ao servidor socket pois state está recebendo a função sendo executada "socket()"
@@ -55,9 +56,6 @@ export const HorarioProvider = ({ children }) => {
         // atualizando horarios
         setHorarios(novoHorarios);
 
-        // gatilho pra mostrar horario marcado abaixo da lista de horario em listBarbeiros
-        setUsuarioTemHorarioMarcado(true);
-
         const hora = horarios.find(
           (h) => h.ID === agendamentoRetornado.HORARIO_ID
         );
@@ -68,6 +66,7 @@ export const HorarioProvider = ({ children }) => {
           (s) => s.ID === agendamentoRetornado.SERVICO_ID
         );
         const agendamentoObj = {
+          ID: agendamentoRetornado.ID,
           HORA: hora,
           BARBEIRO: barbeiro,
           RESERVADO: agendamentoRetornado.RESERVADO,
@@ -78,6 +77,7 @@ export const HorarioProvider = ({ children }) => {
         localStorage.setItem("agendamento", JSON.stringify(agendamentoObj));
 
         setShowModalMarcarHorarioDeslogado(false);
+
       });
     }
   }, [iniciarConexaoSocket]);

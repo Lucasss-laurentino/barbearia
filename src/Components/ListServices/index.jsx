@@ -73,7 +73,7 @@ export const ListService = () => {
         <LoadServico />
       ) : (
         <>
-          {user.ADM && <SpanAddServico showModalServico={showModalServico} />}
+          {user.ADM && <SpanAddServico setShowModalServico={setShowModalServico} />}
 
           <div className="container-fluid bg-dark">
             <div className="row">

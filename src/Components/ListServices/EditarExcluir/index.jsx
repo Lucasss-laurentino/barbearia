@@ -43,7 +43,6 @@ export const EditarExcluir = ({servico, setEditarServico, setShowModalServico, s
           </svg>
         </div>
       </div>
-      ;
     </>
   );
 };

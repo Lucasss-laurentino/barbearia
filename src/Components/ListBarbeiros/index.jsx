@@ -124,12 +124,7 @@ export const ListBarbeiros = () => {
         setHorarioMarcado(obj.HORA);
       }
     }
-  }, []);
-
-  useEffect(() => {
-    console.log(usuarioTemHorarioMarcado);
-    console.log(horarioMarcado);
-  }, [usuarioTemHorarioMarcado]);
+  }, [localStorage.getItem("agendamento")]);
 
   return (
     <>

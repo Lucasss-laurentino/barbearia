@@ -19,19 +19,19 @@ export const Index = () => {
   const { user, pegarUsuario, buscarBarbearia } = useContext(UserContext);
   const { pegarServicos } = useContext(ServicoContext);
   const { pegarBarbeiros } = useContext(BarbeiroContext);
-  const { pegarHorarios } = useContext(HorarioContext);
-  const { buscarMeuHorarioMarcado } = useContext(HorarioMarcadoContext);
+  const { pegarHorarios, novoHorarioAgendado } = useContext(HorarioContext);
+  const { buscarHorariosAgendado } = useContext(HorarioMarcadoContext);
   const { barbearia } = useParams();
 
   useEffect(() => {
     const carregarDadosNecessario = async () => {
       await Promise.all([
         buscarBarbearia(barbearia),
+        buscarHorariosAgendado(barbearia),
         pegarUsuario(),
         pegarServicos(barbearia),
         pegarBarbeiros(barbearia),
         pegarHorarios(barbearia),
-        buscarMeuHorarioMarcado(),    
       ]);
     }
     carregarDadosNecessario();
@@ -43,13 +43,15 @@ export const Index = () => {
         <div className="body">
           <Navbar />
           <Menu />
-          {active === 1 && !user.ADM && <ListBarbeiros />}
+          {/* Se o usuario for adm */}
           {active === 1 && user.ADM && <ListService />}
-
           {active === 2 && user.ADM && <Horarios />}
+          {active === 3 && user.ADM && <ListBarbeiros />}
+
+          {/* Se o usuario não for adm */}
+          {active === 1 && !user.ADM && <ListBarbeiros />}
           {active === 2 && !user.ADM && <ListService />}
 
-          {active === 3 && user.ADM && <ListBarbeiros />}
           <MenuBottom />
         </div>
       ) : (

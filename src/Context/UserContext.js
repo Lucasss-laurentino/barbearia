@@ -14,7 +14,6 @@ export const UserProvider = ({ children }) => {
 
   // esse objeto controla oque o usuário vai setando durante a navegação pelo sistema
   const [userContrata, setUserContrata] = useState({ user: null });
-
   const navigate = useNavigate();
   const pegarUsuario = async () => {
     
