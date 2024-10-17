@@ -43,6 +43,7 @@ export const ListService = () => {
         ...prevState,
         servicoEscolhido: {},
       }));
+      setServicoAgendado({})
     }
   }, [servicoEscolhido]);
 

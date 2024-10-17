@@ -1,12 +1,13 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { http } from "../http";
 import { HorarioContext } from "./HorarioContext";
+import { ServicoContext } from "./ServicoContext";
 
 export const HorarioMarcadoContext = createContext();
 
 export const HorarioMarcadoProvider = ({ children }) => {
-  const { setUsuarioTemHorarioMarcado } = useContext(HorarioContext);
-
+  const { setUsuarioTemHorarioMarcado, setHorarios } = useContext(HorarioContext);
+  const { setServicoEscolhido } = useContext(ServicoContext);
   const [horarioMarcado, setHorarioMarcado] = useState();
   const [horariosMarcado, setHorariosMarcado] = useState([]);
 
@@ -68,6 +69,21 @@ export const HorarioMarcadoProvider = ({ children }) => {
     }
   };
 
+  const cancelarMeuHorarioPendente = async (meuHorarioPendente) => {
+    try {
+      const response = await http.post("horario/cancelarHorarioPendente", { meuHorarioPendente });
+      if (!response) throw "Não foi possivel cancelar seu horário";
+      console.log(response.data);
+      setUsuarioTemHorarioMarcado(false);
+      setHorarios(response.data.horarios);
+      setHorarioMarcado({});
+      localStorage.setItem("agendamento", "");
+      setServicoEscolhido({})
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <HorarioMarcadoContext.Provider
       value={{
@@ -78,6 +94,7 @@ export const HorarioMarcadoProvider = ({ children }) => {
         buscarHorariosAgendado,
         horariosMarcado,
         setHorariosMarcado,
+        cancelarMeuHorarioPendente
       }}
     >
       {children}

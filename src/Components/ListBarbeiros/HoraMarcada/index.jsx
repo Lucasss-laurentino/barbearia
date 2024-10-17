@@ -1,9 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { HorarioMarcadoContext } from "../../../Context/HorarioMarcadoContext";
 
 export const HoraMarcada = ({ horarioMarcado, desmarcarHorario }) => {
   
   const [meuHorario, setMeuHorario] = useState({});
-
+  const { cancelarMeuHorarioPendente } = useContext(HorarioMarcadoContext);
+  
   useEffect(() => {
     setMeuHorario(JSON.parse(localStorage.getItem("agendamento")));
   }, []);
@@ -23,7 +25,11 @@ export const HoraMarcada = ({ horarioMarcado, desmarcarHorario }) => {
               <p className="bg-success text-dark pendente">Aceito</p>
             )}
 
-            <a className="btn-desmarcar" onClick={() => desmarcarHorario()}>
+            <a className="btn-desmarcar" onClick={() => {
+              if (meuHorario.RESERVADO === 2) {
+                cancelarMeuHorarioPendente(meuHorario);
+              }
+            }}>
               {meuHorario.RESERVADO === 2 ? "Cancelar" : "Desmarcar"}
             </a>
           </div>
