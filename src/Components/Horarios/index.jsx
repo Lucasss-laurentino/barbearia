@@ -16,7 +16,6 @@ export const Horarios = () => {
 
   const [lucroDiario, setLucroDiario] = useState();
 
-
   const limparValor = (valor) => {
     return parseFloat(valor.replace(/R\$|\./g, "").replace(",", "."));
   };
@@ -71,7 +70,8 @@ export const Horarios = () => {
             </div>
             <ul className="list-horarios">
               {horariosMarcado.map((horario) => {
-                console.log(horario);
+                const hora = horarios.find((h) => h.ID === horario.HORARIO_ID);
+                const servico = servicos.find((s) => s.ID === horario.SERVICO_ID)
                 return (
                   <li className="py-3 itens-list-horarios">
                     <div className="container fluid">
@@ -79,7 +79,7 @@ export const Horarios = () => {
                         <div className="col-12 d-flex">
                           <div className="col-6">
                             <div className="col-12">
-                              <div className="encapsula-icon d-flex justify-content-center align-items-center background-claro col-10">
+                              <div className="encapsula-icon d-flex justify-content-around align-items-center background-claro col-10">
                                 <div className="icon">
                                   <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -94,14 +94,12 @@ export const Horarios = () => {
                                   </svg>
                                 </div>
                                 <div className="hr">
-                                  <p className="m-0">
-
-                                  </p>
+                                  <p className="m-0">{hora.HORA}</p>
                                 </div>
                               </div>
                               <div className="container">
-                                <h6 className="my-2">{ horario.USER_NOME }</h6>
-                                <p className="m-0">Cabelo/reflexo</p>
+                                <h6 className="my-2">{horario.USER_NOME}</h6>
+                                <p className="m-0">{ servico.NOME_SERVICO }</p>
                               </div>
                             </div>
                           </div>
@@ -122,8 +120,8 @@ export const Horarios = () => {
                                 </div>
                               </div>
                               <div className="container d-flex justify-content-center align-items-end flex-column">
-                                <h6 className="my-2">R$ 50,00</h6>
-                                <p className="m-0">1h:30 min</p>
+                                <h6 className="my-2">{ servico.PRECO }</h6>
+                                <p className="m-0">{ servico.PRAZO }</p>
                               </div>
                             </div>
                           </div>
