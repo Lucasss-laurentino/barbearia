@@ -1,60 +1,71 @@
 .head-horarios {
-    height: 120px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .quantia-agendamento-horarios {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .align-qnt-agendamento {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    padding: 15px 10px;
-    border-radius: 4px;
-    background-color:  #373c41;
-    font-size: 13px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 15px 10px;
+  border-radius: 4px;
+  background-color: #373c41;
+  font-size: 13px;
 }
 
 .background-claro {
-    height: 45px;
-    border-radius: 4px  ;
-    background-color: #51585f;
+  height: 45px;
+  border-radius: 4px;
+  background-color: #51585f;
 }
 
 .adicionar {
-    position: fixed;
-    border-radius: 100%;
-    bottom: 10%;
-    backdrop-filter: blur(10px);
-    left: 80%;
+  position: fixed;
+  border-radius: 100%;
+  bottom: 10%;
+  backdrop-filter: blur(10px);
+  left: 80%;
 }
 
 .list-horarios {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
 }
 
 .itens-list-horarios {
-    width: 90%;
-    background-color: #32373b;
-    border-radius: 8px;
-    margin: 5px 0px;
+  width: 90%;
+  background-color: #32373b;
+  border-radius: 8px;
+  margin: 5px 0px;
 }
 .itens-list-horarios:last-child {
+  margin-bottom: 22%;
+}
 
-    margin-bottom: 22%;
+.row-agendamento-pendente {
+  background-color: white;
 
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.p-agendamento-pendente {
+    color: #373c41;
+    font-weight: 700;
+    font-size: 14px;
+    margin: 10px 0px;
 }

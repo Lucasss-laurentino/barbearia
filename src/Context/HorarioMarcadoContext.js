@@ -85,6 +85,23 @@ export const HorarioMarcadoProvider = ({ children }) => {
     }
   };
 
+  const aceitarHorarioPendente = async (horario) => {
+    try {
+      const response = await http.post("horario/aceitarHorarioPendente", { horario });
+      if (!response) throw "Não foi possivel aceitar esse horario";
+      const { horarioNaoPendente } = response.data;
+      const novosHorarios = horariosMarcado.map((horarioMarcado) => {
+        if (horarioMarcado.ID === horarioNaoPendente.ID) {
+          horarioMarcado.RESERVADO = 1;
+        }
+        return horarioMarcado
+      });
+      setHorariosMarcado([...novosHorarios]);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <HorarioMarcadoContext.Provider
       value={{
@@ -96,6 +113,7 @@ export const HorarioMarcadoProvider = ({ children }) => {
         horariosMarcado,
         setHorariosMarcado,
         cancelarMeuHorarioPendente,
+        aceitarHorarioPendente,
       }}
     >
       {children}

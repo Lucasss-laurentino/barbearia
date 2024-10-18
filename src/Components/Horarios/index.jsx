@@ -7,9 +7,8 @@ import { ServicoContext } from "../../Context/ServicoContext";
 import { HorarioContext } from "../../Context/HorarioContext";
 
 export const Horarios = () => {
-  const { horariosMarcado, setHorariosMarcado } = useContext(
-    HorarioMarcadoContext
-  );
+  const { horariosMarcado, setHorariosMarcado, aceitarHorarioPendente } =
+    useContext(HorarioMarcadoContext);
   const { user } = useContext(UserContext);
   const { servicos } = useContext(ServicoContext);
   const { horarios } = useContext(HorarioContext);
@@ -17,7 +16,9 @@ export const Horarios = () => {
   const [lucroDiario, setLucroDiario] = useState();
 
   const limparValor = (valor) => {
-    return parseFloat(valor.replace(/R\$|\./g, "").replace(",", "."));
+    return valor
+      ? parseFloat(valor.replace(/R\$|\./g, "").replace(",", "."))
+      : "";
   };
 
   useEffect(() => {
@@ -34,8 +35,8 @@ export const Horarios = () => {
     let precos = [];
 
     horariosMarcado.forEach((horarioMarcado) => {
-      const servico = servicos.find((s) => s.ID === horarioMarcado.SERVICO_ID);
-      precos.push(limparValor(servico.PRECO));
+      const servico = servicos.find((s) => s.ID === horarioMarcado?.SERVICO_ID);
+      precos.push(limparValor(servico?.PRECO));
     });
 
     const total = precos.reduce(
@@ -70,16 +71,25 @@ export const Horarios = () => {
             </div>
             <ul className="list-horarios">
               {horariosMarcado.map((horario) => {
-                const hora = horarios.find((h) => h.ID === horario.HORARIO_ID);
-                const servico = servicos.find((s) => s.ID === horario.SERVICO_ID)
+                console.log(horario);
+                const hora = horarios.find((h) => h.ID === horario?.HORARIO_ID);
+                const servico = servicos.find(
+                  (s) => s.ID === horario?.SERVICO_ID
+                );
                 return (
-                  <li className="py-3 itens-list-horarios">
+                  <li
+                    className="pt-3 itens-list-horarios"
+                    key={horario.HORARIO_ID}
+                  >
                     <div className="container fluid">
                       <div className="row">
                         <div className="col-12 d-flex">
                           <div className="col-6">
+                            {/* HORA, ICONE RELOGIO, NOME DO SERVIÇO E DO CLIENTE */}
                             <div className="col-12">
+                              {/* HORA E ICONE RELOGIO */}
                               <div className="encapsula-icon d-flex justify-content-around align-items-center background-claro col-10">
+                                {/* ICONE RELOGIO */}
                                 <div className="icon">
                                   <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -93,18 +103,22 @@ export const Horarios = () => {
                                     <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0" />
                                   </svg>
                                 </div>
+                                {/* HORA */}
                                 <div className="hr">
-                                  <p className="m-0">{hora.HORA}</p>
+                                  <p className="m-0">{hora?.HORA}</p>
                                 </div>
                               </div>
+                              {/* NOME DO SERVIÇO E DO CLIENTE */}
                               <div className="container">
-                                <h6 className="my-2">{horario.USER_NOME}</h6>
-                                <p className="m-0">{ servico.NOME_SERVICO }</p>
+                                <h6 className="my-2">{horario?.USER_NOME}</h6>
+                                <p className="m-0">{servico?.NOME_SERVICO}</p>
                               </div>
                             </div>
                           </div>
+                          {/* ICONE WHATSAPP, PREÇO E PRAZO */}
                           <div className="col-6">
                             <div className="col-12">
+                              {/* ICONE WHATSAPP */}
                               <div className="encapsula-icon d-flex justify-content-end align-items-center mx-4">
                                 <div className="icon pt-2">
                                   <svg
@@ -119,13 +133,37 @@ export const Horarios = () => {
                                   </svg>
                                 </div>
                               </div>
+                              {/* PREÇO E PRAZO */}
                               <div className="container d-flex justify-content-center align-items-end flex-column">
-                                <h6 className="my-2">{ servico.PRECO }</h6>
-                                <p className="m-0">{ servico.PRAZO }</p>
+                                <h6 className="my-2">{servico?.PRECO}</h6>
+                                <p className="m-0">{servico?.PRAZO}</p>
                               </div>
                             </div>
                           </div>
                         </div>
+                      </div>
+                      <div className="row row-agendamento-pendente mt-4">
+                        {horario.RESERVADO === 2 && (
+                          <>
+                            <div className="col-12 d-flex justify-content-center">
+                              <p className="p-agendamento-pendente">
+                                Agendamento pendente
+                              </p>
+                            </div>
+
+                            <div className="col-12 d-flex justify-content-around align-items-center my-2">
+                              <button
+                                className="btn btn-sm btn-success"
+                                onClick={() => aceitarHorarioPendente(horario)}
+                              >
+                                Aceitar
+                              </button>
+                              <button className="btn btn-sm btn-danger">
+                                Recusar
+                              </button>
+                            </div>
+                          </>
+                        )}
                       </div>
                     </div>
                   </li>
