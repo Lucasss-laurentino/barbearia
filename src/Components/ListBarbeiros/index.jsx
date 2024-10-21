@@ -19,6 +19,9 @@ import { BarbeiroContext } from "../../Context/BarbeiroContext";
 import { HorarioContext } from "../../Context/HorarioContext";
 import { UserContext } from "../../Context/UserContext";
 import { HorarioMarcadoContext } from "../../Context/HorarioMarcadoContext";
+import { useParams } from "react-router-dom";
+import { socket } from "../../socket";
+import { ServicoContext } from "../../Context/ServicoContext";
 
 // COMPONENTE
 export const ListBarbeiros = () => {
@@ -30,7 +33,7 @@ export const ListBarbeiros = () => {
   const [horarioSelecionado, setHorarioSelecionado] = useState(null);
   const [showModalPagamentoAgendamento, setShowModalPagamentoAgendamento] =
     useState(false);
-
+  const [horarioObjeto, setHorarioObjeto] = useState({});
   // HANDLES
   const handleCloseExcluirHorario = () => {
     setExcluirHorario(false);
@@ -51,21 +54,19 @@ export const ListBarbeiros = () => {
 
   // CONTEXTS
   const {
-    pegarBarbeiros,
     barbeiros,
     barbeiroSelecionado,
     setBarbeiroSelecionado,
   } = useContext(BarbeiroContext);
   const [id, setId] = useState();
   const [setMarcarEsseHorario] = useState({ horario: null });
-
   const {
     setHorarioMarcado,
     horarioMarcado,
     verificaAntesDeMarcar,
     desmarcarHorario,
   } = useContext(HorarioMarcadoContext);
-
+  const { servicos } = useContext(ServicoContext)
   const {
     horarios,
     horariosAberto,
@@ -78,7 +79,8 @@ export const ListBarbeiros = () => {
 
   const { abrirListaHorarios } = useContext(AnimacaoContext);
 
-  const { user, setUserContrata } = useContext(UserContext);
+  const { user } = useContext(UserContext);
+  const { barbearia } = useParams();
 
   // USE EFFECTS
   useEffect(() => {
@@ -125,6 +127,36 @@ export const ListBarbeiros = () => {
       }
     }
   }, [localStorage.getItem("agendamento")]);
+
+  useEffect(() => {
+    const socketInstancia = socket();
+    socketInstancia.on(`horarioPendenteAceito${barbearia}`, (horarioAceito) => {
+      setHorarioMarcado(horarioAceito);
+
+      const hora = horarios.find(
+        (h) => h.ID === horarioAceito.HORARIO_ID
+      );
+      const barbeiro = barbeiros.find(
+        (b) => b.ID === horarioAceito.BARBEIRO_ID
+      );
+      const servico = servicos.find(
+        (s) => s.ID === horarioAceito.SERVICO_ID
+      );
+      setHorarioObjeto({
+        ID: horarioAceito.ID,
+        HORA: hora,
+        BARBEIRO: barbeiro,
+        RESERVADO: horarioAceito.RESERVADO,
+        SERVICO: servico,
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    if(Object.keys(horarioObjeto).length > 0){
+      localStorage.setItem("agendamento", JSON.stringify(horarioObjeto));
+    }
+  },[horarioObjeto])
 
   return (
     <>
@@ -214,7 +246,7 @@ export const ListBarbeiros = () => {
                         {usuarioTemHorarioMarcado &&
                           horarioMarcado?.BARBEIRO_ID === barbeiro?.ID && (
                             <HoraMarcada
-                              horarioMarcado={horarioMarcado}
+                              horario={horarioObjeto}
                               desmarcarHorario={desmarcarHorario}
                             />
                           )}

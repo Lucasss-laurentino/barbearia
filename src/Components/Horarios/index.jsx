@@ -5,6 +5,7 @@ import { HorarioMarcadoContext } from "../../Context/HorarioMarcadoContext";
 import { UserContext } from "../../Context/UserContext";
 import { ServicoContext } from "../../Context/ServicoContext";
 import { HorarioContext } from "../../Context/HorarioContext";
+import { useParams } from "react-router-dom";
 
 export const Horarios = () => {
   const { horariosMarcado, setHorariosMarcado, aceitarHorarioPendente } =
@@ -12,7 +13,7 @@ export const Horarios = () => {
   const { user } = useContext(UserContext);
   const { servicos } = useContext(ServicoContext);
   const { horarios } = useContext(HorarioContext);
-
+  const { barbearia } = useParams();
   const [lucroDiario, setLucroDiario] = useState();
 
   const limparValor = (valor) => {
@@ -22,8 +23,9 @@ export const Horarios = () => {
   };
 
   useEffect(() => {
+    // esse evento tambem é escutado em horario context
     const socketInstancia = socket();
-    socketInstancia.on("agendamentoResultado", async (agendamentoReturn) => {
+    socketInstancia.on(`agendamentoResultado${barbearia}`, async (agendamentoReturn) => {
       const { agendamento } = agendamentoReturn;
       if (agendamento.BARBEARIA === user.NOME_BARBEARIA) {
         setHorariosMarcado([...horariosMarcado, agendamento]);

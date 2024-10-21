@@ -1,7 +1,8 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { http } from "../http";
 import { HorarioContext } from "./HorarioContext";
 import { ServicoContext } from "./ServicoContext";
+import { socket } from "../socket";
 
 export const HorarioMarcadoContext = createContext();
 
@@ -11,6 +12,15 @@ export const HorarioMarcadoProvider = ({ children }) => {
   const { setServicoEscolhido } = useContext(ServicoContext);
   const [horarioMarcado, setHorarioMarcado] = useState();
   const [horariosMarcado, setHorariosMarcado] = useState([]);
+  const [horarioPendente, setHorarioPendente] = useState();
+
+  useEffect(() => {
+    const socketInstancia = socket();
+    if (horarioPendente) {
+      socketInstancia.emit("aceitarHorarioPendente", horarioPendente);
+    }
+  }, [horarioPendente]);
+
   const { ordenarHorarios, setErrosHorarios } = useContext(HorarioContext);
 
   const buscarHorariosAgendado = async (barbearia) => {
@@ -87,6 +97,8 @@ export const HorarioMarcadoProvider = ({ children }) => {
 
   const aceitarHorarioPendente = async (horario) => {
     try {
+      setHorarioPendente(horario);
+      /*
       const response = await http.post("horario/aceitarHorarioPendente", { horario });
       if (!response) throw "Não foi possivel aceitar esse horario";
       const { horarioNaoPendente } = response.data;
@@ -97,10 +109,11 @@ export const HorarioMarcadoProvider = ({ children }) => {
         return horarioMarcado
       });
       setHorariosMarcado([...novosHorarios]);
+      */
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   return (
     <HorarioMarcadoContext.Provider

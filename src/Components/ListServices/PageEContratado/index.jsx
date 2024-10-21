@@ -15,10 +15,10 @@ export const PageEContratado = ({
     <>
       <div className="d-flex justify-content-end align-items-center col-4">
         <div className="col-9">
-          <h6 className="m-0">{servico.PRECO}</h6>
+          <h6 className="m-0">{servico?.PRECO}</h6>
           {(servicoEscolhido?.contratado &&
-            servicoEscolhido?.id === servico.ID) ||
-          servicoAgendado.ID === servico.ID ? (
+            servicoEscolhido?.id === servico?.ID) ||
+          servicoAgendado?.ID === servico.ID ? (
             <div className="container">
               <img
                 src="icones_menu_bottom/verificado.gif"

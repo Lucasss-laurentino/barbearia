@@ -33,7 +33,6 @@ export const HorarioProvider = ({ children }) => {
   const [agendamento, setAgendamento] = useState({});
   const [showModalMarcarHorarioDeslogado, setShowModalMarcarHorarioDeslogado] =
     useState(false);
-
   // USE EFFECT
 
   // esse useEffect é reponsavel por iniciar a conexao web socket
@@ -42,10 +41,9 @@ export const HorarioProvider = ({ children }) => {
     if (iniciarConexaoSocket) {
       // enviando agendamento pro processo "agendar"
       socketInstancia.emit("agendar", agendamento);
-      // escutando o processo "agendamentoResultado"
+      // escutando o processo "agendamentoResultado" (esse evento tambem é escutado em horario componente)
       socketInstancia.on("agendamentoResultado", (agendamento) => {
         const agendamentoRetornado = agendamento.agendamento;
-
         // setar hora como indisponivel no array de objetos horarios
         const novoHorarios = horarios.filter((horaFilter) => {
           if (horaFilter.ID === agendamentoRetornado.HORARIO_ID) {
