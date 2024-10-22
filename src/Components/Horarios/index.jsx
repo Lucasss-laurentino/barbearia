@@ -6,13 +6,15 @@ import { UserContext } from "../../Context/UserContext";
 import { ServicoContext } from "../../Context/ServicoContext";
 import { HorarioContext } from "../../Context/HorarioContext";
 import { useParams } from "react-router-dom";
+import { BarbeiroContext } from "../../Context/BarbeiroContext";
 
 export const Horarios = () => {
-  const { horariosMarcado, setHorariosMarcado, aceitarHorarioPendente } =
+  const { horariosMarcado, setHorariosMarcado, aceitarHorarioPendente, recusarHorarioPendente } =
     useContext(HorarioMarcadoContext);
   const { user } = useContext(UserContext);
   const { servicos } = useContext(ServicoContext);
   const { horarios } = useContext(HorarioContext);
+  const { barbeiros } = useContext(BarbeiroContext);
   const { barbearia } = useParams();
   const [lucroDiario, setLucroDiario] = useState();
 
@@ -25,12 +27,15 @@ export const Horarios = () => {
   useEffect(() => {
     // esse evento tambem é escutado em horario context
     const socketInstancia = socket();
-    socketInstancia.on(`agendamentoResultado${barbearia}`, async (agendamentoReturn) => {
-      const { agendamento } = agendamentoReturn;
-      if (agendamento.BARBEARIA === user.NOME_BARBEARIA) {
-        setHorariosMarcado([...horariosMarcado, agendamento]);
+    socketInstancia.on(
+      `agendamentoResultado${barbearia}`,
+      async (agendamentoReturn) => {
+        const { agendamento } = agendamentoReturn;
+        if (agendamento.BARBEARIA === user.NOME_BARBEARIA) {
+          setHorariosMarcado([...horariosMarcado, agendamento]);
+        }
       }
-    });
+    );
   }, []);
 
   useEffect(() => {
@@ -73,7 +78,6 @@ export const Horarios = () => {
             </div>
             <ul className="list-horarios">
               {horariosMarcado.map((horario) => {
-                console.log(horario);
                 const hora = horarios.find((h) => h.ID === horario?.HORARIO_ID);
                 const servico = servicos.find(
                   (s) => s.ID === horario?.SERVICO_ID
@@ -87,34 +91,31 @@ export const Horarios = () => {
                       <div className="row">
                         <div className="col-12 d-flex">
                           <div className="col-6">
-                            {/* HORA, ICONE RELOGIO, NOME DO SERVIÇO E DO CLIENTE */}
-                            <div className="col-12">
-                              {/* HORA E ICONE RELOGIO */}
-                              <div className="encapsula-icon d-flex justify-content-around align-items-center background-claro col-10">
-                                {/* ICONE RELOGIO */}
-                                <div className="icon">
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="22"
-                                    height="22"
-                                    fill="currentColor"
-                                    className="bi bi-clock mx-1"
-                                    viewBox="0 0 16 16"
-                                  >
-                                    <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z" />
-                                    <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0" />
-                                  </svg>
-                                </div>
-                                {/* HORA */}
-                                <div className="hr">
-                                  <p className="m-0">{hora?.HORA}</p>
-                                </div>
+                            {/* HORA E ICONE RELOGIO */}
+                            <div className="encapsula-icon d-flex justify-content-around align-items-center background-claro col-7">
+                              {/* ICONE RELOGIO */}
+                              <div className="icon">
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="22"
+                                  height="22"
+                                  fill="currentColor"
+                                  className="bi bi-clock mx-1"
+                                  viewBox="0 0 16 16"
+                                >
+                                  <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z" />
+                                  <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0" />
+                                </svg>
                               </div>
-                              {/* NOME DO SERVIÇO E DO CLIENTE */}
-                              <div className="container">
-                                <h6 className="my-2">{horario?.USER_NOME}</h6>
-                                <p className="m-0">{servico?.NOME_SERVICO}</p>
+                              {/* HORA */}
+                              <div className="hr">
+                                <p className="m-0">{hora?.HORA}</p>
                               </div>
+                            </div>
+                            {/* NOME DO SERVIÇO E DO CLIENTE */}
+                            <div className="container p-0">
+                              <h6 className="my-2">{horario?.USER_NOME}</h6>
+                              <p className="m-0">{servico?.NOME_SERVICO}</p>
                             </div>
                           </div>
                           {/* ICONE WHATSAPP, PREÇO E PRAZO */}
@@ -144,9 +145,42 @@ export const Horarios = () => {
                           </div>
                         </div>
                       </div>
-                      <div className="row row-agendamento-pendente mt-4">
-                        {horario.RESERVADO === 2 && (
-                          <>
+                      <div className="row my-3">
+                        <div className="col-12 d-flex">
+                          <div className="col-2">
+                            {barbeiros.map((barbeiro) => {
+                              if (barbeiro.ID === horario.BARBEIRO_ID) {
+                                return (
+                                  <div className="div-redonda" key={barbeiro.ID}>
+                                    <img
+                                      src={
+                                        process.env.REACT_APP_API_URL +
+                                        barbeiro.IMAGEM
+                                      }
+                                      className="img-fluid"
+                                      alt=""
+                                      width="100%"
+                                    />
+                                  </div>
+                                );
+                              }
+                            })}
+                          </div>
+                          <div className="col-10 d-flex justify-content-end align-items-center">
+                            {barbeiros.map((barbeiro) => {
+                              if (barbeiro.ID === horario.BARBEIRO_ID) {
+                                return (
+                                  <h6 className="mx-4" key={barbeiro.ID}>{barbeiro.NOME}</h6>
+                                );
+                              }
+                            })}
+                          </div>
+                        </div>
+                      </div>
+                      {/* SÓ RENDERIZA ESSA LINHA SE HORARIO FOR PENDENTE */}
+                      {horario.RESERVADO === 2 && (
+                        <>
+                          <div className="row row-agendamento-pendente mt-4">
                             <div className="col-12 d-flex justify-content-center">
                               <p className="p-agendamento-pendente">
                                 Agendamento pendente
@@ -160,13 +194,34 @@ export const Horarios = () => {
                               >
                                 Aceitar
                               </button>
-                              <button className="btn btn-sm btn-danger">
+                              <button className="btn btn-sm btn-danger" onClick={() => recusarHorarioPendente(horario)}>
                                 Recusar
                               </button>
                             </div>
-                          </>
-                        )}
-                      </div>
+                          </div>
+                        </>
+                      )}
+                      {/* SÓ RENDERIZA ESSA LINHA SE HORARIO FOR ACEITO */}
+                      {horario.RESERVADO === 1 && (
+                        <>
+                          <div className="row my-3">
+                            <div className="col-12 d-flex justify-content-around align-items-center my-2">
+                              <button
+                                className="btn btn-sm btn-success"
+                                onClick={() => aceitarHorarioPendente(horario)}
+                              >
+                                Finalizar
+                              </button>
+                              <button
+                                className="btn btn-sm btn-danger"
+                                onClick={() => aceitarHorarioPendente(horario)}
+                              >
+                                Cancelar
+                              </button>
+                            </div>
+                          </div>
+                        </>
+                      )}
                     </div>
                   </li>
                 );

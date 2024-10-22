@@ -13,13 +13,23 @@ export const HorarioMarcadoProvider = ({ children }) => {
   const [horarioMarcado, setHorarioMarcado] = useState();
   const [horariosMarcado, setHorariosMarcado] = useState([]);
   const [horarioPendente, setHorarioPendente] = useState();
+  const [horarioPendenteRecusar, setHorarioPendenteRecusar] = useState();
 
+  // aceita horario pendente
   useEffect(() => {
     const socketInstancia = socket();
     if (horarioPendente) {
       socketInstancia.emit("aceitarHorarioPendente", horarioPendente);
     }
   }, [horarioPendente]);
+
+  // recusa horario pendente
+  useEffect(() => {
+    const socketInstancia = socket();
+    if (horarioPendenteRecusar) {
+      socketInstancia.emit("recusarHorarioPendente", horarioPendenteRecusar);
+    }
+  }, [horarioPendenteRecusar])
 
   const { ordenarHorarios, setErrosHorarios } = useContext(HorarioContext);
 
@@ -95,24 +105,14 @@ export const HorarioMarcadoProvider = ({ children }) => {
     }
   };
 
-  const aceitarHorarioPendente = async (horario) => {
-    try {
-      setHorarioPendente(horario);
-      /*
-      const response = await http.post("horario/aceitarHorarioPendente", { horario });
-      if (!response) throw "Não foi possivel aceitar esse horario";
-      const { horarioNaoPendente } = response.data;
-      const novosHorarios = horariosMarcado.map((horarioMarcado) => {
-        if (horarioMarcado.ID === horarioNaoPendente.ID) {
-          horarioMarcado.RESERVADO = 1;
-        }
-        return horarioMarcado
-      });
-      setHorariosMarcado([...novosHorarios]);
-      */
-    } catch (error) {
-      console.log(error);
-    }
+  // gatilho ativa useEffect
+  const aceitarHorarioPendente = (horario) => {
+    setHorarioPendente(horario);
+  };
+
+  // gatilho ativa useEffect
+  const recusarHorarioPendente = (horario) => {
+    setHorarioPendenteRecusar(horario);
   };
 
   return (
@@ -127,6 +127,7 @@ export const HorarioMarcadoProvider = ({ children }) => {
         setHorariosMarcado,
         cancelarMeuHorarioPendente,
         aceitarHorarioPendente,
+        recusarHorarioPendente
       }}
     >
       {children}

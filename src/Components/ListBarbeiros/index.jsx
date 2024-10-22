@@ -128,6 +128,7 @@ export const ListBarbeiros = () => {
     }
   }, [localStorage.getItem("agendamento")]);
 
+  // escuta evento que aceitou horario pendente
   useEffect(() => {
     const socketInstancia = socket();
     socketInstancia.on(`horarioPendenteAceito${barbearia}`, (horarioAceito) => {
@@ -151,6 +152,15 @@ export const ListBarbeiros = () => {
       });
     });
   }, []);
+
+  // escuta evento que recusou horario pendente
+  useEffect(() => {
+    const socketInstancia = socket();
+    socketInstancia.on(`horarioPendenteRecusado${barbearia}`, (horarioPendenteRecusado) => {
+      console.log(horarioPendenteRecusado)
+      localStorage.setItem("agendamento", "");
+    });
+  }, [])
 
   useEffect(() => {
     if(Object.keys(horarioObjeto).length > 0){
