@@ -59,16 +59,15 @@ export const ListBarbeiros = () => {
     setBarbeiroSelecionado,
   } = useContext(BarbeiroContext);
   const [id, setId] = useState();
-  const [setMarcarEsseHorario] = useState({ horario: null });
   const {
     setHorarioMarcado,
     horarioMarcado,
-    verificaAntesDeMarcar,
     desmarcarHorario,
   } = useContext(HorarioMarcadoContext);
-  const { servicos } = useContext(ServicoContext)
+  const { servicos, setServicoEscolhido } = useContext(ServicoContext)
   const {
     horarios,
+    setHorarios,
     horariosAberto,
     setHorariosAberto,
     usuarioTemHorarioMarcado,
@@ -131,36 +130,27 @@ export const ListBarbeiros = () => {
   // escuta evento que aceitou horario pendente
   useEffect(() => {
     const socketInstancia = socket();
-    socketInstancia.on(`horarioPendenteAceito${barbearia}`, (horarioAceito) => {
-      setHorarioMarcado(horarioAceito);
+    // socketInstancia.on("horarioPendenteAceito", (horarioAceito) => {
+    //   setHorarioMarcado(horarioAceito);
 
-      const hora = horarios.find(
-        (h) => h.ID === horarioAceito.HORARIO_ID
-      );
-      const barbeiro = barbeiros.find(
-        (b) => b.ID === horarioAceito.BARBEIRO_ID
-      );
-      const servico = servicos.find(
-        (s) => s.ID === horarioAceito.SERVICO_ID
-      );
-      setHorarioObjeto({
-        ID: horarioAceito.ID,
-        HORA: hora,
-        BARBEIRO: barbeiro,
-        RESERVADO: horarioAceito.RESERVADO,
-        SERVICO: servico,
-      });
-    });
+    //   const hora = horarios.find(
+    //     (h) => h.ID === horarioAceito.HORARIO_ID
+    //   );
+    //   const barbeiro = barbeiros.find(
+    //     (b) => b.ID === horarioAceito.BARBEIRO_ID
+    //   );
+    //   const servico = servicos.find(
+    //     (s) => s.ID === horarioAceito.SERVICO_ID
+    //   );
+    //   setHorarioObjeto({
+    //     ID: horarioAceito.ID,
+    //     HORA: hora,
+    //     BARBEIRO: barbeiro,
+    //     RESERVADO: horarioAceito.RESERVADO,
+    //     SERVICO: servico,
+    //   });
+    // });
   }, []);
-
-  // escuta evento que recusou horario pendente
-  useEffect(() => {
-    const socketInstancia = socket();
-    socketInstancia.on(`horarioPendenteRecusado${barbearia}`, (horarioPendenteRecusado) => {
-      console.log(horarioPendenteRecusado)
-      localStorage.setItem("agendamento", "");
-    });
-  }, [])
 
   useEffect(() => {
     if(Object.keys(horarioObjeto).length > 0){
@@ -252,8 +242,9 @@ export const ListBarbeiros = () => {
                           horarioSelecionado={horarioSelecionado}
                           setExcluirHorario={setExcluirHorario}
                           setId={setId}
+                          barbearia={barbearia}
                         />
-                        {usuarioTemHorarioMarcado &&
+                        {localStorage.getItem("agendamento") &&
                           horarioMarcado?.BARBEIRO_ID === barbeiro?.ID && (
                             <HoraMarcada
                               horario={horarioObjeto}

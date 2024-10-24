@@ -14,6 +14,7 @@ export const ListaHorarios = ({
   horarioSelecionado,
   setExcluirHorario,
   setId,
+  barbearia
 }) => {
 
   const { servicoEscolhido } = useContext(ServicoContext);
@@ -27,6 +28,7 @@ export const ListaHorarios = ({
         setShow={setShowModalMarcarHorarioDeslogado}
         horarioSelecionado={horarioSelecionado}
         servicoEscolhido={servicoEscolhido}
+        barbearia={barbearia}
       />
       <ul className="horarios-fechado" id={barbeiro.ID}>
         {horariosFiltrado.length < 23 && user.ADM && (

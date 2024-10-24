@@ -2,7 +2,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Modal from "react-bootstrap/Modal";
 import { useForm } from "react-hook-form";
 import { agendarDeslogadoSchema } from "../../../validations/agendarDeslogado";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { HorarioContext } from "../../../Context/HorarioContext";
 
 export const ModalMarcarHorarioDeslogado = ({
@@ -10,6 +10,7 @@ export const ModalMarcarHorarioDeslogado = ({
   setShow,
   horarioSelecionado,
   servicoEscolhido,
+  barbearia
 }) => {
   const handleClose = () => {
     setValue("NOME_CLIENTE", "");
@@ -28,7 +29,7 @@ export const ModalMarcarHorarioDeslogado = ({
   });
 
   const onSubmit = (data) => {
-    agendar(data, horarioSelecionado, servicoEscolhido);
+    agendar(data, horarioSelecionado, servicoEscolhido, barbearia);
   }
   return (
     <>

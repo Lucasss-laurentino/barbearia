@@ -25,34 +25,23 @@ export const HorarioProvider = ({ children }) => {
     BARBEIRO_ID: 0,
   });
 
-  // novoHorarioAgendado guarda o horario agendado no useEffect do web socket
   const [loadHorarios, setLoadHorarios] = useState(false);
-  const [iniciarConexaoSocket, setIniciarConexaoSocket] = useState(false);
-  // ao renderizar ja é conectado ao servidor socket pois state está recebendo a função sendo executada "socket()"
   const [socketInstancia] = useState(socket());
   const [agendamento, setAgendamento] = useState({});
   const [showModalMarcarHorarioDeslogado, setShowModalMarcarHorarioDeslogado] =
     useState(false);
   // USE EFFECT
 
-  // esse useEffect é reponsavel por iniciar a conexao web socket
   useEffect(() => {
-    // iniciarConexaoSocket recebe true quando o usuario clica em agendar
-    if (iniciarConexaoSocket) {
-      // enviando agendamento pro processo "agendar"
-      socketInstancia.emit("agendar", agendamento);
-      // escutando o processo "agendamentoResultado" (esse evento tambem é escutado em horario componente)
-      socketInstancia.on("agendamentoResultado", (agendamento) => {
+    if (Object.keys(agendamento).length > 0) {
+      socketInstancia.emit("agendar", agendamento);      
+      // evento marca horario como pendente
+      socketInstancia.on("confirmarAgendamento", (agendamento) => {
+
         const agendamentoRetornado = agendamento.agendamento;
-        // setar hora como indisponivel no array de objetos horarios
-        const novoHorarios = horarios.filter((horaFilter) => {
-          if (horaFilter.ID === agendamentoRetornado.HORARIO_ID) {
-            horaFilter.DISPONIVEL = false;
-          }
-          return horaFilter;
-        });
+       
         // atualizando horarios
-        setHorarios(novoHorarios);
+        setHorarios(agendamento.horarios);
 
         const hora = horarios.find(
           (h) => h.ID === agendamentoRetornado.HORARIO_ID
@@ -67,7 +56,7 @@ export const HorarioProvider = ({ children }) => {
           ID: agendamentoRetornado.ID,
           HORA: hora,
           BARBEIRO: barbeiro,
-          RESERVADO: agendamentoRetornado.RESERVADO,
+          RESERVADO: agendamentoRetornado?.RESERVADO,
           SERVICO: servico,
         };
 
@@ -77,8 +66,9 @@ export const HorarioProvider = ({ children }) => {
         setShowModalMarcarHorarioDeslogado(false);
 
       });
+
     }
-  }, [iniciarConexaoSocket]);
+  }, [agendamento]);
 
   // FUNÇÕES
 
@@ -154,9 +144,7 @@ export const HorarioProvider = ({ children }) => {
         SERVICO: servicoEscolhido,
         STATUS: 1, // 1 = reservado / 0 = nao reservado
       };
-      setAgendamento(agendamentoObj);
-      // essa mudança de estado ativa o useEffect que escuta esse estado
-      setIniciarConexaoSocket(true);
+      setAgendamento(agendamentoObj); // ativa useEffect
     } catch (error) {
       console.log(error);
     }

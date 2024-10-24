@@ -7,19 +7,32 @@ import { socket } from "../socket";
 export const HorarioMarcadoContext = createContext();
 
 export const HorarioMarcadoProvider = ({ children }) => {
-  const { setUsuarioTemHorarioMarcado, setHorarios } =
+  const { setUsuarioTemHorarioMarcado, setHorarios, horarios } =
     useContext(HorarioContext);
   const { setServicoEscolhido } = useContext(ServicoContext);
   const [horarioMarcado, setHorarioMarcado] = useState();
   const [horariosMarcado, setHorariosMarcado] = useState([]);
   const [horarioPendente, setHorarioPendente] = useState();
   const [horarioPendenteRecusar, setHorarioPendenteRecusar] = useState();
+  const [cancelarHorarioPendente, setCancelarHorarioPendente] = useState();
 
   // aceita horario pendente
   useEffect(() => {
     const socketInstancia = socket();
     if (horarioPendente) {
       socketInstancia.emit("aceitarHorarioPendente", horarioPendente);
+      socketInstancia.on("confirmarHorarioAceito", (horarioAceito) => {
+        console.log(horarioAceito);
+        const { horarios, horarioNaoPendente } = horarioAceito;
+        const novoHorariosMarcado = horariosMarcado.map((hM) => {
+          if (hM.ID === horarioNaoPendente.ID) {
+            hM.RESERVADO = 1;
+          }
+          return hM;
+        });
+        setHorariosMarcado(novoHorariosMarcado);
+        setHorarios(horarios);
+      });
     }
   }, [horarioPendente]);
 
@@ -28,8 +41,26 @@ export const HorarioMarcadoProvider = ({ children }) => {
     const socketInstancia = socket();
     if (horarioPendenteRecusar) {
       socketInstancia.emit("recusarHorarioPendente", horarioPendenteRecusar);
+      socketInstancia.on("confirmarHorarioRecusado", (horarioParametro) => {
+        const { horarioRecusado } = horarioParametro;
+        const novoHorariosMarcado = horariosMarcado.filter(
+          (h) => h.ID !== horarioRecusado.ID
+        );
+        setHorariosMarcado(novoHorariosMarcado);
+      });
     }
-  }, [horarioPendenteRecusar])
+  }, [horarioPendenteRecusar]);
+
+  // cancela horario pendente
+  useEffect(() => {
+    if (cancelarHorarioPendente) {
+      const socketInstancia = socket();
+      socketInstancia.emit("cancelarHorarioPendente", cancelarHorarioPendente);
+      socketInstancia.on("horarioPendenteCancelado", (horarioPendenteCancelado) => {
+        localStorage.setItem("agendamento", "");
+      });
+    }
+  }, [cancelarHorarioPendente]);
 
   const { ordenarHorarios, setErrosHorarios } = useContext(HorarioContext);
 
@@ -90,19 +121,20 @@ export const HorarioMarcadoProvider = ({ children }) => {
   };
 
   const cancelarMeuHorarioPendente = async (meuHorarioPendente) => {
-    try {
-      const response = await http.post("horario/cancelarHorarioPendente", {
-        meuHorarioPendente,
-      });
-      if (!response) throw "Não foi possivel cancelar seu horário";
-      setUsuarioTemHorarioMarcado(false);
-      setHorarios(response.data.horarios);
-      setHorarioMarcado({});
-      localStorage.setItem("agendamento", "");
-      setServicoEscolhido({});
-    } catch (error) {
-      console.log(error);
-    }
+    setCancelarHorarioPendente(meuHorarioPendente);
+    // try {
+    //   const response = await http.post("horario/cancelarHorarioPendente", {
+    //     meuHorarioPendente,
+    //   });
+    //   if (!response) throw "Não foi possivel cancelar seu horário";
+    //   setUsuarioTemHorarioMarcado(false);
+    //   setHorarios(response.data.horarios);
+    //   setHorarioMarcado({});
+    //   localStorage.setItem("agendamento", "");
+    //   setServicoEscolhido({});
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
 
   // gatilho ativa useEffect
@@ -127,7 +159,7 @@ export const HorarioMarcadoProvider = ({ children }) => {
         setHorariosMarcado,
         cancelarMeuHorarioPendente,
         aceitarHorarioPendente,
-        recusarHorarioPendente
+        recusarHorarioPendente,
       }}
     >
       {children}

@@ -1,21 +1,16 @@
 import { useContext, useEffect, useState } from "react";
-import { socket } from "../../socket";
 import "./index.css";
 import { HorarioMarcadoContext } from "../../Context/HorarioMarcadoContext";
-import { UserContext } from "../../Context/UserContext";
 import { ServicoContext } from "../../Context/ServicoContext";
 import { HorarioContext } from "../../Context/HorarioContext";
-import { useParams } from "react-router-dom";
 import { BarbeiroContext } from "../../Context/BarbeiroContext";
 
 export const Horarios = () => {
-  const { horariosMarcado, setHorariosMarcado, aceitarHorarioPendente, recusarHorarioPendente } =
+  const { horariosMarcado, aceitarHorarioPendente, recusarHorarioPendente } =
     useContext(HorarioMarcadoContext);
-  const { user } = useContext(UserContext);
   const { servicos } = useContext(ServicoContext);
   const { horarios } = useContext(HorarioContext);
   const { barbeiros } = useContext(BarbeiroContext);
-  const { barbearia } = useParams();
   const [lucroDiario, setLucroDiario] = useState();
 
   const limparValor = (valor) => {
@@ -25,32 +20,15 @@ export const Horarios = () => {
   };
 
   useEffect(() => {
-    // esse evento tambem é escutado em horario context
-    const socketInstancia = socket();
-    socketInstancia.on(
-      `agendamentoResultado${barbearia}`,
-      async (agendamentoReturn) => {
-        const { agendamento } = agendamentoReturn;
-        if (agendamento.BARBEARIA === user.NOME_BARBEARIA) {
-          setHorariosMarcado([...horariosMarcado, agendamento]);
-        }
-      }
-    );
-  }, []);
-
-  useEffect(() => {
     let precos = [];
-
-    horariosMarcado.forEach((horarioMarcado) => {
+    horariosMarcado?.forEach((horarioMarcado) => {
       const servico = servicos.find((s) => s.ID === horarioMarcado?.SERVICO_ID);
       precos.push(limparValor(servico?.PRECO));
     });
-
     const total = precos.reduce(
       (valorAcumulado, valorAtual) => valorAcumulado + valorAtual,
       0
     );
-
     setLucroDiario(
       `R$ ${total.toLocaleString("pt-BR", {
         minimumFractionDigits: 2,
@@ -67,7 +45,7 @@ export const Horarios = () => {
             <div className="col-12 head-horarios">
               <div className="col-5 quantia-agendamento-horarios">
                 <div className="col-11 px-1 align-qnt-agendamento">
-                  <h5 className="">{horariosMarcado.length}</h5>
+                  <h5 className="">{horariosMarcado?.length}</h5>
                   <p className="m-0">Agendamentos</p>
                 </div>
               </div>
@@ -77,7 +55,7 @@ export const Horarios = () => {
               </div>
             </div>
             <ul className="list-horarios">
-              {horariosMarcado.map((horario) => {
+              {horariosMarcado?.map((horario) => {
                 const hora = horarios.find((h) => h.ID === horario?.HORARIO_ID);
                 const servico = servicos.find(
                   (s) => s.ID === horario?.SERVICO_ID
@@ -168,9 +146,9 @@ export const Horarios = () => {
                           </div>
                           <div className="col-10 d-flex justify-content-end align-items-center">
                             {barbeiros.map((barbeiro) => {
-                              if (barbeiro.ID === horario.BARBEIRO_ID) {
+                              if (barbeiro?.ID === horario?.BARBEIRO_ID) {
                                 return (
-                                  <h6 className="mx-4" key={barbeiro.ID}>{barbeiro.NOME}</h6>
+                                  <h6 className="mx-4" key={barbeiro?.ID}>{barbeiro.NOME}</h6>
                                 );
                               }
                             })}
@@ -178,7 +156,7 @@ export const Horarios = () => {
                         </div>
                       </div>
                       {/* SÓ RENDERIZA ESSA LINHA SE HORARIO FOR PENDENTE */}
-                      {horario.RESERVADO === 2 && (
+                      {horario?.RESERVADO === 2 && (
                         <>
                           <div className="row row-agendamento-pendente mt-4">
                             <div className="col-12 d-flex justify-content-center">
@@ -202,7 +180,7 @@ export const Horarios = () => {
                         </>
                       )}
                       {/* SÓ RENDERIZA ESSA LINHA SE HORARIO FOR ACEITO */}
-                      {horario.RESERVADO === 1 && (
+                      {horario?.RESERVADO === 1 && (
                         <>
                           <div className="row my-3">
                             <div className="col-12 d-flex justify-content-around align-items-center my-2">

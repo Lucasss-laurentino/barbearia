@@ -1,14 +1,16 @@
+import './index.css';
+
 export const FotoEIcones = ({ barbeiro, user, setBarbeiroSelecionado, setExcluirHorario, setId, setShow, abrirListaHorarios, horariosAberto, setHorariosAberto }) => {
   return (
     <>
       <div className="d-flex justify-content-between align-items-center">
         {/* FOTO E NOME DO BARBEIRO */}
         <div className="d-flex justify-content-start align-items-center col-8">
-          <div className="col-3 mx-3 border-radius-personalizada">
+          <div className="col-3 mx-3 div-redonda-barbeiro">
             <img
-              className="img-fluid img-corte"
+              className="img-fluid"
               src={process.env.REACT_APP_API_URL + barbeiro.IMAGEM}
-              width="87%"
+              width="100%"
             />
           </div>
           <div className="col-9">

@@ -12,7 +12,7 @@ export const HoraMarcada = ({ horario, desmarcarHorario }) => {
       setMeuHorario(horario);      
     }
     setMeuHorario(JSON.parse(localStorage.getItem("agendamento")));
-  }, [JSON.parse(localStorage.getItem("agendamento")).RESERVADO, horario]);
+  }, [JSON.parse(localStorage.getItem("agendamento"))?.RESERVADO, horario]);
 
   return (
     <>
@@ -22,22 +22,22 @@ export const HoraMarcada = ({ horario, desmarcarHorario }) => {
             <p className="m-0">{meuHorario?.HORA?.HORA}</p>
           </div>
           <div className="desmarcar d-flex justify-content-between align-items-center">
-            {meuHorario.RESERVADO === 2 && (
+            {meuHorario?.RESERVADO === 2 && (
               <p className="bg-warning text-dark pendente">Pendente</p>
             )}
-            {meuHorario.RESERVADO === 1 && (
+            {meuHorario?.RESERVADO === 1 && (
               <p className="bg-success text-dark pendente">Aceito</p>
             )}
 
             <a
               className="btn-desmarcar"
               onClick={() => {
-                if (meuHorario.RESERVADO === 2) {
+                if (meuHorario?.RESERVADO === 2) {
                   cancelarMeuHorarioPendente(meuHorario);
                 }
               }}
             >
-              {meuHorario.RESERVADO === 2 ? "Cancelar" : "Desmarcar"}
+              {meuHorario?.RESERVADO === 2 ? "Cancelar" : "Desmarcar"}
             </a>
           </div>
         </div>
