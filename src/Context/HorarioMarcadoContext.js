@@ -16,6 +16,7 @@ export const HorarioMarcadoProvider = ({ children }) => {
   const [horarioPendenteRecusar, setHorarioPendenteRecusar] = useState();
   const [cancelarHorarioPendente, setCancelarHorarioPendente] = useState();
   const [cancelarHorarioMarcado, setCancelarHorarioMarcado] = useState();
+  const [cancelarHorarioMarcadoAdm, setCancelarHorarioMarcadoAdm] = useState();
 
   // aceita horario pendente
   useEffect(() => {
@@ -66,10 +67,9 @@ export const HorarioMarcadoProvider = ({ children }) => {
     }
   }, [cancelarHorarioPendente]);
 
-  // cancela horario marcado
+  // cancela horario marcado (usuario)
   useEffect(() => {
     const socketInstancia = socket();
-    console.log('ativado')
     if (cancelarHorarioMarcado) {
       socketInstancia.emit("cancelarHorarioMarcado", cancelarHorarioMarcado);
       socketInstancia.on("horarioMarcadoCancelado", (horarioCancelado) => {
@@ -78,6 +78,18 @@ export const HorarioMarcadoProvider = ({ children }) => {
       });
     }
   }, [cancelarHorarioMarcado]);
+
+  // cancela horario marcado (adm)
+  useEffect(() => {
+    const socketInstancia = socket();
+    if (cancelarHorarioMarcadoAdm) {
+      socketInstancia.emit("cancelarHorarioMarcadoAdm", cancelarHorarioMarcadoAdm);
+      socketInstancia.on("horarioMarcadoCanceladoAdm", (horarioCancelado) => {
+        setHorarios(horarioCancelado.horarios);
+        setHorariosMarcado(horarioCancelado.horariosMarcado);
+      });
+    }
+  }, [cancelarHorarioMarcadoAdm]);
 
   const { ordenarHorarios, setErrosHorarios } = useContext(HorarioContext);
 
@@ -157,6 +169,10 @@ export const HorarioMarcadoProvider = ({ children }) => {
     setCancelarHorarioMarcado(horarioMarcado);
   };
 
+  const cancelarMeuHorarioMarcadoAdm = (horarioMarcado) => {
+    setCancelarHorarioMarcadoAdm(horarioMarcado);
+  };
+
   return (
     <HorarioMarcadoContext.Provider
       value={{
@@ -171,6 +187,7 @@ export const HorarioMarcadoProvider = ({ children }) => {
         aceitarHorarioPendente,
         recusarHorarioPendente,
         cancelarMeuHorarioMarcado,
+        cancelarMeuHorarioMarcadoAdm,
       }}
     >
       {children}

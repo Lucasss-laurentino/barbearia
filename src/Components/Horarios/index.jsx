@@ -6,8 +6,12 @@ import { HorarioContext } from "../../Context/HorarioContext";
 import { BarbeiroContext } from "../../Context/BarbeiroContext";
 
 export const Horarios = () => {
-  const { horariosMarcado, aceitarHorarioPendente, recusarHorarioPendente } =
-    useContext(HorarioMarcadoContext);
+  const {
+    horariosMarcado,
+    aceitarHorarioPendente,
+    recusarHorarioPendente,
+    cancelarMeuHorarioMarcadoAdm,
+  } = useContext(HorarioMarcadoContext);
   const { servicos } = useContext(ServicoContext);
   const { horarios } = useContext(HorarioContext);
   const { barbeiros } = useContext(BarbeiroContext);
@@ -130,7 +134,10 @@ export const Horarios = () => {
                             {barbeiros.map((barbeiro) => {
                               if (barbeiro.ID === horario.BARBEIRO_ID) {
                                 return (
-                                  <div className="div-redonda" key={barbeiro.ID}>
+                                  <div
+                                    className="div-redonda"
+                                    key={barbeiro.ID}
+                                  >
                                     <img
                                       src={
                                         process.env.REACT_APP_API_URL +
@@ -149,7 +156,9 @@ export const Horarios = () => {
                             {barbeiros.map((barbeiro) => {
                               if (barbeiro?.ID === horario?.BARBEIRO_ID) {
                                 return (
-                                  <h6 className="mx-4" key={barbeiro?.ID}>{barbeiro.NOME}</h6>
+                                  <h6 className="mx-4" key={barbeiro?.ID}>
+                                    {barbeiro.NOME}
+                                  </h6>
                                 );
                               }
                             })}
@@ -173,7 +182,10 @@ export const Horarios = () => {
                               >
                                 Aceitar
                               </button>
-                              <button className="btn btn-sm btn-danger" onClick={() => recusarHorarioPendente(horario)}>
+                              <button
+                                className="btn btn-sm btn-danger"
+                                onClick={() => recusarHorarioPendente(horario)}
+                              >
                                 Recusar
                               </button>
                             </div>
@@ -193,7 +205,9 @@ export const Horarios = () => {
                               </button>
                               <button
                                 className="btn btn-sm btn-danger"
-                                onClick={() => aceitarHorarioPendente(horario)}
+                                onClick={() =>
+                                  cancelarMeuHorarioMarcadoAdm(horario)
+                                }
                               >
                                 Cancelar
                               </button>

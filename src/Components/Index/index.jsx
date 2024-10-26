@@ -18,11 +18,12 @@ import { socket } from "../../socket";
 export const Index = () => {
   const { active } = useContext(AbaBottomContext);
   const { user, pegarUsuario, buscarBarbearia } = useContext(UserContext);
-  const { pegarServicos } = useContext(ServicoContext);
+  const { pegarServicos, setServicoEscolhido } = useContext(ServicoContext);
   const { pegarBarbeiros } = useContext(BarbeiroContext);
   const { pegarHorarios, setHorarios } = useContext(HorarioContext);
-  const { buscarHorariosAgendado, setHorariosMarcado } =
-    useContext(HorarioMarcadoContext);
+  const { buscarHorariosAgendado, setHorariosMarcado } = useContext(
+    HorarioMarcadoContext
+  );
   const { barbearia } = useParams();
 
   useEffect(() => {
@@ -69,30 +70,56 @@ export const Index = () => {
     );
 
     // aceita horario pendente
-    socketInstancia.on(`confirmarHorarioRecusadoUsuario${barbearia}`, (horarioParametro) => {
-      console.log(horarioParametro);
-      const { horarios, horarioNaoPendente } = horarioParametro;
-      if (localStorage.getItem("agendamento")) {
-        const storage = JSON.parse(localStorage.getItem("agendamento"));
-        storage.RESERVADO = horarioNaoPendente.RESERVADO
-        localStorage.setItem("agendamento", JSON.stringify(storage));
+    socketInstancia.on(
+      `confirmarHorarioRecusadoUsuario${barbearia}`,
+      (horarioParametro) => {
+        console.log(horarioParametro);
+        const { horarios, horarioNaoPendente } = horarioParametro;
+        if (localStorage.getItem("agendamento")) {
+          // se gerar algum bug pode ser por nao esta verificando o id do localStorage antes de setar
+          // sendo assim acredito que essa função esteja setando todos localStorage de todos usuarios
+          // preciso fazer esse teste..
+          const storage = JSON.parse(localStorage.getItem("agendamento"));
+          storage.RESERVADO = horarioNaoPendente.RESERVADO;
+          localStorage.setItem("agendamento", JSON.stringify(storage));
+        }
+        setHorariosMarcado(horarioParametro.horariosMarcado);
+        setHorarios(horarios);
       }
-      setHorariosMarcado(horarioParametro.horariosMarcado);
-      setHorarios(horarios);
-    })
+    );
 
     // confirma horario pendente cancelado
-    socketInstancia.on(`confirmarCancelamentoHorarioPendente${barbearia}`, (horarioPendenteCancelado) => {
-      setHorarios(horarioPendenteCancelado.horarios);
-      setHorariosMarcado(horarioPendenteCancelado.horariosMarcado);
-    });
+    socketInstancia.on(
+      `confirmarCancelamentoHorarioPendente${barbearia}`,
+      (horarioPendenteCancelado) => {
+        setHorarios(horarioPendenteCancelado.horarios);
+        setHorariosMarcado(horarioPendenteCancelado.horariosMarcado);
+      }
+    );
 
-    // confirmar horario aceito que o usuario cancelou
-    socketInstancia.on(`horarioMarcadoCancelado${barbearia}`, (horarioResponse) => {
-      setHorariosMarcado(horarioResponse.horariosMarcado);
-      setHorarios(horarioResponse.horarios)
-    });
+    // horario cancelado pelo usuario (depois de aceito)
+    socketInstancia.on(
+      `horarioMarcadoCancelado${barbearia}`,
+      (horarioResponse) => {
+        setHorariosMarcado(horarioResponse.horariosMarcado);
+        setHorarios(horarioResponse.horarios);
+      }
+    );
 
+    // horario cancelado pelo adm (depois de aceito)
+    socketInstancia.on(
+      `horarioMarcadoCanceladoAdm${barbearia}`,
+      (horarioResponse) => {
+        setHorariosMarcado(horarioResponse.horariosMarcado);
+        setHorarios(horarioResponse.horarios);
+        if (localStorage.getItem("agendamento")) {
+          const storage = JSON.parse(localStorage.getItem("agendamento"));
+          if (storage.ID === horarioResponse.horarioRecusado.ID)
+            localStorage.setItem("agendamento", "");
+          setServicoEscolhido();
+        }
+      }
+    );
   }, []);
 
   return (
