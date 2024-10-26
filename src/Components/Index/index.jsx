@@ -21,7 +21,7 @@ export const Index = () => {
   const { pegarServicos } = useContext(ServicoContext);
   const { pegarBarbeiros } = useContext(BarbeiroContext);
   const { pegarHorarios, setHorarios } = useContext(HorarioContext);
-  const { buscarHorariosAgendado, horariosMarcado, setHorariosMarcado } =
+  const { buscarHorariosAgendado, setHorariosMarcado } =
     useContext(HorarioMarcadoContext);
   const { barbearia } = useParams();
 
@@ -46,8 +46,8 @@ export const Index = () => {
       `agendamentoResultado${barbearia}`,
       async (agendamentoReturn) => {
         setHorarios(agendamentoReturn.horarios);
-        const { agendamento } = agendamentoReturn;
-        setHorariosMarcado([...horariosMarcado, agendamento]);
+        // const { agendamento } = agendamentoReturn;
+        setHorariosMarcado([...agendamentoReturn.horariosMarcado]);
       }
     );
 
@@ -85,6 +85,12 @@ export const Index = () => {
     socketInstancia.on(`confirmarCancelamentoHorarioPendente${barbearia}`, (horarioPendenteCancelado) => {
       setHorarios(horarioPendenteCancelado.horarios);
       setHorariosMarcado(horarioPendenteCancelado.horariosMarcado);
+    });
+
+    // confirmar horario aceito que o usuario cancelou
+    socketInstancia.on(`horarioMarcadoCancelado${barbearia}`, (horarioResponse) => {
+      setHorariosMarcado(horarioResponse.horariosMarcado);
+      setHorarios(horarioResponse.horarios)
     });
 
   }, []);

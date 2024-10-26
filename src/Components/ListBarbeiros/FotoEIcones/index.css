@@ -1,6 +1,7 @@
 .div-redonda-barbeiro {
-    width: 30%;
-    max-height: 75px;
-    overflow: hidden;
-    border-radius: 50%;
+  max-width: 29%;
+  max-height: 72px;
+  overflow: hidden;
+  border-radius: 50%;
 }
+

@@ -3,7 +3,7 @@ import { HorarioMarcadoContext } from "../../../Context/HorarioMarcadoContext";
 
 export const HoraMarcada = ({ horario, desmarcarHorario }) => {
   const [meuHorario, setMeuHorario] = useState({});
-  const { cancelarMeuHorarioPendente,  } = useContext(
+  const { cancelarMeuHorarioPendente, cancelarMeuHorarioMarcado  } = useContext(
     HorarioMarcadoContext
   );
 
@@ -34,6 +34,8 @@ export const HoraMarcada = ({ horario, desmarcarHorario }) => {
               onClick={() => {
                 if (meuHorario?.RESERVADO === 2) {
                   cancelarMeuHorarioPendente(meuHorario);
+                } else if (meuHorario?.RESERVADO === 1) {
+                  cancelarMeuHorarioMarcado(meuHorario);
                 }
               }}
             >

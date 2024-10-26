@@ -123,6 +123,7 @@ export const Horarios = () => {
                           </div>
                         </div>
                       </div>
+                      <hr />
                       <div className="row my-3">
                         <div className="col-12 d-flex">
                           <div className="col-2">

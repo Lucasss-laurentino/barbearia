@@ -9,7 +9,7 @@ export const NomeImgPrazo = ({ servico }) => {
             <img
               className="img-fluid img-corte"
               src={process.env.REACT_APP_API_URL + servico.IMAGEM_SERVICO}
-              width="87%"
+              width="100%"
             />
           </div>
         </div>
