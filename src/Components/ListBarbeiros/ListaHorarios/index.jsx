@@ -1,4 +1,4 @@
-import { Fragment, useContext, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { ModalMarcarHorarioDeslogado } from "../ModalMarcarHorarioDeslogado";
 import { ServicoContext } from "../../../Context/ServicoContext";
 import { toast, Bounce } from "react-toastify";
@@ -14,12 +14,23 @@ export const ListaHorarios = ({
   horarioSelecionado,
   setExcluirHorario,
   setId,
-  barbearia
+  barbearia,
 }) => {
-
   const { servicoEscolhido } = useContext(ServicoContext);
-  const { showModalMarcarHorarioDeslogado, setShowModalMarcarHorarioDeslogado } = useContext(HorarioContext);
-  
+  const {
+    showModalMarcarHorarioDeslogado,
+    setShowModalMarcarHorarioDeslogado,
+  } = useContext(HorarioContext);
+
+  const [hoje, setHoje] = useState();
+
+  useEffect(() => {
+    const data = new Date();
+    const dia = data.toLocaleString("pt-BR", { day: "2-digit" });
+    const mes = data.toLocaleString("pt-BR", { month: "2-digit" });
+    setHoje(`${dia}/${mes}`);
+  }, []);
+
   return (
     <>
       {/* Modal abre se o usuário tentar marcar um horario sem ter feito login antes */}
@@ -31,6 +42,7 @@ export const ListaHorarios = ({
         barbearia={barbearia}
       />
       <ul className="horarios-fechado" id={barbeiro.ID}>
+        {/* ADICIONA NOVO HORARIO */}
         {horariosFiltrado.length < 23 && user.ADM && (
           <li
             className="d-flex justify-content-center align-items-center my-3 text-white"
@@ -42,6 +54,10 @@ export const ListaHorarios = ({
             adicionar horário +
           </li>
         )}
+        {/* MOSTRA DATA ATUAL */}
+        <li
+          className="d-flex justify-content-center align-items-center my-3 text-white"
+        >{ hoje }</li>
 
         {horariosFiltrado.map((horario) => {
           return (
@@ -62,17 +78,20 @@ export const ListaHorarios = ({
                               setShowModalMarcarHorarioDeslogado(true);
                             }
                           } else {
-                            toast.error("Escolha um serviço antes de agendar um horário !", {
-                              position: "bottom-right",
-                              autoClose: 5000,
-                              hideProgressBar: false,
-                              closeOnClick: true,
-                              pauseOnHover: true,
-                              draggable: true,
-                              progress: undefined,
-                              theme: "colored",
-                              transition: Bounce,
-                            });
+                            toast.error(
+                              "Escolha um serviço antes de agendar um horário !",
+                              {
+                                position: "bottom-right",
+                                autoClose: 5000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true,
+                                progress: undefined,
+                                theme: "colored",
+                                transition: Bounce,
+                              }
+                            );
                           }
                         }}
                       >

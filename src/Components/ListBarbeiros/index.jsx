@@ -22,6 +22,7 @@ import { HorarioMarcadoContext } from "../../Context/HorarioMarcadoContext";
 import { useParams } from "react-router-dom";
 import { socket } from "../../socket";
 import { ServicoContext } from "../../Context/ServicoContext";
+import { Calendario } from "../Calendario";
 
 // COMPONENTE
 export const ListBarbeiros = () => {
@@ -201,6 +202,8 @@ export const ListBarbeiros = () => {
         limit={1}
         transition={Bounce}
       />
+
+      <Calendario/>
 
       {user.ADM && <SpanAdd handleShow={handleShow} />}
       <div className="container-fluid bg-dark height-main">

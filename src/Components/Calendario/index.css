@@ -1,0 +1,21 @@
+.lista-calendario {
+    width: 70%;
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+
+    padding: 0;
+}
+
+.lista-calendario > li {
+    color: white;
+}
+
+.lista-calendario > li > p {
+    text-align: center;
+}
+
+.lista-dias {
+    padding: 0;
+    list-style: none;
+}
