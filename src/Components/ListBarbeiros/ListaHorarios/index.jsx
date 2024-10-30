@@ -3,6 +3,7 @@ import { ModalMarcarHorarioDeslogado } from "../ModalMarcarHorarioDeslogado";
 import { ServicoContext } from "../../../Context/ServicoContext";
 import { toast, Bounce } from "react-toastify";
 import { HorarioContext } from "../../../Context/HorarioContext";
+import { AnimacaoContext } from "../../../Context/AnimacaoHorarios";
 
 export const ListaHorarios = ({
   barbeiro,
@@ -23,6 +24,8 @@ export const ListaHorarios = ({
   } = useContext(HorarioContext);
 
   const [hoje, setHoje] = useState();
+
+  const { setAnimaCalendario } = useContext(AnimacaoContext);
 
   useEffect(() => {
     const data = new Date();
@@ -57,6 +60,7 @@ export const ListaHorarios = ({
         {/* MOSTRA DATA ATUAL */}
         <li
           className="d-flex justify-content-center align-items-center my-3 text-white"
+          onClick={() => setAnimaCalendario("container-fluid calendario bg-dark")}
         >{ hoje }</li>
 
         {horariosFiltrado.map((horario) => {

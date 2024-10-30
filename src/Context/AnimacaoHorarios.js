@@ -4,6 +4,8 @@ export const AnimacaoContext = createContext();
 
 export const AnimacaoProvider = ({ children }) => {
 
+  const [animaCalendario, setAnimaCalendario] = useState("container-fluid calendario-hidden bg-dark");
+
   const abrirListaHorarios = (BARBEIRO_ID, horariosAberto, setHorariosAberto) => {
     const resetar_icones_ativo = document.getElementsByClassName("icone_aberto")
     const resetar_icones_seta = document.getElementsByClassName("icone_mais_aberto")
@@ -68,7 +70,9 @@ export const AnimacaoProvider = ({ children }) => {
   return (
     <AnimacaoContext.Provider
       value={{
-        abrirListaHorarios
+        abrirListaHorarios,
+        animaCalendario,
+        setAnimaCalendario
       }}
     >
       {children}

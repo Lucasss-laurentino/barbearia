@@ -1,21 +1,39 @@
 .lista-calendario {
-    width: 70%;
-    display: flex;
-    justify-content: space-between;
-    list-style: none;
+  width: 70%;
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
 
-    padding: 0;
+  padding: 0;
 }
 
 .lista-calendario > li {
-    color: white;
+  color: white;
 }
 
 .lista-calendario > li > p {
-    text-align: center;
+  text-align: center;
 }
 
 .lista-dias {
-    padding: 0;
-    list-style: none;
+  padding: 0;
+  list-style: none;
+}
+
+.calendario-header {
+  border-top: 1px solid rgb(82, 81, 81);
+  border-right: 1px solid rgb(82, 81, 81);
+  border-left: 1px solid rgb(82, 81, 81);
+}
+
+.calendario {
+  top: 28%;
+  position: absolute;
+  transition: top 700ms;
+}
+
+.calendario-hidden {
+  top: -100%;
+  position: absolute;
+  transition: top 700ms;
 }
