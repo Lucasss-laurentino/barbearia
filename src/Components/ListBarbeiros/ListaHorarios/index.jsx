@@ -4,6 +4,8 @@ import { ServicoContext } from "../../../Context/ServicoContext";
 import { toast, Bounce } from "react-toastify";
 import { HorarioContext } from "../../../Context/HorarioContext";
 import { AnimacaoContext } from "../../../Context/AnimacaoHorarios";
+import { DataContext } from "../../../Context/DataContext";
+import { HorarioMarcadoContext } from "../../../Context/HorarioMarcadoContext";
 
 export const ListaHorarios = ({
   barbeiro,
@@ -21,18 +23,27 @@ export const ListaHorarios = ({
   const {
     showModalMarcarHorarioDeslogado,
     setShowModalMarcarHorarioDeslogado,
+    horarios
   } = useContext(HorarioContext);
-
-  const [hoje, setHoje] = useState();
-
+  const { horariosMarcado } = useContext(HorarioMarcadoContext);
   const { setAnimaCalendario } = useContext(AnimacaoContext);
+  const { data } = useContext(DataContext);
+  const [horariosDessaData, setHorariosDessaData] = useState([]);
 
   useEffect(() => {
-    const data = new Date();
-    const dia = data.toLocaleString("pt-BR", { day: "2-digit" });
-    const mes = data.toLocaleString("pt-BR", { month: "2-digit" });
-    setHoje(`${dia}/${mes}`);
-  }, []);
+    if (horariosMarcado.length > 0) {
+      horariosMarcado.forEach(horarioMarcado => {
+        if (horarioMarcado.DATA === data) {
+          const horario = horariosFiltrado.filter((hF) => hF.ID !== horarioMarcado.HORARIO_ID);
+          setHorariosDessaData([...horario])
+        } else {
+          setHorariosDessaData([...horariosFiltrado])
+        }
+      });
+    } else {
+      setHorariosDessaData([...horariosFiltrado])
+    }
+  }, [horariosMarcado, data, horarios]);
 
   return (
     <>
@@ -46,26 +57,29 @@ export const ListaHorarios = ({
       />
       <ul className="horarios-fechado" id={barbeiro.ID}>
         {/* ADICIONA NOVO HORARIO */}
-        {horariosFiltrado.length < 23 && user.ADM && (
-          <li
-            className="d-flex justify-content-center align-items-center my-3 text-white"
-            onClick={() => {
-              setBarbeiro(barbeiro);
-              setShowHorarios(true);
-            }}
-          >
-            adicionar horário +
-          </li>
-        )}
+
+        <li
+          className="d-flex justify-content-center align-items-center my-3 text-white"
+          onClick={() => {
+            setBarbeiro(barbeiro);
+            setShowHorarios(true);
+          }}
+        >
+          adicionar horário +
+        </li>
+
         {/* MOSTRA DATA ATUAL */}
         <li
           className="d-flex justify-content-center align-items-center my-3 text-white"
-          onClick={() => setAnimaCalendario("container-fluid calendario bg-dark")}
-        >{ hoje }</li>
+          onClick={() =>
+            setAnimaCalendario("container-fluid calendario bg-dark")
+          }
+        >
+          {data}
+        </li>
 
-        {horariosFiltrado.map((horario) => {
-          return (
-            horario.DISPONIVEL && (
+        {horariosDessaData.map((horario) => {
+            return (
               <Fragment key={horario.ID}>
                 <li className="d-flex justify-content-around align-items-center my-2">
                   <div className="col-6 d-flex justify-content-center align-items-center">
@@ -150,8 +164,7 @@ export const ListaHorarios = ({
                   </div>
                 </li>
               </Fragment>
-            )
-          );
+            );  
         })}
       </ul>
     </>

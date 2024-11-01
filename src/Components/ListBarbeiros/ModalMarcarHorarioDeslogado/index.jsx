@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { agendarDeslogadoSchema } from "../../../validations/agendarDeslogado";
 import { useContext } from "react";
 import { HorarioContext } from "../../../Context/HorarioContext";
+import { DataContext } from "../../../Context/DataContext";
 
 export const ModalMarcarHorarioDeslogado = ({
   show,
@@ -18,6 +19,7 @@ export const ModalMarcarHorarioDeslogado = ({
   };
 
   const { agendar } = useContext(HorarioContext);
+  const { data } = useContext(DataContext);
 
   const {
     register,
@@ -28,8 +30,8 @@ export const ModalMarcarHorarioDeslogado = ({
     resolver: yupResolver(agendarDeslogadoSchema),
   });
 
-  const onSubmit = (data) => {
-    agendar(data, horarioSelecionado, servicoEscolhido, barbearia);
+  const onSubmit = (dataParametro) => {
+    agendar(dataParametro, horarioSelecionado, servicoEscolhido, data);
   }
   return (
     <>

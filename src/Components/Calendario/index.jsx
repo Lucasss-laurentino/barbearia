@@ -1,11 +1,14 @@
 import { useContext, useEffect, useState } from "react";
 import "./index.css";
 import { AnimacaoContext } from "../../Context/AnimacaoHorarios";
+import { DataContext } from "../../Context/DataContext";
 
 export const Calendario = () => {
   const [dias, setDias] = useState();
   const [hoje, setHoje] = useState(new Date());
+  const [diaAtual, setDiaAtual] = useState(hoje.getDate());
   const [mes, setMes] = useState(new Date().getMonth());
+  const [mesAtual, setMesAtual] = useState(new Date().getMonth());
   const [semanas, setSemanas] = useState([]);
   const [ultimosDiasMesPassado, setUltimosDiasMesPassado] = useState([]);
   const [primeirosDiasDoMesQueVem, setPrimeirosDiasDoMesQueVem] = useState();
@@ -13,6 +16,7 @@ export const Calendario = () => {
     new Date(hoje.getFullYear(), mes).toLocaleString("pt-BR", { month: "long" })
   );
   const { animaCalendario, setAnimaCalendario } = useContext(AnimacaoContext);
+  const { mudarData } = useContext(DataContext);
 
   const mesAnterior = () => {
     setMes((prevMes) => (prevMes + 1) % 12);
@@ -37,6 +41,10 @@ export const Calendario = () => {
 
     const diasDoMes = Array.from({ length: ultimoDiaDoMes }, (_, i) => i + 1);
 
+    const diasDoMesObj = diasDoMes.map((dia) => {
+      return { dia, esseMes: true };
+    });
+
     const ultimoDiaDoMesAnterior = new Date(
       hoje.getFullYear(),
       mes,
@@ -50,14 +58,20 @@ export const Calendario = () => {
 
     const ultimosDiasDoMesAnterior =
       primeiroDiaDoMes !== 0 && diasDoMesAnterior.slice(-primeiroDiaDoMes);
+
+    const ultimosDiasDoMesAnteriorObj =
+      ultimosDiasDoMesAnterior.length > 0 &&
+      ultimosDiasDoMesAnterior.map((dia) => {
+        return { dia, esseMes: false };
+      });
+
     if (!ultimosDiasDoMesAnterior) {
       setUltimosDiasMesPassado([]);
-      setDias([...diasDoMes]);
+      setDias([...diasDoMesObj]);
     } else {
-      setUltimosDiasMesPassado([...ultimosDiasDoMesAnterior]);
-      setDias([...ultimosDiasDoMesAnterior, ...diasDoMes]);
+      setUltimosDiasMesPassado([...ultimosDiasDoMesAnteriorObj]);
+      setDias([...ultimosDiasDoMesAnteriorObj, ...diasDoMesObj]);
     }
-    console.log(ultimosDiasMesPassado);
     setMesNome(
       new Date(hoje.getFullYear(), mes).toLocaleString("pt-BR", {
         month: "long",
@@ -89,7 +103,13 @@ export const Calendario = () => {
         { length: ultimoDiaDoMesQueVem },
         (_, i) => i + 1
       );
-      setDias([...dias, ...diasMesQueVem.slice(0, quantosFalta)]);
+
+      const diasDoMesQueVemObgj = diasMesQueVem
+        .slice(0, quantosFalta)
+        .map((dia) => {
+          return { dia, esseMes: false };
+        });
+      setDias([...dias, ...diasDoMesQueVemObgj]);
     }
   }, [semanas]);
 
@@ -153,7 +173,7 @@ export const Calendario = () => {
                 </svg>
               </div>
             </div>
-            <table class="table table-dark table-bordered text-center">
+            <table className="table table-dark table-bordered text-center">
               <thead>
                 <tr>
                   <th scope="col">DOM.</th>
@@ -166,24 +186,57 @@ export const Calendario = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                {semanas.map((semana) => {
+                  return (
+                    <tr>
+                      {semana.map((dia) => {
+                        if (!dia.esseMes) {
+                          return <td className="text-secondary">{dia.dia}</td>;
+                        } else if (dia.dia === diaAtual && mes === mesAtual) {
+                          return <td className="text-success" onClick={() => mudarData(dia, mes, diaAtual)}>{dia.dia}</td>;
+                        } else {
+                          return <td onClick={() => mudarData(dia, mes, diaAtual)} className="text-white">{dia.dia}</td>;
+                        }
+                      })}
+                    </tr>
+                  );
+                })}
+                {/* <tr>
                   {semanas[0]?.map((dia, index) => {
                     if (index < ultimosDiasMesPassado.length) {
-                      return <td className="text-secondary">{dia}</td>;
+                      return (
+                        <td
+                          onClick={() => mudarData(dia, mes)}
+                          className="text-secondary"
+                          key={index}
+                        >
+                          {dia}
+                        </td>
+                      );
                     } else if (index >= ultimosDiasMesPassado.length) {
-                      return <td className="text-white">{dia}</td>;
+                      return <td className="text-white" key={index} onClick={mudarData(dia, mes)}>{dia}</td>;
                     } else if (dia === hoje.getDate()) {
-                      return <td className="text-success">{dia}</td>;
+                      return (
+                        <td
+                          className="text-success"
+                          key={index}
+                          onClick={() => mudarData(dia, mes)}
+                        >
+                          {dia}
+                        </td>
+                      );
                     }
                   })}
                 </tr>
                 <tr>
-                  {semanas[1]?.map((dia) => {
+                  {semanas[1]?.map((dia, index) => {
                     return (
                       <td
                         className={
                           dia === hoje.getDate() ? "text-success" : "text-white"
                         }
+                        key={index}
+                        onClick={() => mudarData(dia, mes)}
                       >
                         {dia}
                       </td>
@@ -191,12 +244,14 @@ export const Calendario = () => {
                   })}
                 </tr>
                 <tr>
-                  {semanas[2]?.map((dia) => {
+                  {semanas[2]?.map((dia, index) => {
                     return (
                       <td
                         className={
                           dia === hoje.getDate() ? "text-success" : "text-white"
                         }
+                        onClick={() => mudarData(dia, mes)}
+                        key={index}
                       >
                         {dia}
                       </td>
@@ -204,12 +259,14 @@ export const Calendario = () => {
                   })}
                 </tr>
                 <tr>
-                  {semanas[3]?.map((dia) => {
+                  {semanas[3]?.map((dia, index) => {
                     return (
                       <td
                         className={
                           dia === hoje.getDate() ? "text-success" : "text-white"
                         }
+                        onClick={() => mudarData(dia, mes)}
+                        key={index}
                       >
                         {dia}
                       </td>
@@ -220,22 +277,28 @@ export const Calendario = () => {
                   {semanas[4]?.map((dia, index) => {
                     // Verifica se o índice está dentro da quantidade de dias do próximo mês
                     if (index >= semanas[4].length - primeirosDiasDoMesQueVem) {
-                      return <td className="text-secondary">{dia}</td>;
+                      return (
+                        <td key={index} className="text-secondary">
+                          {dia}
+                        </td>
+                      );
                     } else {
                       return (
                         <td
+                          key={index}
                           className={
-                            dia === hoje.getDate()
+                            dia === diaAtual && mes === mesAtual
                               ? "text-success"
                               : "text-white"
                           }
+                          onClick={() => mudarData(dia, mes)}
                         >
                           {dia}
                         </td>
                       );
                     }
                   })}
-                </tr>
+                </tr> */}
               </tbody>
             </table>
           </div>

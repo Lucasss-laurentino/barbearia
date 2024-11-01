@@ -54,18 +54,13 @@ export const ListBarbeiros = () => {
     setShowModalPagamentoAgendamento(false);
 
   // CONTEXTS
-  const {
-    barbeiros,
-    barbeiroSelecionado,
-    setBarbeiroSelecionado,
-  } = useContext(BarbeiroContext);
+  const { barbeiros, barbeiroSelecionado, setBarbeiroSelecionado } =
+    useContext(BarbeiroContext);
   const [id, setId] = useState();
-  const {
-    setHorarioMarcado,
-    horarioMarcado,
-    desmarcarHorario,
-  } = useContext(HorarioMarcadoContext);
-  const { servicos, setServicoEscolhido } = useContext(ServicoContext)
+  const { setHorarioMarcado, horarioMarcado, desmarcarHorario } = useContext(
+    HorarioMarcadoContext
+  );
+  const { servicos, setServicoEscolhido } = useContext(ServicoContext);
   const {
     horarios,
     setHorarios,
@@ -113,8 +108,11 @@ export const ListBarbeiros = () => {
   }, []);
 
   useEffect(() => {
-    const horario = horarios.find((h) => h.DISPONIVEL === false);
-    setHorarioMarcado(horario);
+    if (localStorage.getItem("agendamento")) {
+      const storage = JSON.parse(localStorage.getItem("agendamento"));
+      const horario = horarios.find((h) => h.ID === storage.HORA.ID);
+      setHorarioMarcado(horario);
+    }
   }, [horarios]);
 
   // verifica se o localStorage tem algum horario marcado
@@ -128,36 +126,15 @@ export const ListBarbeiros = () => {
     }
   }, [localStorage.getItem("agendamento")]);
 
-  // escuta evento que aceitou horario pendente
   useEffect(() => {
-    const socketInstancia = socket();
-    // socketInstancia.on("horarioPendenteAceito", (horarioAceito) => {
-    //   setHorarioMarcado(horarioAceito);
-
-    //   const hora = horarios.find(
-    //     (h) => h.ID === horarioAceito.HORARIO_ID
-    //   );
-    //   const barbeiro = barbeiros.find(
-    //     (b) => b.ID === horarioAceito.BARBEIRO_ID
-    //   );
-    //   const servico = servicos.find(
-    //     (s) => s.ID === horarioAceito.SERVICO_ID
-    //   );
-    //   setHorarioObjeto({
-    //     ID: horarioAceito.ID,
-    //     HORA: hora,
-    //     BARBEIRO: barbeiro,
-    //     RESERVADO: horarioAceito.RESERVADO,
-    //     SERVICO: servico,
-    //   });
-    // });
-  }, []);
-
-  useEffect(() => {
-    if(Object.keys(horarioObjeto).length > 0){
+    if (Object.keys(horarioObjeto).length > 0) {
       localStorage.setItem("agendamento", JSON.stringify(horarioObjeto));
     }
-  },[horarioObjeto])
+  }, [horarioObjeto]);
+
+  useEffect(() => {
+    console.log(horarioMarcado);
+  }, [horarioMarcado]);
 
   return (
     <>
@@ -203,7 +180,7 @@ export const ListBarbeiros = () => {
         transition={Bounce}
       />
 
-      <Calendario/>
+      <Calendario />
 
       {user.ADM && <SpanAdd handleShow={handleShow} />}
       <div className="container-fluid bg-dark height-main">

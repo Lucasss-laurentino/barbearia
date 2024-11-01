@@ -135,13 +135,14 @@ export const HorarioProvider = ({ children }) => {
     } catch (error) {}
   };
 
-  const agendar = async (data, horarioSelecionado, servicoEscolhido) => {
+  const agendar = async (data, horarioSelecionado, servicoEscolhido, dataEscolhida) => {
     try {
       const { NOME_CLIENTE } = data;
       const agendamentoObj = {
         NOME_CLIENTE,
         HORA: horarioSelecionado,
         SERVICO: servicoEscolhido,
+        DATA: dataEscolhida,
         STATUS: 1, // 1 = reservado / 0 = nao reservado
       };
       setAgendamento(agendamentoObj); // ativa useEffect

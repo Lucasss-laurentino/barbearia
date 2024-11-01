@@ -30,10 +30,12 @@
   top: 28%;
   position: absolute;
   transition: top 700ms;
+  z-index: 2;
 }
 
 .calendario-hidden {
   top: -100%;
   position: absolute;
   transition: top 700ms;
+  z-index: 2;
 }
