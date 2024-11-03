@@ -145,11 +145,15 @@ export const Index = () => {
         </div>
       ) : (
         <div className="body">
-          <Navbar />
+          <div className="d-sm-none">
+            <Navbar />
+          </div>
           <Menu />
           {active === 2 && <ListService />}
           {active === 1 && <ListBarbeiros />}
-          <MenuBottom />
+          <div className="d-sm-none">
+            <MenuBottom />
+          </div>
         </div>
       )}
     </>

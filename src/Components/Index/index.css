@@ -1,6 +1,6 @@
 .body {
     height: 100vh;
-    overflow-x: hidden;
+    overflow: hidden;
     position: relative;
     background-color: #212529;
 }

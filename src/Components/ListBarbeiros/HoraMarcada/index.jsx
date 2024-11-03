@@ -17,23 +17,23 @@ export const HoraMarcada = ({ horario, desmarcarHorario }) => {
   return (
     <>
       <div className="container">
-        <div className="personalizar-item-desmarcar-horario">
-          <div className="hora">
+        <div className="personalizar-item-desmarcar-horario col-12">
+          <div className="hora col-1 d-flex justify-content-center align-items-center">
             <p className="m-0">{meuHorario?.HORA?.HORA}</p>
           </div>
-          <div className="data">
+          <div className="data col-1 d-flex justify-content-center align-items-center">
             {meuHorario.DATA}
           </div>
-          <div className="desmarcar d-flex justify-content-between align-items-center">
+          <div className="desmarcar d-flex justify-content-between align-items-center col-10">
             {meuHorario?.RESERVADO === 2 && (
-              <p className="bg-warning text-dark pendente">Pendente</p>
+              <p className="bg-warning text-dark pendente mx-1">Pendente</p>
             )}
             {meuHorario?.RESERVADO === 1 && (
-              <p className="bg-success text-dark pendente">Aceito</p>
+              <p className="bg-success text-dark pendente mx-1">Aceito</p>
             )}
 
             <a
-              className="btn-desmarcar"
+              className="btn-desmarcar mx-1"
               onClick={() => {
                 if (meuHorario?.RESERVADO === 2) {
                   cancelarMeuHorarioPendente(meuHorario);
