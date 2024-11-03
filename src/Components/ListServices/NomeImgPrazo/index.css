@@ -1,7 +1,16 @@
 .div-redonda-servico {
-    width: 90%;
-    max-height: 65px;
-    overflow: hidden;
-    border-radius: 50%;
+    width: 65px; /* Largura fixa */
+    height: 65px; /* Altura fixa para manter a forma redonda */
+    overflow: hidden; /* Esconde partes que saem do contêiner */
+    border-radius: 50%; /* Faz o contêiner ser redondo */
+    position: relative; /* Necessário para o posicionamento do img */
+}
 
+.div-redonda-servico img {
+    width: 100%; /* A imagem ocupa 100% da largura do contêiner */
+    height: 100%; /* A imagem ocupa 100% da altura do contêiner */
+    object-fit: cover; /* Garante que a imagem cubra todo o contêiner */
+    position: absolute; /* Posiciona a imagem dentro do contêiner */
+    top: 0; /* Alinha ao topo */
+    left: 0; /* Alinha à esquerda */
 }

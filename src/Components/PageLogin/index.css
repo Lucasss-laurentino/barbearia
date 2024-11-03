@@ -1,9 +1,13 @@
 .tela-toda-fundo-preto-show {
   height: 100vh;
   background-color: rgb(24, 24, 24);
+  overflow-y: auto;
 }
 .font-s {
   font-size: 14px;
+}
+.background {
+  background-color: rgb(24, 24, 24);
 }
 .div-btn-form-login {
   height: 48vh;
@@ -14,6 +18,7 @@
 .height-row {
   height: 58vh;
 }
+
 .btn-login {
   width: 60%;
   height: 40px;
@@ -43,6 +48,12 @@
 .lista-icon-social > li {
   text-align: center;
 }
+
+.rolagem {
+  max-height: 380px;
+  overflow-y: auto;
+}
+
 .div-login-hidden {
   opacity: 0;
   transition: 350ms;
@@ -64,7 +75,19 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
+  overflow-y: hidden;
 }
+
+  .btn-google > img {
+    max-width: 7% !important;
+  }
+  
+  @media (min-width: 1100px) {
+    .btn-google > img {
+      max-width: 4% !important;
+    }        
+  }
 
 .row-white {
   width: 100%;

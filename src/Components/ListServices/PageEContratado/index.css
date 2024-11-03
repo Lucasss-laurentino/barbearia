@@ -1,0 +1,15 @@
+.imagem-height > img {
+  width: 46%;
+}
+
+@media (min-width: 1000px) {
+  .imagem-height > img {
+    width: 36%;
+  }
+}
+
+@media (min-width: 1220px) {
+  .imagem-height > img {
+    width: 25%;
+  }
+}

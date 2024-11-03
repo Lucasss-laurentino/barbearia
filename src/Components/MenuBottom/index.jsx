@@ -12,9 +12,9 @@ export const MenuBottom = () => {
     <>
       <div className="container-fluid footer-bottom">
         <div className="row">
-          <div className="col-12 p-0">
+          <div className="col-12 col-md-11 p-0">
             <ul className="list-menu-bottom">
-              <li className="col-3" onClick={() => setActive(2)}>
+              <li className="col-3 col-sm-2 col-md-2" onClick={() => setActive(2)}>
                 <div className={active === 2 ? "fundo-branco" : "fundo-preto"}>
                   <img
                     src={
@@ -22,7 +22,7 @@ export const MenuBottom = () => {
                         ? "/icones_menu_bottom/horarios_dark.png"
                         : "/icones_menu_bottom/horarios.png"
                     }
-                    className="img-fluid p-1"
+                    className="img-fluid img-icon-width p-1"
                     width="30%"
                     alt=""
                   />
@@ -31,7 +31,7 @@ export const MenuBottom = () => {
                   </p>
                 </div>
               </li>
-              <li className="col-3" onClick={() => setActive(1)}>
+              <li className="col-3  col-sm-2 col-md-2" onClick={() => setActive(1)}>
                 <div className={active === 1 ? "fundo-branco" : "fundo-preto"}>
                   <img
                     src={
@@ -39,7 +39,7 @@ export const MenuBottom = () => {
                         ? "/icones_menu_bottom/servicos_dark.png"
                         : "/icones_menu_bottom/servicos.png"
                     }
-                    className="img-fluid"
+                    className="img-fluid img-icon-width"
                     width="30%"
                     alt=""
                   />
@@ -48,7 +48,7 @@ export const MenuBottom = () => {
                   </p>
                 </div>
               </li>
-              <li className="col-3" onClick={() => setActive(3)}>
+              <li className="col-3 col-sm-2 col-md-2" onClick={() => setActive(3)}>
                 <div className={active === 3 ? "fundo-branco" : "fundo-preto"}>
                   <img
                     src={
@@ -57,7 +57,7 @@ export const MenuBottom = () => {
                       active === 3 && !user.ADM && "/icones_menu_bottom/relogio_preto.png" ||
                       active !== 3 && !user.ADM && "/icones_menu_bottom/relogio_branco.png"
                     }
-                    className="img-fluid p-1"
+                    className="img-fluid img-icon-width p-1"
                     width="30%"
                     alt=""
                   />
@@ -66,7 +66,7 @@ export const MenuBottom = () => {
                   </p>
                 </div>
               </li>
-              <li className="col-3" onClick={() => setActive(4)}>
+              <li className="col-3 col-sm-2 col-md-2" onClick={() => setActive(4)}>
                 <div className={active === 4 ? "fundo-branco" : "fundo-preto"}>
                   <img
                     src={
@@ -74,7 +74,7 @@ export const MenuBottom = () => {
                         ? "/icones_menu_bottom/configuracao_dark.png"
                         : "/icones_menu_bottom/configuracao.png"
                     }
-                    className="img-fluid p-1"
+                    className="img-fluid img-icon-width p-1"
                     width="30%"
                     alt=""
                   />

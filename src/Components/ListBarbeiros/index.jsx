@@ -23,6 +23,7 @@ import { useParams } from "react-router-dom";
 import { socket } from "../../socket";
 import { ServicoContext } from "../../Context/ServicoContext";
 import { Calendario } from "../Calendario";
+import { MenuBottom } from "../MenuBottom";
 
 // COMPONENTE
 export const ListBarbeiros = () => {
@@ -132,10 +133,6 @@ export const ListBarbeiros = () => {
     }
   }, [horarioObjeto]);
 
-  useEffect(() => {
-    console.log(horarioMarcado);
-  }, [horarioMarcado]);
-
   return (
     <>
       <ModalPagamentoAgendamento
@@ -183,9 +180,19 @@ export const ListBarbeiros = () => {
       <Calendario />
 
       {user.ADM && <SpanAdd handleShow={handleShow} />}
-      <div className="container-fluid bg-dark height-main">
-        <div className="row">
-          <div className="col-12 p-0">
+      <div className="container-fluid height-main height-servicos">
+        <div className="row height-servicos">
+          <div className="col-3 col-sm-4 col-md-5 d-none d-sm-flex justify-content-sm-center  borda-direita">
+            <div className="col-12 d-flex justify-content-center align-items-center">
+              <img
+                src="/logo_preto.png"
+                className="img-fluid"
+                width={"80%"}
+                alt=""
+              />
+            </div>
+          </div>
+          <div className="col-12 col-sm-8 col-md-7 p-0">
             <ul
               className={
                 user.ADM
@@ -237,6 +244,9 @@ export const ListBarbeiros = () => {
                 );
               })}
             </ul>
+            <div className="d-block">
+              <MenuBottom/>
+            </div>
           </div>
         </div>
       </div>

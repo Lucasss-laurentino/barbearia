@@ -1,5 +1,6 @@
-
-
+.height-servicos {
+    height: 98vh;
+}
 .border-list-services {
     border-top: 1px solid rgb(107, 107, 107);
     border-bottom: 1px solid rgb(107, 107, 107);

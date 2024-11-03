@@ -30,12 +30,12 @@ export const PageLogin = () => {
 
   return (
     <>
-      <div className="tela-toda-fundo-preto-show position-relative">
+      <div className="tela-toda-fundo-preto-show position-relative d-sm-flex">
         <ImgLogo />
         {/* BTN LOGIN, CADASTRO E ICONS SOCIAL */}
-        <div className={hiddenLogin}>
-          <div className="container-fluid">
-            <div className="row height-row">
+        <div className={hiddenLogin+" d-flex"}>
+          <div className="container-fluid d-sm-flex align-self-center">
+            <div className="row height-row background">
               <div className="d-flex flex-column align-self-center col-12">
                 <div className="d-flex justify-content-center align-items-center flex-column">
                   <button
@@ -68,23 +68,23 @@ export const PageLogin = () => {
                 {/* ICONS SOCIAL */}
                 <div className="d-flex justify-content-center align-items-center mt-3 pt-3">
                   <ul className="lista-icon-social col-12">
-                    <li className="col-2">
+                    <li className="col-1 mx-2">
                       <img
                         src="socialIcons/facebook.png"
                         alt=""
                         className="img-fluid"
-                        width="50%"
+                        width="100%"
                       />
                     </li>
-                    <li className="col-2">
+                    <li className="col-2 mx-1">
                       <img
                         src="socialIcons/instagramIcon.png"
                         alt=""
                         width="70%"
                       />
                     </li>
-                    <li className="col-2">
-                      <img src="socialIcons/whatsapp.png" alt="" width="50%" />
+                    <li className="col-1 mx-2">
+                      <img src="socialIcons/whatsapp.png" alt="" width="100%" />
                     </li>
                   </ul>
                 </div>
@@ -93,8 +93,8 @@ export const PageLogin = () => {
           </div>
         </div>
         {/* FORM LOGIN */}
-        <div className={showLogin}>
-          <div className="container-fluid">
+        <div className={showLogin+" mt-sm-5 pt-sm-5"}>
+          <div className="container-fluid pt-sm-5 mt-sm-5">
             <div className="row height-row">
               <div className="col-12 d-flex justify-content-center align-items-center pb-5 mb-5 flex-column">
                 <form className="col-10" onSubmit={handleSubmit(login)}>
@@ -182,8 +182,8 @@ export const PageLogin = () => {
           </div>
         </div>
         {/* FORM CADASTRO */}
-        <div className={showCadastro}>
-          <div className="container-fluid">
+        <div className={showCadastro+" mt-sm-5 pt-sm-5"}>
+          <div className="container-fluid pt-sm-5 mt-sm-5">
             <div className="row height-row">
               <div className="col-12 d-flex justify-content-center align-items-center pb-5 mb-5 flex-column">
                 <form className="col-10" onSubmit={handleSubmit(criarUsuario)}>

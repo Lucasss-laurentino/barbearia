@@ -8,6 +8,7 @@ import { LoadServico } from "./LoadServico";
 import { SpanAddServico } from "./SpanAddServico";
 import { NomeImgPrazo } from "./NomeImgPrazo";
 import { PageEContratado } from "./PageEContratado";
+import { MenuBottom } from "../MenuBottom";
 
 export const ListService = () => {
   // CONTEXTS
@@ -43,7 +44,7 @@ export const ListService = () => {
         ...prevState,
         servicoEscolhido: {},
       }));
-      setServicoAgendado({})
+      setServicoAgendado({});
     }
   }, [servicoEscolhido]);
 
@@ -74,11 +75,23 @@ export const ListService = () => {
         <LoadServico />
       ) : (
         <>
-          {user.ADM && <SpanAddServico setShowModalServico={setShowModalServico} />}
+          {user.ADM && (
+            <SpanAddServico setShowModalServico={setShowModalServico} />
+          )}
 
-          <div className="container-fluid bg-dark">
-            <div className="row">
-              <div className="col-12 p-0">
+          <div className="container-fluid bg-dark height-servicos">
+            <div className="row height-servicos">
+              <div className="col-3 col-sm-4 col-md-5 d-none d-sm-flex justify-content-sm-center  borda-direita">
+                <div className="col-12 d-flex justify-content-center align-items-center">
+                  <img
+                    src="/logo_preto.png"
+                    className="img-fluid"
+                    width={"80%"}
+                    alt=""
+                  />
+                </div>
+              </div>
+              <div className="col-12 col-sm-8 col-md-7 p-0">
                 <ul
                   className={
                     user.ADM
@@ -104,7 +117,9 @@ export const ListService = () => {
                               setEditarServico={setEditarServico}
                               setShowModalServico={setShowModalServico}
                               setServicoASerExcluido={setServicoASerExcluido}
-                              setShowModalExcluirServico={setShowModalExcluirServico}
+                              setShowModalExcluirServico={
+                                setShowModalExcluirServico
+                              }
                             />
                           </div>
                         </li>
@@ -112,6 +127,9 @@ export const ListService = () => {
                     );
                   })}
                 </ul>
+                <div className="d-none d-sm-block">
+                  <MenuBottom />
+                </div>
               </div>
             </div>
           </div>

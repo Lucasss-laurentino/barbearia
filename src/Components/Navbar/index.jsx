@@ -10,10 +10,10 @@ export const Navbar = () => {
       <div className="container-fluid">
         <div className="row">
           <div className="col-12 py-2 bg-dark d-flex justify-content-between align-items-center">
-            <div className="img-logo">
+            <div className="img-logo col-10 col-sm-7 col-md-5">
               <img src="/logo_preto.png" width="20%" alt="" />
             </div>
-            <div className="icon-menu" onClick={() => setClassMenu(!classMenu)}>
+            <div className="icon-menu col-1" onClick={() => setClassMenu(!classMenu)}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="25"

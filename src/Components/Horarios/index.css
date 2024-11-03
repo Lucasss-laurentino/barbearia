@@ -1,8 +1,25 @@
+.borda-direita {
+  border-right: 1px solid rgb(87, 86, 86);
+}
+.altura {
+  height: 98vh;
+}
 .head-horarios {
   height: 120px;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.height-main{
+  max-width: 90%;
+}
+
+@media (min-width: 570px) {
+  .height-main{
+    max-width: 100%;
+  }
+    
 }
 
 .quantia-agendamento-horarios {

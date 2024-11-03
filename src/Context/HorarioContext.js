@@ -58,6 +58,7 @@ export const HorarioProvider = ({ children }) => {
           BARBEIRO: barbeiro,
           RESERVADO: agendamentoRetornado?.RESERVADO,
           SERVICO: servico,
+          DATA: agendamentoRetornado.DATA
         };
 
         // armazena informações e status do agendamento no localStorage

@@ -21,6 +21,9 @@ export const HoraMarcada = ({ horario, desmarcarHorario }) => {
           <div className="hora">
             <p className="m-0">{meuHorario?.HORA?.HORA}</p>
           </div>
+          <div className="data">
+            {meuHorario.DATA}
+          </div>
           <div className="desmarcar d-flex justify-content-between align-items-center">
             {meuHorario?.RESERVADO === 2 && (
               <p className="bg-warning text-dark pendente">Pendente</p>

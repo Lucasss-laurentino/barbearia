@@ -1,3 +1,4 @@
+import './index.css';
 import { EditarExcluir } from "../EditarExcluir";
 
 export const PageEContratado = ({
@@ -13,17 +14,16 @@ export const PageEContratado = ({
 }) => {
   return (
     <>
-      <div className="d-flex justify-content-end align-items-center col-4">
+      <div className="d-flex justify-content-end align-items-center col-3">
         <div className="col-9">
           <h6 className="m-0">{servico?.PRECO}</h6>
           {(servicoEscolhido?.contratado &&
             servicoEscolhido?.id === servico?.ID) ||
           servicoAgendado?.ID === servico.ID ? (
-            <div className="container">
+            <div className="container imagem-height">
               <img
                 src="icones_menu_bottom/verificado.gif"
                 className="img-fluid mx-3"
-                width="40%"
                 alt=""
                 onClick={() => setServicoEscolhido({})}
               />

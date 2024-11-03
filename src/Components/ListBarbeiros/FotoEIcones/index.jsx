@@ -11,6 +11,7 @@ export const FotoEIcones = ({ barbeiro, user, setBarbeiroSelecionado, setExcluir
               className="img-fluid"
               src={process.env.REACT_APP_API_URL + barbeiro.IMAGEM}
               width="100%"
+              alt={barbeiro.NOME} // Adicionado para acessibilidade
             />
           </div>
           <div className="col-9">

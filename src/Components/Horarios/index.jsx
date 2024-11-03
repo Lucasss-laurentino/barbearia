@@ -4,6 +4,7 @@ import { HorarioMarcadoContext } from "../../Context/HorarioMarcadoContext";
 import { ServicoContext } from "../../Context/ServicoContext";
 import { HorarioContext } from "../../Context/HorarioContext";
 import { BarbeiroContext } from "../../Context/BarbeiroContext";
+import { MenuBottom } from "../MenuBottom";
 
 export const Horarios = () => {
   const {
@@ -43,9 +44,19 @@ export const Horarios = () => {
 
   return (
     <>
-      <div className="container-fluid bg-dark height-main">
-        <div className="row text-white">
-          <div className="col-12 p-0">
+      <div className="container-fluid col-12 d-flex justify-content-center altura">
+        <div className="col-3 col-sm-4 col-md-5 d-none d-sm-flex justify-content-sm-center  borda-direita">
+          <div className="col-12 d-flex justify-content-center align-items-center">
+            <img
+              src="/logo_preto.png"
+              className="img-fluid"
+              width={"80%"}
+              alt=""
+            />
+          </div>
+        </div>
+        <div className="row col-12 col-sm-9 col-md-8 text-white d-sm-flex justify-content-md-center align-items-sm-center">
+          <div className="col-12 col-md-10 col-lg-9 p-0 pt-sm-5">
             <div className="col-12 head-horarios">
               <div className="col-5 quantia-agendamento-horarios">
                 <div className="col-11 px-1 align-qnt-agendamento">
@@ -74,7 +85,7 @@ export const Horarios = () => {
                         <div className="col-12 d-flex">
                           <div className="col-6">
                             {/* HORA E ICONE RELOGIO */}
-                            <div className="encapsula-icon d-flex justify-content-around align-items-center background-claro col-7">
+                            <div className="encapsula-icon d-flex justify-content-around align-items-center background-claro col-12">
                               {/* ICONE RELOGIO */}
                               <div className="icon">
                                 <svg
@@ -91,7 +102,9 @@ export const Horarios = () => {
                               </div>
                               {/* HORA */}
                               <div className="hr">
-                                <p className="m-0">{hora?.HORA}</p>
+                                <p className="m-0">
+                                  {horario.DATA} - {hora?.HORA}
+                                </p>
                               </div>
                             </div>
                             {/* NOME DO SERVIÇO E DO CLIENTE */}
@@ -220,6 +233,9 @@ export const Horarios = () => {
                 );
               })}
             </ul>
+          </div>
+          <div className="d-none d-sm-block">
+            <MenuBottom/>
           </div>
         </div>
       </div>

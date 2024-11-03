@@ -26,7 +26,9 @@ export const BarbeiroProvider = ({ children }) => {
       setLoadBarbeiro(false); setBarbeiroSelecionado(null);
       setShow(false);
 
-    } catch (error) {}
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   const pegarBarbeiros = async (barbearia) => {

@@ -126,7 +126,9 @@ export const Index = () => {
     <>
       {user?.ID ? (
         <div className="body">
-          <Navbar />
+          <div className="d-sm-none">
+            <Navbar />
+          </div>
           <Menu />
           {/* Se o usuario for adm */}
           {active === 1 && user.ADM && <ListService />}
@@ -137,7 +139,9 @@ export const Index = () => {
           {active === 1 && !user.ADM && <ListBarbeiros />}
           {active === 2 && !user.ADM && <ListService />}
 
-          <MenuBottom />
+          <div className="d-sm-none">
+            <MenuBottom />
+          </div>
         </div>
       ) : (
         <div className="body">

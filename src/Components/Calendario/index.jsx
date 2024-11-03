@@ -186,9 +186,9 @@ export const Calendario = () => {
                 </tr>
               </thead>
               <tbody>
-                {semanas.map((semana) => {
+                {semanas.map((semana, index) => {
                   return (
-                    <tr>
+                    <tr key={index}>
                       {semana.map((dia) => {
                         if (!dia.esseMes) {
                           return <td className="text-secondary">{dia.dia}</td>;
