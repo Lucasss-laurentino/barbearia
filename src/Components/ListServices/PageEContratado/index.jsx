@@ -23,7 +23,7 @@ export const PageEContratado = ({
             <div className="container imagem-height">
               <img
                 src="icones_menu_bottom/verificado.gif"
-                className="img-fluid mx-3"
+                className="img-fluid mx-3 cursor"
                 alt=""
                 onClick={() => setServicoEscolhido({})}
               />

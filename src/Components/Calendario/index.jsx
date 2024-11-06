@@ -193,9 +193,9 @@ export const Calendario = () => {
                         if (!dia.esseMes) {
                           return <td className="text-secondary">{dia.dia}</td>;
                         } else if (dia.dia === diaAtual && mes === mesAtual) {
-                          return <td className="text-success" onClick={() => mudarData(dia, mes, diaAtual)}>{dia.dia}</td>;
+                          return <td className="text-success cursor" onClick={() => mudarData(dia, mes, diaAtual)}>{dia.dia}</td>;
                         } else {
-                          return <td onClick={() => mudarData(dia, mes, diaAtual)} className="text-white">{dia.dia}</td>;
+                          return <td onClick={() => mudarData(dia, mes, diaAtual)} className="text-white cursor">{dia.dia}</td>;
                         }
                       })}
                     </tr>

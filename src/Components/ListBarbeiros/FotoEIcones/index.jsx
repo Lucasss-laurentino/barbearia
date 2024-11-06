@@ -27,7 +27,7 @@ export const FotoEIcones = ({ barbeiro, user, setBarbeiroSelecionado, setExcluir
                 width="18"
                 height="18"
                 fill="currentColor"
-                className="bi bi-trash3-fill mx-3"
+                className="bi bi-trash3-fill mx-3 cursor"
                 viewBox="0 0 16 16"
                 onClick={() => {
                   setExcluirHorario(true);
@@ -43,7 +43,7 @@ export const FotoEIcones = ({ barbeiro, user, setBarbeiroSelecionado, setExcluir
                 width="18"
                 height="18"
                 fill="currentColor"
-                className="bi bi-pencil-square mx-3"
+                className="bi bi-pencil-square mx-3 cursor"
                 viewBox="0 0 16 16"
                 onClick={() => {
                   setBarbeiroSelecionado(barbeiro);
@@ -73,7 +73,7 @@ export const FotoEIcones = ({ barbeiro, user, setBarbeiroSelecionado, setExcluir
                 width="30"
                 height="30"
                 fill="currentColor"
-                className="bi bi-clock-fill mx-3"
+                className="bi bi-clock-fill mx-3 cursor"
                 viewBox="0 0 16 16"
               >
                 <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z" />

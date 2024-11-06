@@ -13,3 +13,7 @@
     width: 25%;
   }
 }
+
+.cursor {
+  cursor: pointer;
+}
