@@ -13,6 +13,7 @@ import { LoginProvider } from "../Context/LoginContext";
 import { HorarioMarcadoProvider } from "../Context/HorarioMarcadoContext";
 import { NotFound } from "../Components/NotFound";
 import { DataProvider } from "../Context/DataContext";
+import { LandingPage } from "../Components/LandingPage";
 
 export default function appRouter() {
   return (
@@ -33,7 +34,8 @@ export default function appRouter() {
                                 path="/naoEncontrado"
                                 element={<NotFound />}
                               />
-                              <Route path="/" element={<PageLogin />} />
+                              <Route path="/" element={<LandingPage />} />
+                              <Route path="/login" element={ <PageLogin /> } />
                               <Route path="/:barbearia" element={<Index />} />
                             </Routes>
                           </DataProvider>

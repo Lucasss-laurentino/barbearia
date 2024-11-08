@@ -1,16 +1,11 @@
 export const ImgLogo = () => {
   return (
     <>
-      <div className="container-fluid col-12 col-sm-6 d-sm-flex align-items-center">
+      <div className="col-sm-6 container-fluid d-flex justify-content-center mt-5 mt-sm-0 py-4 py-sm-0">
         <div className="row">
-          <div className="col-12 mt-3">
-            <div className="d-flex justify-content-center align-items-center">
-              <img
-                src="/logo_preto.png"
-                className="img-fluid"
-                width="63%"
-                alt=""
-              />
+          <div className="col-12 d-flex justify-content-center align-items-center">
+            <div className="col-10">
+              <img src="logo-fotor.png" alt="" className="img-fluid" />
             </div>
           </div>
         </div>

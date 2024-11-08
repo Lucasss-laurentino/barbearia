@@ -33,67 +33,59 @@ export const PageLogin = () => {
       <div className="tela-toda-fundo-preto-show position-relative d-sm-flex">
         <ImgLogo />
         {/* BTN LOGIN, CADASTRO E ICONS SOCIAL */}
-        <div className={hiddenLogin+" d-flex"}>
-          <div className="container-fluid d-sm-flex align-self-center">
-            <div className="row height-row background">
-              <div className="d-flex flex-column align-self-center col-12">
-                <div className="d-flex justify-content-center align-items-center flex-column">
-                  <button
-                    className="btn-login"
-                    onClick={() => {
-                      setHiddenLogin("div-login-hidden");
-                      setTimeout(() => {
-                        setHiddenLogin("d-none");
-                        setShowLogin("form-login-show");
-                      }, 351);
-                      setFormAberto(2);
-                    }}
-                  >
-                    Entrar
-                  </button>
-                  <button
-                    className="btn-login mt-4"
-                    onClick={() => {
-                      setHiddenLogin("div-login-hidden");
-                      setTimeout(() => {
-                        setHiddenLogin("d-none");
-                        setShowCadastro("form-login-show");
-                      }, 351);
-                      setFormAberto(1);
-                    }}
-                  >
-                    Cadastrar
-                  </button>
-                </div>
-                {/* ICONS SOCIAL */}
-                <div className="d-flex justify-content-center align-items-center mt-3 pt-3">
-                  <ul className="lista-icon-social col-12">
-                    <li className="col-1 mx-2">
-                      <img
-                        src="socialIcons/facebook.png"
-                        alt=""
-                        className="img-fluid"
-                        width="100%"
-                      />
-                    </li>
-                    <li className="col-2 mx-1">
-                      <img
-                        src="socialIcons/instagramIcon.png"
-                        alt=""
-                        width="70%"
-                      />
-                    </li>
-                    <li className="col-1 mx-2">
-                      <img src="socialIcons/whatsapp.png" alt="" width="100%" />
-                    </li>
-                  </ul>
-                </div>
-              </div>
+        <div className={hiddenLogin + " d-flex align-items-center mt-5"}>
+          <div className="d-flex flex-column align-self-center col-12">
+            <div className="d-flex justify-content-center align-items-center flex-column">
+              <button
+                className="btn-login"
+                onClick={() => {
+                  setHiddenLogin("div-login-hidden");
+                  setTimeout(() => {
+                    setHiddenLogin("d-none");
+                    setShowLogin("form-login-show");
+                  }, 351);
+                  setFormAberto(2);
+                }}
+              >
+                Entrar
+              </button>
+              <button
+                className="btn-login mt-4"
+                onClick={() => {
+                  setHiddenLogin("div-login-hidden");
+                  setTimeout(() => {
+                    setHiddenLogin("d-none");
+                    setShowCadastro("form-login-show");
+                  }, 351);
+                  setFormAberto(1);
+                }}
+              >
+                Cadastrar
+              </button>
+            </div>
+            {/* ICONS SOCIAL */}
+            <div className="d-flex justify-content-center align-items-center mt-3 pt-3">
+              <ul className="lista-icon-social col-12">
+                <li className="col-1 mx-2">
+                  <img
+                    src="socialIcons/facebook.png"
+                    alt=""
+                    className="img-fluid"
+                    width="100%"
+                  />
+                </li>
+                <li className="col-2 mx-1">
+                  <img src="socialIcons/instagramIcon.png" alt="" width="70%" />
+                </li>
+                <li className="col-1 mx-2">
+                  <img src="socialIcons/whatsapp.png" alt="" width="100%" />
+                </li>
+              </ul>
             </div>
           </div>
         </div>
         {/* FORM LOGIN */}
-        <div className={showLogin+" mt-sm-5 pt-sm-5"}>
+        <div className={showLogin + " mt-sm-5 pt-sm-5"}>
           <div className="container-fluid pt-sm-5 mt-sm-5">
             <div className="row height-row">
               <div className="col-12 d-flex justify-content-center align-items-center pb-5 mb-5 flex-column">
@@ -127,25 +119,26 @@ export const PageLogin = () => {
                     )}
                   </div>
                   {loadLogin ? (
-                      <MutatingDots
-                        visible={true}
-                        height="100"
-                        width="100"
-                        color="#6d6d6d"
-                        secondaryColor="#6d6d6d"
-                        radius="12.5"
-                        ariaLabel="mutating-dots-loading"
-                        wrapperStyle={{}}
-                        wrapperClass=""
-                      />
+                    <MutatingDots
+                      visible={true}
+                      height="100"
+                      width="100"
+                      color="#6d6d6d"
+                      secondaryColor="#6d6d6d"
+                      radius="12.5"
+                      ariaLabel="mutating-dots-loading"
+                      wrapperStyle={{}}
+                      wrapperClass=""
+                    />
                   ) : (
                     <>
-                    {
-                      loginError &&
-                      <div className="container">
-                        <p className="m-0 my-1 text-white font-s">*{loginError}</p>
-                      </div>
-                    }
+                      {loginError && (
+                        <div className="container">
+                          <p className="m-0 my-1 text-white font-s">
+                            *{loginError}
+                          </p>
+                        </div>
+                      )}
                       <button
                         type="submit"
                         className="btn btn-dark border border-white mt-3"
@@ -182,7 +175,7 @@ export const PageLogin = () => {
           </div>
         </div>
         {/* FORM CADASTRO */}
-        <div className={showCadastro+" mt-sm-5 pt-sm-5"}>
+        <div className={showCadastro + " mt-sm-5 pt-sm-5"}>
           <div className="container-fluid pt-sm-5 mt-sm-5">
             <div className="row height-row">
               <div className="col-12 d-flex justify-content-center align-items-center pb-5 mb-5 flex-column">

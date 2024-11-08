@@ -1,0 +1,30 @@
+@font-face {
+  font-family: "Barber Street _PersonalUseOnly";
+  src: url("../../../../public/font/Barber\ Street\ _PersonalUseOnly.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.font {
+  color: white;
+  font-family: "Barber Street _PersonalUseOnly";
+  margin: 10px 0px 0px 0px;
+}
+
+.img-logo-navbar {
+  width: 50%;
+}
+
+.div-menu-navbar {
+  color: white;
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+.div-menu-navbar > li {
+  width: calc(100% / 4);
+}

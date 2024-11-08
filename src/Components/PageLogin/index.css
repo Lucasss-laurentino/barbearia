@@ -1,13 +1,14 @@
 .tela-toda-fundo-preto-show {
   height: 100vh;
-  background-color: rgb(24, 24, 24);
+  background-color: #212529;
   overflow-y: auto;
 }
 .font-s {
   font-size: 14px;
 }
+
 .background {
-  background-color: rgb(24, 24, 24);
+  background-color: #212529;
 }
 .div-btn-form-login {
   height: 48vh;
@@ -101,7 +102,7 @@
   position: absolute;
   color: white;
   top: -13px;
-  background-color: rgb(24, 24, 24);
+  background-color: #212529;
 }
 
 .form-control:focus {
