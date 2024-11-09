@@ -5,7 +5,7 @@ import "react-device-frameset/styles/marvel-devices.min.css";
 export const Header = () => {
   return (
     <>
-      <header className="bg-dark">
+      <header className="bg-dark py-4">
         <div className="col-12 d-md-flex justify-content-center align-items-center">
           <div class="d-flex justify-content-center align-items-center col-12 col-md-6 col-lg-6 anima-esquerda-pra-direita">
             <div class="text-center my-5 col-8 col-md-12">
@@ -17,7 +17,10 @@ export const Header = () => {
                 precisar te chamar no WhatsApp? Agora é possível!
               </p>
               <div class="d-grid gap-3 justify-content-center d-flex align-items-center">
-                <a href="/login" class="btn btn-primary btn-lg px-4 me-sm-3 text-btn-responsive">
+                <a
+                  href="/login"
+                  class="btn btn-primary btn-lg px-4 me-sm-3 text-btn-responsive"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="16"
@@ -41,9 +44,16 @@ export const Header = () => {
               color="black"
               zoom={"0.6"}
               width={"300px"}
-              height={"500px"}
+              height={"560px"}
             >
-              <div>Hello world</div>
+              <div className="bg-dark">
+                <img
+                  src="agendamento.gif"
+                  alt="Agendamento"
+                  width="100%"
+                  height="100%"
+                />
+              </div>
             </DeviceFrameset>
           </div>
         </div>

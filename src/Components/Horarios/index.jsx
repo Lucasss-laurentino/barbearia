@@ -69,7 +69,7 @@ export const Horarios = () => {
         <div className="col-3 col-sm-4 col-md-5 d-none d-sm-flex justify-content-sm-center  borda-direita">
           <div className="col-12 d-flex justify-content-center align-items-center">
             <img
-              src="/logo_preto.png"
+              src="/logo-fotor.png"
               className="img-fluid"
               width={"80%"}
               alt=""
