@@ -6,6 +6,7 @@ export const Li = ({
   aceitarHorarioPendente,
   recusarHorarioPendente,
   cancelarMeuHorarioMarcadoAdm,
+  finalizarHorarioAgendado
 }) => {
   return (
     <li className="pt-3 itens-list-horarios" key={horario.HORARIO_ID}>
@@ -133,7 +134,7 @@ export const Li = ({
               <div className="col-12 d-flex justify-content-around align-items-center my-2">
                 <button
                   className="btn btn-sm btn-success"
-                  onClick={() => aceitarHorarioPendente(horario)}
+                  onClick={() => finalizarHorarioAgendado(horario)}
                 >
                   Finalizar
                 </button>

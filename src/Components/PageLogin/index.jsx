@@ -8,6 +8,8 @@ import { LoginContext } from "../../Context/LoginContext";
 import { loginSchema } from "../../validations/loginValidation";
 import { UserContext } from "../../Context/UserContext";
 import { MutatingDots } from "react-loader-spinner";
+import { MenuBottom } from "../MenuBottom";
+import { AbaBottomContext } from "../../Context/AbaBottomContext";
 
 export const PageLogin = () => {
   const [hiddenLogin, setHiddenLogin] = useState("div-login");
@@ -17,6 +19,7 @@ export const PageLogin = () => {
   // contexts
   const { criarUsuario, login, loadLogin, loginError } =
     useContext(LoginContext);
+  const { active, setActive } = useContext(AbaBottomContext);
   const { user, pegarUsuario } = useContext(UserContext);
   const [formAberto, setFormAberto] = useState(0);
   // react-hook-form
@@ -27,6 +30,10 @@ export const PageLogin = () => {
   } = useForm({
     resolver: yupResolver(formAberto === 1 ? createUserSchema : loginSchema),
   });
+
+  useEffect(() => {
+    setActive(4);
+  }, [])
 
   return (
     <>
@@ -175,7 +182,13 @@ export const PageLogin = () => {
           </div>
         </div>
         {/* FORM CADASTRO */}
-        <div className={showCadastro + " mt-sm-5 pt-sm-5"}>
+        <div
+          className={
+            active !== 4
+              ? showCadastro + " mt-sm-5 pt-sm-5"
+              : showCadastro + " mt-sm-5 pt-sm-5 pb-5 mb-5"
+          }
+        >
           <div className="container-fluid pt-sm-5 mt-sm-5">
             <div className="row height-row">
               <div className="col-12 d-flex justify-content-center align-items-center pb-5 mb-5 flex-column">
@@ -272,6 +285,8 @@ export const PageLogin = () => {
             </div>
           </div>
         </div>
+
+        {!user?.ID && <MenuBottom />}
       </div>
     </>
   );

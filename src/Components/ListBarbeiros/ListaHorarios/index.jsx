@@ -33,20 +33,19 @@ export const ListaHorarios = ({
   const [dia, setDia] = useState();
   const [mes, setMes] = useState();
 
+  // filtra horarios pra exibir somente horarios de hoje e horarios acima da hora atual
   useEffect(() => {
-    // filtrar horarios retornando todos que seja diferente de horariosMarcado
-
-    const horariosPraHoje = horariosMarcado.filter(
-      (hM) => hM.DATA === data
-    );
-
-    // Filtra todos os horários, removendo os que estão marcados em 'horariosPraHoje'
-    const horariosDisponiveis = horariosFiltrado.filter(
-      (hF) => !horariosPraHoje.some((hP) => hP.HORARIO_ID === hF.ID)
-    );
-
-    setHorariosDessaData([...horariosDisponiveis]);
-
+    if (user?.ADM) {
+      setHorariosDessaData([...horariosFiltrado]);
+    } else {
+      const hora = new Date().getHours();
+      const horariosDisponiveis = horariosFiltrado.filter((horario) => {
+        if (horario.HORA.split(":")[0] > hora) {
+          return horario;
+        }
+      });
+      setHorariosDessaData([...horariosDisponiveis]);
+    }
   }, [horariosMarcado, data, horarios]);
 
   useEffect(() => {

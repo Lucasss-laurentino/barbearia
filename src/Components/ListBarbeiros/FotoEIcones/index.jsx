@@ -27,7 +27,7 @@ export const FotoEIcones = ({ barbeiro, user, setBarbeiroSelecionado, setExcluir
                 width="18"
                 height="18"
                 fill="currentColor"
-                className="bi bi-trash3-fill mx-3 cursor"
+                className="bi bi-trash3-fill mx-1 cursor"
                 viewBox="0 0 16 16"
                 onClick={() => {
                   setExcluirHorario(true);

@@ -13,6 +13,7 @@ export const Horarios = () => {
     aceitarHorarioPendente,
     recusarHorarioPendente,
     cancelarMeuHorarioMarcadoAdm,
+    finalizarHorarioAgendado
   } = useContext(HorarioMarcadoContext);
   const { servicos } = useContext(ServicoContext);
   const { horarios } = useContext(HorarioContext);
@@ -98,7 +99,7 @@ export const Horarios = () => {
                 );
                 return (
                   <Li
-                  key={index}
+                    key={index}
                     horario={horario}
                     hora={hora}
                     servico={servico}
@@ -106,6 +107,7 @@ export const Horarios = () => {
                     aceitarHorarioPendente={aceitarHorarioPendente}
                     recusarHorarioPendente={recusarHorarioPendente}
                     cancelarMeuHorarioMarcadoAdm={cancelarMeuHorarioMarcadoAdm}
+                    finalizarHorarioAgendado={finalizarHorarioAgendado}
                   />
                 );
               })}

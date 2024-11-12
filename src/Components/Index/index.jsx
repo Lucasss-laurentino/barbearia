@@ -14,9 +14,10 @@ import { BarbeiroContext } from "../../Context/BarbeiroContext";
 import { HorarioContext } from "../../Context/HorarioContext";
 import { HorarioMarcadoContext } from "../../Context/HorarioMarcadoContext";
 import { socket } from "../../socket";
+import { PageLogin } from "../PageLogin";
 
 export const Index = () => {
-  const { active } = useContext(AbaBottomContext);
+  const { active, setActive } = useContext(AbaBottomContext);
   const { user, pegarUsuario, buscarBarbearia } = useContext(UserContext);
   const { pegarServicos, setServicoEscolhido } = useContext(ServicoContext);
   const { pegarBarbeiros } = useContext(BarbeiroContext);
@@ -25,6 +26,10 @@ export const Index = () => {
     HorarioMarcadoContext
   );
   const { barbearia } = useParams();
+
+  useEffect(() => {
+    setActive(2)
+  }, [])
 
   useEffect(() => {
     const carregarDadosNecessario = async () => {
@@ -138,6 +143,7 @@ export const Index = () => {
           {/* Se o usuario não for adm */}
           {active === 1 && !user.ADM && <ListBarbeiros />}
           {active === 2 && !user.ADM && <ListService />}
+          {/* {active === 4 && !user.ADM && <PageLogin />} */}
 
           <div className="d-sm-none">
             <MenuBottom />
@@ -145,12 +151,15 @@ export const Index = () => {
         </div>
       ) : (
         <div className="body">
-          <div className="d-sm-none">
-            <Navbar />
-          </div>
+          {active !== 4 && (
+            <div className="d-sm-none">
+              <Navbar />
+            </div>
+          )}
           <Menu />
           {active === 2 && <ListService />}
           {active === 1 && <ListBarbeiros />}
+          {active === 4 && <PageLogin />}
           <div className="d-sm-none">
             <MenuBottom />
           </div>

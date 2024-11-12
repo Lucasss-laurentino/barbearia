@@ -17,6 +17,8 @@ export const HorarioMarcadoProvider = ({ children }) => {
   const [cancelarHorarioPendente, setCancelarHorarioPendente] = useState();
   const [cancelarHorarioMarcado, setCancelarHorarioMarcado] = useState();
   const [cancelarHorarioMarcadoAdm, setCancelarHorarioMarcadoAdm] = useState();
+  const [finalizarHorarioAgendadoState, setFinalizarHorarioAgendadoState] =
+    useState();
 
   // aceita horario pendente
   useEffect(() => {
@@ -83,13 +85,31 @@ export const HorarioMarcadoProvider = ({ children }) => {
   useEffect(() => {
     const socketInstancia = socket();
     if (cancelarHorarioMarcadoAdm) {
-      socketInstancia.emit("cancelarHorarioMarcadoAdm", cancelarHorarioMarcadoAdm);
+      socketInstancia.emit(
+        "cancelarHorarioMarcadoAdm",
+        cancelarHorarioMarcadoAdm
+      );
       socketInstancia.on("horarioMarcadoCanceladoAdm", (horarioCancelado) => {
         setHorarios(horarioCancelado.horarios);
         setHorariosMarcado(horarioCancelado.horariosMarcado);
       });
     }
   }, [cancelarHorarioMarcadoAdm]);
+
+  // finaliza horario agendado
+  useEffect(() => {
+    if (finalizarHorarioAgendado) {
+      const socketInstancia = socket();
+      socketInstancia.emit(
+        "finalizarHorarioAgendado",
+        finalizarHorarioAgendadoState
+      );
+
+      socketInstancia.on("confirmarFinalizacaoHorarioAgendado", () => {
+        setHorariosMarcado([...horariosMarcado]);
+      });
+    }
+  }, [finalizarHorarioAgendadoState]);
 
   const { ordenarHorarios, setErrosHorarios } = useContext(HorarioContext);
 
@@ -169,8 +189,14 @@ export const HorarioMarcadoProvider = ({ children }) => {
     setCancelarHorarioMarcado(horarioMarcado);
   };
 
+  // gatilho ativa useEffect
   const cancelarMeuHorarioMarcadoAdm = (horarioMarcado) => {
     setCancelarHorarioMarcadoAdm(horarioMarcado);
+  };
+
+  // gatilho ativa useEffect
+  const finalizarHorarioAgendado = (horarioAgendado) => {
+    setFinalizarHorarioAgendadoState(horarioAgendado);
   };
 
   return (
@@ -188,6 +214,7 @@ export const HorarioMarcadoProvider = ({ children }) => {
         recusarHorarioPendente,
         cancelarMeuHorarioMarcado,
         cancelarMeuHorarioMarcadoAdm,
+        finalizarHorarioAgendado,
       }}
     >
       {children}
