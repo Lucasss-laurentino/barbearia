@@ -35,6 +35,7 @@ export const ListBarbeiros = () => {
   const [horarioSelecionado, setHorarioSelecionado] = useState(null);
   const [showModalPagamentoAgendamento, setShowModalPagamentoAgendamento] =
     useState(false);
+  const [id, setId] = useState();
   const [horarioObjeto, setHorarioObjeto] = useState({});
   // HANDLES
   const handleCloseExcluirHorario = () => {
@@ -57,8 +58,8 @@ export const ListBarbeiros = () => {
   // CONTEXTS
   const { barbeiros, barbeiroSelecionado, setBarbeiroSelecionado } =
     useContext(BarbeiroContext);
-  const [id, setId] = useState();
-  const { setHorarioMarcado, horarioMarcado, desmarcarHorario } = useContext(
+
+  const { setHorarioMarcado, horarioMarcado, desmarcarHorario, storage, setStorage } = useContext(
     HorarioMarcadoContext
   );
   const { servicos, setServicoEscolhido } = useContext(ServicoContext);
@@ -124,14 +125,36 @@ export const ListBarbeiros = () => {
         setUsuarioTemHorarioMarcado(true);
         setHorarioMarcado(obj.HORA);
       }
+      setStorage(obj);
     }
   }, [localStorage.getItem("agendamento")]);
 
   useEffect(() => {
     if (Object.keys(horarioObjeto).length > 0) {
       localStorage.setItem("agendamento", JSON.stringify(horarioObjeto));
+      setStorage(horarioObjeto);
     }
   }, [horarioObjeto]);
+
+  // tira a flag de horario aceito quando esse horario é finalizado pelo adm
+  useEffect(() => {
+    const socketInstancia = socket();
+    socketInstancia.on(
+      `confirmarFinalizacaoHorarioAgendado${barbearia}`,
+      (horarioFinalizado) => {
+        if (
+          localStorage.getItem("agendamento") &&
+          localStorage.getItem("agendamento") !== ""
+        ) {
+          const storage = JSON.parse(localStorage.getItem("agendamento"));
+          if (storage.ID === horarioFinalizado.ID) {
+            localStorage.setItem("agendamento", "");
+            setStorage(null)
+          }
+        }
+      }
+    );
+  }, []);
 
   return (
     <>
@@ -231,7 +254,7 @@ export const ListBarbeiros = () => {
                           setId={setId}
                           barbearia={barbearia}
                         />
-                        {localStorage.getItem("agendamento") &&
+                        {storage !== null &&
                           horarioMarcado?.BARBEIRO_ID === barbeiro?.ID && (
                             <HoraMarcada
                               horario={horarioObjeto}
@@ -245,7 +268,7 @@ export const ListBarbeiros = () => {
               })}
             </ul>
             <div className="d-block">
-              <MenuBottom/>
+              <MenuBottom />
             </div>
           </div>
         </div>

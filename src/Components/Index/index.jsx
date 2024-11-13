@@ -15,6 +15,7 @@ import { HorarioContext } from "../../Context/HorarioContext";
 import { HorarioMarcadoContext } from "../../Context/HorarioMarcadoContext";
 import { socket } from "../../socket";
 import { PageLogin } from "../PageLogin";
+import { Configuracoes } from "../Configuracoes";
 
 export const Index = () => {
   const { active, setActive } = useContext(AbaBottomContext);
@@ -78,7 +79,6 @@ export const Index = () => {
     socketInstancia.on(
       `confirmarHorarioRecusadoUsuario${barbearia}`,
       (horarioParametro) => {
-        console.log(horarioParametro);
         const { horarios, horarioNaoPendente } = horarioParametro;
         if (localStorage.getItem("agendamento")) {
           // se gerar algum bug pode ser por nao esta verificando o id do localStorage antes de setar
@@ -139,11 +139,11 @@ export const Index = () => {
           {active === 1 && user.ADM && <ListService />}
           {active === 2 && user.ADM && <Horarios />}
           {active === 3 && user.ADM && <ListBarbeiros />}
+          {active === 4 && user.ADM && <Configuracoes />}
 
           {/* Se o usuario não for adm */}
           {active === 1 && !user.ADM && <ListBarbeiros />}
           {active === 2 && !user.ADM && <ListService />}
-          {/* {active === 4 && !user.ADM && <PageLogin />} */}
 
           <div className="d-sm-none">
             <MenuBottom />

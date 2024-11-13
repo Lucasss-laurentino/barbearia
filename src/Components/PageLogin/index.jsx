@@ -10,6 +10,7 @@ import { UserContext } from "../../Context/UserContext";
 import { MutatingDots } from "react-loader-spinner";
 import { MenuBottom } from "../MenuBottom";
 import { AbaBottomContext } from "../../Context/AbaBottomContext";
+import { useParams } from "react-router-dom";
 
 export const PageLogin = () => {
   const [hiddenLogin, setHiddenLogin] = useState("div-login");
@@ -22,6 +23,7 @@ export const PageLogin = () => {
   const { active, setActive } = useContext(AbaBottomContext);
   const { user, pegarUsuario } = useContext(UserContext);
   const [formAberto, setFormAberto] = useState(0);
+  const { barbearia } = useParams();
   // react-hook-form
   const {
     register,
@@ -286,7 +288,7 @@ export const PageLogin = () => {
           </div>
         </div>
 
-        {!user?.ID && <MenuBottom />}
+        {!user?.ID && barbearia && <MenuBottom />}
       </div>
     </>
   );

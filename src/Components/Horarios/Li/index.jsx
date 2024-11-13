@@ -128,7 +128,7 @@ export const Li = ({
           </>
         )}
         {/* SÓ RENDERIZA ESSA LINHA SE HORARIO FOR ACEITO */}
-        {horario?.RESERVADO === 1 && (
+        {horario?.RESERVADO === 1 && horario?.RESERVADO !== 0 && (
           <>
             <div className="row my-3">
               <div className="col-12 d-flex justify-content-around align-items-center my-2">

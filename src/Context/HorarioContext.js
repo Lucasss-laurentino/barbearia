@@ -1,15 +1,9 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
 import { http } from "../http";
-import { socket } from "../socket";
-import { BarbeiroContext } from "./BarbeiroContext";
-import { ServicoContext } from "./ServicoContext";
 
 export const HorarioContext = createContext();
 
 export const HorarioProvider = ({ children }) => {
-  // CONTEXTS IMPORTS
-  const { barbeiros } = useContext(BarbeiroContext);
-  const { servicos } = useContext(ServicoContext);
 
   // STATES
   const [horarios, setHorarios] = useState([]);
@@ -26,50 +20,9 @@ export const HorarioProvider = ({ children }) => {
   });
 
   const [loadHorarios, setLoadHorarios] = useState(false);
-  const [socketInstancia] = useState(socket());
   const [agendamento, setAgendamento] = useState({});
   const [showModalMarcarHorarioDeslogado, setShowModalMarcarHorarioDeslogado] =
     useState(false);
-  // USE EFFECT
-
-  useEffect(() => {
-    if (Object.keys(agendamento).length > 0) {
-      socketInstancia.emit("agendar", agendamento);      
-      // evento marca horario como pendente
-      socketInstancia.on("confirmarAgendamento", (agendamento) => {
-
-        const agendamentoRetornado = agendamento.agendamento;
-       
-        // atualizando horarios
-        setHorarios(agendamento.horarios);
-
-        const hora = horarios.find(
-          (h) => h.ID === agendamentoRetornado.HORARIO_ID
-        );
-        const barbeiro = barbeiros.find(
-          (b) => b.ID === agendamentoRetornado.BARBEIRO_ID
-        );
-        const servico = servicos.find(
-          (s) => s.ID === agendamentoRetornado.SERVICO_ID
-        );
-        const agendamentoObj = {
-          ID: agendamentoRetornado.ID,
-          HORA: hora,
-          BARBEIRO: barbeiro,
-          RESERVADO: agendamentoRetornado?.RESERVADO,
-          SERVICO: servico,
-          DATA: agendamentoRetornado.DATA
-        };
-
-        // armazena informações e status do agendamento no localStorage
-        localStorage.setItem("agendamento", JSON.stringify(agendamentoObj));
-
-        setShowModalMarcarHorarioDeslogado(false);
-
-      });
-
-    }
-  }, [agendamento]);
 
   // FUNÇÕES
 
@@ -171,6 +124,7 @@ export const HorarioProvider = ({ children }) => {
         setErrosHorarios,
         ordenarHorarios,
         agendar,
+        agendamento,
         showModalMarcarHorarioDeslogado,
         setShowModalMarcarHorarioDeslogado,
         usuarioTemHorarioMarcado,

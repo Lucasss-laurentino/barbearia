@@ -33,7 +33,7 @@ export const ListaHorarios = ({
   const [dia, setDia] = useState();
   const [mes, setMes] = useState();
 
-  // filtra horarios pra exibir somente horarios de hoje e horarios acima da hora atual
+  // filtra horarios pra exibir somente horarios de hoje, horarios acima da hora atual e horarios disponiveis
   useEffect(() => {
     if (user?.ADM) {
       setHorariosDessaData([...horariosFiltrado]);
@@ -44,7 +44,10 @@ export const ListaHorarios = ({
           return horario;
         }
       });
-      setHorariosDessaData([...horariosDisponiveis]);
+      const horarios = horariosDisponiveis.filter((horarioDisponivel) => {
+        if(!horariosMarcado.some((horarioMarcado) => horarioMarcado.HORARIO_ID === horarioDisponivel.ID)) return horarioDisponivel
+      })
+      setHorariosDessaData([...horarios]);
     }
   }, [horariosMarcado, data, horarios]);
 

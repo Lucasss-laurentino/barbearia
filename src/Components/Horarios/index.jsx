@@ -6,6 +6,7 @@ import { HorarioContext } from "../../Context/HorarioContext";
 import { BarbeiroContext } from "../../Context/BarbeiroContext";
 import { MenuBottom } from "../MenuBottom";
 import { Li } from "./Li";
+import { UserContext } from "../../Context/UserContext";
 
 export const Horarios = () => {
   const {
@@ -13,13 +14,16 @@ export const Horarios = () => {
     aceitarHorarioPendente,
     recusarHorarioPendente,
     cancelarMeuHorarioMarcadoAdm,
-    finalizarHorarioAgendado
+    finalizarHorarioAgendado,
+    buscarHorariosAgendado,
   } = useContext(HorarioMarcadoContext);
   const { servicos } = useContext(ServicoContext);
+  const { user } = useContext(UserContext);
   const { horarios } = useContext(HorarioContext);
   const { barbeiros } = useContext(BarbeiroContext);
   const [lucroDiario, setLucroDiario] = useState();
   const [horariosOrdenados, setHorariosOrdenados] = useState([]);
+  const [hoje] = useState(new Date());
 
   const limparValor = (valor) => {
     return valor
@@ -27,9 +31,15 @@ export const Horarios = () => {
       : "";
   };
 
+  // busca todos horarios marcados dessa barbearia
+  useEffect(() => {
+    buscarHorariosAgendado(user?.NOME_BARBEARIA);
+  }, [])
+
+  // setando um faturamento previsto
   useEffect(() => {
     let precos = [];
-    horariosMarcado?.forEach((horarioMarcado) => {
+    horariosOrdenados?.forEach((horarioMarcado) => {
       const servico = servicos.find((s) => s.ID === horarioMarcado?.SERVICO_ID);
       precos.push(limparValor(servico?.PRECO));
     });
@@ -43,7 +53,7 @@ export const Horarios = () => {
         maximumFractionDigits: 2,
       })}`
     );
-  }, [horariosMarcado]);
+  }, [horariosMarcado, horariosOrdenados]);
 
   useEffect(() => {
     if (horariosMarcado) {
@@ -60,7 +70,10 @@ export const Horarios = () => {
         const dataB = new Date(b.DATA.split('/').reverse().join('-'));
         return dataA - dataB; // Ordenar por DATA
       });
-      setHorariosOrdenados(ordenados);
+
+      const horariosDeHoje = ordenados.filter((horarioOrdenado) => horarioOrdenado.DATA === `${hoje.getDate()}/${hoje.toLocaleString('pt-BR', {month: '2-digit'})}`);
+
+      setHorariosOrdenados(horariosDeHoje);
     }
   }, [horariosMarcado]);
 
@@ -82,7 +95,7 @@ export const Horarios = () => {
             <div className="col-12 head-horarios">
               <div className="col-5 quantia-agendamento-horarios">
                 <div className="col-11 px-1 align-qnt-agendamento">
-                  <h5 className="">{horariosMarcado?.length}</h5>
+                  <h5 className="">{horariosOrdenados?.length}</h5>
                   <p className="m-0">Agendamentos</p>
                 </div>
               </div>

@@ -189,13 +189,13 @@ export const Calendario = () => {
                 {semanas.map((semana, index) => {
                   return (
                     <tr key={index}>
-                      {semana.map((dia) => {
+                      {semana.map((dia, index) => {
                         if (!dia.esseMes) {
-                          return <td className="text-secondary">{dia.dia}</td>;
+                          return <td className="text-secondary" key={index}>{dia.dia}</td>;
                         } else if (dia.dia === diaAtual && mes === mesAtual) {
-                          return <td className="text-success cursor" onClick={() => mudarData(dia, mes, diaAtual)}>{dia.dia}</td>;
+                          return <td className="text-success cursor" onClick={() => mudarData(dia, mes, diaAtual)} key={index}>{dia.dia}</td>;
                         } else {
-                          return <td onClick={() => mudarData(dia, mes, diaAtual)} className="text-white cursor">{dia.dia}</td>;
+                          return <td onClick={() => mudarData(dia, mes, diaAtual)} className="text-white cursor" key={index}>{dia.dia}</td>;
                         }
                       })}
                     </tr>
