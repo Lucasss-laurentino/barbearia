@@ -1,10 +1,10 @@
 import { useContext } from "react";
 import { MenuContext } from "../../Context/MenuContext";
+import { UserContext } from "../../Context/UserContext";
 
 export const Navbar = () => {
-
   const { setClassMenu, classMenu } = useContext(MenuContext);
-
+  const { user } = useContext(UserContext);
   return (
     <>
       <div className="container-fluid">
@@ -13,18 +13,21 @@ export const Navbar = () => {
             <div className="img-logo col-10 col-sm-7 col-md-5 pt-2">
               <img src="/logo-fotor.png" width="30%" alt="" />
             </div>
-            <div className="icon-menu col-1" onClick={() => setClassMenu(!classMenu)}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="25"
-                height="25"
-                fill="#fff"
-                className="bi bi-menu-up"
-                viewBox="0 0 16 16"
-              >
-                <path d="M7.646 15.854a.5.5 0 0 0 .708 0L10.207 14H14a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3.793zM1 9V6h14v3zm14 1v2a1 1 0 0 1-1 1h-3.793a1 1 0 0 0-.707.293l-1.5 1.5-1.5-1.5A1 1 0 0 0 5.793 13H2a1 1 0 0 1-1-1v-2zm0-5H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zM2 11.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 0-1h-8a.5.5 0 0 0-.5.5m0-4a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 0-1h-11a.5.5 0 0 0-.5.5m0-4a.5.5 0 0 0 .5.5h6a.5.5 0 0 0 0-1h-6a.5.5 0 0 0-.5.5" />
-              </svg>
-            </div>
+            {user?.ID && (
+              <div className="icon-menu col-2 d-flex">
+                <p className="m-0 text-white">Sair</p>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  fill="#fff"
+                  className="bi bi-door-closed-fill"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M12 1a1 1 0 0 1 1 1v13h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V2a1 1 0 0 1 1-1zm-2 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2" />
+                </svg>
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -9,7 +9,6 @@ export const ModalPagamentoAgendamento = ({
 }) => {
   const [metodoPagamento, setMetodoPagamento] = useState();
   const handleChange = (event) => {
-    console.log(event.target.value);
     setMetodoPagamento(event.target.value);
   };
   return (

@@ -3,7 +3,10 @@ import { ImgLogo } from "../ImgLogo";
 import "./index.css";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { createUserSchema } from "../../validations/createUserValidation";
+import {
+  createUserSchema,
+  createUserSchemaADM,
+} from "../../validations/createUserValidation";
 import { LoginContext } from "../../Context/LoginContext";
 import { loginSchema } from "../../validations/loginValidation";
 import { UserContext } from "../../Context/UserContext";
@@ -21,7 +24,7 @@ export const PageLogin = () => {
   const { criarUsuario, login, loadLogin, loginError } =
     useContext(LoginContext);
   const { active, setActive } = useContext(AbaBottomContext);
-  const { user, pegarUsuario } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const [formAberto, setFormAberto] = useState(0);
   const { barbearia } = useParams();
   // react-hook-form
@@ -30,12 +33,17 @@ export const PageLogin = () => {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(formAberto === 1 ? createUserSchema : loginSchema),
+    // se tem o parametro barbearia entao o usuario está se cadastrando em uma pagina de uma barbearia
+    // se nao tem o parametro barbearia entao o usuario tem um plano no sistema
+    // se formAberto nao for 1 entao o usuário quer fazer login e nao se cadastrar
+    resolver: yupResolver(
+      formAberto === 1 ? (barbearia ? createUserSchema : createUserSchemaADM) : loginSchema
+    ),
   });
 
   useEffect(() => {
     setActive(4);
-  }, [])
+  }, []);
 
   return (
     <>
@@ -209,20 +217,22 @@ export const PageLogin = () => {
                       </p>
                     )}
                   </div>
-                  <div className="form-group">
-                    <label className="text-white">Barbearia</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Nome da sua barbearia"
-                      {...register("NOME_BARBEARIA")}
-                    />
-                    {errors.NOME_BARBEARIA && (
-                      <p className="m-0 my-1 text-white">
-                        *{errors.NOME_BARBEARIA.message}
-                      </p>
-                    )}
-                  </div>
+                  {!barbearia && (
+                    <div className="form-group">
+                      <label className="text-white">Barbearia</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Nome da sua barbearia"
+                        {...register("NOME_BARBEARIA")}
+                      />
+                      {errors.NOME_BARBEARIA && (
+                        <p className="m-0 my-1 text-white">
+                          *{errors.NOME_BARBEARIA.message}
+                        </p>
+                      )}
+                    </div>
+                  )}
                   <div className="form-group">
                     <label className="text-white">Senha</label>
                     <input

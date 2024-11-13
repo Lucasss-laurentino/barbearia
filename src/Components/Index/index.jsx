@@ -15,7 +15,8 @@ import { HorarioContext } from "../../Context/HorarioContext";
 import { HorarioMarcadoContext } from "../../Context/HorarioMarcadoContext";
 import { socket } from "../../socket";
 import { PageLogin } from "../PageLogin";
-import { Configuracoes } from "../Configuracoes";
+import { Finalizados } from "../Finalizados";
+import { Configurações } from "../Configuracoes";
 
 export const Index = () => {
   const { active, setActive } = useContext(AbaBottomContext);
@@ -29,8 +30,8 @@ export const Index = () => {
   const { barbearia } = useParams();
 
   useEffect(() => {
-    setActive(2)
-  }, [])
+    setActive(2);
+  }, []);
 
   useEffect(() => {
     const carregarDadosNecessario = async () => {
@@ -129,42 +130,51 @@ export const Index = () => {
 
   return (
     <>
-      {user?.ID ? (
-        <div className="body">
+      <div className="body">
+        {/* Navbar para dispositivos móveis (excluindo quando o usuário não estiver logado e active for 4) */}
+        {user?.ID && (
           <div className="d-sm-none">
             <Navbar />
           </div>
-          <Menu />
-          {/* Se o usuario for adm */}
-          {active === 1 && user.ADM && <ListService />}
-          {active === 2 && user.ADM && <Horarios />}
-          {active === 3 && user.ADM && <ListBarbeiros />}
-          {active === 4 && user.ADM && <Configuracoes />}
+        )}
 
-          {/* Se o usuario não for adm */}
-          {active === 1 && !user.ADM && <ListBarbeiros />}
-          {active === 2 && !user.ADM && <ListService />}
+        <Menu />
 
-          <div className="d-sm-none">
-            <MenuBottom />
-          </div>
+        {/* Condições para renderizar diferentes componentes com base no estado do usuário e 'active' */}
+        {user?.ID ? (
+          // Se o usuário estiver logado
+          <>
+            {/* Condições para usuários administradores */}
+            {user.ADM ? (
+              <>
+                {active === 1 && <ListService />}
+                {active === 2 && <Horarios />}
+                {active === 3 && <ListBarbeiros />}
+                {active === 4 && <Finalizados />}
+              </>
+            ) : (
+              // Se o usuário não for administrador
+              <>
+                {active === 1 && <ListBarbeiros />}
+                {active === 2 && <ListService />}
+                {active === 4 && <Configurações />}
+              </>
+            )}
+          </>
+        ) : (
+          // Se o usuário não estiver logado
+          <>
+            {active === 1 && <ListBarbeiros />}
+            {active === 2 && <ListService />}
+            {active === 4 && <PageLogin />}
+          </>
+        )}
+
+        {/* MenuBottom para dispositivos móveis */}
+        <div className="d-sm-none">
+          <MenuBottom />
         </div>
-      ) : (
-        <div className="body">
-          {active !== 4 && (
-            <div className="d-sm-none">
-              <Navbar />
-            </div>
-          )}
-          <Menu />
-          {active === 2 && <ListService />}
-          {active === 1 && <ListBarbeiros />}
-          {active === 4 && <PageLogin />}
-          <div className="d-sm-none">
-            <MenuBottom />
-          </div>
-        </div>
-      )}
+      </div>
     </>
   );
 };

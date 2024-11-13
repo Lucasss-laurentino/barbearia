@@ -13,10 +13,8 @@ export const Menu = () => {
             <div className="row justify-content-end">
               <div className="p-0">
                 <ul className="list-menu">
-                  <li className="col-12">Meus horários</li>
-                  <li className="col-12">Item 2</li>
-                  <li className="col-12">Item 3</li>
-                  <li className="col-12">Item 4</li>
+                  <li className="col-12">Minha conta</li>
+                  <li className="col-12">Sair</li>
                 </ul>
               </div>
             </div>

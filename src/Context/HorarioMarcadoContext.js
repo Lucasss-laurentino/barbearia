@@ -76,7 +76,6 @@ export const HorarioMarcadoProvider = ({ children }) => {
     if (horarioPendente) {
       socketInstancia.emit("aceitarHorarioPendente", horarioPendente);
       socketInstancia.on("confirmarHorarioAceito", (horarioAceito) => {
-        console.log(horarioAceito);
         const { horarios, horarioNaoPendente } = horarioAceito;
         const novoHorariosMarcado = horariosMarcado.map((hM) => {
           if (hM.ID === horarioNaoPendente.ID) {

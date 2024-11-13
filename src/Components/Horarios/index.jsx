@@ -55,27 +55,32 @@ export const Horarios = () => {
     );
   }, [horariosMarcado, horariosOrdenados]);
 
-  useEffect(() => {
-    if (horariosMarcado) {
-      const ordenados = [...horariosMarcado].sort((a, b) => {
-        // Primeiro, ordenar pela propriedade RESERVADO
-        if (a.RESERVADO === 2 && b.RESERVADO !== 2) {
-          return -1; // a deve vir antes de b
-        }
-        if (a.RESERVADO !== 2 && b.RESERVADO === 2) {
-          return 1; // b deve vir antes de a
-        }
-        // Se ambos têm o mesmo valor de RESERVADO, ordenar pela DATA
-        const dataA = new Date(a.DATA.split('/').reverse().join('-'));
-        const dataB = new Date(b.DATA.split('/').reverse().join('-'));
-        return dataA - dataB; // Ordenar por DATA
-      });
+ useEffect(() => {
+   if (horariosMarcado) {
+     const ordenados = [...horariosMarcado].sort((a, b) => {
+       // Primeiro, ordenar pela propriedade RESERVADO (2, 1, 0)
+       if (a.RESERVADO !== b.RESERVADO) {
+         return b.RESERVADO - a.RESERVADO; // RESERVADO = 2 vem primeiro, depois 1, depois 0
+       }
 
-      const horariosDeHoje = ordenados.filter((horarioOrdenado) => horarioOrdenado.DATA === `${hoje.getDate()}/${hoje.toLocaleString('pt-BR', {month: '2-digit'})}`);
+       // Se ambos têm o mesmo valor de RESERVADO, ordenar pelo HORARIO_ID
+       const horarioA = a.HORARIO_ID; // O valor do HORARIO_ID
+       const horarioB = b.HORARIO_ID; // O valor do HORARIO_ID
 
-      setHorariosOrdenados(horariosDeHoje);
-    }
-  }, [horariosMarcado]);
+       // Ordenar pelo HORARIO_ID em ordem crescente
+       return horarioA - horarioB; // Ordenação numérica
+     });
+
+     const horariosDeHoje = ordenados.filter((horarioOrdenado) => {
+       const dataFormatada = `${hoje.getDate()}/${hoje.toLocaleString("pt-BR", {
+         month: "2-digit",
+       })}`;
+       return horarioOrdenado.DATA === dataFormatada;
+     });
+     setHorariosOrdenados(horariosDeHoje);
+   }
+ }, [horariosMarcado, hoje]);
+
 
   return (
     <>

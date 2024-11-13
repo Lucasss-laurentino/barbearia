@@ -12,7 +12,13 @@ export const MenuBottom = () => {
       <div className="container-fluid footer-bottom">
         <div className="row">
           <div className={active !== 4 ? "col-12 col-md-11 p-0" : "col-12"}>
-            <ul className={active !== 4 ? "list-menu-bottom" : "list-menu-bottom justify-content-end"}>
+            <ul
+              className={
+                active !== 4
+                  ? "list-menu-bottom"
+                  : "list-menu-bottom justify-content-end"
+              }
+            >
               <li
                 className="col-3 col-sm-2 col-md-2"
                 onClick={() => setActive(2)}
@@ -87,7 +93,38 @@ export const MenuBottom = () => {
                 onClick={() => setActive(4)}
               >
                 <div className={active === 4 ? "fundo-branco" : "fundo-preto"}>
-                  {active === 4 && user?.ID && (
+                  {/* Se o usuario estiver logado e for administrador */}
+                  {active === 4 && user?.ADM && (
+                    <>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        fill="currentColor"
+                        class="bi bi-check-all"
+                        viewBox="0 0 16 16"
+                      >
+                        <path d="M8.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L2.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093L8.95 4.992zm-.92 5.14.92.92a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 1 0-1.091-1.028L9.477 9.417l-.485-.486z" />
+                      </svg>
+                      <p className="texto-preto">Finalizados</p>
+                    </>
+                  )}
+                  {active !== 4 && user?.ADM && (
+                    <>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        fill="#fff"
+                        class="bi bi-check-all"
+                        viewBox="0 0 16 16"
+                      >
+                        <path d="M8.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L2.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093L8.95 4.992zm-.92 5.14.92.92a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 1 0-1.091-1.028L9.477 9.417l-.485-.486z" />
+                      </svg>
+                      <p className="texto-branco">Finalizados</p>
+                    </>
+                  )}
+                  {active === 4 && user?.ID && !user.ADM && (
                     <>
                       <img
                         src="/icones_menu_bottom/configuracao_dark.png"
@@ -98,7 +135,7 @@ export const MenuBottom = () => {
                       <p className="texto-preto">Configurações</p>
                     </>
                   )}
-                  {active !== 4 && user?.ID && (
+                  {active !== 4 && user?.ID && !user.ADM && (
                     <>
                       <img
                         src="/icones_menu_bottom/configuracao.png"
