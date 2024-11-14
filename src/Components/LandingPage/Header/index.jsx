@@ -7,19 +7,19 @@ export const Header = () => {
     <>
       <header className="bg-dark py-4">
         <div className="col-12 d-md-flex justify-content-center align-items-center">
-          <div class="d-flex justify-content-center align-items-center col-12 col-md-6 col-lg-6 anima-esquerda-pra-direita">
-            <div class="text-center my-5 col-8 col-md-12">
-              <h1 class="display-5 fw-bolder text-white mb-2">
+          <div className="d-flex justify-content-center align-items-center col-12 col-md-6 col-lg-6 anima-esquerda-pra-direita">
+            <div className="text-center my-5 col-8 col-md-12">
+              <h1 className="display-5 fw-bolder text-white mb-2">
                 A Melhor Gestão Pra sua Barbearia
               </h1>
-              <p class="lead text-white-50 mb-4">
+              <p className="lead text-white-50 mb-4">
                 Já imaginou seus clientes agendando horários sozinhos sem
                 precisar te chamar no WhatsApp? Agora é possível!
               </p>
-              <div class="d-grid gap-3 justify-content-center d-flex align-items-center">
+              <div className="d-grid gap-3 justify-content-center d-flex align-items-center">
                 <a
                   href="/login"
-                  class="btn btn-primary btn-lg px-4 me-sm-3 text-btn-responsive"
+                  className="btn btn-primary btn-lg px-4 me-sm-3 text-btn-responsive"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

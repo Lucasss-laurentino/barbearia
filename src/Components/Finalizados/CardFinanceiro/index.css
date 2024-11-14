@@ -1,0 +1,13 @@
+.card {
+    height: 80px; /* por em quanto */
+    width: 100%;
+    background-color: #373c41;
+}
+.preco-finalizados {
+    
+}
+.text-periodo-mensal {
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+}

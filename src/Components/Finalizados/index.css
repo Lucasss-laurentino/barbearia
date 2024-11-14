@@ -1,0 +1,66 @@
+.filtro {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #373c41;
+  border-radius: 5px;
+}
+
+.input-finalizados {
+  border: 1px solid white;
+  text-align: center;
+  border-radius: 5px;
+  background-color: transparent;
+  width: 90%;
+}
+
+.input-finalizados::placeholder {
+  color: white;
+}
+
+.select-servico-barbeiro {
+    width: 90%;
+    background-color: transparent;
+    border: 1px solid white;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    padding: 2px 5px;
+    padding-right: 30px; /* Espaço para a seta */
+    -webkit-appearance: none;  /* Remove a aparência nativa no Safari */
+    -moz-appearance: none;     /* Remove a aparência nativa no Firefox */
+    appearance: none;          /* Remove a aparência nativa no Chrome */
+    background-color: transparent;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 16l-4-4h8z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    outline: none;
+}
+
+/* Estilo para as opções */
+.select-servico-barbeiro option {
+    background-color: #373c41;
+    color: white;
+    font-size: 16px;
+    padding: 10px;
+}
+
+/* Estilo para o hover do select */
+.select-servico-barbeiro:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Altere conforme necessário */
+}
+
+.scroll-finalizados {
+    background-color: #373c41;
+    border-radius: 5px;
+    max-height: 150px;
+    overflow-y: auto;
+}
+.height-scroll {
+    max-height: 73%;
+    overflow-y: auto;
+}
+.cor-de-fundo {
+    background-color: #373c41;
+    border-radius: 5px;
+}
