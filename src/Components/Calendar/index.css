@@ -1,0 +1,23 @@
+.encapsula-calendario-hidden {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: -100%;
+  transition: top 0.3s ease-in-out;
+  flex-direction: column;
+  z-index: 2;
+}
+
+.encapsula-calendario {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 16%;
+  transition: top 0.3s ease-in-out;
+  flex-direction: column;
+  z-index: 2;
+}

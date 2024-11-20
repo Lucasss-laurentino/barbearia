@@ -13,11 +13,14 @@ export const ListaHorarios = ({
   horariosFiltrado,
   setBarbeiro,
   setShowHorarios,
+  setClasseCalendario,
   setHorarioSelecionado,
   horarioSelecionado,
   setExcluirHorario,
   setId,
   barbearia,
+  setCalendarioAberto,
+
 }) => {
   const { servicoEscolhido } = useContext(ServicoContext);
   const {
@@ -27,37 +30,48 @@ export const ListaHorarios = ({
   } = useContext(HorarioContext);
   const { horariosMarcado } = useContext(HorarioMarcadoContext);
   const { setAnimaCalendario } = useContext(AnimacaoContext);
-  const { data } = useContext(DataContext);
+  const { data, pegarDataDeHoje } = useContext(DataContext);
   const [horariosDessaData, setHorariosDessaData] = useState([]);
   const [horaAtual, setHoraAtual] = useState();
-  const [dia, setDia] = useState();
-  const [mes, setMes] = useState();
 
   // filtra horarios pra exibir somente horarios de hoje, horarios acima da hora atual e horarios disponiveis
   useEffect(() => {
     if (user?.ADM) {
       setHorariosDessaData([...horariosFiltrado]);
     } else {
+
       const hora = new Date().getHours();
+
       const horariosDisponiveis = horariosFiltrado.filter((horario) => {
         if (horario.HORA.split(":")[0] > hora) {
           return horario;
         }
       });
+      
       const horarios = horariosDisponiveis.filter((horarioDisponivel) => {
-        if(!horariosMarcado.some((horarioMarcado) => horarioMarcado.HORARIO_ID === horarioDisponivel.ID)) return horarioDisponivel
+        if(data){
+          const horario = horariosMarcado.some((hM) => {
+            if(hM.HORARIO_ID === horarioDisponivel.ID) {
+              if(hM.DATA === data){
+                return hM;
+              }
+            }
+          });
+          if(!horario){
+            return horarioDisponivel;
+          }
+        }
       })
       setHorariosDessaData([...horarios]);
     }
   }, [horariosMarcado, data, horarios]);
 
   useEffect(() => {
+    pegarDataDeHoje();
     const hoje = new Date();
     const hora = hoje.getHours();
     const minutos = hoje.getMinutes().toString().padStart(2, "0");
     setHoraAtual(`${hora}:${minutos}`);
-    setDia(hoje.getDate());
-    setMes(hoje.getMonth() + 1);
   }, []);
 
   return (
@@ -87,9 +101,10 @@ export const ListaHorarios = ({
         {/* MOSTRA DATA ATUAL */}
         <li
           className="d-flex justify-content-center align-items-center my-3 text-white"
-          onClick={() =>
-            setAnimaCalendario("container-fluid calendario bg-dark")
-          }
+          onClick={() => {
+            setClasseCalendario("encapsula-calendario")
+            setCalendarioAberto(true)
+          }}
         >
           <p className="m-0 cursor">{data}</p>
         </li>

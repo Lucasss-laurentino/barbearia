@@ -74,7 +74,7 @@ export const Horarios = () => {
      const horariosDeHoje = ordenados.filter((horarioOrdenado) => {
        const dataFormatada = `${hoje.getDate()}/${hoje.toLocaleString("pt-BR", {
          month: "2-digit",
-       })}`;
+       })}/${hoje.toLocaleString("pt-BR", {year: 'numeric'})}`;
        return horarioOrdenado.DATA === dataFormatada;
      });
      setHorariosOrdenados(horariosDeHoje);

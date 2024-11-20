@@ -132,11 +132,8 @@ export const Index = () => {
     <>
       <div className="body">
         {/* Navbar para dispositivos móveis (excluindo quando o usuário não estiver logado e active for 4) */}
-        {user?.ID && (
-          <div className="d-sm-none">
-            <Navbar />
-          </div>
-        )}
+
+        <Navbar />
 
         <Menu />
 

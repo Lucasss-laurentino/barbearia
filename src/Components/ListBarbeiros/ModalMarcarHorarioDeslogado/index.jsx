@@ -51,7 +51,7 @@ export const ModalMarcarHorarioDeslogado = ({
               <div className="col-12">
                 <form onSubmit={handleSubmit(onSubmit)}>
                   <div className="form-group">
-                    <label for="nomeCliente">Seu nome</label>
+                    <label htmlFor="nomeCliente">Seu nome</label>
                     <input
                       type="text"
                       className="form-control form-control-sm"

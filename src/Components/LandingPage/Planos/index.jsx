@@ -27,7 +27,7 @@ export const Planos = () => {
                         width="20"
                         height="20"
                         fill="#1f4e1f"
-                        className="bi bi-check2-circle"
+                        class="bi bi-check2-circle"
                         viewBox="0 0 16 16"
                       >
                         <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0" />
@@ -41,7 +41,7 @@ export const Planos = () => {
                         width="20"
                         height="20"
                         fill="#1f4e1f"
-                        className="bi bi-check2-circle"
+                        class="bi bi-check2-circle"
                         viewBox="0 0 16 16"
                       >
                         <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0" />
@@ -55,7 +55,7 @@ export const Planos = () => {
                         width="20"
                         height="20"
                         fill="#1f4e1f"
-                        className="bi bi-check2-circle"
+                        class="bi bi-check2-circle"
                         viewBox="0 0 16 16"
                       >
                         <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0" />
@@ -69,7 +69,7 @@ export const Planos = () => {
                         width="20"
                         height="20"
                         fill="#1f4e1f"
-                        className="bi bi-check2-circle"
+                        class="bi bi-check2-circle"
                         viewBox="0 0 16 16"
                       >
                         <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0" />
@@ -83,7 +83,7 @@ export const Planos = () => {
                         width="20"
                         height="20"
                         fill="#1f4e1f"
-                        className="bi bi-check2-circle"
+                        class="bi bi-check2-circle"
                         viewBox="0 0 16 16"
                       >
                         <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0" />
@@ -94,7 +94,7 @@ export const Planos = () => {
                   </ul>
                   <div className="d-grid">
                     <a
-                      className="btn btn-primary btn-lg text-btn-responsive-planos"
+                      class="btn btn-primary btn-lg text-btn-responsive-planos"
                       href="#features"
                     >
                       <svg
@@ -131,7 +131,7 @@ export const Planos = () => {
                         width="20"
                         height="20"
                         fill="#1f4e1f"
-                        className="bi bi-check2-circle"
+                        class="bi bi-check2-circle"
                         viewBox="0 0 16 16"
                       >
                         <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0" />
@@ -145,7 +145,7 @@ export const Planos = () => {
                         width="20"
                         height="20"
                         fill="#1f4e1f"
-                        className="bi bi-check2-circle"
+                        class="bi bi-check2-circle"
                         viewBox="0 0 16 16"
                       >
                         <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0" />
@@ -159,7 +159,7 @@ export const Planos = () => {
                         width="20"
                         height="20"
                         fill="#1f4e1f"
-                        className="bi bi-check2-circle"
+                        class="bi bi-check2-circle"
                         viewBox="0 0 16 16"
                       >
                         <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0" />
@@ -173,7 +173,7 @@ export const Planos = () => {
                         width="20"
                         height="20"
                         fill="#1f4e1f"
-                        className="bi bi-check2-circle"
+                        class="bi bi-check2-circle"
                         viewBox="0 0 16 16"
                       >
                         <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0" />
@@ -188,7 +188,7 @@ export const Planos = () => {
                         width="20"
                         height="20"
                         fill="#1f4e1f"
-                        className="bi bi-check2-circle"
+                        class="bi bi-check2-circle"
                         viewBox="0 0 16 16"
                       >
                         <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0" />
@@ -199,7 +199,7 @@ export const Planos = () => {
                   </ul>
                   <div className="d-grid">
                     <a
-                      className="btn btn-primary btn-lg text-btn-responsive-planos"
+                      class="btn btn-primary btn-lg text-btn-responsive-planos"
                       href="#features"
                     >
                       <svg
@@ -236,7 +236,7 @@ export const Planos = () => {
                         width="20"
                         height="20"
                         fill="#1f4e1f"
-                        className="bi bi-check2-circle"
+                        class="bi bi-check2-circle"
                         viewBox="0 0 16 16"
                       >
                         <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0" />
@@ -250,7 +250,7 @@ export const Planos = () => {
                         width="20"
                         height="20"
                         fill="#1f4e1f"
-                        className="bi bi-check2-circle"
+                        class="bi bi-check2-circle"
                         viewBox="0 0 16 16"
                       >
                         <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0" />
@@ -264,7 +264,7 @@ export const Planos = () => {
                         width="20"
                         height="20"
                         fill="#1f4e1f"
-                        className="bi bi-check2-circle"
+                        class="bi bi-check2-circle"
                         viewBox="0 0 16 16"
                       >
                         <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0" />
@@ -278,7 +278,7 @@ export const Planos = () => {
                         width="20"
                         height="20"
                         fill="#1f4e1f"
-                        className="bi bi-check2-circle"
+                        class="bi bi-check2-circle"
                         viewBox="0 0 16 16"
                       >
                         <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0" />
@@ -292,7 +292,7 @@ export const Planos = () => {
                         width="20"
                         height="20"
                         fill="#1f4e1f"
-                        className="bi bi-check2-circle"
+                        class="bi bi-check2-circle"
                         viewBox="0 0 16 16"
                       >
                         <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0" />
@@ -303,7 +303,7 @@ export const Planos = () => {
                   </ul>
                   <div className="d-grid">
                     <a
-                      className="btn btn-primary btn-lg text-btn-responsive-planos"
+                      class="btn btn-primary btn-lg text-btn-responsive-planos"
                       href="#features"
                     >
                       <svg

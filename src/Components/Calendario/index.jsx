@@ -3,7 +3,12 @@ import "./index.css";
 import { AnimacaoContext } from "../../Context/AnimacaoHorarios";
 import { DataContext } from "../../Context/DataContext";
 
-export const Calendario = () => {
+export const Calendario = ({
+  filtro = false,
+  handleDataFinal = null,
+  handleDataInicio = false,
+  dataInicioOuDataFinal = false,
+}) => {
   const [dias, setDias] = useState();
   const [hoje, setHoje] = useState(new Date());
   const [diaAtual, setDiaAtual] = useState(hoje.getDate());
@@ -12,6 +17,7 @@ export const Calendario = () => {
   const [semanas, setSemanas] = useState([]);
   const [ultimosDiasMesPassado, setUltimosDiasMesPassado] = useState([]);
   const [primeirosDiasDoMesQueVem, setPrimeirosDiasDoMesQueVem] = useState();
+  const [ano, setAno] = useState(new Date().getFullYear());
   const [mesNome, setMesNome] = useState(
     new Date(hoje.getFullYear(), mes).toLocaleString("pt-BR", { month: "long" })
   );
@@ -22,6 +28,7 @@ export const Calendario = () => {
     setMes((prevMes) => (prevMes + 1) % 12);
     if (mes === 11) {
       setHoje((prevHoje) => new Date(prevHoje.getFullYear() + 1, 0));
+      setAno(hoje.getFullYear() + 1);
     }
   };
 
@@ -29,12 +36,12 @@ export const Calendario = () => {
     setMes((prevMes) => (prevMes - 1 + 12) % 12);
     if (mes === 0) {
       setHoje((prevHoje) => new Date(prevHoje.getFullYear() - 1, 11));
+      setAno(hoje.getFullYear() - 1);
     }
   };
 
   // esse useEffect trata os dados cuidando do mes e dos dias atual
   useEffect(() => {
-    // retorna um inteiro se dia 1 foi em uma terça o retorno sera 2 onde 0 = domingo, 1 = segunda e 2 = terça
     const primeiroDiaDoMes = new Date(hoje.getFullYear(), mes, 1).getDay();
 
     const ultimoDiaDoMes = new Date(hoje.getFullYear(), mes + 1, 0).getDate();
@@ -99,11 +106,12 @@ export const Calendario = () => {
         mes,
         0
       ).getDate();
+      console.log(ultimoDiaDoMesQueVem);
       const diasMesQueVem = Array.from(
         { length: ultimoDiaDoMesQueVem },
         (_, i) => i + 1
       );
-
+      console.log(diasMesQueVem);
       const diasDoMesQueVemObgj = diasMesQueVem
         .slice(0, quantosFalta)
         .map((dia) => {
@@ -140,7 +148,7 @@ export const Calendario = () => {
                 </div>
                 <div className="col-3">
                   <button className="btn btn-sm btn-transparent col-12">
-                    <svg
+                  dia<svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="26"
                       height="26"
@@ -190,13 +198,66 @@ export const Calendario = () => {
                   return (
                     <tr key={index}>
                       {semana.map((dia, index) => {
+                        let className = "";
+                        // Cria uma nova data com o dia atual
+                        const dataAtual = new Date();
+                        const diaAtual = dataAtual.getDate(); // Pega o dia atual
+                        const mesAtual = dataAtual.getMonth(); // Pega o mês atual (0-11)
+                        const anoAtual = dataAtual.getFullYear(); // Pega o ano atual
+
+                        // Verifica se é um dia do mês atual ou do mês anterior
                         if (!dia.esseMes) {
-                          return <td className="text-secondary" key={index}>{dia.dia}</td>;
-                        } else if (dia.dia === diaAtual && mes === mesAtual) {
-                          return <td className="text-success cursor" onClick={() => mudarData(dia, mes, diaAtual)} key={index}>{dia.dia}</td>;
-                        } else {
-                          return <td onClick={() => mudarData(dia, mes, diaAtual)} className="text-white cursor" key={index}>{dia.dia}</td>;
+                          if (!filtro) {
+                            // Se o dia for do mês anterior
+                            className = "text-secondary";
+                          }
+                        } else if (ano < anoAtual) {
+                          // Se o ano for menor (passado), aplica 'text-secondary'
+                          if (!filtro) {
+                            // Se o dia for do mês anterior
+                            className = "text-secondary";
+                          }
+                        } else if (
+                          ano > anoAtual ||
+                          (ano === anoAtual && mes > mesAtual)
+                        ) {
+                          // Se o ano for maior ou se for um mês futuro
+                          className = "text-white";
+                        } else if (mes === mesAtual) {
+                          // Se for do mês atual
+                          if (dia.dia < diaAtual) {
+                            // Se o dia for menor que o dia atual
+                            if (!filtro) {
+                              // Se o dia for do mês anterior
+                              className = "text-secondary";
+                            }
+                          } else if (dia.dia === diaAtual) {
+                            // Se for o dia atual
+                            className = "text-success";
+                          } else {
+                            // Se for um dia futuro
+                            className = "text-white";
+                          }
                         }
+
+                        return (
+                          <td
+                            key={index}
+                            className={`${className} cursor`} // Adiciona 'cursor' para tornar o dia clicável
+                            onClick={() => {
+                              if (filtro) {
+                                dataInicioOuDataFinal &&
+                                  handleDataInicio(dia, mes, ano);
+                                !dataInicioOuDataFinal &&
+                                  handleDataFinal(dia, mes, ano);
+                              } else {
+                                mudarData(dia, mes, dia.dia);
+                              }
+                            }}
+                          >
+                            {dia.dia}
+                          </td>
+                        );
                       })}
                     </tr>
                   );

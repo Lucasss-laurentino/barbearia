@@ -22,8 +22,8 @@ import { HorarioMarcadoContext } from "../../Context/HorarioMarcadoContext";
 import { useParams } from "react-router-dom";
 import { socket } from "../../socket";
 import { ServicoContext } from "../../Context/ServicoContext";
-import { Calendario } from "../Calendario";
 import { MenuBottom } from "../MenuBottom";
+import { Calendario } from "../Calendar";
 
 // COMPONENTE
 export const ListBarbeiros = () => {
@@ -35,6 +35,11 @@ export const ListBarbeiros = () => {
   const [horarioSelecionado, setHorarioSelecionado] = useState(null);
   const [showModalPagamentoAgendamento, setShowModalPagamentoAgendamento] =
     useState(false);
+  const [classeCalendario, setClasseCalendario] = useState(
+    "encapsula-calendario-hidden"
+  );
+  const [calendarioAberto, setCalendarioAberto] = useState(false);
+
   const [id, setId] = useState();
   const [horarioObjeto, setHorarioObjeto] = useState({});
   // HANDLES
@@ -58,10 +63,13 @@ export const ListBarbeiros = () => {
   // CONTEXTS
   const { barbeiros, barbeiroSelecionado, setBarbeiroSelecionado } =
     useContext(BarbeiroContext);
-
-  const { setHorarioMarcado, horarioMarcado, desmarcarHorario, storage, setStorage } = useContext(
-    HorarioMarcadoContext
-  );
+  const {
+    setHorarioMarcado,
+    horarioMarcado,
+    desmarcarHorario,
+    storage,
+    setStorage,
+  } = useContext(HorarioMarcadoContext);
   const { servicos, setServicoEscolhido } = useContext(ServicoContext);
   const {
     horarios,
@@ -73,9 +81,7 @@ export const ListBarbeiros = () => {
     errosHorarios,
     setErrosHorarios,
   } = useContext(HorarioContext);
-
   const { abrirListaHorarios } = useContext(AnimacaoContext);
-
   const { user } = useContext(UserContext);
   const { barbearia } = useParams();
 
@@ -149,7 +155,7 @@ export const ListBarbeiros = () => {
           const storage = JSON.parse(localStorage.getItem("agendamento"));
           if (storage.ID === horarioFinalizado.ID) {
             localStorage.setItem("agendamento", "");
-            setStorage(null)
+            setStorage(null);
           }
         }
       }
@@ -200,7 +206,12 @@ export const ListBarbeiros = () => {
         transition={Bounce}
       />
 
-      <Calendario />
+      <Calendario
+        classeCalendario={classeCalendario}
+        setClassCalendario={setClasseCalendario}
+        calendarioAberto={calendarioAberto}
+        setClasseCalendario={setClasseCalendario}
+      />
 
       {user.ADM && <SpanAdd handleShow={handleShow} />}
       <div className="container-fluid height-main height-servicos">
@@ -248,11 +259,13 @@ export const ListBarbeiros = () => {
                           horariosFiltrado={horariosFiltrado}
                           setBarbeiro={setBarbeiro}
                           setShowHorarios={setShowHorarios}
+                          setClasseCalendario={setClasseCalendario}
                           setHorarioSelecionado={setHorarioSelecionado}
                           horarioSelecionado={horarioSelecionado}
                           setExcluirHorario={setExcluirHorario}
                           setId={setId}
                           barbearia={barbearia}
+                          setCalendarioAberto={setCalendarioAberto}
                         />
                         {storage !== null &&
                           horarioMarcado?.BARBEIRO_ID === barbeiro?.ID && (

@@ -113,6 +113,7 @@ export const HorarioMarcadoProvider = ({ children }) => {
         "horarioPendenteCancelado",
         (horarioPendenteCancelado) => {
           localStorage.setItem("agendamento", "");
+          setStorage(null)
         }
       );
     }

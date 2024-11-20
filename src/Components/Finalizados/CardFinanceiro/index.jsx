@@ -3,7 +3,7 @@ import "./index.css";
 export const CardFinanceiro = ({ preco, periodo }) => {
   return (
     <>
-      <div className="card">
+      <div className="card-financeiro">
         <div className="preco mx-2 my-1 text-white">
           <h5 className="preco-finalizados">
             <strong>R$ {preco}</strong>

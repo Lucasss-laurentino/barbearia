@@ -1,12 +1,12 @@
 import "./index.css";
 import { Fragment, useContext, useEffect, useState } from "react";
-import { Calendario } from "../Calendario";
 import { AnimacaoContext } from "../../Context/AnimacaoHorarios";
 import { DataContext } from "../../Context/DataContext";
 import { CardFinanceiro } from "./CardFinanceiro";
 import { HorarioMarcadoContext } from "../../Context/HorarioMarcadoContext";
 import { ServicoContext } from "../../Context/ServicoContext";
 import { BarbeiroContext } from "../../Context/BarbeiroContext";
+import { Calendario } from "../Calendar";
 
 export const Finalizados = () => {
   const { setAnimaCalendario } = useContext(AnimacaoContext);
@@ -19,11 +19,20 @@ export const Finalizados = () => {
   const [lucroMensal, setLucroMensal] = useState("0,00");
   const [lucroSemanal, setLucroSemanal] = useState("0,00");
   const [lucroTotal, setLucroTotal] = useState("0,00");
+  const [lucroPersonalizado, setLucroPersonalizado] = useState("0,00");
+
 
   const [optionValueServico, setOptionValueServico] = useState("Todos");
   const [optionValueBarbeiro, setOptionValueBarbeiro] = useState("Todos");
   const hoje = new Date();
-  
+  const [dataInicio, setDataInicio] = useState(null);
+  const [dataFinal, setDataFinal] = useState(null);
+  const [dataInicioOuDataFinal, setDataInicioOuDataFinal] = useState(true);
+  const [classeCalendario, setClasseCalendario] = useState(
+    "encapsula-calendario-hidden"
+  );
+  const [calendarioAberto, setCalendarioAberto] = useState(false);
+
   // pegando lucro diario
   useEffect(() => {
     const dataDeHoje = `${hoje.toLocaleString("pt-BR", {
@@ -56,205 +65,97 @@ export const Finalizados = () => {
 
   // lucro mensal
   useEffect(() => {
-    const hoje = new Date();
+    const ultimoDiaDoMesAtual = new Date(
+      hoje.getFullYear(),
+      hoje.getMonth() + 1,
+      0
+    ).getDate();
 
-    // Obter o primeiro dia do mês
-    const primeiroDiaDoMes = new Date(hoje.getFullYear(), hoje.getMonth(), 1); // Data do primeiro dia do mês
-
-    // Obter o dia atual
-    const diaAtual = hoje.getDate(); // Dia de hoje
-
-    // Formatar o primeiro dia do mês e o dia atual para comparação (em formato "dd/mm")
-    const primeiroDiaFormatado = `${primeiroDiaDoMes
-      .getDate()
-      .toString()
-      .padStart(2, "0")}/${(primeiroDiaDoMes.getMonth() + 1)
-      .toString()
-      .padStart(2, "0")}`;
-    const diaAtualFormatado = `${hoje.getDate().toString().padStart(2, "0")}/${(
-      hoje.getMonth() + 1
-    )
-      .toString()
-      .padStart(2, "0")}`;
-
-    // Filtrar os horários marcados que foram finalizados e pertencem ao mês atual (entre o primeiro dia e o dia atual)
-    const horariosFinalizadoMensal = horariosMarcado.filter((hM) => {
-      const [dia, mes] = hM.DATA.split("/"); // Supondo que a data esteja no formato "dd/mm"
-      const dataHorario = `${dia}/${mes}`;
-      return (
-        hM.RESERVADO === 0 &&
-        dataHorario >= primeiroDiaFormatado &&
-        dataHorario <= diaAtualFormatado
-      );
-    });
-
-    // Mapeia os horários finalizados para obter os preços dos serviços correspondentes
-    const lucroMensal = horariosFinalizadoMensal.map((horarioFinalizado) => {
-      const servico = servicos.find(
-        (s) => s.ID === horarioFinalizado.SERVICO_ID
-      );
-      if (servico) {
-        return parseFloat(servico.PRECO.split(" ")[1].replace(",", ".")); // Convertendo o preço para número
+    const precos = horariosMarcado.map((hM) => {
+      const diaHM = parseInt(hM.DATA.split("/")[0]);
+      const mesHM = parseInt(hM.DATA.split("/")[1]);
+      if (diaHM <= ultimoDiaDoMesAtual && mesHM === hoje.getMonth() + 1) {
+        const servico = servicos.find(
+          (servico) => servico.ID === hM.SERVICO_ID
+        );
+        return parseFloat(servico?.PRECO.split(" ")[1].replace(",", "."));
       }
-      return 0;
     });
-
-    // Calcula o total de lucro mensal
-    const lucroTotalMensal = lucroMensal.reduce((acumulador, valorAtual) => {
-      return acumulador + valorAtual;
+    const precosFiltrado = precos.filter((p) => p !== undefined);
+    const total = precosFiltrado.reduce((contador, valor) => {
+      return contador + valor;
     }, 0);
-
-    // Formata o lucro total para o formato monetário brasileiro
-    const lucroMensalFormatado = lucroTotalMensal.toLocaleString("pt-BR", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-
-    // Atualiza o estado com o lucro mensal formatado
-    setLucroMensal(lucroMensalFormatado);
+    setLucroMensal(total);
   }, [horariosMarcado, servicos]);
 
   // lucro semanal
   useEffect(() => {
-    const hoje = new Date();
-
-    // Calcular o primeiro dia (domingo) e o último dia (sábado) da semana atual
-    const diaDaSemana = hoje.getDay(); // 0 = domingo, 6 = sábado
-    const primeiroDiaDaSemana = new Date(hoje);
-    primeiroDiaDaSemana.setDate(hoje.getDate() - diaDaSemana); // Subtrai os dias para pegar o domingo
-
-    const ultimoDiaDaSemana = new Date(primeiroDiaDaSemana);
-    ultimoDiaDaSemana.setDate(primeiroDiaDaSemana.getDate() + 6); // Sábado da mesma semana
-
-    // Formatar as datas para comparação (em formato "dd/mm")
-    const primeiroDiaFormatado = `${primeiroDiaDaSemana
-      .getDate()
-      .toString()
-      .padStart(2, "0")}/${(primeiroDiaDaSemana.getMonth() + 1)
-      .toString()
-      .padStart(2, "0")}`;
-    const ultimoDiaFormatado = `${ultimoDiaDaSemana
-      .getDate()
-      .toString()
-      .padStart(2, "0")}/${(ultimoDiaDaSemana.getMonth() + 1)
-      .toString()
-      .padStart(2, "0")}`;
-
-    // Filtra os horários marcados que foram finalizados e pertencem à semana atual
-    const horariosFinalizadoSemanal = horariosMarcado.filter((hM) => {
-      const [dia, mes] = hM.DATA.split("/"); // Supondo que a data esteja no formato "dd/mm"
-      const dataHorario = `${dia}/${mes}`;
-      return (
-        hM.RESERVADO === 0 &&
-        dataHorario >= primeiroDiaFormatado &&
-        dataHorario <= ultimoDiaFormatado
-      );
-    });
-
-    // Mapeia os horários finalizados para obter os preços dos serviços correspondentes
-    const lucroSemanal = horariosFinalizadoSemanal.map((horarioFinalizado) => {
-      const servico = servicos.find(
-        (s) => s.ID === horarioFinalizado.SERVICO_ID
-      );
-      if (servico) {
-        return parseFloat(servico.PRECO.split(" ")[1].replace(",", ".")); // Convertendo o preço para número
+    const primeiroDiaDaSemana = hoje.getDate() - hoje.getDay();
+    const precos = horariosMarcado.map((hM) => {
+      const diaHM = parseInt(hM.DATA.split("/")[0]);
+      const mesHM = parseInt(hM.DATA.split("/")[1]);
+      if (diaHM >= primeiroDiaDaSemana && mesHM === hoje.getMonth() + 1) {
+        const preco = servicos.find(
+          (servico) => servico.ID === hM.SERVICO_ID
+        ).PRECO;
+        return parseFloat(preco.split(" ")[1].replace(",", "."));
       }
-      return 0;
     });
-
-    // Calcula o total de lucro semanal
-    const lucroTotalSemanal = lucroSemanal.reduce((acumulador, valorAtual) => {
-      return acumulador + valorAtual;
+    const precosFiltrado = precos.filter((preco) => preco !== undefined);
+    const total = precosFiltrado.reduce((contador, valor) => {
+      return contador + valor;
     }, 0);
-
-    // Formata o lucro total para o formato monetário brasileiro
-    const lucroSemanalFormatado = lucroTotalSemanal.toLocaleString("pt-BR", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-
-    // Atualiza o estado com o lucro semanal formatado
-    setLucroSemanal(lucroSemanalFormatado);
+    setLucroSemanal(total);
   }, [horariosMarcado, servicos]);
 
   // total
   useEffect(() => {
-    // Verifica se existem horários marcados
-    if (horariosMarcado.length === 0) {
-      setLucroTotal("0,00"); // Se não houver dados, lucro é 0
-      return;
-    }
-
-    // Encontrar a data mais baixa (primeiro horário) e a data mais alta (último horário)
-    const todasDatas = horariosMarcado.map((hM) => hM.DATA); // Extrai as datas dos horários
-    const dataMaisBaixa = new Date(
-      Math.min(
-        ...todasDatas.map((data) => {
-          const [dia, mes] = data.split("/");
-          return new Date(hoje.getFullYear(), mes - 1, dia).getTime(); // Convertendo a data para timestamp
-        })
-      )
-    );
-
-    const dataMaisAlta = new Date(
-      Math.max(
-        ...todasDatas.map((data) => {
-          const [dia, mes] = data.split("/");
-          return new Date(hoje.getFullYear(), mes - 1, dia).getTime(); // Convertendo a data para timestamp
-        })
-      )
-    );
-
-    // Formatando as datas para "dd/mm" para uso no filtro
-    const dataMaisBaixaFormatada = `${dataMaisBaixa
-      .getDate()
-      .toString()
-      .padStart(2, "0")}/${(dataMaisBaixa.getMonth() + 1)
-      .toString()
-      .padStart(2, "0")}`;
-    const dataMaisAltaFormatada = `${dataMaisAlta
-      .getDate()
-      .toString()
-      .padStart(2, "0")}/${(dataMaisAlta.getMonth() + 1)
-      .toString()
-      .padStart(2, "0")}`;
-
-    // Filtra os horários marcados que estão dentro do intervalo de datas
-    const horariosNoIntervalo = horariosMarcado.filter((hM) => {
-      const [dia, mes] = hM.DATA.split("/"); // Supondo que a data esteja no formato "dd/mm"
-      const dataHorario = `${dia}/${mes}`;
-      return (
-        hM.RESERVADO === 0 &&
-        dataHorario >= dataMaisBaixaFormatada &&
-        dataHorario <= dataMaisAltaFormatada
-      );
-    });
-
-    // Mapeia os horários finalizados para obter os preços dos serviços correspondentes
-    const lucroTotal = horariosNoIntervalo.map((horarioFinalizado) => {
-      const servico = servicos.find(
-        (s) => s.ID === horarioFinalizado.SERVICO_ID
-      );
-      if (servico) {
-        return parseFloat(servico.PRECO.split(" ")[1].replace(",", ".")); // Convertendo o preço para número
+    const precos = horariosMarcado.map((hM) => {
+      if (hM.RESERVADO === 0) {
+        const servico = servicos.find(
+          (servico) => servico.ID === hM.SERVICO_ID
+        );
+        return parseFloat(servico.PRECO.split(" ")[1].replace(",", "."));
       }
-      return 0;
     });
 
-    // Calcula o total de lucro
-    const lucroFinal = lucroTotal.reduce((acumulador, valorAtual) => {
-      return acumulador + valorAtual;
+    const total = precos.reduce((contador, valor) => {
+      return contador + valor;
     }, 0);
-
-    // Formata o lucro total para o formato monetário brasileiro
-    const lucroFormatado = lucroFinal.toLocaleString("pt-BR", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-
-    // Atualiza o estado com o lucro total formatado
-    setLucroTotal(lucroFormatado);
+    setLucroTotal(total);
   }, [horariosMarcado, servicos]);
+
+  // personalizado
+  useEffect(() => {
+      if (dataInicio !== null && dataFinal !== null) {
+        const dataInicioNumerico = new Date(dataInicio).getTime();
+        const dataExplode = dataFinal.split("/").map(Number);
+        const dataFinalNumerico = new Date(
+          dataExplode[2],
+          dataExplode[1],
+          dataExplode[0]
+        ).getTime();
+        const horariosFinalizadoPersonalizado = horariosMarcado.filter((hM) => {
+          const dataHMExplode = hM.DATA.split("/").map(Number);
+          const hMData = new Date(
+            dataHMExplode[2],
+            dataHMExplode[1],
+            dataHMExplode[0]
+          ).getTime();
+          if (hMData >= dataInicioNumerico && hMData <= dataFinalNumerico) {
+            return hM;            
+          }
+        });
+        let precos = [];
+         horariosFinalizadoPersonalizado.forEach((hFP) => {
+          const preco = parseFloat(servicos.find((s) => s.ID === hFP.SERVICO_ID).PRECO.split(" ")[1].replace(",", "."));
+           precos.push(preco);
+        });
+        const total = precos.reduce((contador, valor) => {return contador + valor}, 0);
+        setLucroPersonalizado(total);
+      }
+    
+  }, [dataInicio, dataFinal]);
 
   const handleChangeServico = (event) => {
     setOptionValueServico(event.target.value);
@@ -262,11 +163,40 @@ export const Finalizados = () => {
   const handleChangeBarbeiro = (event) => {
     setOptionValueBarbeiro(event.target.value);
   };
+  const handleDataInicio = (dataParametro) => {
+    const data = new Date(dataParametro);
+    const dataFormatada = data.toLocaleString("pt-BR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+    setDataInicio(dataFormatada);
+    setClasseCalendario("encapsula-calendario-hidden");
+  };
+
+  const handleDataFinal = (dataParametro) => {
+    const data = new Date(dataParametro);
+    const dataFormatada = data.toLocaleString("pt-BR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+    setDataFinal(dataFormatada);
+    setClasseCalendario("encapsula-calendario-hidden");
+  };
 
   return (
     <>
-      <Calendario />
-      <div className="container-fluid mt-1 height-scroll">
+      <Calendario
+        classeCalendario={classeCalendario}
+        setClassCalendario={setClasseCalendario}
+        calendarioAberto={calendarioAberto}
+        dataInicioOuDataFinal={dataInicioOuDataFinal}
+        handleDataInicio={handleDataInicio}
+        handleDataFinal={handleDataFinal}
+        filtro={true}
+      />
+      <div className="container-fluid mt-1 height-scroll py-3">
         {/* FILTROS */}
         <div className="row justify-content-center">
           <div className="col-11 filtro flex-column pt-2">
@@ -290,14 +220,18 @@ export const Finalizados = () => {
                 </div>
                 <input
                   type="text"
-                  onFocus={() =>
-                    setAnimaCalendario("container-fluid calendario bg-dark")
-                  }
-                  className="input-finalizados"
+                  onFocus={() => {
+                    setClasseCalendario("encapsula-calendario");
+                    setDataInicioOuDataFinal(true);
+                    setCalendarioAberto(true);
+                  }}
+                  className="input-finalizados text-white"
+                  value={dataInicio !== null ? dataInicio : data}
                   placeholder={data}
                 />
               </div>
               {/* DATA FINAL */}
+
               <div className="col-6 ">
                 <div className="col-12 d-flex justify-content-start align-items-center">
                   <span className="text-white">Data Final:</span>
@@ -315,10 +249,13 @@ export const Finalizados = () => {
                 </div>
                 <input
                   type="text"
-                  onFocus={() =>
-                    setAnimaCalendario("container-fluid calendario bg-dark")
-                  }
-                  className="input-finalizados"
+                  onFocus={() => {
+                    setClasseCalendario("encapsula-calendario");
+                    setDataInicioOuDataFinal(false);
+                    setCalendarioAberto(true);
+                  }}
+                  className="input-finalizados text-white"
+                  value={dataFinal !== null ? dataFinal : data}
                   placeholder={data}
                 />
               </div>
@@ -326,7 +263,7 @@ export const Finalizados = () => {
             {/* SELECTS */}
             <div className="col-12 d-flex justify-content-between align-items-center">
               {/* SERVIÇOS */}
-              <div className="col-6 d-flex flex-column justify-content-center mb-3">
+              <div className="col-6 d-flex flex-column justify-content-center mb-3 ">
                 <span className="text-white">Serviço</span>
                 <select
                   value={optionValueServico}
@@ -369,7 +306,7 @@ export const Finalizados = () => {
         {/* CARD MENSAL E SEMANAL */}
         <div className="row justify-content-center">
           <div className="col-11 mt-3 d-flex justify-content-between p-0">
-            <div className="col-6">
+            <div className="col-6 margin-rigth-data-inicio">
               <CardFinanceiro preco={lucroMensal} periodo={"Mensal"} />
             </div>
             <div className="col-6">
@@ -380,11 +317,11 @@ export const Finalizados = () => {
         {/* CARDS DIARIO E PERSONALIZADO */}
         <div className="row justify-content-center">
           <div className="col-11 mt-1 d-flex justify-content-between p-0">
-            <div className="col-6">
+            <div className="col-6 margin-rigth-data-inicio">
               <CardFinanceiro preco={lucroDiario} periodo={"Diário"} />
             </div>
             <div className="col-6">
-              <CardFinanceiro preco={"0,00"} periodo={"Personalizado"} />
+              <CardFinanceiro preco={lucroPersonalizado} periodo={"Personalizado"} />
             </div>
           </div>
         </div>
