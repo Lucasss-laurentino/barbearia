@@ -14,6 +14,7 @@ export const UserProvider = ({ children }) => {
   // esse objeto controla oque o usuário vai setando durante a navegação pelo sistema
   const [userContrata, setUserContrata] = useState({ user: null });
   const navigate = useNavigate();
+
   const pegarUsuario = async () => {
     try {
       const response = await http.get(`/user/getUser`, {
@@ -46,6 +47,17 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  const logout = async () => {
+    if (user) {
+      try {
+        const response = await http.post("user/logout", { user }, { withCredentials: true });
+        !response.data.erro && setUser({});
+      } catch (error) {
+
+      }
+    }
+  }
+
   return (
     <UserContext.Provider
       value={{
@@ -55,6 +67,7 @@ export const UserProvider = ({ children }) => {
         userContrata,
         setUserContrata,
         buscarBarbearia,
+        logout
       }}
     >
       {children}

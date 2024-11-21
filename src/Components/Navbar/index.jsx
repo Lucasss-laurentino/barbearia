@@ -4,7 +4,7 @@ import { UserContext } from "../../Context/UserContext";
 
 export const Navbar = () => {
   const { setClassMenu, classMenu } = useContext(MenuContext);
-  const { user } = useContext(UserContext);
+  const { user, logout } = useContext(UserContext);
   return (
     <>
       <div className="container-fluid">
@@ -14,7 +14,7 @@ export const Navbar = () => {
               <img src="/logo-fotor.png" width="30%" alt="" />
             </div>
             {user?.ID && (
-              <div className="icon-menu col-2 d-flex">
+              <div className="icon-menu col-2 d-flex justify-content-center" onClick={logout}>
                 <p className="m-0 text-white">Sair</p>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
