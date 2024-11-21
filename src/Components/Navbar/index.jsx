@@ -14,17 +14,22 @@ export const Navbar = () => {
               <img src="/logo-fotor.png" width="30%" alt="" />
             </div>
             {user?.ID && (
-              <div className="icon-menu col-2 d-flex justify-content-center" onClick={logout}>
-                <p className="m-0 text-white">Sair</p>
+              <div
+                className="icon-menu col-2 d-flex justify-content-center"
+                onClick={() => setClassMenu(!classMenu)}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
+                  width="24"
+                  height="24"
                   fill="#fff"
-                  className="bi bi-door-closed-fill"
+                  class="bi bi-list"
                   viewBox="0 0 16 16"
                 >
-                  <path d="M12 1a1 1 0 0 1 1 1v13h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V2a1 1 0 0 1 1-1zm-2 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2" />
+                  <path
+                    fillRule="evenodd"
+                    d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"
+                  />
                 </svg>
               </div>
             )}

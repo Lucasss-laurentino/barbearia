@@ -47,16 +47,27 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  const pegarDadosPraEditar = async () => {
+    try {
+      const response = await http.get("user/pegarDadosPraEditar", {withCredentials: true});
+      return response.data;
+    } catch (error) {
+      
+    }
+  };
+
   const logout = async () => {
     if (user) {
       try {
-        const response = await http.post("user/logout", { user }, { withCredentials: true });
+        const response = await http.post(
+          "user/logout",
+          { user },
+          { withCredentials: true }
+        );
         !response.data.erro && setUser({});
-      } catch (error) {
-
-      }
+      } catch (error) {}
     }
-  }
+  };
 
   return (
     <UserContext.Provider
@@ -67,7 +78,8 @@ export const UserProvider = ({ children }) => {
         userContrata,
         setUserContrata,
         buscarBarbearia,
-        logout
+        logout,
+        pegarDadosPraEditar,
       }}
     >
       {children}

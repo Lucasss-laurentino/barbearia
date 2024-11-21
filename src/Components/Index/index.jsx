@@ -17,6 +17,7 @@ import { socket } from "../../socket";
 import { PageLogin } from "../PageLogin";
 import { Finalizados } from "../Finalizados";
 import { Configurações } from "../Configuracoes";
+import { EditarUser } from "../EditarUser";
 
 export const Index = () => {
   const { active, setActive } = useContext(AbaBottomContext);
@@ -135,7 +136,7 @@ export const Index = () => {
 
         <Navbar />
 
-        <Menu />
+        {user.ID && <Menu />}
 
         {/* Condições para renderizar diferentes componentes com base no estado do usuário e 'active' */}
         {user?.ID ? (
@@ -148,6 +149,7 @@ export const Index = () => {
                 {active === 2 && <Horarios />}
                 {active === 3 && <ListBarbeiros />}
                 {active === 4 && <Finalizados />}
+                {active === 5 && <EditarUser user={user} />}
               </>
             ) : (
               // Se o usuário não for administrador
@@ -155,6 +157,7 @@ export const Index = () => {
                 {active === 1 && <ListBarbeiros />}
                 {active === 2 && <ListService />}
                 {active === 4 && <Configurações />}
+                {active === 5 && <EditarUser user={user} />}
               </>
             )}
           </>
