@@ -1,6 +1,5 @@
 import "./index.css";
 import { Fragment, useContext, useEffect, useState } from "react";
-import { AnimacaoContext } from "../../Context/AnimacaoHorarios";
 import { DataContext } from "../../Context/DataContext";
 import { CardFinanceiro } from "./CardFinanceiro";
 import { HorarioMarcadoContext } from "../../Context/HorarioMarcadoContext";
@@ -9,7 +8,6 @@ import { BarbeiroContext } from "../../Context/BarbeiroContext";
 import { Calendario } from "../Calendar";
 
 export const Finalizados = () => {
-  const { setAnimaCalendario } = useContext(AnimacaoContext);
   const { data } = useContext(DataContext);
   const { horariosMarcado } = useContext(HorarioMarcadoContext);
   const { servicos } = useContext(ServicoContext);
@@ -21,9 +19,8 @@ export const Finalizados = () => {
   const [lucroTotal, setLucroTotal] = useState("0,00");
   const [lucroPersonalizado, setLucroPersonalizado] = useState("0,00");
 
-
-  const [optionValueServico, setOptionValueServico] = useState("Todos");
-  const [optionValueBarbeiro, setOptionValueBarbeiro] = useState("Todos");
+  const [optionValueServico, setOptionValueServico] = useState("");
+  const [optionValueBarbeiro, setOptionValueBarbeiro] = useState("");
   const hoje = new Date();
   const [dataInicio, setDataInicio] = useState(null);
   const [dataFinal, setDataFinal] = useState(null);
@@ -35,12 +32,43 @@ export const Finalizados = () => {
 
   // pegando lucro diario
   useEffect(() => {
-    const dataDeHoje = `${hoje.toLocaleString("pt-BR", {
+    const dataDeHoje = hoje.toLocaleString("pt-BR", {
+      year: "numeric",
+      month: "2-digit",
       day: "2-digit",
-    })}/${hoje.toLocaleString("pt-BR", { month: "2-digit" })}`;
+    });
     const horariosFinalizadoDiario = horariosMarcado.filter((hM) => {
-      if (hM.RESERVADO === 0 && hM.DATA === dataDeHoje) {
-        return hM;
+      // verifica se deve filtrar por serviço
+      if (optionValueServico !== "" && optionValueBarbeiro === "") {
+        if (
+          hM.RESERVADO === 0 &&
+          hM.DATA === dataDeHoje &&
+          hM.SERVICO_ID === parseInt(optionValueServico)
+        ) {
+          return hM;
+        }
+      } else if (optionValueBarbeiro !== "" && optionValueServico === "") {
+        // verifica se deve filtrar por barbeiro
+        if (
+          hM.RESERVADO === 0 &&
+          hM.DATA === dataDeHoje &&
+          hM.BARBEIRO_ID === parseInt(optionValueBarbeiro)
+        ) {
+          return hM;
+        }
+      } else if (optionValueBarbeiro !== "" && optionValueServico !== "") {
+        if (
+          hM.RESERVADO === 0 &&
+          hM.DATA === dataDeHoje &&
+          hM.BARBEIRO_ID === parseInt(optionValueBarbeiro) &&
+          hM.SERVICO_ID === parseInt(optionValueServico)
+        ) {
+          return hM;
+        }
+      } else {
+        if (hM.RESERVADO === 0 && hM.DATA === dataDeHoje) {
+          return hM;
+        }
       }
     });
     const lucro = horariosFinalizadoDiario.map((horarioFinalizado) => {
@@ -54,14 +82,12 @@ export const Finalizados = () => {
     const lucroTotal = lucro.reduce((acumulador, valorAtual) => {
       return acumulador + valorAtual;
     }, 0);
-
     const lucroFormatado = lucroTotal.toLocaleString("pt-BR", {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });
-
     setLucroDiario(lucroFormatado);
-  }, [horariosMarcado]);
+  }, [horariosMarcado, optionValueServico, optionValueBarbeiro]);
 
   // lucro mensal
   useEffect(() => {
@@ -74,11 +100,47 @@ export const Finalizados = () => {
     const precos = horariosMarcado.map((hM) => {
       const diaHM = parseInt(hM.DATA.split("/")[0]);
       const mesHM = parseInt(hM.DATA.split("/")[1]);
-      if (diaHM <= ultimoDiaDoMesAtual && mesHM === hoje.getMonth() + 1) {
-        const servico = servicos.find(
-          (servico) => servico.ID === hM.SERVICO_ID
-        );
-        return parseFloat(servico?.PRECO.split(" ")[1].replace(",", "."));
+      if (optionValueServico !== "" && optionValueBarbeiro === "") {
+        if (
+          diaHM <= ultimoDiaDoMesAtual &&
+          mesHM === hoje.getMonth() + 1 &&
+          hM.SERVICO_ID === parseInt(optionValueServico)
+        ) {
+          const servico = servicos.find(
+            (servico) => servico.ID === hM.SERVICO_ID
+          );
+          return parseFloat(servico?.PRECO.split(" ")[1].replace(",", "."));
+        }
+      } else if (optionValueBarbeiro !== "" && optionValueServico === "") {
+        if (
+          diaHM <= ultimoDiaDoMesAtual &&
+          mesHM === hoje.getMonth() + 1 &&
+          hM.BARBEIRO_ID === parseInt(optionValueBarbeiro)
+        ) {
+          const servico = servicos.find(
+            (servico) => servico.ID === hM.SERVICO_ID
+          );
+          return parseFloat(servico?.PRECO.split(" ")[1].replace(",", "."));
+        }
+      } else if (optionValueBarbeiro !== "" && optionValueServico !== "") {
+        if (
+          diaHM <= ultimoDiaDoMesAtual &&
+          mesHM === hoje.getMonth() + 1 &&
+          hM.SERVICO_ID === parseInt(optionValueServico) &&
+          hM.BARBEIRO_ID === parseInt(optionValueBarbeiro)
+        ) {
+          const servico = servicos.find(
+            (servico) => servico.ID === hM.SERVICO_ID
+          );
+          return parseFloat(servico?.PRECO.split(" ")[1].replace(",", "."));
+        }
+      } else {
+        if (diaHM <= ultimoDiaDoMesAtual && mesHM === hoje.getMonth() + 1) {
+          const servico = servicos.find(
+            (servico) => servico.ID === hM.SERVICO_ID
+          );
+          return parseFloat(servico?.PRECO.split(" ")[1].replace(",", "."));
+        }
       }
     });
     const precosFiltrado = precos.filter((p) => p !== undefined);
@@ -86,7 +148,7 @@ export const Finalizados = () => {
       return contador + valor;
     }, 0);
     setLucroMensal(total);
-  }, [horariosMarcado, servicos]);
+  }, [horariosMarcado, servicos, optionValueServico, optionValueBarbeiro]);
 
   // lucro semanal
   useEffect(() => {
@@ -94,11 +156,47 @@ export const Finalizados = () => {
     const precos = horariosMarcado.map((hM) => {
       const diaHM = parseInt(hM.DATA.split("/")[0]);
       const mesHM = parseInt(hM.DATA.split("/")[1]);
-      if (diaHM >= primeiroDiaDaSemana && mesHM === hoje.getMonth() + 1) {
-        const preco = servicos.find(
-          (servico) => servico.ID === hM.SERVICO_ID
-        ).PRECO;
-        return parseFloat(preco.split(" ")[1].replace(",", "."));
+      if (optionValueServico !== "" && optionValueBarbeiro === "") {
+        if (
+          diaHM >= primeiroDiaDaSemana &&
+          mesHM === hoje.getMonth() + 1 &&
+          hM.SERVICO_ID === parseInt(optionValueServico)
+        ) {
+          const preco = servicos.find(
+            (servico) => servico.ID === hM.SERVICO_ID
+          ).PRECO;
+          return parseFloat(preco.split(" ")[1].replace(",", "."));
+        }
+      } else if (optionValueServico === "" && optionValueBarbeiro !== "") {
+        if (
+          diaHM >= primeiroDiaDaSemana &&
+          mesHM === hoje.getMonth() + 1 &&
+          hM.BARBEIRO_ID === parseInt(optionValueBarbeiro)
+        ) {
+          const preco = servicos.find(
+            (servico) => servico.ID === hM.SERVICO_ID
+          ).PRECO;
+          return parseFloat(preco.split(" ")[1].replace(",", "."));
+        }
+      } else if (optionValueBarbeiro !== "" && optionValueServico !== "") {
+        if (
+          diaHM >= primeiroDiaDaSemana &&
+          mesHM === hoje.getMonth() + 1 &&
+          hM.SERVICO_ID === parseInt(optionValueServico) &&
+          hM.BARBEIRO_ID === parseInt(optionValueBarbeiro)
+        ) {
+          const preco = servicos.find(
+            (servico) => servico.ID === hM.SERVICO_ID
+          ).PRECO;
+          return parseFloat(preco.split(" ")[1].replace(",", "."));
+        }
+      } else {
+        if (diaHM >= primeiroDiaDaSemana && mesHM === hoje.getMonth() + 1) {
+          const preco = servicos.find(
+            (servico) => servico.ID === hM.SERVICO_ID
+          ).PRECO;
+          return parseFloat(preco.split(" ")[1].replace(",", "."));
+        }
       }
     });
     const precosFiltrado = precos.filter((preco) => preco !== undefined);
@@ -106,56 +204,132 @@ export const Finalizados = () => {
       return contador + valor;
     }, 0);
     setLucroSemanal(total);
-  }, [horariosMarcado, servicos]);
+  }, [horariosMarcado, servicos, optionValueServico, optionValueBarbeiro]);
 
   // total
   useEffect(() => {
     const precos = horariosMarcado.map((hM) => {
-      if (hM.RESERVADO === 0) {
-        const servico = servicos.find(
-          (servico) => servico.ID === hM.SERVICO_ID
-        );
-        return parseFloat(servico.PRECO.split(" ")[1].replace(",", "."));
+      if (optionValueServico !== "" && optionValueBarbeiro === "") {
+        if (
+          hM.RESERVADO === 0 &&
+          hM.SERVICO_ID === parseInt(optionValueServico)
+        ) {
+          const servico = servicos.find(
+            (servico) => servico.ID === hM.SERVICO_ID
+          );
+          return parseFloat(servico.PRECO.split(" ")[1].replace(",", "."));
+        }
+      } else if (optionValueServico === "" && optionValueBarbeiro !== "") {
+        if (
+          hM.RESERVADO === 0 &&
+          hM.BARBEIRO_ID === parseInt(optionValueBarbeiro)
+        ) {
+          const servico = servicos.find(
+            (servico) => servico.ID === hM.SERVICO_ID
+          );
+          return parseFloat(servico.PRECO.split(" ")[1].replace(",", "."));
+        }
+      } else if (optionValueBarbeiro !== "" && optionValueServico !== "") {
+        if (
+          hM.RESERVADO === 0 &&
+          hM.SERVICO_ID === parseInt(optionValueServico) &&
+          hM.BARBEIRO_ID === parseInt(optionValueBarbeiro)
+        ) {
+          const servico = servicos.find(
+            (servico) => servico.ID === hM.SERVICO_ID
+          );
+          return parseFloat(servico.PRECO.split(" ")[1].replace(",", "."));
+        }
+      } else {
+        if (hM.RESERVADO === 0) {
+          const servico = servicos.find(
+            (servico) => servico.ID === hM.SERVICO_ID
+          );
+          return parseFloat(servico.PRECO.split(" ")[1].replace(",", "."));
+        }
       }
     });
 
-    const total = precos.reduce((contador, valor) => {
+    const precosFiltrado = precos.filter((p) => p !== undefined);
+
+    const total = precosFiltrado.reduce((contador, valor) => {
       return contador + valor;
     }, 0);
     setLucroTotal(total);
-  }, [horariosMarcado, servicos]);
+  }, [horariosMarcado, servicos, optionValueServico, optionValueBarbeiro]);
 
   // personalizado
   useEffect(() => {
-      if (dataInicio !== null && dataFinal !== null) {
-        const dataInicioNumerico = new Date(dataInicio).getTime();
-        const dataExplode = dataFinal.split("/").map(Number);
-        const dataFinalNumerico = new Date(
-          dataExplode[2],
-          dataExplode[1],
-          dataExplode[0]
+    if (dataInicio !== null && dataFinal !== null) {
+      // pegando timestamp de dataInicio
+      const dataInicioExplode = dataInicio.split("/").map(Number);
+      const dataInicioNumerico = new Date(
+        dataInicioExplode[2],
+        dataInicioExplode[1] - 1,
+        dataInicioExplode[0]
+      ).getTime();
+      // pegando timestamp de dataFinal
+      const dataFinalExplode = dataFinal.split("/").map(Number);
+      const dataFinalNumerico = new Date(
+        dataFinalExplode[2],
+        dataFinalExplode[1] - 1,
+        dataFinalExplode[0]
+      ).getTime();
+      const horariosFinalizadoPersonalizado = horariosMarcado.filter((hM) => {
+        // pegando timestamp da data de hM.DATA
+        const hMExplode = hM.DATA.split("/").map(Number);
+        const hMData = new Date(
+          hMExplode[2],
+          hMExplode[1] - 1,
+          hMExplode[0]
         ).getTime();
-        const horariosFinalizadoPersonalizado = horariosMarcado.filter((hM) => {
-          const dataHMExplode = hM.DATA.split("/").map(Number);
-          const hMData = new Date(
-            dataHMExplode[2],
-            dataHMExplode[1],
-            dataHMExplode[0]
-          ).getTime();
-          if (hMData >= dataInicioNumerico && hMData <= dataFinalNumerico) {
-            return hM;            
+        if (optionValueServico !== "" && optionValueBarbeiro === "") {
+          if (
+            hMData >= dataInicioNumerico &&
+            hMData <= dataFinalNumerico &&
+            hM.SERVICO_ID === parseInt(optionValueServico)
+          ) {
+            return hM;
           }
-        });
-        let precos = [];
-         horariosFinalizadoPersonalizado.forEach((hFP) => {
-          const preco = parseFloat(servicos.find((s) => s.ID === hFP.SERVICO_ID).PRECO.split(" ")[1].replace(",", "."));
-           precos.push(preco);
-        });
-        const total = precos.reduce((contador, valor) => {return contador + valor}, 0);
-        setLucroPersonalizado(total);
-      }
-    
-  }, [dataInicio, dataFinal]);
+        } else if (optionValueBarbeiro !== "" && optionValueServico === "") {
+          if (
+            hMData >= dataInicioNumerico &&
+            hMData <= dataFinalNumerico &&
+            hM.BARBEIRO_ID === parseInt(optionValueBarbeiro)
+          ) {
+            return hM;
+          }
+        } else if (optionValueBarbeiro !== "" && optionValueServico !== "") {
+          if (
+            hMData >= dataInicioNumerico &&
+            hMData <= dataFinalNumerico &&
+            hM.SERVICO_ID === parseInt(optionValueServico) &&
+            hM.BARBEIRO_ID === parseInt(optionValueBarbeiro)
+          ) {
+            return hM;
+          }
+        } else {
+          if (hMData >= dataInicioNumerico && hMData <= dataFinalNumerico) {
+            return hM;
+          }
+        }
+      });
+      let precos = [];
+      horariosFinalizadoPersonalizado.forEach((hFP) => {
+        const preco = parseFloat(
+          servicos
+            .find((s) => s.ID === hFP.SERVICO_ID)
+            .PRECO.split(" ")[1]
+            .replace(",", ".")
+        );
+        precos.push(preco);
+      });
+      const total = precos.reduce((contador, valor) => {
+        return contador + valor;
+      }, 0);
+      setLucroPersonalizado(total);
+    }
+  }, [dataInicio, dataFinal, optionValueServico, optionValueBarbeiro]);
 
   const handleChangeServico = (event) => {
     setOptionValueServico(event.target.value);
@@ -231,7 +405,6 @@ export const Finalizados = () => {
                 />
               </div>
               {/* DATA FINAL */}
-
               <div className="col-6 ">
                 <div className="col-12 d-flex justify-content-start align-items-center">
                   <span className="text-white">Data Final:</span>
@@ -271,11 +444,13 @@ export const Finalizados = () => {
                   aria-label=".form-select-sm example"
                   onChange={handleChangeServico}
                 >
-                  <option>Todos</option>
+                  <option value={""}>Todos</option>
                   {servicos.map((servico) => {
                     return (
                       <Fragment key={servico.ID}>
-                        <option>{servico.NOME_SERVICO}</option>
+                        <option value={servico.ID}>
+                          {servico.NOME_SERVICO}
+                        </option>
                       </Fragment>
                     );
                   })}
@@ -290,11 +465,11 @@ export const Finalizados = () => {
                   className="select-servico-barbeiro"
                   aria-label=".form-select-sm example"
                 >
-                  <option>Todos</option>
+                  <option value={""}>Todos</option>
                   {barbeiros.map((barbeiro) => {
                     return (
                       <Fragment key={barbeiro.ID}>
-                        <option>{barbeiro.NOME}</option>
+                        <option value={barbeiro.ID}>{barbeiro.NOME}</option>
                       </Fragment>
                     );
                   })}
@@ -321,7 +496,10 @@ export const Finalizados = () => {
               <CardFinanceiro preco={lucroDiario} periodo={"Diário"} />
             </div>
             <div className="col-6">
-              <CardFinanceiro preco={lucroPersonalizado} periodo={"Personalizado"} />
+              <CardFinanceiro
+                preco={lucroPersonalizado}
+                periodo={"Personalizado"}
+              />
             </div>
           </div>
         </div>
