@@ -10,7 +10,7 @@ export const UserProvider = ({ children }) => {
     NOME_BARBEARIA: "",
     BARBEIRO: false,
   });
-
+  const [usuarioEditado, setUsuarioEditado] = useState(false);
   // esse objeto controla oque o usuário vai setando durante a navegação pelo sistema
   const [userContrata, setUserContrata] = useState({ user: null });
   const navigate = useNavigate();
@@ -39,21 +39,33 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  const buscarBarbearia = async (barbearia) => {
-    try {
-      const response = await http.get(`user/buscarBarbearia/${barbearia}`);
-    } catch (error) {
-      navigate("/naoEncontrado");
-    }
-  };
+  // const buscarBarbearia = async (barbearia) => {
+  //   try {
+  //     const response = await http.get(`user/buscarBarbearia/${barbearia}`);
+  //   } catch (error) {
+  //     navigate("/naoEncontrado");
+  //   }
+  // };
 
   const pegarDadosPraEditar = async () => {
     try {
-      const response = await http.get("user/pegarDadosPraEditar", {withCredentials: true});
+      const response = await http.get("user/pegarDadosPraEditar", {
+        withCredentials: true,
+      });
       return response.data;
-    } catch (error) {
-      
-    }
+    } catch (error) {}
+  };
+
+  const editarUsuario = async (data) => {
+    try {
+      const result = await http.post(
+        "user/editarUsuario",
+        { data },
+        { withCredentials: true }
+      );
+      setUser(result.data.user);
+      setUsuarioEditado(true);
+    } catch (error) {}
   };
 
   const logout = async () => {
@@ -77,9 +89,11 @@ export const UserProvider = ({ children }) => {
         pegarUsuario,
         userContrata,
         setUserContrata,
-        buscarBarbearia,
         logout,
         pegarDadosPraEditar,
+        editarUsuario,
+        usuarioEditado,
+        setUsuarioEditado,
       }}
     >
       {children}

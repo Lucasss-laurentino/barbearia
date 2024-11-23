@@ -7,7 +7,4 @@ export const editarUsuarioSchema = yup.object({
 
   SENHA: yup
     .string()
-    .required("Campo obrigatório")
-    .min(6, "Senha muito curta")
-    .max(20, "Senha muito longa"),
 }); 

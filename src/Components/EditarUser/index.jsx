@@ -4,10 +4,22 @@ import { UserContext } from "../../Context/UserContext";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { editarUsuarioSchema } from "../../validations/editarUsuario";
+import { ToastContainer, toast, Bounce } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 export const EditarUser = () => {
-  const { pegarDadosPraEditar } = useContext(UserContext);
-  const [user, setUser] = useState({});
+  const {
+    pegarDadosPraEditar,
+    editarUsuario,
+    usuarioEditado,
+    setUsuarioEditado,
+    user,
+    setUser
+  } = useContext(UserContext);
+  // user edit é necessario porque o objeto user de userContext nao contem a propriedade email
+  const [userEdit, setUserEdit] = useState({});
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -20,17 +32,49 @@ export const EditarUser = () => {
     let usuario;
     const pegarUsuario = async () => {
       usuario = await pegarDadosPraEditar();
-      setUser(usuario.userObj);
+      setUserEdit(usuario.userObj);
     };
     pegarUsuario();
   }, []);
 
-  const editarUsuario = (data) => {
-    console.log(data);
-  };
+  useEffect(() => {
+    if (usuarioEditado) {
+      toast.success("Seus dados foram alterados com sucesso", {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+
+      setTimeout(() => {
+        navigate(`/${user.NOME_BARBEARIA}`)
+        setUsuarioEditado(false);
+      }, 3000)
+    }
+  }, [usuarioEditado]);
 
   return (
     <>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        limit={1}
+        transition={Bounce}
+      />
+
       <div className="container-fluid">
         <div className="row">
           <div className="col-12 d-flex justify-content-center align-items-center flex-column">
@@ -79,7 +123,7 @@ export const EditarUser = () => {
                         <input
                           type="email"
                           className="input-editar-perfil col-12"
-                          placeholder={user?.EMAIL}
+                          placeholder={userEdit?.EMAIL}
                           {...register("EMAIL")}
                         />
                       </div>
@@ -168,7 +212,7 @@ export const EditarUser = () => {
                         <input
                           type="text"
                           className="input-editar-perfil col-12"
-                          placeholder={user?.NOME_BARBEARIA}
+                          placeholder={userEdit?.NOME_BARBEARIA}
                           {...register("NOME_BARBEARIA")}
                         />
                       </div>

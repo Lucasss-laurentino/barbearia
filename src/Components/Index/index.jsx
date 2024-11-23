@@ -21,7 +21,7 @@ import { EditarUser } from "../EditarUser";
 
 export const Index = () => {
   const { active, setActive } = useContext(AbaBottomContext);
-  const { user, pegarUsuario, buscarBarbearia } = useContext(UserContext);
+  const { user, pegarUsuario } = useContext(UserContext);
   const { pegarServicos, setServicoEscolhido } = useContext(ServicoContext);
   const { pegarBarbeiros } = useContext(BarbeiroContext);
   const { pegarHorarios, setHorarios } = useContext(HorarioContext);
@@ -37,7 +37,6 @@ export const Index = () => {
   useEffect(() => {
     const carregarDadosNecessario = async () => {
       await Promise.all([
-        buscarBarbearia(barbearia),
         pegarHorarios(barbearia),
         buscarHorariosAgendado(barbearia),
         pegarUsuario(),
@@ -46,7 +45,7 @@ export const Index = () => {
       ]);
     };
     carregarDadosNecessario();
-  }, []);
+  }, [barbearia]);
 
   // eventos socket direcionado aos usuarios
   useEffect(() => {
