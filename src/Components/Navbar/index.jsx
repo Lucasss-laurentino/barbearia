@@ -23,7 +23,7 @@ export const Navbar = () => {
                   width="24"
                   height="24"
                   fill="#fff"
-                  class="bi bi-list"
+                  className="bi bi-list"
                   viewBox="0 0 16 16"
                 >
                   <path

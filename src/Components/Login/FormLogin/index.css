@@ -1,0 +1,63 @@
+.titulo-form-login {
+  color: rgb(247, 244, 244);
+  font-family: "barber";
+}
+
+.span-login {
+  color: #acaaaa;
+}
+
+.p-form-login {
+  color: #acaaaa;
+  font-size: 15px;
+  font-weight: lighter;
+}
+
+.formulario-page-login {
+  width: 100%;
+  max-width: 500px;
+  background-color: rgba(81, 81, 87, 0.7);
+  backdrop-filter: blur(3px);
+  border-radius: 10px;
+}
+
+.encapsula-span-input-login {
+  display: flex;
+  justify-content: center;
+}
+
+.input-icone {
+  width: 100%;
+  height: 38px;
+  background-color: #212529;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.input-login {
+  color: white;
+  background-color: transparent;
+  border: none;
+  outline: 0;
+}
+
+.btn-form-login {
+  color: #212529;
+  font-weight: 600;
+  height: 38px;
+  border-radius: 7px;
+  border: none;
+  background-color: rgb(224, 221, 221);
+}
+
+.cursor:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.p-esqueci-senha:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}

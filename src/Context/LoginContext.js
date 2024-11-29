@@ -11,9 +11,12 @@ export const LoginProvider = ({ children }) => {
   const { setUser } = useContext(UserContext);
   const [loadLogin, setLoadLogin] = useState(false);
   const [loginError, setLoginError] = useState(null);
+  const [cadastroError, setCadastroError] = useState(null);
+  const [confirmarCodigo, setConfirmarCodigo] = useState(false);
+
   const criarUsuario = async (user) => {
     try {
-      setLoadLogin(true)
+      setLoadLogin(true);
       const response = await http.post(
         "login/criarUsuario",
         { user },
@@ -23,25 +26,37 @@ export const LoginProvider = ({ children }) => {
       setLoadLogin(false);
       navigate(`/${response.data.user.NOME_BARBEARIA}`);
     } catch (error) {
-      console.log(error);
+      setCadastroError(error?.response.data.message);
+      setLoadLogin(false);
+    }
+  };
+
+  const confirmarEmail = async (user) => {
+    try {
+      setLoadLogin(true);
+      const result = await http.post("login/confirmarEmail", { user });
+      if (result) {
+        setConfirmarCodigo(true);
+      }
+    } catch (error) {
+      setCadastroError(error?.response?.data?.message);
       setLoadLogin(false);
     }
   };
 
   const login = async (user) => {
     try {
-      setLoadLogin(true)
+      setLoadLogin(true);
       await http
         .post("/login/login", { user }, { withCredentials: true })
         .then((response) => {
           setUser(response.data.user);
           setLoadLogin(false);
           navigate(`/${response.data.user.NOME_BARBEARIA}`);
-      });
+        });
     } catch (error) {
+      setLoginError(error?.response.data.message);
       setLoadLogin(false);
-      const erro = error.response?.data
-      setLoginError("Algo deu errado ao fazer login, verifique seus dados e tente novamente !");
     }
   };
 
@@ -52,7 +67,13 @@ export const LoginProvider = ({ children }) => {
         login,
         loadLogin,
         setLoadLogin,
-        loginError
+        loginError,
+        setLoginError,
+        cadastroError,
+        setCadastroError,
+        confirmarEmail,
+        confirmarCodigo,
+        setConfirmarCodigo,
       }}
     >
       {children}
