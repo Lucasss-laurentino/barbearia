@@ -1,0 +1,20 @@
+.div-redonda {
+  width: 100%; /* Garante que a div ocupe toda a largura disponível */
+  padding-top: 100%; /* Define a altura da div proporcional à largura (para manter o aspecto quadrado) */
+  position: relative; /* Necessário para que a imagem seja posicionada dentro da div */
+  overflow: hidden; /* Garante que qualquer parte da imagem que ultrapasse a borda da div seja cortada */
+  border-radius: 50%; /* Deixa a borda da div redonda */
+}
+.personalizar-div-foto {
+  height: 76px;
+}
+
+.div-redonda img {
+  position: absolute; /* Posiciona a imagem de forma absoluta dentro da div */
+  top: 50%; /* Move a imagem para o centro verticalmente */
+  left: 50%; /* Move a imagem para o centro horizontalmente */
+  transform: translate(-50%, -50%); /* Ajusta a imagem para que ela fique perfeitamente centralizada */
+  width: 100%; /* Ajusta a largura da imagem para ocupar toda a div */
+  height: 100%; /* Ajusta a altura da imagem para ocupar toda a div */
+  object-fit: cover; /* Garante que a imagem cubra completamente a div, mantendo o aspecto */
+}

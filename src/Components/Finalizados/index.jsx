@@ -370,13 +370,143 @@ export const Finalizados = () => {
         handleDataFinal={handleDataFinal}
         filtro={true}
       />
+      <div className="fundo-imagem">
+        <div className="cortina-transparente">
+          <div className="container-fluid">
+            <div className="row justify-content-center">
+              <div className="col-12 col-sm-10 filtro">
+                <div className="col-6">
+                  <div className="col-12 d-flex justify-content-start align-items-center">
+                    <span className="text-white">Data Ínicio:</span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="#fff"
+                      className="bi bi-calendar3 mx-2"
+                      viewBox="0 0 16 16"
+                    >
+                      <path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857z" />
+                      <path d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2" />
+                    </svg>
+                  </div>
+                  <input
+                    type="text"
+                    onFocus={() => {
+                      setClasseCalendario("encapsula-calendario");
+                      setDataInicioOuDataFinal(true);
+                      setCalendarioAberto(true);
+                    }}
+                    className="input-finalizados text-white"
+                    value={dataInicio !== null ? dataInicio : data}
+                    placeholder={data}
+                  />
+                </div>
+                <div className="col-6 ">
+                  <div className="col-12 d-flex justify-content-start align-items-center">
+                    <span className="text-white">Data Final:</span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="#fff"
+                      className="bi bi-calendar3 mx-2"
+                      viewBox="0 0 16 16"
+                    >
+                      <path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857z" />
+                      <path d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2" />
+                    </svg>
+                  </div>
+                  <input
+                    type="text"
+                    onFocus={() => {
+                      setClasseCalendario("encapsula-calendario");
+                      setDataInicioOuDataFinal(false);
+                      setCalendarioAberto(true);
+                    }}
+                    className="input-finalizados text-white"
+                    value={dataFinal !== null ? dataFinal : data}
+                    placeholder={data}
+                  />
+                </div>
+              </div>
+              <div className="col-12 col-sm-10 filtro">
+                <div className="col-6 d-flex flex-column justify-content-center mb-3 ">
+                  <span className="text-white">Serviço</span>
+                  <select
+                    value={optionValueServico}
+                    className="select-servico-barbeiro"
+                    aria-label=".form-select-sm example"
+                    onChange={handleChangeServico}
+                  >
+                    <option value={""}>Todos</option>
+                    {servicos.map((servico) => {
+                      return (
+                        <Fragment key={servico.ID}>
+                          <option value={servico.ID}>
+                            {servico.NOME_SERVICO}
+                          </option>
+                        </Fragment>
+                      );
+                    })}
+                  </select>
+                </div>
+
+                <div className="col-6 d-flex flex-column justify-content-center mb-3">
+                  <span className="text-white">Barbeiro</span>
+                  <select
+                    value={optionValueBarbeiro}
+                    onChange={handleChangeBarbeiro}
+                    className="select-servico-barbeiro"
+                    aria-label=".form-select-sm example"
+                  >
+                    <option value={""}>Todos</option>
+                    {barbeiros.map((barbeiro) => {
+                      return (
+                        <Fragment key={barbeiro.ID}>
+                          <option value={barbeiro.ID}>{barbeiro.NOME}</option>
+                        </Fragment>
+                      );
+                    })}
+                  </select>
+                </div>
+              </div>
+              <div className="col-12 col-sm-10 filtro">
+                <div className="col-6 margin-rigth-data-inicio">
+                  <CardFinanceiro preco={lucroMensal} periodo={"Mensal"} />
+                </div>
+                <div className="col-6">
+                  <CardFinanceiro preco={lucroSemanal} periodo={"Semanal"} />
+                </div>
+              </div>
+              <div className="col-12 col-sm-10 filtro">
+                <div className="col-6 margin-rigth-data-inicio">
+                  <CardFinanceiro preco={lucroDiario} periodo={"Diário"} />
+                </div>
+                <div className="col-6">
+                  <CardFinanceiro preco={lucroTotal} periodo={"Total"} />
+                </div>
+              </div>
+              <div className="col-12 col-sm-10 filtro">
+                <div className="col-12">
+                  <CardFinanceiro
+                    preco={lucroPersonalizado}
+                    periodo={"Personalizado"}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* 
       <div className="container-fluid mt-1 height-scroll py-3">
-        {/* FILTROS */}
+       
         <div className="row justify-content-center">
           <div className="col-11 filtro flex-column pt-2">
-            {/* DATA */}
+          
             <div className="col-12 d-flex justify-content-between align-items-center mb-2">
-              {/* DATA INICIO */}
+             
               <div className="col-6">
                 <div className="col-12 d-flex justify-content-start align-items-center">
                   <span className="text-white">Data Ínicio:</span>
@@ -404,7 +534,7 @@ export const Finalizados = () => {
                   placeholder={data}
                 />
               </div>
-              {/* DATA FINAL */}
+              
               <div className="col-6 ">
                 <div className="col-12 d-flex justify-content-start align-items-center">
                   <span className="text-white">Data Final:</span>
@@ -433,9 +563,9 @@ export const Finalizados = () => {
                 />
               </div>
             </div>
-            {/* SELECTS */}
+           
             <div className="col-12 d-flex justify-content-between align-items-center">
-              {/* SERVIÇOS */}
+           
               <div className="col-6 d-flex flex-column justify-content-center mb-3 ">
                 <span className="text-white">Serviço</span>
                 <select
@@ -456,7 +586,7 @@ export const Finalizados = () => {
                   })}
                 </select>
               </div>
-              {/* BARBEIROS */}
+            
               <div className="col-6 d-flex flex-column justify-content-center mb-3">
                 <span className="text-white">Barbeiro</span>
                 <select
@@ -478,7 +608,7 @@ export const Finalizados = () => {
             </div>
           </div>
         </div>
-        {/* CARD MENSAL E SEMANAL */}
+        
         <div className="row justify-content-center">
           <div className="col-11 mt-3 d-flex justify-content-between p-0">
             <div className="col-6 margin-rigth-data-inicio">
@@ -489,7 +619,7 @@ export const Finalizados = () => {
             </div>
           </div>
         </div>
-        {/* CARDS DIARIO E PERSONALIZADO */}
+       
         <div className="row justify-content-center">
           <div className="col-11 mt-1 d-flex justify-content-between p-0">
             <div className="col-6 margin-rigth-data-inicio">
@@ -503,7 +633,7 @@ export const Finalizados = () => {
             </div>
           </div>
         </div>
-        {/* CARD TOTAL */}
+       
         <div className="row justify-content-center">
           <div className="col-11 mt-1 d-flex justify-content-between p-0">
             <div className="col-12">
@@ -512,6 +642,7 @@ export const Finalizados = () => {
           </div>
         </div>
       </div>
+      */}
     </>
   );
 };

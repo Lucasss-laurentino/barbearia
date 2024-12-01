@@ -18,6 +18,7 @@ import { PageLogin } from "../PageLogin";
 import { Finalizados } from "../Finalizados";
 import { Configurações } from "../Configuracoes";
 import { EditarUser } from "../EditarUser";
+import { Login } from "../Login";
 
 export const Index = () => {
   const { active, setActive } = useContext(AbaBottomContext);
@@ -132,9 +133,8 @@ export const Index = () => {
     <>
       <div className="body">
         {/* Navbar para dispositivos móveis (excluindo quando o usuário não estiver logado e active for 4) */}
-
-        <Navbar />
-
+        {!user.ID && active !== 4 && <Navbar />}
+        {user.ID && <Navbar/>}
         {user.ID && <Menu />}
 
         {/* Condições para renderizar diferentes componentes com base no estado do usuário e 'active' */}
@@ -165,7 +165,7 @@ export const Index = () => {
           <>
             {active === 1 && <ListBarbeiros />}
             {active === 2 && <ListService />}
-            {active === 4 && <PageLogin />}
+            {active === 4 && <Login />}
           </>
         )}
 

@@ -1,3 +1,4 @@
+import './index.css';
 import { useContext } from "react";
 import { MenuContext } from "../../Context/MenuContext";
 import { UserContext } from "../../Context/UserContext";
@@ -7,9 +8,9 @@ export const Navbar = () => {
   const { user, logout } = useContext(UserContext);
   return (
     <>
-      <div className="container-fluid">
+      <div className="container-fluid per-nav-bar">
         <div className="row">
-          <div className="col-12 py-2 bg-dark d-flex justify-content-between align-items-center">
+          <div className="col-12 py-2 d-flex justify-content-between align-items-center">
             <div className="img-logo col-10 col-sm-7 col-md-5 pt-2">
               <img src="/logo-fotor.png" width="30%" alt="" />
             </div>

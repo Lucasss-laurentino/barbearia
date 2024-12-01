@@ -1,8 +1,10 @@
 .filtro {
+  margin-top: 5px;
+  height: 90px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #373c41;
+  background-color: rgb(63, 62, 70, 0.6);
   border-radius: 5px;
 }
 

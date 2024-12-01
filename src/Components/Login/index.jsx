@@ -5,12 +5,14 @@ import "./index.css";
 import { RecuperarSenha } from "./RecuperarSenha";
 import { LoginContext } from "../../Context/LoginContext";
 import { ConfirmaCodigo } from "./ConfirmaCodigo";
+import { AbaBottomContext } from "../../Context/AbaBottomContext";
+import { MenuBottom } from "../MenuBottom";
 
 export const Login = () => {
   // true = form login ativo | false = form cadastro ativo
   const [controlaLoginECadastro, setControlerLoginECadastro] = useState(true);
   const [esqueceuSenha, setEsqueceuSenha] = useState(false);
-
+  const { active } = useContext(AbaBottomContext);
   // context login
   const { confirmarCodigo } = useContext(LoginContext);
 

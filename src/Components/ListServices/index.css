@@ -4,10 +4,14 @@
 .border-list-services {
     border-top: 1px solid rgb(107, 107, 107);
     border-bottom: 1px solid rgb(107, 107, 107);
+    background-color:rgb(63,62,70, 0.4);
 
 }
+.list-style {
+    list-style: none;
+}
 .text-claro {
-    color: #8b8a8a;
+    color: rgb(246,243,243);
 }
 
 .border-radius-personalizada {

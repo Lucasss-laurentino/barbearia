@@ -1,15 +1,23 @@
 .footer-bottom {
   position: fixed;
   bottom: 0%;
+  z-index: 3;
+}
+
+@media (min-width: 1020px) {
+  .footer-bottom {
+    bottom: -2%;
+  }  
 }
 
 .list-menu-bottom {
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: flex-end;
   list-style: none;
   padding: 0;
   margin: 0;
+  background-color: #13131e;
 }
 
 .list-menu-bottom > li {
@@ -42,7 +50,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #212529;
+  background-color: #13131e;
   flex-direction: column;
 
   border-top: 1px solid #212529;

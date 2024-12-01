@@ -214,24 +214,86 @@ export const ListBarbeiros = () => {
       />
 
       {user.ADM && <SpanAdd handleShow={handleShow} />}
-      <div className="container-fluid height-main height-servicos">
-        <div className="row height-servicos">
-          <div className="col-3 col-sm-4 col-md-5 d-none d-sm-flex justify-content-sm-center  borda-direita">
-            <div className="col-12 d-flex justify-content-center align-items-center">
-              <img
-                src="logo-fotor.png"
-                className="img-fluid"
-                width={"80%"}
-                alt=""
-              />
+      <div className="fundo-imagem">
+        <div className="cortina-transparente">
+          <div className="container-fluid">
+            <div className="row justify-content-center">
+              <div className="col-12 col-sm-10 d-flex justify-content-center align-items-center">
+                <ul className="col-12 m-0 p-0 list-style">
+                  {barbeiros.map((barbeiro) => {
+                    const horariosFiltrado = horarios.filter(
+                      (h) => h.BARBEIRO_ID === barbeiro.ID
+                    );
+                    return (
+                      <Fragment key={barbeiro.ID}>
+                        <li className="py-1 border-list-services text-claro">
+                          <FotoEIcones
+                            barbeiro={barbeiro}
+                            user={user}
+                            setBarbeiroSelecionado={setBarbeiroSelecionado}
+                            setExcluirHorario={setExcluirHorario}
+                            setId={setId}
+                            setShow={setShow}
+                            abrirListaHorarios={abrirListaHorarios}
+                            horariosAberto={horariosAberto}
+                            setHorariosAberto={setHorariosAberto}
+                          />
+                          <div className="d-flex z-ind justify-content-center align-items-center flex-column">
+                            <ListaHorarios
+                              barbeiro={barbeiro}
+                              user={user}
+                              horariosFiltrado={horariosFiltrado}
+                              setBarbeiro={setBarbeiro}
+                              setShowHorarios={setShowHorarios}
+                              setClasseCalendario={setClasseCalendario}
+                              setHorarioSelecionado={setHorarioSelecionado}
+                              horarioSelecionado={horarioSelecionado}
+                              setExcluirHorario={setExcluirHorario}
+                              setId={setId}
+                              barbearia={barbearia}
+                              setCalendarioAberto={setCalendarioAberto}
+                            />
+                            {storage !== null &&
+                              horarioMarcado?.BARBEIRO_ID === barbeiro?.ID && (
+                                <HoraMarcada
+                                  horario={horarioObjeto}
+                                  desmarcarHorario={desmarcarHorario}
+                                />
+                              )}
+                          </div>
+                        </li>
+                      </Fragment>
+                    );
+                  })}
+                </ul>
+              </div>
             </div>
           </div>
-          <div className="col-12 col-sm-8 col-md-7 p-0">
+        </div>
+      </div>
+      {/*
+      <div className="container-fluid height-main height-servicos">
+        <>
+          <div className="fundo-imagem">
+            <div className="cortina-transparente">
+              <div className="container-fluid">
+                <div className="row justify-content-center">
+                  <div className="col-12 col-sm-10 d-flex justify-content-center align-items-center">
+                    <ul className="col-12 m-0 p-0 list-style"></ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+       
+        <div className="row height-servicos">
+           <div className="col-12 col-sm-8 col-md-7 p-0">
             <ul
               className={
                 user.ADM
-                  ? "lista-barbeiros"
-                  : "lista-barbeiros-sem-margin-bottom"
+                  ? "lista-barbeiros bg-dark"
+                  : "lista-barbeiros-sem-margin-bottom bg-dark"
               }
             >
               {barbeiros.map((barbeiro) => {
@@ -283,9 +345,10 @@ export const ListBarbeiros = () => {
             <div className="d-block">
               <MenuBottom />
             </div>
-          </div>
+          </div> 
         </div>
       </div>
+      */}
     </>
   );
 };

@@ -9,9 +9,9 @@ export const MenuBottom = () => {
 
   return (
     <>
-      <div className="container-fluid footer-bottom">
+      <div className="container-fluid footer-bottom p-0">
         <div className="row">
-          <div className={active !== 4 ? "col-12 col-md-11 p-0" : "col-12"}>
+          <div className={active !== 4 ? "col-12 col-sm-10 col-md-11 p-0" : "col-12"}>
             <ul
               className={
                 active !== 4

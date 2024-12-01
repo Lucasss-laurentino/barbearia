@@ -78,7 +78,50 @@ export const ListService = () => {
           {user.ADM && (
             <SpanAddServico setShowModalServico={setShowModalServico} />
           )}
-
+          <>
+            <div className="fundo-imagem">
+              <div className="cortina-transparente">
+                <div className="container-fluid">
+                  <div className="row justify-content-center">
+                    <div className="col-12 col-sm-10 d-flex justify-content-center align-items-center">
+                      <ul className="col-12 m-0 p-0 list-style">
+                        {servicos.map((servico) => {
+                          return (
+                            <Fragment key={servico.ID}>
+                              <li
+                                className="py-1 border-list-services text-claro"
+                                id={`item-servico-${servico.ID}`}
+                              >
+                                <div className="d-flex justify-content-between align-items-center">
+                                  <NomeImgPrazo servico={servico} />
+                                  <PageEContratado
+                                    user={user}
+                                    servico={servico}
+                                    servicoEscolhido={servicoEscolhido}
+                                    servicoAgendado={servicoAgendado}
+                                    setServicoEscolhido={setServicoEscolhido}
+                                    setEditarServico={setEditarServico}
+                                    setShowModalServico={setShowModalServico}
+                                    setServicoASerExcluido={
+                                      setServicoASerExcluido
+                                    }
+                                    setShowModalExcluirServico={
+                                      setShowModalExcluirServico
+                                    }
+                                  />
+                                </div>
+                              </li>
+                            </Fragment>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
+          {/*
           <div className="container-fluid bg-dark height-servicos">
             <div className="row height-servicos">
               <div className="col-3 col-sm-4 col-md-5 d-none d-sm-flex justify-content-sm-center  borda-direita">
@@ -132,7 +175,7 @@ export const ListService = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
         </>
       )}
     </>

@@ -13,13 +13,14 @@ export const LoginProvider = ({ children }) => {
   const [loginError, setLoginError] = useState(null);
   const [cadastroError, setCadastroError] = useState(null);
   const [confirmarCodigo, setConfirmarCodigo] = useState(false);
-
-  const criarUsuario = async (user) => {
+  const [userCadastro, setUserCadastro] = useState({});
+  
+  const criarUsuario = async (codigo) => {
+    setLoadLogin(true);
     try {
-      setLoadLogin(true);
       const response = await http.post(
         "login/criarUsuario",
-        { user },
+        { user: userCadastro, codigo },
         { withCredentials: true }
       );
       setUser(response.data.user);
@@ -36,7 +37,9 @@ export const LoginProvider = ({ children }) => {
       setLoadLogin(true);
       const result = await http.post("login/confirmarEmail", { user });
       if (result) {
+        setUserCadastro(user);
         setConfirmarCodigo(true);
+        setLoadLogin(false)
       }
     } catch (error) {
       setCadastroError(error?.response?.data?.message);
@@ -74,6 +77,8 @@ export const LoginProvider = ({ children }) => {
         confirmarEmail,
         confirmarCodigo,
         setConfirmarCodigo,
+        userCadastro,
+        setUserCadastro,
       }}
     >
       {children}
