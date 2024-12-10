@@ -2,26 +2,28 @@ import { AbaBottomContext } from "../../Context/AbaBottomContext";
 import { UserContext } from "../../Context/UserContext";
 import "./index.css";
 import { useContext } from "react";
+import Cookies from "js-cookie";
 
 export const MenuBottom = () => {
   const { active, setActive } = useContext(AbaBottomContext);
   const { user } = useContext(UserContext);
 
+  const handleAbaMenu = (aba) => {
+    const cookie = Cookies.get("token");
+    if(!cookie) setActive(aba)
+  }
+
   return (
     <>
-      <div className="container-fluid footer-bottom p-0">
+      <div className="footer-bottom p-0">
         <div className="row">
-          <div className={active !== 4 ? "col-12 col-sm-10 col-md-11 p-0" : "col-12"}>
+          <div className="p-0 col-12">
             <ul
-              className={
-                active !== 4
-                  ? "list-menu-bottom"
-                  : "list-menu-bottom justify-content-end"
-              }
+              className="list-menu-bottom"
             >
               <li
-                className="col-3 col-sm-2 col-md-2"
-                onClick={() => setActive(2)}
+                className="col-3 col-md-2"
+                onClick={() => handleAbaMenu(2)}
               >
                 <div className={active === 2 ? "fundo-branco" : "fundo-preto"}>
                   <img
@@ -40,8 +42,8 @@ export const MenuBottom = () => {
                 </div>
               </li>
               <li
-                className="col-3  col-sm-2 col-md-2"
-                onClick={() => setActive(1)}
+                className="col-3 col-md-2"
+                onClick={() => handleAbaMenu(1)}
               >
                 <div className={active === 1 ? "fundo-branco" : "fundo-preto"}>
                   <img
@@ -60,8 +62,8 @@ export const MenuBottom = () => {
                 </div>
               </li>
               <li
-                className="col-3 col-sm-2 col-md-2"
-                onClick={() => setActive(3)}
+                className="col-3 col-md-2"
+                onClick={() => handleAbaMenu(3)}
               >
                 <div className={active === 3 ? "fundo-branco" : "fundo-preto"}>
                   <img
@@ -89,11 +91,11 @@ export const MenuBottom = () => {
                 </div>
               </li>
               <li
-                className="col-3 col-sm-2 col-md-2"
-                onClick={() => setActive(4)}
+                className="col-3 col-md-2"
+                onClick={() => handleAbaMenu(4)}
               >
                 <div className={active === 4 ? "fundo-branco" : "fundo-preto"}>
-                  {/* Se o usuario estiver logado e for administrador */}
+
                   {active === 4 && user?.ADM && (
                     <>
                       <svg

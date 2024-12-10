@@ -14,11 +14,13 @@ import { BarbeiroContext } from "../../Context/BarbeiroContext";
 import { HorarioContext } from "../../Context/HorarioContext";
 import { HorarioMarcadoContext } from "../../Context/HorarioMarcadoContext";
 import { socket } from "../../socket";
-import { PageLogin } from "../PageLogin";
 import { Finalizados } from "../Finalizados";
 import { Configurações } from "../Configuracoes";
 import { EditarUser } from "../EditarUser";
 import { Login } from "../Login";
+import { EditarSenha } from "../EditarSenha";
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 
 export const Index = () => {
   const { active, setActive } = useContext(AbaBottomContext);
@@ -31,9 +33,10 @@ export const Index = () => {
   );
   const { barbearia } = useParams();
 
-  useEffect(() => {
-    setActive(2);
-  }, []);
+  // nao lembro o motivo exato desse useEffect mas está comentado porque quando um usuario e direcionado pra pagina de edição sem está logado (recuperar senha) active é setado pra 5 e esse useEffect estava setando de volta pra 2
+  // useEffect(() => {
+  //   setActive(2);
+  // }, []);
 
   useEffect(() => {
     const carregarDadosNecessario = async () => {
@@ -129,12 +132,36 @@ export const Index = () => {
     );
   }, []);
 
+  // gravar em um localStorage o parametro barbearia pra quando um usuario editar a conta saber pra qual url envia-lo de volta
+  useEffect(() => {
+    if (barbearia) {
+      localStorage.setItem("barbearia", barbearia);
+    }
+  }, []);
+
+  useEffect(() => {
+    const cookie = Cookies.get("token");
+    if (cookie) {
+      const jwt_decode = jwtDecode(cookie);
+      const agora = new Date().getTime();
+      if (jwt_decode.exp < agora) {
+        // token valido
+        setActive(5);
+      } else {
+        // token invalido (expirado)
+        setActive(2);
+      }
+    } else {
+      setActive(2)
+    }
+  }, []);
+
   return (
     <>
       <div className="body">
         {/* Navbar para dispositivos móveis (excluindo quando o usuário não estiver logado e active for 4) */}
         {!user.ID && active !== 4 && <Navbar />}
-        {user.ID && <Navbar/>}
+        {user.ID && <Navbar />}
         {user.ID && <Menu />}
 
         {/* Condições para renderizar diferentes componentes com base no estado do usuário e 'active' */}
@@ -166,13 +193,13 @@ export const Index = () => {
             {active === 1 && <ListBarbeiros />}
             {active === 2 && <ListService />}
             {active === 4 && <Login />}
+            {active === 5 && <EditarSenha />}
           </>
         )}
 
         {/* MenuBottom para dispositivos móveis */}
-        <div className="d-sm-none">
-          <MenuBottom />
-        </div>
+
+        <MenuBottom />
       </div>
     </>
   );

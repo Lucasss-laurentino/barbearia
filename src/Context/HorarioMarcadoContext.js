@@ -15,7 +15,7 @@ export const HorarioMarcadoProvider = ({ children }) => {
     agendamento,
     setShowModalMarcarHorarioDeslogado,
   } = useContext(HorarioContext);
-  const { servicos } = useContext(ServicoContext);
+  const { servicos, setServicoEscolhido } = useContext(ServicoContext);
   const { barbeiros } = useContext(BarbeiroContext);
   const [horarioMarcado, setHorarioMarcado] = useState();
   const [horariosMarcado, setHorariosMarcado] = useState([]);
@@ -126,7 +126,9 @@ export const HorarioMarcadoProvider = ({ children }) => {
       socketInstancia.emit("cancelarHorarioMarcado", cancelarHorarioMarcado);
       socketInstancia.on("horarioMarcadoCancelado", (horarioCancelado) => {
         setHorarios(horarioCancelado.horarios);
-        localStorage.setItem("agendamento", "");
+        // mudança de localStorage aciona um useEffect em HoraMarcada
+        localStorage.setItem("agendamento", "{}");
+        setServicoEscolhido({})
       });
     }
   }, [cancelarHorarioMarcado]);

@@ -5,7 +5,7 @@ import { useContext } from "react";
 import { LoginContext } from "../../../Context/LoginContext";
 import { MutatingDots } from "react-loader-spinner";
 
-export const FormCadastro = ({ setControlerLoginECadastro }) => {
+export const FormCadastro = () => {
   // CONFIGURANDO USER FORM
   const {
     register,
@@ -16,8 +16,13 @@ export const FormCadastro = ({ setControlerLoginECadastro }) => {
   });
 
   // CONTEXT LOGIN
-  const { confirmarEmail, loadLogin, cadastroError, setCadastroError } =
-    useContext(LoginContext);
+  const {
+    confirmarEmail,
+    loadLogin,
+    cadastroError,
+    setCadastroError,
+    setControlerLoginECadastro,
+  } = useContext(LoginContext);
 
   return (
     <>

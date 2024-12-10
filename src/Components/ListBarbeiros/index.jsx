@@ -118,7 +118,7 @@ export const ListBarbeiros = () => {
   useEffect(() => {
     if (localStorage.getItem("agendamento")) {
       const storage = JSON.parse(localStorage.getItem("agendamento"));
-      const horario = horarios.find((h) => h.ID === storage.HORA.ID);
+      const horario = horarios.find((h) => h.ID === storage?.HORA?.ID);
       setHorarioMarcado(horario);
     }
   }, [horarios]);

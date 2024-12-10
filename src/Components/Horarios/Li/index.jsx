@@ -74,7 +74,7 @@ export const Li = ({
           {barbeiros.map((barbeiro) => {
             if (barbeiro.ID === horario.BARBEIRO_ID) {
               return (
-                <div className="div-redonda" key={barbeiro.ID}>
+                <div className="div-redonda-servico" key={barbeiro.ID}>
                   <img
                     src={process.env.REACT_APP_API_URL + barbeiro.IMAGEM}
                     className="img-fluid"
@@ -101,7 +101,7 @@ export const Li = ({
       <div className="col-12 d-flex justify-content-between align-items-center flex-column">
         {horario?.RESERVADO === 2 && (
           <>
-            <div className="row row-agendamento-pendente mt-4 col-12">
+            <div className="row row-agendamento-pendente mt-1 col-12">
               <div className="col-12 d-flex justify-content-center">
                 <p className="p-agendamento-pendente">Agendamento pendente</p>
               </div>

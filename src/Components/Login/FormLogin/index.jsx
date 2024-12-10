@@ -6,7 +6,7 @@ import { useContext, useEffect } from "react";
 import { LoginContext } from "../../../Context/LoginContext";
 import { MutatingDots } from "react-loader-spinner";
 
-export const FormLogin = ({ setControlerLoginECadastro, setEsqueceuSenha }) => {
+export const FormLogin = () => {
   // CONFIGURANDO USERFORM
   const {
     register,
@@ -17,7 +17,14 @@ export const FormLogin = ({ setControlerLoginECadastro, setEsqueceuSenha }) => {
   });
 
   // CONTEXT LOGIN
-  const { login, loadLogin, loginError, setLoginError } = useContext(LoginContext);
+  const {
+    login,
+    loadLogin,
+    loginError,
+    setLoginError,
+    setControlerLoginECadastro,
+    setEsqueceuSenha,
+  } = useContext(LoginContext);
 
   // LIMPA O PARAGRAFO DE ERRO SEMPRE QUE UM INPUT FOR MODIFICADO
   useEffect(() => {

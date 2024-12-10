@@ -2,6 +2,7 @@ import './index.css';
 import { useContext } from "react";
 import { MenuContext } from "../../Context/MenuContext";
 import { UserContext } from "../../Context/UserContext";
+import { MenuBottom } from '../MenuBottom';
 
 export const Navbar = () => {
   const { setClassMenu, classMenu } = useContext(MenuContext);

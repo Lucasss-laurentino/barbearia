@@ -5,9 +5,15 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { confirmarCodigoSchema } from "../../../validations/ConfirmarCodigo";
 import { MutatingDots } from "react-loader-spinner";
 
-export const ConfirmaCodigo = () => {
-  const { setConfirmarCodigo, setLoadLogin, criarUsuario, loadLogin } =
-    useContext(LoginContext);
+export const ConfirmaCodigo = ({recuperaSenha, setRecuperaSenha}) => {
+  const {
+    setLoadLogin,
+    criarUsuario,
+    loadLogin,
+    cadastroError,
+    setCadastroError,
+    mudarSenha
+  } = useContext(LoginContext);
 
   const {
     register,
@@ -21,7 +27,7 @@ export const ConfirmaCodigo = () => {
     <form
       action=""
       className="col-12 formulario-page-login"
-      onSubmit={handleSubmit(criarUsuario)}
+      onSubmit={handleSubmit(!recuperaSenha ? criarUsuario : mudarSenha)}
     >
       <div className="col-12 text-center">
         <h3 className="titulo-form-login my-4">Barba Cabelo & Bigode</h3>
@@ -44,6 +50,13 @@ export const ConfirmaCodigo = () => {
                   {...register("CODIGO")}
                 />
               </div>
+            </div>
+            <div className="col-12 d-flex justify-content-start align-items-center">
+              {cadastroError !== null && (
+                <p className="m-0 my-1 text-danger bg-white">
+                  *{cadastroError}
+                </p>
+              )}
             </div>
           </div>
         </div>
@@ -71,7 +84,7 @@ export const ConfirmaCodigo = () => {
                     className="m-0 col-12 text-center text-white cursor my-2 pt-2"
                     onClick={() => {
                       setLoadLogin(false);
-                      setConfirmarCodigo(false);
+                      setCadastroError(null);
                     }}
                   >
                     Voltar

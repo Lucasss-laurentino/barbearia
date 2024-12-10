@@ -72,12 +72,11 @@ export const Horarios = () => {
       });
 
       const horariosDeHoje = ordenados.filter((horarioOrdenado) => {
-        const dataFormatada = `${hoje.getDate()}/${hoje.toLocaleString(
-          "pt-BR",
-          {
-            month: "2-digit",
-          }
-        )}/${hoje.toLocaleString("pt-BR", { year: "numeric" })}`;
+        const dataFormatada = `${hoje.toLocaleString("pt-BR", {
+          day: "2-digit",
+        })}/${hoje.toLocaleString("pt-BR", {
+          month: "2-digit",
+        })}/${hoje.toLocaleString("pt-BR", { year: "numeric" })}`;
         return horarioOrdenado.DATA === dataFormatada;
       });
       setHorariosOrdenados(horariosDeHoje);
@@ -88,12 +87,12 @@ export const Horarios = () => {
     <>
       <div className="fundo-imagem">
         <div className="cortina-transparente">
-          <div className="container-fluid">
+          <div className="container-fluid tamanho-maximo">
             <div className="row justify-content-center">
-              <div className="col-12 col-sm-10 d-flex justify-content-center align-items-center">
+              <div className="col-12 col-sm-10 col-md-8 d-flex justify-content-center align-items-center">
                 <div className="col-12 head-horarios">
                   <div className="col-5 quantia-agendamento-horarios">
-                    <div className="col-11 px-1 align-qnt-agendamento">
+                    <div className="col-12 px-1 align-qnt-agendamento">
                       <h5 className="">{horariosOrdenados?.length}</h5>
                       <p className="m-0">Agendamentos</p>
                     </div>
@@ -104,11 +103,7 @@ export const Horarios = () => {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-          <div className="container-fluid">
-            <div className="row justify-content-center">
-              <div className="col-12 col-sm-10 d-flex justify-content-center align-items-center">
+              <div className="col-12 col-sm-10 col-md-8 d-flex justify-content-center align-items-center">
                 <ul className="col-12 m-0 p-0 list-style">
                   {horariosOrdenados?.map((horario, index) => {
                     const hora = horarios.find(
@@ -139,50 +134,6 @@ export const Horarios = () => {
           </div>
         </div>
       </div>
-      {/*
-      <div className="container-fluid col-12 d-flex justify-content-center altura">
-       
-        <div className="row col-12 text-white d-sm-flex justify-content-center align-items-sm-center">
-          <div className="col-12 col-sm-7 col-md-10 col-lg-9 p-0 scroll-horarios">
-            <div className="col-12 head-horarios">
-              <div className="col-5 quantia-agendamento-horarios">
-                <div className="col-11 px-1 align-qnt-agendamento">
-                  <h5 className="">{horariosOrdenados?.length}</h5>
-                  <p className="m-0">Agendamentos</p>
-                </div>
-              </div>
-              <div className="col-6 align-qnt-agendamento">
-                <h5>{lucroDiario}</h5>
-                <p className="m-0">Faturamento previsto</p>
-              </div>
-            </div>
-            <ul className="list-horarios">
-              {horariosOrdenados?.map((horario, index) => {
-                const hora = horarios.find((h) => h.ID === horario?.HORARIO_ID);
-                const servico = servicos.find(
-                  (s) => s.ID === horario?.SERVICO_ID
-                );
-                return (
-                  <Li
-                    key={index}
-                    horario={horario}
-                    hora={hora}
-                    servico={servico}
-                    barbeiros={barbeiros}
-                    aceitarHorarioPendente={aceitarHorarioPendente}
-                    recusarHorarioPendente={recusarHorarioPendente}
-                    cancelarMeuHorarioMarcadoAdm={cancelarMeuHorarioMarcadoAdm}
-                    finalizarHorarioAgendado={finalizarHorarioAgendado}
-                  />
-                );
-              })}
-            </ul>
-          </div>
-          <div className="d-none d-sm-block">
-            <MenuBottom />
-          </div>
-        </div>
-      </div> */}
     </>
   );
 };

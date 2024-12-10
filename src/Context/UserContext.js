@@ -1,6 +1,8 @@
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { http } from "../http";
 import { useNavigate } from "react-router-dom";
+import { AbaBottomContext } from "./AbaBottomContext";
+import Cookies from 'js-cookie';
 
 export const UserContext = createContext();
 
@@ -14,7 +16,6 @@ export const UserProvider = ({ children }) => {
   // esse objeto controla oque o usuário vai setando durante a navegação pelo sistema
   const [userContrata, setUserContrata] = useState({ user: null });
   const navigate = useNavigate();
-
   const pegarUsuario = async () => {
     try {
       const response = await http.get(`/user/getUser`, {
@@ -39,22 +40,14 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  // const buscarBarbearia = async (barbearia) => {
+  // const pegarDadosPraEditar = async () => {
   //   try {
-  //     const response = await http.get(`user/buscarBarbearia/${barbearia}`);
-  //   } catch (error) {
-  //     navigate("/naoEncontrado");
-  //   }
+  //     const response = await http.get("user/pegarDadosPraEditar", {
+  //       withCredentials: true,
+  //     });
+  //     return response.data;
+  //   } catch (error) {}
   // };
-
-  const pegarDadosPraEditar = async () => {
-    try {
-      const response = await http.get("user/pegarDadosPraEditar", {
-        withCredentials: true,
-      });
-      return response.data;
-    } catch (error) {}
-  };
 
   const editarUsuario = async (data) => {
     try {
@@ -77,6 +70,7 @@ export const UserProvider = ({ children }) => {
           { withCredentials: true }
         );
         !response.data.erro && setUser({});
+        Cookies.remove("connect.sid");
       } catch (error) {}
     }
   };
@@ -90,7 +84,6 @@ export const UserProvider = ({ children }) => {
         userContrata,
         setUserContrata,
         logout,
-        pegarDadosPraEditar,
         editarUsuario,
         usuarioEditado,
         setUsuarioEditado,

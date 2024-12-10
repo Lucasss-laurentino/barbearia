@@ -8,7 +8,6 @@ import { LoadServico } from "./LoadServico";
 import { SpanAddServico } from "./SpanAddServico";
 import { NomeImgPrazo } from "./NomeImgPrazo";
 import { PageEContratado } from "./PageEContratado";
-import { MenuBottom } from "../MenuBottom";
 
 export const ListService = () => {
   // CONTEXTS

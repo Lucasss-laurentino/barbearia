@@ -10,6 +10,9 @@
   background-color: rgb(19, 19, 30, 0.8);
 
 }
+.tamanho-maximo {
+  width: 100%;
+}
 .head-horarios {
   height: 120px;
   display: flex;
@@ -20,6 +23,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-right: 3px;
 }
 .align-qnt-agendamento {
   display: flex;

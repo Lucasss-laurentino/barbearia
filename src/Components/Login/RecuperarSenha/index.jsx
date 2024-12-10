@@ -1,6 +1,33 @@
-export const RecuperarSenha = ({setEsqueceuSenha}) => {
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { recuperarSenhaSchema } from "../../../validations/recuperarSenha";
+import { useContext } from "react";
+import { LoginContext } from "../../../Context/LoginContext";
+import { MutatingDots } from "react-loader-spinner";
+
+export const RecuperarSenha = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(recuperarSenhaSchema),
+  });
+
+  const {
+    recuperarSenha,
+    cadastroError,
+    setCadastroError,
+    setEsqueceuSenha,
+    loadLogin,
+  } = useContext(LoginContext);
+
   return (
-    <form action="" className="col-12 formulario-page-login">
+    <form
+      action=""
+      className="col-12 formulario-page-login"
+      onSubmit={handleSubmit(recuperarSenha)}
+    >
       <div className="col-12 text-center">
         <h3 className="titulo-form-login my-4">Barba Cabelo & Bigode</h3>
         <h5 className="text-white">Recupere sua senha</h5>
@@ -30,19 +57,57 @@ export const RecuperarSenha = ({setEsqueceuSenha}) => {
                   type="email"
                   className="input-login col-10"
                   placeholder="Digite seu e-mail"
+                  {...register("EMAIL_RECUPERAR_SENHA")}
                 />
               </div>
             </div>
-            
+            <div className="col-12 d-flex justify-content-start align-items-center">
+              {errors.EMAIL_RECUPERAR_SENHA && (
+                <p className="m-0 my-1 text-danger bg-white">
+                  *{errors.EMAIL_RECUPERAR_SENHA.message}
+                </p>
+              )}
+            </div>
+            <div className="col-12 d-flex justify-content-start align-items-center">
+              {cadastroError !== null && (
+                <p className="m-0 my-1 text-danger bg-white">
+                  *{cadastroError}
+                </p>
+              )}
+            </div>
           </div>
         </div>
         <div className="encapsula-span-input-login my-3">
           <div className="col-8 d-flex flex-column">
             <div className="col-12 d-flex justify-content-start align-items-center my-3 flex-column">
-              <button className="col-12 btn-form-login" type="submit">
-                Enviar
-              </button>
-              <p className="m-0 col-12 text-center text-white cursor my-2 pt-2" onClick={() => setEsqueceuSenha(false)}>Voltar</p>
+              {loadLogin ? (
+                <MutatingDots
+                  visible={true}
+                  height="100"
+                  width="100"
+                  color="#6d6d6d"
+                  secondaryColor="#6d6d6d"
+                  radius="12.5"
+                  ariaLabel="mutating-dots-loading"
+                  wrapperStyle={{}}
+                  wrapperClass="justify-content-center my-2"
+                />
+              ) : (
+                <>
+                  <button className="col-12 btn-form-login" type="submit">
+                    Enviar
+                  </button>
+                  <p
+                    className="m-0 col-12 text-center text-white cursor my-2 pt-2"
+                    onClick={() => {
+                      setCadastroError(null);
+                      setEsqueceuSenha(false);
+                    }}
+                  >
+                    Voltar
+                  </p>
+                </>
+              )}
             </div>
           </div>
         </div>

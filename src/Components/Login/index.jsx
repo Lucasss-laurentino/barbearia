@@ -6,36 +6,60 @@ import { RecuperarSenha } from "./RecuperarSenha";
 import { LoginContext } from "../../Context/LoginContext";
 import { ConfirmaCodigo } from "./ConfirmaCodigo";
 import { AbaBottomContext } from "../../Context/AbaBottomContext";
-import { MenuBottom } from "../MenuBottom";
+import { useParams } from "react-router-dom";
 
 export const Login = () => {
-  // true = form login ativo | false = form cadastro ativo
-  const [controlaLoginECadastro, setControlerLoginECadastro] = useState(true);
-  const [esqueceuSenha, setEsqueceuSenha] = useState(false);
   const { active } = useContext(AbaBottomContext);
   // context login
-  const { confirmarCodigo } = useContext(LoginContext);
+  const { confirmarCodigo, controlaLoginECadastro, esqueceuSenha, setBarbearia } =
+    useContext(LoginContext);
+  
+  const { barbearia } = useParams();
+
+  const [recuperaSenha, setRecuperaSenha] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem("email_recuperar")) {
+      setRecuperaSenha(true);
+    } else {
+      setRecuperaSenha(false);
+    }
+  }, [localStorage.getItem("email_recuperar")]);
+
+  // barbearia é usado pra quando for editar um usuario ultiliza esse state em loginContext
+  useEffect(() => {
+    if(barbearia) setBarbearia(barbearia);
+  }, [barbearia])
 
   return (
     <>
-      <div className="container-fluid page-login">
-        <div className="row col-12 justify-content-center pt-5 scroll-login">
-          {controlaLoginECadastro && !esqueceuSenha && (
-            <FormLogin
-              setControlerLoginECadastro={setControlerLoginECadastro}
-              setEsqueceuSenha={setEsqueceuSenha}
-            />
-          )}
+      <div
+        className={
+          active === 4
+            ? "container-fluid page-login d-flex justify-content-center align-items-start"
+            : "container-fluid page-login d-flex justify-content-center align-items-center"
+        }
+      >
+        <div
+          className={
+            active === 4
+              ? "row col-12 justify-content-center scroll-login pt-5 mt-5"
+              : "row col-12 justify-content-center scroll-login"
+          }
+        >
+          {controlaLoginECadastro && !esqueceuSenha && <FormLogin />}
           {!controlaLoginECadastro && !esqueceuSenha && !confirmarCodigo && (
-            <FormCadastro
-              setControlerLoginECadastro={setControlerLoginECadastro}
-            />
+            <FormCadastro />
           )}
 
-          {esqueceuSenha && controlaLoginECadastro && <RecuperarSenha setEsqueceuSenha={setEsqueceuSenha} />}
+          {esqueceuSenha && controlaLoginECadastro && <RecuperarSenha />}
 
-          {!esqueceuSenha && !controlaLoginECadastro && confirmarCodigo && <ConfirmaCodigo/>}
-          
+          {!esqueceuSenha && !controlaLoginECadastro && confirmarCodigo && (
+            <ConfirmaCodigo
+              recuperaSenha={recuperaSenha}
+              setRecuperaSenha={setRecuperaSenha}
+            />
+          )}
         </div>
       </div>
     </>

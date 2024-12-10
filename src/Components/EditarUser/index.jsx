@@ -7,18 +7,13 @@ import { editarUsuarioSchema } from "../../validations/editarUsuario";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 
 export const EditarUser = () => {
-  const {
-    pegarDadosPraEditar,
-    editarUsuario,
-    usuarioEditado,
-    setUsuarioEditado,
-    user,
-    setUser
-  } = useContext(UserContext);
-  // user edit é necessario porque o objeto user de userContext nao contem a propriedade email
-  const [userEdit, setUserEdit] = useState({});
+  const { editarUsuario, usuarioEditado, setUsuarioEditado, user, setUser } =
+    useContext(UserContext);
+
   const navigate = useNavigate();
   const {
     register,
@@ -27,15 +22,6 @@ export const EditarUser = () => {
   } = useForm({
     resolver: yupResolver(editarUsuarioSchema),
   });
-
-  useEffect(() => {
-    let usuario;
-    const pegarUsuario = async () => {
-      usuario = await pegarDadosPraEditar();
-      setUserEdit(usuario.userObj);
-    };
-    pegarUsuario();
-  }, []);
 
   useEffect(() => {
     if (usuarioEditado) {
@@ -52,11 +38,27 @@ export const EditarUser = () => {
       });
 
       setTimeout(() => {
-        navigate(`/${user.NOME_BARBEARIA}`)
+        navigate(`/${user.NOME_BARBEARIA}`);
         setUsuarioEditado(false);
-      }, 3000)
+      }, 3000);
     }
   }, [usuarioEditado]);
+
+  useEffect(() => {
+    const token = Cookies.get("token");
+
+    if (token) {
+      try {
+
+        const tokenDecode = jwtDecode(token);
+
+        console.log(tokenDecode);
+
+      } catch (error) {
+
+      }
+    }
+  }, []);
 
   return (
     <>
@@ -75,36 +77,19 @@ export const EditarUser = () => {
         transition={Bounce}
       />
 
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col-12 d-flex justify-content-center align-items-center flex-column">
-            <div className="col-12 d-flex justify-content-start align-items-center mt-4">
-              <div className="col-1 d-flex justify-content-center align-items-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  fill="#fff"
-                  className="bi bi-person-fill-gear"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0m-9 8c0 1 1 1 1 1h5.256A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1 1.544-3.393Q8.844 9.002 8 9c-5 0-6 3-6 4m9.886-3.54c.18-.613 1.048-.613 1.229 0l.043.148a.64.64 0 0 0 .921.382l.136-.074c.561-.306 1.175.308.87.869l-.075.136a.64.64 0 0 0 .382.92l.149.045c.612.18.612 1.048 0 1.229l-.15.043a.64.64 0 0 0-.38.921l.074.136c.305.561-.309 1.175-.87.87l-.136-.075a.64.64 0 0 0-.92.382l-.045.149c-.18.612-1.048.612-1.229 0l-.043-.15a.64.64 0 0 0-.921-.38l-.136.074c-.561.305-1.175-.309-.87-.87l.075-.136a.64.64 0 0 0-.382-.92l-.148-.045c-.613-.18-.613-1.048 0-1.229l.148-.043a.64.64 0 0 0 .382-.921l-.074-.136c-.306-.561.308-1.175.869-.87l.136.075a.64.64 0 0 0 .92-.382zM14 12.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0" />
-                </svg>
-              </div>
-              <div className="col-10 text-white d-flex justify-content-start align-items-center mx-3">
-                <p className="m-0">Minha Conta</p>
-              </div>
-            </div>
-            <div className="col-12 text-white d-flex justify-content-center align-items-center mt-4">
+      <div className="container-fluid p-0 fundo-imagem">
+        <div className="cortina-transparente">
+          <div className="row">
+            <div className="col-12 encapsula-editar-usuario">
               <form
                 action=""
                 className="col-12 d-flex justify-content-center align-items-center flex-column"
                 onSubmit={handleSubmit(editarUsuario)}
               >
-                <div className="col-10 text-center">
-                  <h6>Faça alteraçoes em sua conta</h6>
+                <div className="col-12 col-lg-8 text-center">
+                  <h4 className="text-white">Faça alteraçoes em sua conta</h4>
                   {/* EMAIL */}
-                  <div className="col-12 d-flex justify-content-center align-itens-center mt-4 flex-column">
+                  {/* <div className="col-12 d-flex justify-content-center align-itens-center mt-4 flex-column">
                     <div className="col-12 d-flex justify-content-center align-itens-center mt-4">
                       <div className="col-2 icon-input-editar-perfil">
                         <svg
@@ -123,7 +108,7 @@ export const EditarUser = () => {
                         <input
                           type="email"
                           className="input-editar-perfil col-12"
-                          placeholder={userEdit?.EMAIL}
+                          placeholder={user?.EMAIL}
                           {...register("EMAIL")}
                         />
                       </div>
@@ -147,7 +132,7 @@ export const EditarUser = () => {
                         *{errors.EMAIL.message}
                       </p>
                     )}
-                  </div>
+                  </div> */}
                   {/* SENHA */}
                   <div className="col-12 d-flex justify-content-center align-itens-center flex-column mt-4">
                     <div className="col-12 d-flex justify-content-center align-itens-center">
@@ -168,7 +153,7 @@ export const EditarUser = () => {
                         <input
                           type="password"
                           className="input-editar-perfil col-12"
-                          placeholder={"**********"}
+                          placeholder={"************"}
                           {...register("SENHA")}
                         />
                       </div>
@@ -193,56 +178,58 @@ export const EditarUser = () => {
                       </p>
                     )}
                   </div>
-                  {/* BARBEARIA */}
-                  <div className="col-12 d-flex justify-content-center align-itens-center flex-column mt-4">
-                    <div className="col-12 d-flex justify-content-center align-itens-center">
-                      <div className="col-2 icon-input-editar-perfil">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
-                          fill="#fff"
-                          className="bi bi-shop"
-                          viewBox="0 0 16 16"
-                        >
-                          <path d="M2.97 1.35A1 1 0 0 1 3.73 1h8.54a1 1 0 0 1 .76.35l2.609 3.044A1.5 1.5 0 0 1 16 5.37v.255a2.375 2.375 0 0 1-4.25 1.458A2.37 2.37 0 0 1 9.875 8 2.37 2.37 0 0 1 8 7.083 2.37 2.37 0 0 1 6.125 8a2.37 2.37 0 0 1-1.875-.917A2.375 2.375 0 0 1 0 5.625V5.37a1.5 1.5 0 0 1 .361-.976zm1.78 4.275a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 1 0 2.75 0V5.37a.5.5 0 0 0-.12-.325L12.27 2H3.73L1.12 5.045A.5.5 0 0 0 1 5.37v.255a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0M1.5 8.5A.5.5 0 0 1 2 9v6h1v-5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v5h6V9a.5.5 0 0 1 1 0v6h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1V9a.5.5 0 0 1 .5-.5M4 15h3v-5H4zm5-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1zm3 0h-2v3h2z" />
-                        </svg>
-                      </div>
-                      <div className="col-6 div-input-editar-perfil">
-                        <input
-                          type="text"
-                          className="input-editar-perfil col-12"
-                          placeholder={userEdit?.NOME_BARBEARIA}
-                          {...register("NOME_BARBEARIA")}
-                        />
-                      </div>
-                      <div className="col-2 div-btn-alterar">
-                        <button className="btn btn-sm text-white">
+                  {/* NOME_BARBEARIA */}
+                  {user.ADM && (
+                    <div className="col-12 d-flex justify-content-center align-itens-center flex-column mt-4">
+                      <div className="col-12 d-flex justify-content-center align-itens-center">
+                        <div className="col-2 icon-input-editar-perfil">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            width="16"
-                            height="16"
+                            width="24"
+                            height="24"
                             fill="#fff"
-                            className="bi bi-pen-fill"
+                            className="bi bi-shop"
                             viewBox="0 0 16 16"
                           >
-                            <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001" />
+                            <path d="M2.97 1.35A1 1 0 0 1 3.73 1h8.54a1 1 0 0 1 .76.35l2.609 3.044A1.5 1.5 0 0 1 16 5.37v.255a2.375 2.375 0 0 1-4.25 1.458A2.37 2.37 0 0 1 9.875 8 2.37 2.37 0 0 1 8 7.083 2.37 2.37 0 0 1 6.125 8a2.37 2.37 0 0 1-1.875-.917A2.375 2.375 0 0 1 0 5.625V5.37a1.5 1.5 0 0 1 .361-.976zm1.78 4.275a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 1 0 2.75 0V5.37a.5.5 0 0 0-.12-.325L12.27 2H3.73L1.12 5.045A.5.5 0 0 0 1 5.37v.255a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0M1.5 8.5A.5.5 0 0 1 2 9v6h1v-5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v5h6V9a.5.5 0 0 1 1 0v6h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1V9a.5.5 0 0 1 .5-.5M4 15h3v-5H4zm5-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1zm3 0h-2v3h2z" />
                           </svg>
-                        </button>
+                        </div>
+                        <div className="col-6 div-input-editar-perfil">
+                          <input
+                            type="text"
+                            className="input-editar-perfil col-12"
+                            placeholder={user?.NOME_BARBEARIA}
+                            {...register("NOME_BARBEARIA")}
+                          />
+                        </div>
+                        <div className="col-2 div-btn-alterar">
+                          <button className="btn btn-sm text-white">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="16"
+                              height="16"
+                              fill="#fff"
+                              className="bi bi-pen-fill"
+                              viewBox="0 0 16 16"
+                            >
+                              <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001" />
+                            </svg>
+                          </button>
+                        </div>
                       </div>
+                      {errors.NOME_BARBEARIA && (
+                        <p className="m-0 my-1 text-white">
+                          *{errors.NOME_BARBEARIA.message}
+                        </p>
+                      )}
                     </div>
-                    {errors.NOME_BARBEARIA && (
-                      <p className="m-0 my-1 text-white">
-                        *{errors.NOME_BARBEARIA.message}
-                      </p>
-                    )}
-                  </div>
-                </div>
-                <div className="col-12 d-flex justify-content-center alig-items-center">
-                  <div className="col-10 d-flex justify-content-center alig-items-center">
-                    <button type="submit" className="col-10 button-salvar">
-                      Salvar
-                    </button>
+                  )}
+                  <div className="col-12 d-flex justify-content-center alig-items-center">
+                    <div className="col-12 d-flex justify-content-center alig-items-center">
+                      <button type="submit" className="col-10 button-salvar">
+                        Salvar
+                      </button>
+                    </div>
                   </div>
                 </div>
               </form>

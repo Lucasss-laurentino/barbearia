@@ -7,6 +7,11 @@
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
 }
+.encapsula-editar-usuario {
+  display: flex;
+  align-items: center;
+  height: 70vh;
+}
 
 .div-input-editar-perfil {
   background-color: transparent;
@@ -36,7 +41,7 @@
 }
 
 .button-salvar {
-  margin-top: 7%;
+  margin-top: 3%;
   background-color: #8b8a8a;
   border: none;
   border-radius: 10px;
