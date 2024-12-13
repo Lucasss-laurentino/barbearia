@@ -2,6 +2,7 @@
   position: absolute;
   bottom: 13%;
   right: 7%;
+  right: 11%;
   backdrop-filter: blur(10px);
   border-radius: 50%;
   cursor: pointer;

@@ -1,3 +1,12 @@
+.heiht-scroll {
+    max-height: 530px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0;
+    margin-top: 4%;
+    padding-bottom: 20%;
+}
+
 .height-servicos {
     height: 98vh;
 }

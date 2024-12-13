@@ -83,7 +83,7 @@ export const ListService = () => {
                 <div className="container-fluid">
                   <div className="row justify-content-center">
                     <div className="col-12 col-sm-10 d-flex justify-content-center align-items-center">
-                      <ul className="col-12 m-0 p-0 list-style">
+                      <ul className="col-12 list-style heiht-scroll">
                         {servicos.map((servico) => {
                           return (
                             <Fragment key={servico.ID}>
