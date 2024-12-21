@@ -38,10 +38,10 @@ export const LoginProvider = ({ children }) => {
       setCadastroError(null);
       setEsqueceuSenha(false);
       setControlerLoginECadastro(true);
-      if(!barbearia){
-        barbearia = response.data.user.NOME_BARBEARIA 
+      if (!barbearia) {
+        barbearia = response.data.user.NOME_BARBEARIA;
       }
-      setActive(2)
+      setActive(2);
       navigate(`/${barbearia}`);
     } catch (error) {
       setCadastroError(error?.response.data.message);
@@ -64,15 +64,20 @@ export const LoginProvider = ({ children }) => {
     }
   };
 
-  const login = async (user) => {
+  const login = async (user, barbearia) => {
     try {
+      console.log(user);
+      console.log(barbearia);
+
       setLoadLogin(true);
       await http
         .post("/login/login", { user }, { withCredentials: true })
         .then((response) => {
           setUser(response.data.user);
           setLoadLogin(false);
-          navigate(`/${response.data.user.NOME_BARBEARIA}`);
+          setActive(2);
+          if (barbearia) navigate(`/${barbearia}`);
+          if(!barbearia) navigate(`/${response.data.user.NOME_BARBEARIA}`);
         });
     } catch (error) {
       setLoginError(error?.response.data.message);

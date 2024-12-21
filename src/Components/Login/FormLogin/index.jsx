@@ -6,7 +6,7 @@ import { useContext, useEffect } from "react";
 import { LoginContext } from "../../../Context/LoginContext";
 import { MutatingDots } from "react-loader-spinner";
 
-export const FormLogin = () => {
+export const FormLogin = ({barbearia}) => {
   // CONFIGURANDO USERFORM
   const {
     register,
@@ -38,7 +38,7 @@ export const FormLogin = () => {
       <form
         action=""
         className="col-12 formulario-page-login"
-        onSubmit={handleSubmit(login)}
+        onSubmit={handleSubmit((data) => login(data, barbearia))}
       >
         <div className="col-12 text-center">
           <h3 className="titulo-form-login my-4">Barba Cabelo & Bigode</h3>

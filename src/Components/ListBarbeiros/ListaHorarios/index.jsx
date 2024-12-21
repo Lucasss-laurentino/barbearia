@@ -26,7 +26,7 @@ export const ListaHorarios = ({
     showModalMarcarHorarioDeslogado,
     setShowModalMarcarHorarioDeslogado,
     horarios,
-    marcarAlmoco
+    marcarAlmoco,
   } = useContext(HorarioContext);
   const { horariosMarcado } = useContext(HorarioMarcadoContext);
   const { setAnimaCalendario } = useContext(AnimacaoContext);
@@ -126,10 +126,10 @@ export const ListaHorarios = ({
                         Almoço
                       </button>
                     )}
-                    {user.ADM && !horario.INTERVALO &&  (
+                    {user.ADM && !horario.INTERVALO && (
                       <button
-                          className="btn btn-sm bg-transparent mx-2 text-white border border-white"
-                          onClick={() => marcarAlmoco(horario)}
+                        className="btn btn-sm bg-transparent mx-2 text-white border border-white"
+                        onClick={() => marcarAlmoco(horario)}
                       >
                         Almoço
                       </button>
@@ -142,6 +142,8 @@ export const ListaHorarios = ({
                             if (!user?.ID) {
                               setHorarioSelecionado(horario);
                               setShowModalMarcarHorarioDeslogado(true);
+                            } else {
+                              setHorarioSelecionado(horario);
                             }
                           } else {
                             toast.error(

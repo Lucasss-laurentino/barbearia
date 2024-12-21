@@ -47,7 +47,7 @@ export const Login = () => {
               : "row col-12 justify-content-center scroll-login"
           }
         >
-          {controlaLoginECadastro && !esqueceuSenha && <FormLogin />}
+          {controlaLoginECadastro && !esqueceuSenha && <FormLogin barbearia={barbearia}/>}
           {!controlaLoginECadastro && !esqueceuSenha && !confirmarCodigo && (
             <FormCadastro />
           )}
