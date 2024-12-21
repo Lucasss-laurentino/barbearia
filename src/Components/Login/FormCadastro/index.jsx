@@ -1,18 +1,24 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { createUserSchemaADM } from "../../../validations/createUserValidation";
+import {
+  createUserSchema,
+  createUserSchemaADM,
+} from "../../../validations/createUserValidation";
 import { useContext } from "react";
 import { LoginContext } from "../../../Context/LoginContext";
 import { MutatingDots } from "react-loader-spinner";
+import { useParams } from "react-router-dom";
 
 export const FormCadastro = () => {
+  const { barbearia } = useParams();
+
   // CONFIGURANDO USER FORM
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(createUserSchemaADM),
+    resolver: yupResolver(!barbearia ? createUserSchemaADM : createUserSchema),
   });
 
   // CONTEXT LOGIN
@@ -74,10 +80,47 @@ export const FormCadastro = () => {
             </div>
           </div>
           {/* NOME BARBEARIA */}
+          {!barbearia && (
+            <div className="encapsula-span-input-login my-1">
+              <div className="col-8 d-flex flex-column">
+                <div className="col-12 d-flex justify-content-start align-items-center">
+                  <span className="span-login">Nome Barbearia</span>
+                </div>
+                <div className="col-12 d-flex justify-content-start align-items-center">
+                  <div className="input-icone">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="23"
+                      height="23"
+                      fill="#fff"
+                      className="bi bi-shop col-2"
+                      viewBox="0 0 16 16"
+                    >
+                      <path d="M2.97 1.35A1 1 0 0 1 3.73 1h8.54a1 1 0 0 1 .76.35l2.609 3.044A1.5 1.5 0 0 1 16 5.37v.255a2.375 2.375 0 0 1-4.25 1.458A2.37 2.37 0 0 1 9.875 8 2.37 2.37 0 0 1 8 7.083 2.37 2.37 0 0 1 6.125 8a2.37 2.37 0 0 1-1.875-.917A2.375 2.375 0 0 1 0 5.625V5.37a1.5 1.5 0 0 1 .361-.976zm1.78 4.275a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 1 0 2.75 0V5.37a.5.5 0 0 0-.12-.325L12.27 2H3.73L1.12 5.045A.5.5 0 0 0 1 5.37v.255a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0M1.5 8.5A.5.5 0 0 1 2 9v6h1v-5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v5h6V9a.5.5 0 0 1 1 0v6h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1V9a.5.5 0 0 1 .5-.5M4 15h3v-5H4zm5-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1zm3 0h-2v3h2z" />
+                    </svg>
+                    <input
+                      type="text"
+                      className="input-login col-10"
+                      placeholder="Digite o nome da barbearia"
+                      {...register("NOME_BARBEARIA")}
+                    />
+                  </div>
+                </div>
+                <div className="col-12 d-flex justify-content-start align-items-center">
+                  {errors.NOME_BARBEARIA && (
+                    <p className="m-0 my-1 text-danger bg-white">
+                      *{errors.NOME_BARBEARIA.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+          {/* NOME */}
           <div className="encapsula-span-input-login my-1">
             <div className="col-8 d-flex flex-column">
               <div className="col-12 d-flex justify-content-start align-items-center">
-                <span className="span-login">Nome Barbearia</span>
+                <span className="span-login">Seu Nome</span>
               </div>
               <div className="col-12 d-flex justify-content-start align-items-center">
                 <div className="input-icone">
@@ -86,23 +129,24 @@ export const FormCadastro = () => {
                     width="23"
                     height="23"
                     fill="#fff"
-                    className="bi bi-shop col-2"
+                    className="bi bi-person-vcard col-2"
                     viewBox="0 0 16 16"
                   >
-                    <path d="M2.97 1.35A1 1 0 0 1 3.73 1h8.54a1 1 0 0 1 .76.35l2.609 3.044A1.5 1.5 0 0 1 16 5.37v.255a2.375 2.375 0 0 1-4.25 1.458A2.37 2.37 0 0 1 9.875 8 2.37 2.37 0 0 1 8 7.083 2.37 2.37 0 0 1 6.125 8a2.37 2.37 0 0 1-1.875-.917A2.375 2.375 0 0 1 0 5.625V5.37a1.5 1.5 0 0 1 .361-.976zm1.78 4.275a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 1 0 2.75 0V5.37a.5.5 0 0 0-.12-.325L12.27 2H3.73L1.12 5.045A.5.5 0 0 0 1 5.37v.255a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0M1.5 8.5A.5.5 0 0 1 2 9v6h1v-5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v5h6V9a.5.5 0 0 1 1 0v6h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1V9a.5.5 0 0 1 .5-.5M4 15h3v-5H4zm5-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1zm3 0h-2v3h2z" />
+                    <path d="M5 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4m4-2.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5M9 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4A.5.5 0 0 1 9 8m1 2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5" />
+                    <path d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zM1 4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H8.96q.04-.245.04-.5C9 10.567 7.21 9 5 9c-2.086 0-3.8 1.398-3.984 3.181A1 1 0 0 1 1 12z" />
                   </svg>
                   <input
                     type="text"
                     className="input-login col-10"
-                    placeholder="Digite o nome da barbearia"
-                    {...register("NOME_BARBEARIA")}
+                    placeholder="Digite o seu nome"
+                    {...register("NOME")}
                   />
                 </div>
               </div>
               <div className="col-12 d-flex justify-content-start align-items-center">
-                {errors.NOME_BARBEARIA && (
+                {errors.NOME && (
                   <p className="m-0 my-1 text-danger bg-white">
-                    *{errors.NOME_BARBEARIA.message}
+                    *{errors.NOME.message}
                   </p>
                 )}
               </div>

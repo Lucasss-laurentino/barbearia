@@ -219,7 +219,7 @@ export const ListBarbeiros = () => {
           <div className="container-fluid">
             <div className="row justify-content-center">
               <div className="col-12 col-sm-10 d-flex justify-content-center align-items-center">
-                <ul className="col-12 m-0 p-0 list-style">
+                <ul className="col-12 list-style heiht-scroll">
                   {barbeiros.map((barbeiro) => {
                     const horariosFiltrado = horarios.filter(
                       (h) => h.BARBEIRO_ID === barbeiro.ID
@@ -271,84 +271,6 @@ export const ListBarbeiros = () => {
           </div>
         </div>
       </div>
-      {/*
-      <div className="container-fluid height-main height-servicos">
-        <>
-          <div className="fundo-imagem">
-            <div className="cortina-transparente">
-              <div className="container-fluid">
-                <div className="row justify-content-center">
-                  <div className="col-12 col-sm-10 d-flex justify-content-center align-items-center">
-                    <ul className="col-12 m-0 p-0 list-style"></ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </>
-       
-        <div className="row height-servicos">
-           <div className="col-12 col-sm-8 col-md-7 p-0">
-            <ul
-              className={
-                user.ADM
-                  ? "lista-barbeiros bg-dark"
-                  : "lista-barbeiros-sem-margin-bottom bg-dark"
-              }
-            >
-              {barbeiros.map((barbeiro) => {
-                const horariosFiltrado = horarios.filter(
-                  (h) => h.BARBEIRO_ID === barbeiro.ID
-                );
-                return (
-                  <Fragment key={barbeiro.ID}>
-                    <li className="py-3 border-list-services text-claro">
-                      <FotoEIcones
-                        barbeiro={barbeiro}
-                        user={user}
-                        setBarbeiroSelecionado={setBarbeiroSelecionado}
-                        setExcluirHorario={setExcluirHorario}
-                        setId={setId}
-                        setShow={setShow}
-                        abrirListaHorarios={abrirListaHorarios}
-                        horariosAberto={horariosAberto}
-                        setHorariosAberto={setHorariosAberto}
-                      />
-                      <div className="d-flex justify-content-center align-items-center flex-column">
-                        <ListaHorarios
-                          barbeiro={barbeiro}
-                          user={user}
-                          horariosFiltrado={horariosFiltrado}
-                          setBarbeiro={setBarbeiro}
-                          setShowHorarios={setShowHorarios}
-                          setClasseCalendario={setClasseCalendario}
-                          setHorarioSelecionado={setHorarioSelecionado}
-                          horarioSelecionado={horarioSelecionado}
-                          setExcluirHorario={setExcluirHorario}
-                          setId={setId}
-                          barbearia={barbearia}
-                          setCalendarioAberto={setCalendarioAberto}
-                        />
-                        {storage !== null &&
-                          horarioMarcado?.BARBEIRO_ID === barbeiro?.ID && (
-                            <HoraMarcada
-                              horario={horarioObjeto}
-                              desmarcarHorario={desmarcarHorario}
-                            />
-                          )}
-                      </div>
-                    </li>
-                  </Fragment>
-                );
-              })}
-            </ul>
-            <div className="d-block">
-              <MenuBottom />
-            </div>
-          </div> 
-        </div>
-      </div>
-      */}
     </>
   );
 };

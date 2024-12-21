@@ -5,9 +5,8 @@ export const createUserSchemaADM = yup.object({
     .string()
     .email("Formato de email inválido")
     .required("Campo obrigatório"),
-
   NOME_BARBEARIA: yup.string().required("Campo obrigatório"),
-
+  NOME: yup.string().required("Campo obrigatório"),
   SENHA: yup
     .string()
     .min(6, "Senha muito curta")
@@ -20,7 +19,7 @@ export const createUserSchema = yup.object({
     .string()
     .email("Formato de email inválido")
     .required("Campo obrigatório"),
-
+  NOME: yup.string().required("Campo obrigatório"),
   SENHA: yup
     .string()
     .min(6, "Senha muito curta")

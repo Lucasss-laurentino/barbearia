@@ -120,61 +120,6 @@ export const ListService = () => {
               </div>
             </div>
           </>
-          {/*
-          <div className="container-fluid bg-dark height-servicos">
-            <div className="row height-servicos">
-              <div className="col-3 col-sm-4 col-md-5 d-none d-sm-flex justify-content-sm-center  borda-direita">
-                <div className="col-12 d-flex justify-content-center align-items-center">
-                  <img
-                    src="logo-fotor.png"
-                    className="img-fluid"
-                    width={"80%"}
-                    alt=""
-                  />
-                </div>
-              </div>
-              <div className="col-12 col-sm-8 col-md-7 p-0">
-                <ul
-                  className={
-                    user.ADM
-                      ? "list-servicos-tamanho"
-                      : "list-servicos-tamanho-sem-margin-bottom"
-                  }
-                >
-                  {servicos.map((servico) => {
-                    return (
-                      <Fragment key={servico.ID}>
-                        <li
-                          className="py-3 border-list-services text-claro"
-                          id={`item-servico-${servico.ID}`}
-                        >
-                          <div className="d-flex justify-content-between align-items-center">
-                            <NomeImgPrazo servico={servico} />
-                            <PageEContratado
-                              user={user}
-                              servico={servico}
-                              servicoEscolhido={servicoEscolhido}
-                              servicoAgendado={servicoAgendado}
-                              setServicoEscolhido={setServicoEscolhido}
-                              setEditarServico={setEditarServico}
-                              setShowModalServico={setShowModalServico}
-                              setServicoASerExcluido={setServicoASerExcluido}
-                              setShowModalExcluirServico={
-                                setShowModalExcluirServico
-                              }
-                            />
-                          </div>
-                        </li>
-                      </Fragment>
-                    );
-                  })}
-                </ul>
-                <div className="d-none d-sm-block">
-                  <MenuBottom />
-                </div>
-              </div>
-            </div>
-          </div> */}
         </>
       )}
     </>

@@ -58,6 +58,7 @@ export const Login = () => {
             <ConfirmaCodigo
               recuperaSenha={recuperaSenha}
               setRecuperaSenha={setRecuperaSenha}
+              barbearia={barbearia}
             />
           )}
         </div>
