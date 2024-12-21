@@ -15,6 +15,7 @@ import { NotFound } from "../Components/NotFound";
 import { DataProvider } from "../Context/DataContext";
 import { LandingPage } from "../Components/LandingPage";
 import { Login } from "../Components/Login";
+import { MercadoPago } from "../Components/MercadoPago";
 
 export default function appRouter() {
   return (
@@ -38,6 +39,7 @@ export default function appRouter() {
                               <Route path="/" element={<LandingPage />} />
                               <Route path="/login" element={ <Login /> } />
                               <Route path="/:barbearia" element={<Index />} />
+                              <Route path="/pagamento" element={<MercadoPago/>} />
                             </Routes>
                           </DataProvider>
                         </LoginProvider>

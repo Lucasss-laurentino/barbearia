@@ -213,7 +213,7 @@ export const ListBarbeiros = () => {
         setClasseCalendario={setClasseCalendario}
       />
 
-      {user.ADM && <SpanAdd handleShow={handleShow} />}
+      {user.ADM && <SpanAdd handleShow={handleShow} barbeiros={barbeiros} />}
       <div className="fundo-imagem">
         <div className="cortina-transparente">
           <div className="container-fluid">

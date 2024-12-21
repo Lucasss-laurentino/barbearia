@@ -20,13 +20,13 @@ export const ListaHorarios = ({
   setId,
   barbearia,
   setCalendarioAberto,
-
 }) => {
   const { servicoEscolhido } = useContext(ServicoContext);
   const {
     showModalMarcarHorarioDeslogado,
     setShowModalMarcarHorarioDeslogado,
     horarios,
+    marcarAlmoco
   } = useContext(HorarioContext);
   const { horariosMarcado } = useContext(HorarioMarcadoContext);
   const { setAnimaCalendario } = useContext(AnimacaoContext);
@@ -39,7 +39,6 @@ export const ListaHorarios = ({
     if (user?.ADM) {
       setHorariosDessaData([...horariosFiltrado]);
     } else {
-
       const hora = new Date().getHours();
 
       const horariosDisponiveis = horariosFiltrado.filter((horario) => {
@@ -47,21 +46,21 @@ export const ListaHorarios = ({
           return horario;
         }
       });
-      
+
       const horarios = horariosDisponiveis.filter((horarioDisponivel) => {
-        if(data){
+        if (data) {
           const horario = horariosMarcado.some((hM) => {
-            if(hM.HORARIO_ID === horarioDisponivel.ID) {
-              if(hM.DATA === data){
+            if (hM.HORARIO_ID === horarioDisponivel.ID) {
+              if (hM.DATA === data) {
                 return hM;
               }
             }
           });
-          if(!horario){
+          if (!horario) {
             return horarioDisponivel;
           }
         }
-      })
+      });
       setHorariosDessaData([...horarios]);
     }
   }, [horariosMarcado, data, horarios]);
@@ -102,14 +101,15 @@ export const ListaHorarios = ({
         <li
           className="d-flex justify-content-center align-items-center my-3 text-white"
           onClick={() => {
-            setClasseCalendario("encapsula-calendario")
-            setCalendarioAberto(true)
+            setClasseCalendario("encapsula-calendario");
+            setCalendarioAberto(true);
           }}
         >
           <p className="m-0 cursor">{data}</p>
         </li>
 
         {horariosDessaData.map((horario) => {
+          console.log(horario);
           return (
             <Fragment key={horario.ID}>
               <li className="d-flex justify-content-around align-items-center my-2">
@@ -117,39 +117,56 @@ export const ListaHorarios = ({
                   <p className="m-0 p-0">{horario.HORA}</p>
                 </div>
                 <div className="col-6 d-flex justify-content-center align-items-center">
-                  <div className="d-flex justify-content-between align-items-center">
-                    <button
-                      className="btn btn-sm bg-transparent text-white"
-                      onClick={() => {
-                        if (servicoEscolhido) {
-                          if (!user?.ID) {
-                            setHorarioSelecionado(horario);
-                            setShowModalMarcarHorarioDeslogado(true);
-                          }
-                        } else {
-                          toast.error(
-                            "Escolha um serviço antes de agendar um horário !",
-                            {
-                              position: "bottom-right",
-                              autoClose: 5000,
-                              hideProgressBar: false,
-                              closeOnClick: true,
-                              pauseOnHover: true,
-                              draggable: true,
-                              progress: undefined,
-                              theme: "colored",
-                              transition: Bounce,
+                  <div className="d-flex justify-content-end align-items-center">
+                    {horario.INTERVALO ? (
+                       <button
+                          className="btn btn-sm mx-2 border border-success text-success"
+                          onClick={() => marcarAlmoco(horario)}
+                      >
+                        Almoço
+                      </button>
+                    ) : (
+                      <button
+                          className="btn btn-sm bg-transparent mx-2 text-white border border-white"
+                          onClick={() => marcarAlmoco(horario)}
+                      >
+                        Almoço
+                      </button>
+                    )}
+                    {!user.ADM && (
+                      <button
+                        className="btn btn-sm bg-transparent mx-2 text-white"
+                        onClick={() => {
+                          if (servicoEscolhido) {
+                            if (!user?.ID) {
+                              setHorarioSelecionado(horario);
+                              setShowModalMarcarHorarioDeslogado(true);
                             }
-                          );
-                        }
-                      }}
-                    >
-                      Marcar
-                    </button>
+                          } else {
+                            toast.error(
+                              "Escolha um serviço antes de agendar um horário !",
+                              {
+                                position: "bottom-right",
+                                autoClose: 5000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true,
+                                progress: undefined,
+                                theme: "colored",
+                                transition: Bounce,
+                              }
+                            );
+                          }
+                        }}
+                      >
+                        Marcar
+                      </button>
+                    )}
                     {user.ADM && (
                       <>
                         <button
-                          className="btn btn-sm bg-transparent text-white"
+                          className="btn btn-sm bg-transparent text-white mx-2"
                           onClick={() => {
                             setHorarioSelecionado(horario);
                             setExcluirHorario(true);
@@ -168,7 +185,7 @@ export const ListaHorarios = ({
                           </svg>
                         </button>
                         <button
-                          className="btn btn-sm bg-transparent text-white"
+                          className="btn btn-sm bg-transparent text-white mx-2"
                           onClick={() => {
                             setHorarioSelecionado(horario);
                             setShowHorarios(true);

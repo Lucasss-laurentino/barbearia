@@ -105,7 +105,7 @@ export const Horarios = () => {
               </div>
               <div className="col-12 col-sm-10 col-md-8 d-flex justify-content-center align-items-center">
                 <ul className="col-12 m-0 p-0 list-style">
-                  {horariosOrdenados?.map((horario, index) => {
+                  {horariosOrdenados.length > 0 ? horariosOrdenados?.map((horario, index) => {
                     const hora = horarios.find(
                       (h) => h.ID === horario?.HORARIO_ID
                     );
@@ -127,7 +127,13 @@ export const Horarios = () => {
                         finalizarHorarioAgendado={finalizarHorarioAgendado}
                       />
                     );
-                  })}
+                  }) : 
+                  
+                    <div className="d-flex justify-content-center align-items-center" style={{ height: '200px' }}>
+                      <h3 className="text-white">Nenhum horário agendado</h3>
+                    </div>
+                    
+                  }
                 </ul>
               </div>
             </div>

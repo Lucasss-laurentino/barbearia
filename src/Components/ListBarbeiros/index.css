@@ -3,9 +3,12 @@
   bottom: 13%;
   right: 7%;
   right: 11%;
-  backdrop-filter: blur(10px);
   border-radius: 50%;
   cursor: pointer;
+}
+
+.bg-embacado {
+  backdrop-filter: blur(10px);
 }
 
 .lista-barbeiros {
@@ -84,11 +87,11 @@
 .icone_fechado {
   transform: rotate(0deg);
   transition-duration: 500ms;
-  color: #8B8A8A;
+  color: #8b8a8a;
 }
 
 .icone_mais_fechado {
-  color: #8B8A8A;
+  color: #8b8a8a;
 }
 
 .icone_mais_aberto {
@@ -134,5 +137,4 @@
   padding: 0px 10px;
   border-radius: 4px;
   color: white;
-
 }

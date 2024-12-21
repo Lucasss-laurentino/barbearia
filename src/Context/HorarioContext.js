@@ -89,6 +89,17 @@ export const HorarioProvider = ({ children }) => {
     } catch (error) {}
   };
 
+  const marcarAlmoco = async (horario) => {
+    try {
+      const result = await http.post("/horario/marcarAlmoco", horario, { withCredentials: true });
+      if (!result) throw "Erro ao marcar horário de almoço";
+      
+      setHorarios(result.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const agendar = async (data, horarioSelecionado, servicoEscolhido, dataEscolhida) => {
     try {
       const { NOME_CLIENTE } = data;
@@ -130,6 +141,7 @@ export const HorarioProvider = ({ children }) => {
         setShowModalMarcarHorarioDeslogado,
         usuarioTemHorarioMarcado,
         setUsuarioTemHorarioMarcado,
+        marcarAlmoco,
       }}
     >
       {children}

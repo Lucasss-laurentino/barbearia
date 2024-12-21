@@ -75,7 +75,7 @@ export const ListService = () => {
       ) : (
         <>
           {user.ADM && (
-            <SpanAddServico setShowModalServico={setShowModalServico} />
+            <SpanAddServico setShowModalServico={setShowModalServico} servicos={servicos} />
           )}
           <>
             <div className="fundo-imagem">

@@ -18,7 +18,7 @@ export const Header = () => {
               </p>
               <div className="d-grid gap-3 justify-content-center d-flex align-items-center">
                 <a
-                  href="/login"
+                  href="/pagamento"
                   className="btn btn-primary btn-lg px-4 me-sm-3 text-btn-responsive"
                 >
                   <svg
