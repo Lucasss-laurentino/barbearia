@@ -3,15 +3,16 @@ import { HorarioMarcadoContext } from "../../../Context/HorarioMarcadoContext";
 
 export const HoraMarcada = ({ horario, desmarcarHorario }) => {
   const [meuHorario, setMeuHorario] = useState({});
-  const { cancelarMeuHorarioPendente, cancelarMeuHorarioMarcado  } = useContext(
+  const { cancelarMeuHorarioPendente, cancelarMeuHorarioMarcado } = useContext(
     HorarioMarcadoContext
   );
 
   useEffect(() => {
-    if(horario){
-      setMeuHorario(horario);      
+    if (horario) {
+      setMeuHorario(horario);
     }
-    setMeuHorario(JSON.parse(localStorage.getItem("agendamento")));
+    if (localStorage.getItem("agendamento") && localStorage.getItem("agendamento") !== "")
+      setMeuHorario(JSON.parse(localStorage.getItem("agendamento")));
   }, [JSON.parse(localStorage.getItem("agendamento"))?.RESERVADO, horario]);
 
   return (

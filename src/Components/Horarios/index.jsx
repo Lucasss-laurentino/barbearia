@@ -4,7 +4,6 @@ import { HorarioMarcadoContext } from "../../Context/HorarioMarcadoContext";
 import { ServicoContext } from "../../Context/ServicoContext";
 import { HorarioContext } from "../../Context/HorarioContext";
 import { BarbeiroContext } from "../../Context/BarbeiroContext";
-import { MenuBottom } from "../MenuBottom";
 import { Li } from "./Li";
 import { UserContext } from "../../Context/UserContext";
 

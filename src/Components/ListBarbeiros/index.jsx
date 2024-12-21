@@ -21,8 +21,6 @@ import { UserContext } from "../../Context/UserContext";
 import { HorarioMarcadoContext } from "../../Context/HorarioMarcadoContext";
 import { useParams } from "react-router-dom";
 import { socket } from "../../socket";
-import { ServicoContext } from "../../Context/ServicoContext";
-import { MenuBottom } from "../MenuBottom";
 import { Calendario } from "../Calendar";
 
 // COMPONENTE
@@ -70,13 +68,11 @@ export const ListBarbeiros = () => {
     storage,
     setStorage,
   } = useContext(HorarioMarcadoContext);
-  const { servicos, setServicoEscolhido } = useContext(ServicoContext);
+
   const {
     horarios,
-    setHorarios,
     horariosAberto,
     setHorariosAberto,
-    usuarioTemHorarioMarcado,
     setUsuarioTemHorarioMarcado,
     errosHorarios,
     setErrosHorarios,
@@ -116,7 +112,7 @@ export const ListBarbeiros = () => {
   }, []);
 
   useEffect(() => {
-    if (localStorage.getItem("agendamento")) {
+    if (localStorage.getItem("agendamento") && localStorage.getItem("agendamento") !== "") {
       const storage = JSON.parse(localStorage.getItem("agendamento"));
       const horario = horarios.find((h) => h.ID === storage?.HORA?.ID);
       setHorarioMarcado(horario);
@@ -125,7 +121,7 @@ export const ListBarbeiros = () => {
 
   // verifica se o localStorage tem algum horario marcado
   useEffect(() => {
-    if (localStorage.getItem("agendamento")) {
+    if (localStorage.getItem("agendamento") && localStorage.getItem("agendamento") !== "") {
       const obj = JSON.parse(localStorage.getItem("agendamento"));
       if (obj?.RESERVADO !== 0) {
         setUsuarioTemHorarioMarcado(true);

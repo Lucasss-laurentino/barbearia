@@ -69,7 +69,7 @@ export const Index = () => {
       (horarioParametro) => {
         const { horarios, horarioRecusado } = horarioParametro;
         setHorarios(horarios);
-        if (localStorage.getItem("agendamento")) {
+        if (localStorage.getItem("agendamento") && localStorage.getItem("agendamento") !== "") {
           const horarioAgendado = JSON.parse(
             localStorage.getItem("agendamento")
           );
@@ -85,7 +85,7 @@ export const Index = () => {
       `confirmarHorarioRecusadoUsuario${barbearia}`,
       (horarioParametro) => {
         const { horarios, horarioNaoPendente } = horarioParametro;
-        if (localStorage.getItem("agendamento")) {
+        if (localStorage.getItem("agendamento") && localStorage.getItem("agendamento") !== "") {
           // se gerar algum bug pode ser por nao esta verificando o id do localStorage antes de setar
           // sendo assim acredito que essa função esteja setando todos localStorage de todos usuarios
           // preciso fazer esse teste..
@@ -122,10 +122,13 @@ export const Index = () => {
       (horarioResponse) => {
         setHorariosMarcado(horarioResponse.horariosMarcado);
         setHorarios(horarioResponse.horarios);
-        if (localStorage.getItem("agendamento")) {
+        if (
+          localStorage.getItem("agendamento") &&
+          localStorage.getItem("agendamento") !== ""
+        ) {
           const storage = JSON.parse(localStorage.getItem("agendamento"));
           if (storage.ID === horarioResponse.horarioRecusado.ID)
-            localStorage.setItem("agendamento", "");
+            localStorage.setItem("agendamento", '{"":""}');
           setServicoEscolhido();
         }
       }
@@ -152,7 +155,7 @@ export const Index = () => {
         setActive(2);
       }
     } else {
-      setActive(2)
+      setActive(2);
     }
   }, []);
 
