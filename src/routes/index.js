@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { PageLogin } from "../Components/PageLogin";
 import { Index } from "../Components/Index";
 import { MenuProvider } from "../Context/MenuContext";
 import { AbaBottomProvider } from "../Context/AbaBottomContext";
@@ -32,7 +31,7 @@ export default function appRouter() {
                           <DataProvider>
                             <Routes>
                               <Route
-                                path="/naoEncontrado"
+                                path="/*"
                                 element={<NotFound />}
                               />
                               <Route path="/" element={<LandingPage />} />

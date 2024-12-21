@@ -5,7 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { confirmarCodigoSchema } from "../../../validations/ConfirmarCodigo";
 import { MutatingDots } from "react-loader-spinner";
 
-export const ConfirmaCodigo = ({recuperaSenha, setRecuperaSenha}) => {
+export const ConfirmaCodigo = ({recuperaSenha, setRecuperaSenha, barbearia = null}) => {
   const {
     setLoadLogin,
     criarUsuario,
@@ -27,7 +27,7 @@ export const ConfirmaCodigo = ({recuperaSenha, setRecuperaSenha}) => {
     <form
       action=""
       className="col-12 formulario-page-login"
-      onSubmit={handleSubmit(!recuperaSenha ? criarUsuario : mudarSenha)}
+      onSubmit={handleSubmit(!recuperaSenha ? (data) => criarUsuario(data, barbearia) : mudarSenha)}
     >
       <div className="col-12 text-center">
         <h3 className="titulo-form-login my-4">Barba Cabelo & Bigode</h3>

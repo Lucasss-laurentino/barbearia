@@ -25,7 +25,7 @@ export const LoginProvider = ({ children }) => {
   // PRECISO MUDAR O NOME DAS FUNÇÕES PRA RECUPERAÇÃO DE SENHA
   // NOMES ESTÃO TROCADOS
 
-  const criarUsuario = async (codigo) => {
+  const criarUsuario = async (codigo, barbearia = null) => {
     setLoadLogin(true);
     try {
       const response = await http.post(
@@ -38,7 +38,11 @@ export const LoginProvider = ({ children }) => {
       setCadastroError(null);
       setEsqueceuSenha(false);
       setControlerLoginECadastro(true);
-      navigate(`/${response.data.user.NOME_BARBEARIA}`);
+      if(!barbearia){
+        barbearia = response.data.user.NOME_BARBEARIA 
+      }
+      setActive(2)
+      navigate(`/${barbearia}`);
     } catch (error) {
       setCadastroError(error?.response.data.message);
       setLoadLogin(false);

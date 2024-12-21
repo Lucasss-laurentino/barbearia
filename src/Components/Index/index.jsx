@@ -182,8 +182,7 @@ export const Index = () => {
               <>
                 {active === 1 && <ListBarbeiros />}
                 {active === 2 && <ListService />}
-                {active === 4 && <Configurações />}
-                {active === 5 && <EditarUser user={user} />}
+                {active === 4 && <EditarUser user={user} />}
               </>
             )}
           </>
