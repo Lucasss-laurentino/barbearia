@@ -3,16 +3,13 @@ import "./index.css";
 import { MenuContext } from "../../Context/MenuContext";
 import { UserContext } from "../../Context/UserContext";
 import { AbaBottomContext } from "../../Context/AbaBottomContext";
+import { LoginContext } from "../../Context/LoginContext";
 
 export const Menu = () => {
   const { classMenu, setClassMenu } = useContext(MenuContext);
-  const { logout } = useContext(UserContext);
+  const { logout } = useContext(LoginContext);
   const { setActive } = useContext(AbaBottomContext);
   const { user } = useContext(UserContext);
-
-  useEffect(() => {
-    console.log(user)
-  }, [user])
 
   return (
     <>

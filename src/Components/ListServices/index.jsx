@@ -1,5 +1,5 @@
 import "./index.css";
-import { Fragment, useCallback, useContext, useEffect, useState } from "react";
+import { Fragment, useCallback, useContext, useEffect, useInsertionEffect, useState } from "react";
 import { ServicoContext } from "../../Context/ServicoContext";
 import { UserContext } from "../../Context/UserContext";
 import { ModalServico } from "../ModalServico";
@@ -57,6 +57,10 @@ export const ListService = () => {
       setServicoAgendado(obj.SERVICO);
     }
   }, []);
+
+  useEffect(() => {
+    console.log(servicoEscolhido);
+  }, [servicoEscolhido]);
 
   return (
     <>

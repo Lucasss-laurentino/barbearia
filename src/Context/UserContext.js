@@ -2,7 +2,7 @@ import { createContext, useContext, useState } from "react";
 import { http } from "../http";
 import { useNavigate } from "react-router-dom";
 import { AbaBottomContext } from "./AbaBottomContext";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 
 export const UserContext = createContext();
 
@@ -25,6 +25,7 @@ export const UserProvider = ({ children }) => {
         throw new Error("Usuário não encontrado");
       setUser({
         ID: response.data.ID,
+        NOME: response.data.NOME,
         NOME_BARBEARIA: response.data.NOME_BARBEARIA,
         ADM: response.data.ADM,
         BARBEIRO: response.data.BARBEIRO,
@@ -61,20 +62,6 @@ export const UserProvider = ({ children }) => {
     } catch (error) {}
   };
 
-  const logout = async () => {
-    if (user) {
-      try {
-        const response = await http.post(
-          "user/logout",
-          { user },
-          { withCredentials: true }
-        );
-        !response.data.erro && setUser({});
-        Cookies.remove("connect.sid");
-      } catch (error) {}
-    }
-  };
-
   return (
     <UserContext.Provider
       value={{
@@ -83,7 +70,6 @@ export const UserProvider = ({ children }) => {
         pegarUsuario,
         userContrata,
         setUserContrata,
-        logout,
         editarUsuario,
         usuarioEditado,
         setUsuarioEditado,

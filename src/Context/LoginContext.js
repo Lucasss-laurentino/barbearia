@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "./UserContext";
 import { AbaBottomContext } from "./AbaBottomContext";
 import Cookies from "js-cookie";
+import { ServicoContext } from "./ServicoContext";
+import { HorarioMarcadoContext } from "./HorarioMarcadoContext";
 
 export const LoginContext = createContext();
 
@@ -11,8 +13,9 @@ export const LoginProvider = ({ children }) => {
   const navigate = useNavigate();
 
   const { setActive } = useContext(AbaBottomContext);
-
-  const { setUser } = useContext(UserContext);
+  const { setServicoEscolhido } = useContext(ServicoContext);
+  const { setHorarioMarcado } = useContext(HorarioMarcadoContext);
+  const { setUser, user } = useContext(UserContext);
   const [loadLogin, setLoadLogin] = useState(false);
   const [loginError, setLoginError] = useState(null);
   const [cadastroError, setCadastroError] = useState(null);
@@ -66,9 +69,6 @@ export const LoginProvider = ({ children }) => {
 
   const login = async (user, barbearia) => {
     try {
-      console.log(user);
-      console.log(barbearia);
-
       setLoadLogin(true);
       await http
         .post("/login/login", { user }, { withCredentials: true })
@@ -76,8 +76,16 @@ export const LoginProvider = ({ children }) => {
           setUser(response.data.user);
           setLoadLogin(false);
           setActive(2);
+          if (response.data.horario_marcado) {
+            localStorage.setItem(
+              "agendamento",
+              JSON.stringify(response.data.horario_marcado)
+            );
+            setServicoEscolhido({id: response.data.horario_marcado.ID, contratado: true});
+            
+          }
           if (barbearia) navigate(`/${barbearia}`);
-          if(!barbearia) navigate(`/${response.data.user.NOME_BARBEARIA}`);
+          if (!barbearia) navigate(`/${response.data.user.NOME_BARBEARIA}`);
         });
     } catch (error) {
       setLoginError(error?.response.data.message);
@@ -158,6 +166,24 @@ export const LoginProvider = ({ children }) => {
     }
   };
 
+  const logout = async () => {
+    if (user) {
+      try {
+        const response = await http.post(
+          "login/logout",
+          { user },
+          { withCredentials: true }
+        );
+        !response.data.erro && setUser({});
+        Cookies.remove("connect.sid");
+        setServicoEscolhido("");
+        localStorage.setItem("agendamento", '{"":""}');
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
   return (
     <LoginContext.Provider
       value={{
@@ -168,6 +194,7 @@ export const LoginProvider = ({ children }) => {
         loginError,
         setLoginError,
         cadastroError,
+        logout,
         setCadastroError,
         confirmarEmail,
         confirmarCodigo,

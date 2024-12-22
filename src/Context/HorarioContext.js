@@ -4,7 +4,6 @@ import { http } from "../http";
 export const HorarioContext = createContext();
 
 export const HorarioProvider = ({ children }) => {
-
   // STATES
   const [horarios, setHorarios] = useState([]);
   const [limparHoraAposExclusao, setLimparHoraAposExclusao] = useState(false);
@@ -91,25 +90,46 @@ export const HorarioProvider = ({ children }) => {
 
   const marcarAlmoco = async (horario) => {
     try {
-      const result = await http.post("/horario/marcarAlmoco", horario, { withCredentials: true });
+      const result = await http.post("/horario/marcarAlmoco", horario, {
+        withCredentials: true,
+      });
       if (!result) throw "Erro ao marcar horário de almoço";
-      
+
       setHorarios(result.data);
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
-  const agendar = async (data, horarioSelecionado, servicoEscolhido, dataEscolhida) => {
+  const agendar = async (
+    data,
+    horarioSelecionado,
+    servicoEscolhido,
+    dataEscolhida,
+    user = null
+  ) => {
     try {
       const { NOME_CLIENTE } = data;
-      const agendamentoObj = {
-        NOME_CLIENTE,
-        HORA: horarioSelecionado,
-        SERVICO: servicoEscolhido,
-        DATA: dataEscolhida,
-        STATUS: 1, // 1 = reservado / 0 = nao reservado
-      };
+
+      let agendamentoObj;
+      if (user !== null) {
+        agendamentoObj = {
+          NOME_CLIENTE,
+          ID: user.ID,
+          HORA: horarioSelecionado,
+          SERVICO: servicoEscolhido,
+          DATA: dataEscolhida,
+          STATUS: 1, // 1 = reservado / 0 = nao reservado
+        };
+      } else {
+        agendamentoObj = {
+          NOME_CLIENTE,
+          HORA: horarioSelecionado,
+          SERVICO: servicoEscolhido,
+          DATA: dataEscolhida,
+          STATUS: 1, // 1 = reservado / 0 = nao reservado
+        };
+      }
       // agendamento é escutado em horarioMarcadoContext
       setAgendamento(agendamentoObj); // ativa useEffect
     } catch (error) {

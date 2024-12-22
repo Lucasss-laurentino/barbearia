@@ -15,7 +15,6 @@ import { HorarioContext } from "../../Context/HorarioContext";
 import { HorarioMarcadoContext } from "../../Context/HorarioMarcadoContext";
 import { socket } from "../../socket";
 import { Finalizados } from "../Finalizados";
-import { Configurações } from "../Configuracoes";
 import { EditarUser } from "../EditarUser";
 import { Login } from "../Login";
 import { EditarSenha } from "../EditarSenha";
@@ -142,7 +141,7 @@ export const Index = () => {
     }
   }, []);
 
-  useEffect(() => {
+  useEffect(() => { // token pra mudança de senha
     const cookie = Cookies.get("token");
     if (cookie) {
       const jwt_decode = jwtDecode(cookie);

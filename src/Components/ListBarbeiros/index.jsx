@@ -250,7 +250,7 @@ export const ListBarbeiros = () => {
                               setCalendarioAberto={setCalendarioAberto}
                             />
                             {storage !== null &&
-                              horarioMarcado?.BARBEIRO_ID === barbeiro?.ID && (
+                              storage?.BARBEIRO?.ID === barbeiro?.ID && (
                                 <HoraMarcada
                                   horario={horarioObjeto}
                                   desmarcarHorario={desmarcarHorario}

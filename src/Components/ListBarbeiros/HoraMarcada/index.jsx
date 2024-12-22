@@ -20,7 +20,7 @@ export const HoraMarcada = ({ horario, desmarcarHorario }) => {
       <div className="container">
         <div className="personalizar-item-desmarcar-horario col-12">
           <div className="hora col-1 d-flex justify-content-center align-items-center">
-            <p className="m-0">{meuHorario?.HORA?.HORA}</p>
+            <p className="m-0">{meuHorario?.HORA}</p>
           </div>
           <div className="data col-1 d-flex justify-content-center align-items-center">
             {meuHorario.DATA}

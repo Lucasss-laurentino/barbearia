@@ -103,7 +103,7 @@ export const Horarios = () => {
                 </div>
               </div>
               <div className="col-12 col-sm-10 col-md-8 d-flex justify-content-center align-items-center">
-                <ul className="col-12 m-0 p-0 list-style">
+                <ul className="col-12 m-0 p-0 list-style scroll-horarios">
                   {horariosOrdenados.length > 0 ? horariosOrdenados?.map((horario, index) => {
                     const hora = horarios.find(
                       (h) => h.ID === horario?.HORARIO_ID

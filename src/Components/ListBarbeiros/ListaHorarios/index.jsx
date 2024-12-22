@@ -6,6 +6,7 @@ import { HorarioContext } from "../../../Context/HorarioContext";
 import { AnimacaoContext } from "../../../Context/AnimacaoHorarios";
 import { DataContext } from "../../../Context/DataContext";
 import { HorarioMarcadoContext } from "../../../Context/HorarioMarcadoContext";
+import { UserContext } from "../../../Context/UserContext";
 
 export const ListaHorarios = ({
   barbeiro,
@@ -27,6 +28,7 @@ export const ListaHorarios = ({
     setShowModalMarcarHorarioDeslogado,
     horarios,
     marcarAlmoco,
+    agendar
   } = useContext(HorarioContext);
   const { horariosMarcado } = useContext(HorarioMarcadoContext);
   const { setAnimaCalendario } = useContext(AnimacaoContext);
@@ -140,10 +142,13 @@ export const ListaHorarios = ({
                         onClick={() => {
                           if (servicoEscolhido) {
                             if (!user?.ID) {
+                              // ATIVA MODAL PRA ENVIAR O NOME E DE LA É FEITO O AGENDAMENTO
                               setHorarioSelecionado(horario);
                               setShowModalMarcarHorarioDeslogado(true);
                             } else {
+                              // AGENDAMENTO DIRETO AQUI
                               setHorarioSelecionado(horario);
+                              agendar({NOME_CLIENTE: user.NOME}, horario, servicoEscolhido, data, user);
                             }
                           } else {
                             toast.error(

@@ -1,3 +1,8 @@
+.scroll-horarios {
+  height: 58vh;
+  overflow-y: auto;
+}
+
 .fundo-imagem {
   height: 98vh;
   width: 100%;
