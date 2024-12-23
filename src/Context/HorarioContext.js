@@ -130,7 +130,7 @@ export const HorarioProvider = ({ children }) => {
           STATUS: 1, // 1 = reservado / 0 = nao reservado
         };
       }
-      // agendamento é escutado em horarioMarcadoContext
+      // agendamento é escutado em horarioMarcadoContext (trazer esse useEffect pra cá)
       setAgendamento(agendamentoObj); // ativa useEffect
     } catch (error) {
       console.log(error);
