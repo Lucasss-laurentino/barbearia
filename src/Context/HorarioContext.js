@@ -46,7 +46,12 @@ export const HorarioProvider = ({ children }) => {
       setValue("HORA", "");
       setLoadHorarios(false);
       setShow(false);
-    } catch (erro) {}
+    } catch (erro) {
+      setErrosHorarios({ erro: true, menssagem: erro?.response?.data });
+      setTimeout(() => {
+        setLoadHorarios(false);
+      }, 4000);
+    }
   };
 
   const pegarHorarios = async (barbearia) => {

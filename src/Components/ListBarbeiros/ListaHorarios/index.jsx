@@ -6,7 +6,6 @@ import { HorarioContext } from "../../../Context/HorarioContext";
 import { AnimacaoContext } from "../../../Context/AnimacaoHorarios";
 import { DataContext } from "../../../Context/DataContext";
 import { HorarioMarcadoContext } from "../../../Context/HorarioMarcadoContext";
-import { UserContext } from "../../../Context/UserContext";
 
 export const ListaHorarios = ({
   barbeiro,
@@ -111,7 +110,6 @@ export const ListaHorarios = ({
         </li>
 
         {horariosDessaData.map((horario) => {
-          console.log(horario);
           return (
             <Fragment key={horario.ID}>
               <li className="d-flex justify-content-around align-items-center my-2">

@@ -7,7 +7,14 @@ import { horariosSchema } from "../../validations/horariosValidation";
 import { HorarioContext } from "../../Context/HorarioContext";
 import { MutatingDots } from "react-loader-spinner";
 
-export const ModalHorarios = ({ show, setShow, handleClose, barbeiro, horario = null, setHorarioSelecionado }) => {
+export const ModalHorarios = ({
+  show,
+  setShow,
+  handleClose,
+  barbeiro,
+  horario = null,
+  setHorarioSelecionado,
+}) => {
   const {
     register,
     handleSubmit,
@@ -17,8 +24,14 @@ export const ModalHorarios = ({ show, setShow, handleClose, barbeiro, horario = 
     resolver: yupResolver(horariosSchema),
   });
 
-  const { criarHorario, loadHorarios, editarHorario, limparHoraAposExclusao, setLimparHoraAposExclusao
-} = useContext(HorarioContext);
+  const {
+    criarHorario,
+    loadHorarios,
+    editarHorario,
+    limparHoraAposExclusao,
+    setLimparHoraAposExclusao,
+    errosHorarios,
+  } = useContext(HorarioContext);
 
   const handleTimeChange = (e) => {
     const value = e.target.value.replace(/\D/g, ""); // Remove caracteres não numéricos
@@ -27,35 +40,34 @@ export const ModalHorarios = ({ show, setShow, handleClose, barbeiro, horario = 
   };
 
   const editarOuCriar = (data) => {
-    if(horario !== null) {
+    if (horario !== null) {
       editarHorario(data, horario, setShow, setValue);
     } else {
-      criarHorario(data, barbeiro, setShow, setValue)
+      criarHorario(data, barbeiro, setShow, setValue);
     }
-  }
+  };
 
   useEffect(() => {
-    if(horario) {
-      setValue("HORA", horario.HORA)
+    if (horario) {
+      setValue("HORA", horario.HORA);
     }
-  }, [horario, setValue])
+  }, [horario, setValue]);
 
   useEffect(() => {
     if (!show) {
-      setValue("HORA", "")
-      setHorarioSelecionado(null)
-    };
+      setValue("HORA", "");
+      setHorarioSelecionado(null);
+    }
   }, [show]);
 
   // acionado quando um horario for excluido
   useEffect(() => {
     // limparHoraAposExclusao é setado em horarioContext.excluirHorario, é um gatilho pra limpar o campo HORA
     // modal de excluir nao tem acesso a setValue, por isso criei esse gatilho
-    if(limparHoraAposExclusao) {
-      setValue("HORA", "")
+    if (limparHoraAposExclusao) {
+      setValue("HORA", "");
       setLimparHoraAposExclusao(false);
     }
-
   }, [limparHoraAposExclusao]);
 
   return (
@@ -86,7 +98,9 @@ export const ModalHorarios = ({ show, setShow, handleClose, barbeiro, horario = 
                 onChange={handleTimeChange}
               />
               {errors.HORA && (
-                <p className="m-0 my-1 text-danger">*{errors.HORA.message}</p>
+                <p className="m-0 my-1 text-danger">
+                  *{errors.HORA.message}
+                </p>
               )}
             </div>
             {loadHorarios ? (
@@ -103,9 +117,7 @@ export const ModalHorarios = ({ show, setShow, handleClose, barbeiro, horario = 
               />
             ) : (
               <button type="submit" className="btn btn-primary">
-                {
-                  horario !== null ? "Editar" : "Cadastrar"
-                }
+                {horario !== null ? "Editar" : "Cadastrar"}
               </button>
             )}
           </form>
