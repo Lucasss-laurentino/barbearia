@@ -21,12 +21,8 @@ export const Calendario = ({
   // pega click fora do calendario pra fecha-lo
   useEffect(() => {
     if (calendarioAberto) {
-      console.log("teste");
       document.addEventListener("click", (event) => {
         if (event.clientY < 100 || event.clientY > 384) {
-          setClassCalendario("encapsula-calendario-hidden");
-        }
-        if (event.clientX < 40 || event.clientX > 410) {
           setClassCalendario("encapsula-calendario-hidden");
         }
       });
@@ -39,8 +35,8 @@ export const Calendario = ({
       dataInicioOuDataFinal && handleDataInicio(dataParametro);
       !dataInicioOuDataFinal && handleDataFinal(dataParametro);
     } else {
-      const hoje = new Date().setHours(0,0,0,0);
-      const dataEscolhida = new Date(dataParametro).setHours(0,0,0,0);
+      const hoje = new Date().setHours(0, 0, 0, 0);
+      const dataEscolhida = new Date(dataParametro).setHours(0, 0, 0, 0);
       if (hoje <= dataEscolhida) {
         const data = new Date(dataParametro);
         const dataFormatada = data.toLocaleString("pt-BR", {
@@ -56,7 +52,25 @@ export const Calendario = ({
 
   return (
     <div className={classeCalendario}>
-      <Calendar onChange={onChange} value={value} />
+      <div>
+        <div className="col-12 close-calendario">
+          <button onClick={() => {
+           setClassCalendario("encapsula-calendario-hidden");
+          }} >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="26"
+              height="26"
+              fill="red"
+              class="bi bi-x"
+              viewBox="0 0 16 16"
+            >
+              <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+            </svg>
+          </button>
+        </div>
+        <Calendar onChange={onChange} value={value} />
+      </div>
     </div>
   );
 };
