@@ -51,16 +51,12 @@ export const ListService = () => {
     // se localStorage estiver setado com um serviço é porque o usuario tem horario agendado
     if (
       localStorage.getItem("agendamento") &&
-      localStorage.getItem("agendamento") !== ""
+      localStorage.getItem("agendamento") !== '{}'
     ) {
       const obj = JSON.parse(localStorage.getItem("agendamento"));
       setServicoAgendado(obj.SERVICO);
     }
   }, []);
-
-  useEffect(() => {
-    console.log(servicoEscolhido);
-  }, [servicoEscolhido]);
 
   return (
     <>

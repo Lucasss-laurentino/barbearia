@@ -8,6 +8,9 @@ import { useContext } from "react";
 import { LoginContext } from "../../../Context/LoginContext";
 import { MutatingDots } from "react-loader-spinner";
 import { useParams } from "react-router-dom";
+import { ToastContainer, toast, Bounce } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { ServicoContext } from "../../../Context/ServicoContext";
 
 export const FormCadastro = () => {
   const { barbearia } = useParams();
@@ -30,12 +33,54 @@ export const FormCadastro = () => {
     setControlerLoginECadastro,
   } = useContext(LoginContext);
 
+  const { setServicoEscolhido } = useContext(ServicoContext);
+
+  const verificarAntesDeConfirmar = (data) => {
+    const storage = localStorage.getItem("agendamento");
+    if (storage) {
+      const obj = JSON.parse(storage);
+      if (obj?.ID) {
+        toast.error("Não é possivel se cadastrar com um horário agendado !", {
+          position: "bottom-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          transition: Bounce,
+        });
+      } else {
+        setServicoEscolhido(null);
+        confirmarEmail(data);
+      }
+    } else {
+      setServicoEscolhido(null);
+      confirmarEmail(data);
+    }
+  };
+
   return (
     <>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        limit={1}
+        transition={Bounce}
+      />
       <form
         action=""
         className="col-12 formulario-page-login"
-        onSubmit={handleSubmit(confirmarEmail)}
+        onSubmit={handleSubmit((data) => verificarAntesDeConfirmar(data))}
       >
         <div className="col-12 text-center">
           <h3 className="titulo-form-login my-4">Barba Cabelo & Bigode</h3>

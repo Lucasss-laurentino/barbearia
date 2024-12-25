@@ -112,7 +112,7 @@ export const ListBarbeiros = () => {
   }, []);
 
   useEffect(() => {
-    if (localStorage.getItem("agendamento") && localStorage.getItem("agendamento") !== "") {
+    if (localStorage.getItem("agendamento") && localStorage.getItem("agendamento") !== '{}') {
       const storage = JSON.parse(localStorage.getItem("agendamento"));
       const horario = horarios.find((h) => h.ID === storage?.HORA?.ID);
       setHorarioMarcado(horario);
@@ -121,7 +121,7 @@ export const ListBarbeiros = () => {
 
   // verifica se o localStorage tem algum horario marcado
   useEffect(() => {
-    if (localStorage.getItem("agendamento") && localStorage.getItem("agendamento") !== "") {
+    if (localStorage.getItem("agendamento") && localStorage.getItem("agendamento") !== '{}') {
       const obj = JSON.parse(localStorage.getItem("agendamento"));
       if (obj?.RESERVADO !== 0) {
         setUsuarioTemHorarioMarcado(true);
@@ -146,18 +146,18 @@ export const ListBarbeiros = () => {
       (horarioFinalizado) => {
         if (
           localStorage.getItem("agendamento") &&
-          localStorage.getItem("agendamento") !== ""
+          localStorage.getItem("agendamento") !== '{}'
         ) {
           const storage = JSON.parse(localStorage.getItem("agendamento"));
           if (storage.ID === horarioFinalizado.ID) {
-            localStorage.setItem("agendamento", "");
+            localStorage.setItem("agendamento", '{}');
             setStorage(null);
           }
         }
       }
     );
   }, []);
-
+  
   return (
     <>
       <ModalPagamentoAgendamento

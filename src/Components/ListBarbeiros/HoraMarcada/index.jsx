@@ -11,7 +11,7 @@ export const HoraMarcada = ({ horario, desmarcarHorario }) => {
     if (horario) {
       setMeuHorario(horario);
     }
-    if (localStorage.getItem("agendamento") && localStorage.getItem("agendamento") !== "")
+    if (localStorage.getItem("agendamento") && localStorage.getItem("agendamento") !== '{}')
       setMeuHorario(JSON.parse(localStorage.getItem("agendamento")));
   }, [JSON.parse(localStorage.getItem("agendamento"))?.RESERVADO, horario]);
 

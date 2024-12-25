@@ -112,7 +112,7 @@ export const HorarioMarcadoProvider = ({ children }) => {
       socketInstancia.on(
         "horarioPendenteCancelado",
         (horarioPendenteCancelado) => {
-          localStorage.setItem("agendamento", "");
+          localStorage.setItem("agendamento", '{}');
           setStorage(null)
         }
       );
@@ -127,7 +127,7 @@ export const HorarioMarcadoProvider = ({ children }) => {
       socketInstancia.on("horarioMarcadoCancelado", (horarioCancelado) => {
         setHorarios(horarioCancelado.horarios);
         // mudança de localStorage aciona um useEffect em HoraMarcada
-        localStorage.setItem("agendamento", "{}");
+        localStorage.setItem("agendamento", '{}');
         setServicoEscolhido({})
       });
     }

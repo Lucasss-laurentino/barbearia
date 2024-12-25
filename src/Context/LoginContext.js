@@ -31,6 +31,7 @@ export const LoginProvider = ({ children }) => {
   const criarUsuario = async (codigo, barbearia = null) => {
     setLoadLogin(true);
     try {
+
       const response = await http.post(
         "login/criarUsuario",
         { user: userCadastro, codigo },
@@ -83,6 +84,8 @@ export const LoginProvider = ({ children }) => {
             );
             setServicoEscolhido({id: response.data.horario_marcado.ID, contratado: true});
             
+          } else {
+            localStorage.setItem("agendamento", '{}');
           }
           if (barbearia) navigate(`/${barbearia}`);
           if (!barbearia) navigate(`/${response.data.user.NOME_BARBEARIA}`);
@@ -110,7 +113,7 @@ export const LoginProvider = ({ children }) => {
       console.log(error);
       setLoadLogin(false);
 
-      localStorage.setItem("email_recuperar", "");
+      localStorage.setItem("email_recuperar", '{}');
     }
   };
 
@@ -137,7 +140,7 @@ export const LoginProvider = ({ children }) => {
     } catch (error) {
       console.log(error);
       setLoadLogin(false);
-      localStorage.setItem("email_recuperar", "");
+      localStorage.setItem("email_recuperar", '{}');
     }
   };
 
@@ -154,7 +157,7 @@ export const LoginProvider = ({ children }) => {
       if (email) {
         const result = await http.post("login/changeSenha", { data, email });
         if (!result.erro) {
-          localStorage.setItem("email_recuperar", "");
+          localStorage.setItem("email_recuperar", '{}');
           Cookies.remove("token");
           setActive(4);
           setControlerLoginECadastro(true);
@@ -177,7 +180,7 @@ export const LoginProvider = ({ children }) => {
         !response.data.erro && setUser({});
         Cookies.remove("connect.sid");
         setServicoEscolhido("");
-        localStorage.setItem("agendamento", '{"":""}');
+        localStorage.setItem("agendamento", '{}');
       } catch (error) {
         console.log(error);
       }

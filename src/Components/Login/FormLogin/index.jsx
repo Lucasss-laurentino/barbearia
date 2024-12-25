@@ -5,8 +5,11 @@ import { loginSchema } from "../../../validations/loginValidation";
 import { useContext, useEffect } from "react";
 import { LoginContext } from "../../../Context/LoginContext";
 import { MutatingDots } from "react-loader-spinner";
+import { ServicoContext } from "../../../Context/ServicoContext";
+import { ToastContainer, toast, Bounce } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-export const FormLogin = ({barbearia}) => {
+export const FormLogin = ({ barbearia }) => {
   // CONFIGURANDO USERFORM
   const {
     register,
@@ -26,19 +29,63 @@ export const FormLogin = ({barbearia}) => {
     setEsqueceuSenha,
   } = useContext(LoginContext);
 
+  const { setServicoEscolhido } = useContext(ServicoContext);
+
   // LIMPA O PARAGRAFO DE ERRO SEMPRE QUE UM INPUT FOR MODIFICADO
   useEffect(() => {
     if (errors.EMAIL_LOGIN || errors.SENHA_LOGIN) {
       setLoginError(null);
     }
-  }, [errors.EMAIL_LOGIN, errors.SENHA_LOGIN])
+  }, [errors.EMAIL_LOGIN, errors.SENHA_LOGIN]);
+
+  const verificarAntesDoLogin = (data, barbearia) => {
+    const storage = localStorage.getItem("agendamento");
+    if (storage) {
+      const obj = JSON.parse(storage);
+      if (obj?.ID) {
+        toast.error("Não é possivel fazer login com um horário agendado !", {
+          position: "bottom-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          transition: Bounce,
+        });
+      } else {
+        setServicoEscolhido(null);
+        login(data, barbearia);
+      }
+    } else {
+      setServicoEscolhido(null);
+      login(data, barbearia);
+    }
+  };
 
   return (
     <>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        limit={1}
+        transition={Bounce}
+      />
       <form
         action=""
         className="col-12 formulario-page-login"
-        onSubmit={handleSubmit((data) => login(data, barbearia))}
+        onSubmit={handleSubmit((data) =>
+          verificarAntesDoLogin(data, barbearia)
+        )}
       >
         <div className="col-12 text-center">
           <h3 className="titulo-form-login my-4">Barba Cabelo & Bigode</h3>
@@ -144,13 +191,16 @@ export const FormLogin = ({barbearia}) => {
                   <button className="col-12 btn-form-login" type="submit">
                     Entrar
                   </button>
-                  <p className="m-0 col-12 text-center text-white my-3 p-esqueci-senha" onClick={() => setEsqueceuSenha(true)}>
+                  <p
+                    className="m-0 col-12 text-center text-white my-3 p-esqueci-senha"
+                    onClick={() => setEsqueceuSenha(true)}
+                  >
                     Esqueci minha senha
                   </p>
                   <p
                     className="m-0 col-12 text-center text-white cursor"
-                      onClick={() => {
-                        setLoginError(null);
+                    onClick={() => {
+                      setLoginError(null);
                       setControlerLoginECadastro(false);
                     }}
                   >

@@ -27,7 +27,7 @@ export const Index = () => {
   const { pegarServicos, setServicoEscolhido } = useContext(ServicoContext);
   const { pegarBarbeiros } = useContext(BarbeiroContext);
   const { pegarHorarios, setHorarios } = useContext(HorarioContext);
-  const { buscarHorariosAgendado, setHorariosMarcado } = useContext(
+  const { buscarHorariosAgendado, setHorariosMarcado, setStorage } = useContext(
     HorarioMarcadoContext
   );
   const { barbearia } = useParams();
@@ -68,12 +68,17 @@ export const Index = () => {
       (horarioParametro) => {
         const { horarios, horarioRecusado } = horarioParametro;
         setHorarios(horarios);
-        if (localStorage.getItem("agendamento") && localStorage.getItem("agendamento") !== "") {
+        if (
+          localStorage.getItem("agendamento") &&
+          localStorage.getItem("agendamento") !== '{}'
+        ) {
           const horarioAgendado = JSON.parse(
             localStorage.getItem("agendamento")
           );
           if (horarioAgendado?.ID === horarioRecusado?.ID) {
-            localStorage.setItem("agendamento", "");
+            localStorage.setItem("agendamento", '{}');
+            setStorage(null);
+            setServicoEscolhido(null);
           }
         }
       }
@@ -84,13 +89,21 @@ export const Index = () => {
       `confirmarHorarioRecusadoUsuario${barbearia}`,
       (horarioParametro) => {
         const { horarios, horarioNaoPendente } = horarioParametro;
-        if (localStorage.getItem("agendamento") && localStorage.getItem("agendamento") !== "") {
+        const agendamentoStorage = localStorage.getItem("agendamento");
+        if (
+          agendamentoStorage &&
+          agendamentoStorage !== "" &&
+          agendamentoStorage !== '{}'
+        ) {
           // se gerar algum bug pode ser por nao esta verificando o id do localStorage antes de setar
           // sendo assim acredito que essa função esteja setando todos localStorage de todos usuarios
           // preciso fazer esse teste..
           const storage = JSON.parse(localStorage.getItem("agendamento"));
-          storage.RESERVADO = horarioNaoPendente.RESERVADO;
-          localStorage.setItem("agendamento", JSON.stringify(storage));
+          console.log(storage)
+          if (storage && storage.ID === horarioParametro.horarioRecusado.ID) {
+            storage.RESERVADO = horarioNaoPendente.RESERVADO;
+            localStorage.setItem("agendamento", JSON.stringify(storage));
+          }
         }
         setHorariosMarcado(horarioParametro.horariosMarcado);
         setHorarios(horarios);
@@ -123,11 +136,11 @@ export const Index = () => {
         setHorarios(horarioResponse.horarios);
         if (
           localStorage.getItem("agendamento") &&
-          localStorage.getItem("agendamento") !== ""
+          localStorage.getItem("agendamento") !== '{}'
         ) {
           const storage = JSON.parse(localStorage.getItem("agendamento"));
           if (storage.ID === horarioResponse.horarioRecusado.ID)
-            localStorage.setItem("agendamento", '{"":""}');
+            localStorage.setItem("agendamento", '{}');
           setServicoEscolhido();
         }
       }
@@ -141,7 +154,8 @@ export const Index = () => {
     }
   }, []);
 
-  useEffect(() => { // token pra mudança de senha
+  useEffect(() => {
+    // token pra mudança de senha
     const cookie = Cookies.get("token");
     if (cookie) {
       const jwt_decode = jwtDecode(cookie);
