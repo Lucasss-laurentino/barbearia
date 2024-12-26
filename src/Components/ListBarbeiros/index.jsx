@@ -22,6 +22,7 @@ import { HorarioMarcadoContext } from "../../Context/HorarioMarcadoContext";
 import { useParams } from "react-router-dom";
 import { socket } from "../../socket";
 import { Calendario } from "../Calendar";
+import { ServicoContext } from "../../Context/ServicoContext";
 
 // COMPONENTE
 export const ListBarbeiros = () => {
@@ -79,6 +80,7 @@ export const ListBarbeiros = () => {
   } = useContext(HorarioContext);
   const { abrirListaHorarios } = useContext(AnimacaoContext);
   const { user } = useContext(UserContext);
+  const { setServicoEscolhido } = useContext(ServicoContext);
   const { barbearia } = useParams();
 
   // USE EFFECTS
@@ -112,7 +114,10 @@ export const ListBarbeiros = () => {
   }, []);
 
   useEffect(() => {
-    if (localStorage.getItem("agendamento") && localStorage.getItem("agendamento") !== '{}') {
+    if (
+      localStorage.getItem("agendamento") &&
+      localStorage.getItem("agendamento") !== "{}"
+    ) {
       const storage = JSON.parse(localStorage.getItem("agendamento"));
       const horario = horarios.find((h) => h.ID === storage?.HORA?.ID);
       setHorarioMarcado(horario);
@@ -121,14 +126,19 @@ export const ListBarbeiros = () => {
 
   // verifica se o localStorage tem algum horario marcado
   useEffect(() => {
-    if (localStorage.getItem("agendamento") && localStorage.getItem("agendamento") !== '{}') {
+    if (
+      localStorage.getItem("agendamento") &&
+      localStorage.getItem("agendamento") !== "{}"
+    ) {
       const obj = JSON.parse(localStorage.getItem("agendamento"));
       if (obj?.RESERVADO !== 0) {
         setUsuarioTemHorarioMarcado(true);
         setHorarioMarcado(obj.HORA);
       }
       setStorage(obj);
-    }
+    } else if(localStorage.getItem("agendamento") === '{}') {
+      setStorage({});
+    } 
   }, [localStorage.getItem("agendamento")]);
 
   useEffect(() => {
@@ -146,18 +156,18 @@ export const ListBarbeiros = () => {
       (horarioFinalizado) => {
         if (
           localStorage.getItem("agendamento") &&
-          localStorage.getItem("agendamento") !== '{}'
+          localStorage.getItem("agendamento") !== "{}"
         ) {
           const storage = JSON.parse(localStorage.getItem("agendamento"));
           if (storage.ID === horarioFinalizado.ID) {
-            localStorage.setItem("agendamento", '{}');
+            localStorage.setItem("agendamento", "{}");
             setStorage(null);
           }
         }
       }
     );
   }, []);
-  
+
   return (
     <>
       <ModalPagamentoAgendamento

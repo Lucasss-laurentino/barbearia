@@ -55,7 +55,7 @@ export const HorarioMarcadoProvider = ({ children }) => {
         );
         const agendamentoObj = {
           ID: agendamentoRetornado.ID,
-          HORA: hora,
+          HORA: hora.HORA,
           BARBEIRO: barbeiro,
           RESERVADO: agendamentoRetornado?.RESERVADO,
           SERVICO: servico,

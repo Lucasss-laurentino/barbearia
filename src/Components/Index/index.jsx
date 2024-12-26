@@ -32,11 +32,6 @@ export const Index = () => {
   );
   const { barbearia } = useParams();
 
-  // nao lembro o motivo exato desse useEffect mas está comentado porque quando um usuario e direcionado pra pagina de edição sem está logado (recuperar senha) active é setado pra 5 e esse useEffect estava setando de volta pra 2
-  // useEffect(() => {
-  //   setActive(2);
-  // }, []);
-
   useEffect(() => {
     const carregarDadosNecessario = async () => {
       await Promise.all([
@@ -70,13 +65,13 @@ export const Index = () => {
         setHorarios(horarios);
         if (
           localStorage.getItem("agendamento") &&
-          localStorage.getItem("agendamento") !== '{}'
+          localStorage.getItem("agendamento") !== "{}"
         ) {
           const horarioAgendado = JSON.parse(
             localStorage.getItem("agendamento")
           );
           if (horarioAgendado?.ID === horarioRecusado?.ID) {
-            localStorage.setItem("agendamento", '{}');
+            localStorage.setItem("agendamento", "{}");
             setStorage(null);
             setServicoEscolhido(null);
           }
@@ -86,21 +81,20 @@ export const Index = () => {
 
     // aceita horario pendente
     socketInstancia.on(
-      `confirmarHorarioRecusadoUsuario${barbearia}`,
+      `confirmarHorarioPendenteAceitoUsuario${barbearia}`,
       (horarioParametro) => {
         const { horarios, horarioNaoPendente } = horarioParametro;
         const agendamentoStorage = localStorage.getItem("agendamento");
         if (
           agendamentoStorage &&
           agendamentoStorage !== "" &&
-          agendamentoStorage !== '{}'
+          agendamentoStorage !== "{}"
         ) {
-          // se gerar algum bug pode ser por nao esta verificando o id do localStorage antes de setar
-          // sendo assim acredito que essa função esteja setando todos localStorage de todos usuarios
-          // preciso fazer esse teste..
           const storage = JSON.parse(localStorage.getItem("agendamento"));
-          console.log(storage)
-          if (storage && storage.ID === horarioParametro.horarioRecusado.ID) {
+          if (
+            storage &&
+            storage.ID === horarioParametro.horarioNaoPendente.ID
+          ) {
             storage.RESERVADO = horarioNaoPendente.RESERVADO;
             localStorage.setItem("agendamento", JSON.stringify(storage));
           }
@@ -136,11 +130,11 @@ export const Index = () => {
         setHorarios(horarioResponse.horarios);
         if (
           localStorage.getItem("agendamento") &&
-          localStorage.getItem("agendamento") !== '{}'
+          localStorage.getItem("agendamento") !== "{}"
         ) {
           const storage = JSON.parse(localStorage.getItem("agendamento"));
           if (storage.ID === horarioResponse.horarioRecusado.ID)
-            localStorage.setItem("agendamento", '{}');
+            localStorage.setItem("agendamento", "{}");
           setServicoEscolhido();
         }
       }
