@@ -1,12 +1,11 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useState } from "react";
 import { http } from "../http";
-import { useNavigate } from "react-router-dom";
-import { AbaBottomContext } from "./AbaBottomContext";
-import Cookies from "js-cookie";
 
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
+
+  const [load, setLoad] = useState(false);
   const [user, setUser] = useState({
     ID: "",
     NOME_BARBEARIA: "",
@@ -15,7 +14,7 @@ export const UserProvider = ({ children }) => {
   const [usuarioEditado, setUsuarioEditado] = useState(false);
   // esse objeto controla oque o usuário vai setando durante a navegação pelo sistema
   const [userContrata, setUserContrata] = useState({ user: null });
-  const navigate = useNavigate();
+  
   const pegarUsuario = async () => {
     try {
       const response = await http.get(`/user/getUser`, {
@@ -40,23 +39,17 @@ export const UserProvider = ({ children }) => {
       setUserContrata({});
     }
   };
-
-  // const pegarDadosPraEditar = async () => {
-  //   try {
-  //     const response = await http.get("user/pegarDadosPraEditar", {
-  //       withCredentials: true,
-  //     });
-  //     return response.data;
-  //   } catch (error) {}
-  // };
-
+  
   const editarUsuario = async (data) => {
+    setLoad(true)
     try {
       const result = await http.post(
         "user/editarUsuario",
         { data },
         { withCredentials: true }
       );
+      setLoad(false)
+      if (!result) throw "Erro ao editar perfil";
       setUser(result.data.user);
       setUsuarioEditado(true);
     } catch (error) {}
@@ -73,6 +66,8 @@ export const UserProvider = ({ children }) => {
         editarUsuario,
         usuarioEditado,
         setUsuarioEditado,
+        load,
+        setLoad,
       }}
     >
       {children}

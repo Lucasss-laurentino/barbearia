@@ -1,0 +1,12 @@
+.fundo-imagem-pagamento {
+  height: 100vh;
+  width: 100%;
+  background-image: url("../../../public/barbearia_utensilios.avif");
+  background-position: center;
+}
+
+.responsividade-form-pagamento {
+  padding: 17% 0px 4% 0px;
+  height: 100vh;
+  overflow-y: auto;
+}

@@ -39,7 +39,7 @@ export const NavbarLandingPage = () => {
                 </a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="/login">
+                <a className="nav-link" href="/login/1">
                   Login
                 </a>
               </li>

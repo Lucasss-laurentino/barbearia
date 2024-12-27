@@ -28,13 +28,13 @@ export const LoginProvider = ({ children }) => {
   // PRECISO MUDAR O NOME DAS FUNÇÕES PRA RECUPERAÇÃO DE SENHA
   // NOMES ESTÃO TROCADOS
 
-  const criarUsuario = async (codigo, barbearia = null) => {
+  const criarUsuario = async (codigo, barbearia = null, plano_id) => {
     setLoadLogin(true);
     try {
 
       const response = await http.post(
         "login/criarUsuario",
-        { user: userCadastro, codigo },
+        { user: userCadastro, codigo, plano_id },
         { withCredentials: true }
       );
       setUser(response.data.user);

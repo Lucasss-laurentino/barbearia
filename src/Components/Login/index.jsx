@@ -11,10 +11,15 @@ import { useParams } from "react-router-dom";
 export const Login = () => {
   const { active } = useContext(AbaBottomContext);
   // context login
-  const { confirmarCodigo, controlaLoginECadastro, esqueceuSenha, setBarbearia } =
-    useContext(LoginContext);
-  
+  const {
+    confirmarCodigo,
+    controlaLoginECadastro,
+    esqueceuSenha,
+    setBarbearia,
+  } = useContext(LoginContext);
+
   const { barbearia } = useParams();
+  const { plano_id } = useParams();
 
   const [recuperaSenha, setRecuperaSenha] = useState(false);
 
@@ -28,8 +33,8 @@ export const Login = () => {
 
   // barbearia é usado pra quando for editar um usuario ultiliza esse state em loginContext
   useEffect(() => {
-    if(barbearia) setBarbearia(barbearia);
-  }, [barbearia])
+    if (barbearia) setBarbearia(barbearia);
+  }, [barbearia]);
 
   return (
     <>
@@ -47,7 +52,9 @@ export const Login = () => {
               : "row col-12 justify-content-center scroll-login"
           }
         >
-          {controlaLoginECadastro && !esqueceuSenha && <FormLogin barbearia={barbearia}/>}
+          {controlaLoginECadastro && !esqueceuSenha && (
+            <FormLogin barbearia={barbearia} />
+          )}
           {!controlaLoginECadastro && !esqueceuSenha && !confirmarCodigo && (
             <FormCadastro />
           )}
@@ -59,6 +66,7 @@ export const Login = () => {
               recuperaSenha={recuperaSenha}
               setRecuperaSenha={setRecuperaSenha}
               barbearia={barbearia}
+              plano_id={plano_id}
             />
           )}
         </div>

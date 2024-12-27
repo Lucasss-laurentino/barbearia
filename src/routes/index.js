@@ -14,43 +14,46 @@ import { NotFound } from "../Components/NotFound";
 import { DataProvider } from "../Context/DataContext";
 import { LandingPage } from "../Components/LandingPage";
 import { Login } from "../Components/Login";
-import { MercadoPago } from "../Components/MercadoPago";
+import { PlanoProvider } from "../Context/PlanoContext";
+import { FormPagamento } from "../Context/FormPagamento";
 
 export default function appRouter() {
   return (
     <Router>
-      <UserProvider>
-        <ServicoProvider>
-          <BarbeiroProvider>
-            <HorarioProvider>
-              <MeuHorarioProvider>
-                <HorarioMarcadoProvider>
-                  <AnimacaoProvider>
-                    <AbaBottomProvider>
-                      <MenuProvider>
-                        <LoginProvider>
-                          <DataProvider>
-                            <Routes>
-                              <Route
-                                path="/*"
-                                element={<NotFound />}
-                              />
-                              <Route path="/" element={<LandingPage />} />
-                              <Route path="/login" element={ <Login /> } />
-                              <Route path="/:barbearia" element={<Index />} />
-                              <Route path="/pagamento" element={<MercadoPago/>} />
-                            </Routes>
-                          </DataProvider>
-                        </LoginProvider>
-                      </MenuProvider>
-                    </AbaBottomProvider>
-                  </AnimacaoProvider>
-                </HorarioMarcadoProvider>
-              </MeuHorarioProvider>
-            </HorarioProvider>
-          </BarbeiroProvider>
-        </ServicoProvider>
-      </UserProvider>
+      <PlanoProvider>
+        <UserProvider>
+          <ServicoProvider>
+            <BarbeiroProvider>
+              <HorarioProvider>
+                <MeuHorarioProvider>
+                  <HorarioMarcadoProvider>
+                    <AnimacaoProvider>
+                      <AbaBottomProvider>
+                        <MenuProvider>
+                          <LoginProvider>
+                            <DataProvider>
+                              <Routes>
+                                <Route path="/*" element={<NotFound />} />
+                                <Route path="/" element={<LandingPage />} />
+                                <Route
+                                  path="/login/:plano_id"
+                                  element={<Login />}
+                                />
+                                <Route path="/:barbearia" element={<Index />} />
+                                <Route path="/:barbearia/pagamento" element={<FormPagamento />} />
+                              </Routes>
+                            </DataProvider>
+                          </LoginProvider>
+                        </MenuProvider>
+                      </AbaBottomProvider>
+                    </AnimacaoProvider>
+                  </HorarioMarcadoProvider>
+                </MeuHorarioProvider>
+              </HorarioProvider>
+            </BarbeiroProvider>
+          </ServicoProvider>
+        </UserProvider>
+      </PlanoProvider>
     </Router>
   );
 }

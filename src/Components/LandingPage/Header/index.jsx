@@ -18,8 +18,11 @@ export const Header = () => {
               </p>
               <div className="d-grid gap-3 justify-content-center d-flex align-items-center">
                 <a
-                  href="/pagamento"
+                  href="#"
                   className="btn btn-primary btn-lg px-4 me-sm-3 text-btn-responsive"
+                  onClick={() =>
+                    window.scrollTo({ top: 770, behavior: "smooth" })
+                  }
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
