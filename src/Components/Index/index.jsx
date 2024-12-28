@@ -23,7 +23,7 @@ import { jwtDecode } from "jwt-decode";
 
 export const Index = () => {
   const { active, setActive } = useContext(AbaBottomContext);
-  const { user, pegarUsuario } = useContext(UserContext);
+  const { user, pegarUsuario, pegarLogo } = useContext(UserContext);
   const { pegarServicos, setServicoEscolhido } = useContext(ServicoContext);
   const { pegarBarbeiros } = useContext(BarbeiroContext);
   const { pegarHorarios, setHorarios } = useContext(HorarioContext);
@@ -40,6 +40,7 @@ export const Index = () => {
         pegarUsuario(),
         pegarServicos(barbearia),
         pegarBarbeiros(barbearia),
+        pegarLogo(barbearia)
       ]);
     };
     carregarDadosNecessario();

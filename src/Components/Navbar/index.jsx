@@ -1,19 +1,22 @@
-import './index.css';
+import "./index.css";
 import { useContext } from "react";
 import { MenuContext } from "../../Context/MenuContext";
 import { UserContext } from "../../Context/UserContext";
-import { MenuBottom } from '../MenuBottom';
 
 export const Navbar = () => {
   const { setClassMenu, classMenu } = useContext(MenuContext);
-  const { user, logout } = useContext(UserContext);
+  const { user, logout, logo } = useContext(UserContext);
   return (
     <>
       <div className="container-fluid per-nav-bar">
         <div className="row">
           <div className="col-12 py-2 d-flex justify-content-between align-items-center">
-            <div className="img-logo col-10 col-sm-7 col-md-5 pt-2">
-              <img src="/logo-fotor.png" width="30%" alt="" />
+            <div className="img-logo">
+              {logo ? (
+                <img src={`${process.env.REACT_APP_API_LOGO}${logo}`} width="100%" alt="" />
+              ) : (
+                <img src="/logo-fotor.png" width="100%" alt="" />
+              )}
             </div>
             {user?.ID && (
               <div

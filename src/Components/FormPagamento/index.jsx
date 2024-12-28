@@ -3,8 +3,19 @@ import "./index.css";
 import Cards from "react-credit-cards-2";
 import { useState } from "react";
 import InputMask from "react-input-mask";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { pagamentoSchema } from "../../validations/pagamento";
 
 export const FormPagamento = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(pagamentoSchema),
+  });
+
   const [state, setState] = useState({
     number: "",
     expiry: "",
@@ -18,24 +29,32 @@ export const FormPagamento = () => {
     setState((prev) => ({ ...prev, [name]: value }));
   };
 
+  const pagamento = (data) => {
+    console.log(data);
+  };
+
   return (
     <>
       <div className="fundo-imagem-pagamento">
         <div className="cortina-transparente d-flex align-items-center">
           <div className="container-fluid">
             <div className="row">
-              <div className="col-12 d-flex justify-content-center align-items-center flex-column flex-md-row responsividade-form-pagamento">
-                <div className="col-12 mb-3 mb-md-0 col-sm-6">
+              <div className="col-12 card-form d-md-flex">
+                <div className="col-12 col-md-6 d-flex justify-content-center align-items-center">
                   <Cards
-                    number={state.number}
+                    number={state.NUMERO_CARTAO}
                     expiry={state.expiry}
                     cvc={state.cvc}
-                    name={state.name}
+                    name={state.NOME}
                     focused={state.focus}
                   />
                 </div>
-                <div className="col-12 d-flex justify-content-center align-items-center col-md-6">
-                  <form action="" className="col-12 formulario-page-login">
+                <div className="col-12 col-md-6 d-flex justify-content-center">
+                  <form
+                    action=""
+                    className="col-12 formulario-page-login adapt-this-page"
+                    onSubmit={handleSubmit(pagamento)}
+                  >
                     <div className="col-12 text-center">
                       <h5 className="text-white pt-3">Pagamento</h5>
                       <p className="m-0 p-form-login">
@@ -65,12 +84,16 @@ export const FormPagamento = () => {
                                 type="text"
                                 className="input-login col-10"
                                 placeholder="Nome"
-                                value={state.name}
-                                name="name"
+                                {...register("NOME")}
                                 onChange={handleInputChange}
                               />
                             </div>
                           </div>
+                          {errors.NOME && (
+                            <p className="m-0 my-1 text-danger bg-white">
+                              *{errors.NOME.message}
+                            </p>
+                          )}
                         </div>
                       </div>
                       {/* NUMERO DO CARTÃO */}
@@ -97,15 +120,19 @@ export const FormPagamento = () => {
                                 type="text"
                                 className="input-login col-10"
                                 placeholder="0000 0000 0000 0000"
-                                value={state.number}
-                                name="number"
+                                {...register("NUMERO_CARTAO")}
                                 onChange={handleInputChange}
                               />
                             </div>
                           </div>
+                          {errors.NUMERO_CARTAO && (
+                            <p className="m-0 my-1 text-danger bg-white">
+                              *{errors.NUMERO_CARTAO.message}
+                            </p>
+                          )}
                         </div>
                       </div>
-                      {/* NOME */}
+                      {/* CVC */}
                       <div className="encapsula-span-input-login my-3">
                         <div className="col-8 d-flex flex-column">
                           {/* SPAN */}
@@ -129,12 +156,16 @@ export const FormPagamento = () => {
                                 type="text"
                                 className="input-login col-10"
                                 placeholder="cvc"
-                                value={state.cvc}
-                                name="cvc"
+                                {...register("CVC")}
                                 onChange={handleInputChange}
                               />
                             </div>
                           </div>
+                          {errors.CVC && (
+                            <p className="m-0 my-1 text-danger bg-white">
+                              *{errors.CVC.message}
+                            </p>
+                          )}
                         </div>
                       </div>
                       {/* EXPIRA */}
@@ -176,6 +207,11 @@ export const FormPagamento = () => {
                                 )}
                               </InputMask>
                             </div>
+                            {errors.EXPIRA && (
+                              <p className="m-0 my-1 text-danger bg-white">
+                                *{errors.EXPIRA.message}
+                              </p>
+                            )}
                           </div>
                           <div className="col-12 d-flex justify-content-start align-items-center my-3 pb-4 flex-column">
                             <button

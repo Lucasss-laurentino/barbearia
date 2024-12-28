@@ -15,7 +15,7 @@ import { DataProvider } from "../Context/DataContext";
 import { LandingPage } from "../Components/LandingPage";
 import { Login } from "../Components/Login";
 import { PlanoProvider } from "../Context/PlanoContext";
-import { FormPagamento } from "../Context/FormPagamento";
+import { FormPagamento } from "../Components/FormPagamento";
 
 export default function appRouter() {
   return (

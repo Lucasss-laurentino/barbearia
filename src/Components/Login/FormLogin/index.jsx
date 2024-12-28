@@ -2,12 +2,13 @@ import { useForm } from "react-hook-form";
 import "./index.css";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "../../../validations/loginValidation";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { LoginContext } from "../../../Context/LoginContext";
 import { MutatingDots } from "react-loader-spinner";
 import { ServicoContext } from "../../../Context/ServicoContext";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useParams } from "react-router-dom";
 
 export const FormLogin = ({ barbearia }) => {
   // CONFIGURANDO USERFORM
@@ -30,6 +31,8 @@ export const FormLogin = ({ barbearia }) => {
   } = useContext(LoginContext);
 
   const { setServicoEscolhido } = useContext(ServicoContext);
+
+  const [nome_limpo_barbearia, setNome_limpo_barbearia] = useState("");
 
   // LIMPA O PARAGRAFO DE ERRO SEMPRE QUE UM INPUT FOR MODIFICADO
   useEffect(() => {
@@ -64,6 +67,13 @@ export const FormLogin = ({ barbearia }) => {
     }
   };
 
+  useEffect(() => {
+    const cleanedString = barbearia
+      .replace(/[^a-zA-Z0-9]/g, ' ') 
+      .replace(/\b\w/g, (char) => char.toUpperCase());  
+    setNome_limpo_barbearia(cleanedString);  
+  }, [barbearia]);
+
   return (
     <>
       <ToastContainer
@@ -88,7 +98,7 @@ export const FormLogin = ({ barbearia }) => {
         )}
       >
         <div className="col-12 text-center">
-          <h3 className="titulo-form-login my-4">Barba Cabelo & Bigode</h3>
+          <h3 className="titulo-form-login my-4">{barbearia ? nome_limpo_barbearia : "Barba Cabelo & Bigode"}</h3>
           <h5 className="text-white">Acesse sua conta</h5>
           <p className="m-0 p-form-login">
             Gerencie sua barbearia de forma fácil e rápida

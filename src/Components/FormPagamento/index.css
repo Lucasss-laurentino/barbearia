@@ -10,3 +10,21 @@
   height: 100vh;
   overflow-y: auto;
 }
+
+.card-form {
+  height: 100vh;
+  overflow-y: auto;
+  padding-top: 6%;
+}
+
+@media (min-width: 768px) {
+  .card-form {
+    height: 100vh;
+    overflow-y: auto;
+    padding-top: 1%;
+  }
+}
+
+.adapt-this-page {
+  margin-top: 4%;
+}

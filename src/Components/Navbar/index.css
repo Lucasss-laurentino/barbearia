@@ -4,3 +4,20 @@
 .icon-menu {
   cursor: pointer;
 }
+
+.img-logo {
+  width: 80px; /* Largura fixa */
+  height: 80px; /* Altura fixa */
+  overflow: hidden; /* Esconde partes da imagem que saem do contêiner */
+  border-radius: 10%; /* Torna a borda arredondada */
+  position: relative; /* Necessário para o posicionamento da imagem */
+  display: flex;
+  justify-content: center; /* Centraliza a imagem horizontalmente */
+  align-items: center; /* Centraliza a imagem verticalmente */
+}
+
+.img-logo img {
+  width: 100%; /* A imagem vai ocupar 100% da largura do contêiner */
+  height: 100%; /* A imagem vai ocupar 100% da altura do contêiner */
+  object-fit: contain; /* Ajusta a imagem para manter a proporção, sem distorção */
+}

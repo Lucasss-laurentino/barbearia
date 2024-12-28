@@ -9,11 +9,10 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
-import { LoginContext } from "../../Context/LoginContext";
 import { MutatingDots } from "react-loader-spinner";
 
 export const EditarUser = () => {
-  const { editarUsuario, usuarioEditado, setUsuarioEditado, user, load } =
+  const { editarUsuario, usuarioEditado, setUsuarioEditado, user, load, pegarUsuario } =
     useContext(UserContext);
 
   const navigate = useNavigate();
@@ -24,6 +23,7 @@ export const EditarUser = () => {
   } = useForm({
     resolver: yupResolver(editarUsuarioSchema),
   });
+  const [imagem, setImagem] = useState();
 
   useEffect(() => {
     if (usuarioEditado) {
@@ -52,10 +52,9 @@ export const EditarUser = () => {
     if (token) {
       try {
         const tokenDecode = jwtDecode(token);
-
-        console.log(tokenDecode);
       } catch (error) {}
     }
+    
   }, []);
 
   return (
@@ -80,9 +79,9 @@ export const EditarUser = () => {
           <div className="row">
             <div className="col-12 encapsula-editar-usuario">
               <form
-                action=""
+                encType="multipart/form-data"
                 className="col-12 d-flex justify-content-center align-items-center flex-column"
-                onSubmit={handleSubmit(editarUsuario)}
+                onSubmit={handleSubmit((data) => editarUsuario(data, imagem))}
               >
                 <div className="col-12 col-lg-8 text-center">
                   <h4 className="text-white">Faça alteraçoes em sua conta</h4>
@@ -221,6 +220,26 @@ export const EditarUser = () => {
                       )}
                     </div>
                   )}
+                  <div className="col-12 d-flex flex-column mt-4 justify-content-center alig-items-center">
+                    <div className="col-12 d-flex justify-content-center align-itens-center">
+                      <div className="col-10 d-flex justify-content-start">
+                        <span className="text-white">
+                          Defina uma imagem do Logo
+                        </span>
+                      </div>
+                    </div>
+                    <div className="col-12 d-flex justify-content-center align-itens-center">
+                      <div className="col-10 d-flex justify-content-start">
+                        <input
+                          type="file"
+                          className="form-control-file text-white"
+                          id="exampleFormControlFile1"
+                          {...register("LOGO")}
+                          onChange={(e) => setImagem(e.target?.files[0])}
+                        />
+                      </div>
+                    </div>
+                  </div>
                   <div className="col-12 d-flex justify-content-center alig-items-center">
                     <div className="col-12 d-flex justify-content-center alig-items-center">
                       {load ? (

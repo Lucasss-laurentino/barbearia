@@ -4,7 +4,6 @@ import { http } from "../http";
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-
   const [load, setLoad] = useState(false);
   const [user, setUser] = useState({
     ID: "",
@@ -14,7 +13,8 @@ export const UserProvider = ({ children }) => {
   const [usuarioEditado, setUsuarioEditado] = useState(false);
   // esse objeto controla oque o usuário vai setando durante a navegação pelo sistema
   const [userContrata, setUserContrata] = useState({ user: null });
-  
+  const [logo, setLogo] = useState();
+
   const pegarUsuario = async () => {
     try {
       const response = await http.get(`/user/getUser`, {
@@ -39,19 +39,39 @@ export const UserProvider = ({ children }) => {
       setUserContrata({});
     }
   };
-  
-  const editarUsuario = async (data) => {
-    setLoad(true)
+
+  const editarUsuario = async (data, imagem) => {
+    setLoad(true);
+    const formData = new FormData();
+    if (user?.ADM) {
+      formData.append("NOME", data.NOME);
+      formData.append("NUMERO_CARTAO", data.NUMERO_CARTAO);
+      formData.append("NOME_BARBEARIA", data.NOME_BARBEARIA);
+      formData.append("LOGO", imagem);
+    } else {
+      formData.append("NOME", data.NOME);
+      formData.append("NUMERO_CARTAO", data.NUMERO_CARTAO);
+      formData.append("LOGO", imagem);
+    }
     try {
-      const result = await http.post(
-        "user/editarUsuario",
-        { data },
-        { withCredentials: true }
-      );
-      setLoad(false)
+      const result = await http.post("user/editarUsuario", formData, {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      setLoad(false);
       if (!result) throw "Erro ao editar perfil";
       setUser(result.data.user);
       setUsuarioEditado(true);
+    } catch (error) {}
+  };
+
+  const pegarLogo = async (barbearia) => {
+    try {
+      const result = await http.post("user/pegarLogo", { barbearia });
+      if (!result) throw result;
+      setLogo(result.data)
     } catch (error) {}
   };
 
@@ -68,6 +88,9 @@ export const UserProvider = ({ children }) => {
         setUsuarioEditado,
         load,
         setLoad,
+        pegarLogo,
+        logo,
+        setLogo,
       }}
     >
       {children}
