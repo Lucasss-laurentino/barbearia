@@ -1,11 +1,12 @@
 import "react-credit-cards-2/dist/es/styles-compiled.css";
 import "./index.css";
 import Cards from "react-credit-cards-2";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import InputMask from "react-input-mask";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { pagamentoSchema } from "../../validations/pagamento";
+import { PagamentoContext } from "../../Context/PagamentoContext";
 
 export const FormPagamento = () => {
   const {
@@ -29,9 +30,7 @@ export const FormPagamento = () => {
     setState((prev) => ({ ...prev, [name]: value }));
   };
 
-  const pagamento = (data) => {
-    console.log(data);
-  };
+  const { pagamento } = useContext(PagamentoContext);
 
   return (
     <>
@@ -49,10 +48,10 @@ export const FormPagamento = () => {
                     focused={state.focus}
                   />
                 </div>
-                <div className="col-12 col-md-6 d-flex justify-content-center">
+                <div className="col-12 col-md-6 d-flex justify-content-center custom-encapsula-form-pg">
                   <form
                     action=""
-                    className="col-12 formulario-page-login adapt-this-page"
+                    className="col-12 formulario-page-pagamento adapt-this-page"
                     onSubmit={handleSubmit(pagamento)}
                   >
                     <div className="col-12 text-center">
@@ -193,19 +192,11 @@ export const FormPagamento = () => {
                               </svg>
                               <InputMask
                                 mask="99/99"
-                                value={state.expiry}
-                                name="expiry"
                                 onChange={handleInputChange}
-                              >
-                                {(inputProps) => (
-                                  <input
-                                    {...inputProps}
-                                    type="text"
-                                    className="input-login col-10"
-                                    placeholder="MM/AA"
-                                  />
-                                )}
-                              </InputMask>
+                                className="input-login col-10"
+                                placeholder="MM/AA"
+                                {...register("EXPIRA")}
+                              />
                             </div>
                             {errors.EXPIRA && (
                               <p className="m-0 my-1 text-danger bg-white">

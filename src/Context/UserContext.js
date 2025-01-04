@@ -28,6 +28,7 @@ export const UserProvider = ({ children }) => {
         NOME_BARBEARIA: response.data.NOME_BARBEARIA,
         ADM: response.data.ADM,
         BARBEIRO: response.data.BARBEIRO,
+        VENCIMENTO: response.data.VENCIMENTO,
       });
 
       setUserContrata((prevState) => ({
