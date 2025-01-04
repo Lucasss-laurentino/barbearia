@@ -28,7 +28,7 @@
   flex-direction: column;
 
   list-style: none;
-  background-color: rgb(19, 19, 30, 0.7);
+  background-color: rgb(19, 19, 30, 0.8);
   backdrop-filter: blur(3px);
   color: white;
 }

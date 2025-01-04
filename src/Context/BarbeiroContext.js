@@ -1,5 +1,6 @@
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { http } from "../http";
+import { UserContext } from "./UserContext";
 
 export const BarbeiroContext = createContext();
 
@@ -8,6 +9,7 @@ export const BarbeiroProvider = ({ children }) => {
   const [imagem, setImagem] = useState();
   const [loadBarbeiro, setLoadBarbeiro] = useState(false);
   const [barbeiroSelecionado, setBarbeiroSelecionado] = useState(null);
+  const [erroBarbeiro, setErroBarbeiro] = useState(null);
 
   const criarBarbeiro = async (data, setShow) => {
     try {
@@ -21,13 +23,16 @@ export const BarbeiroProvider = ({ children }) => {
           "Content-Type": "multipart/form-data",
         },
       });
-      
-      setBarbeiros([...barbeiros, response.data.barbeiro]);
-      setLoadBarbeiro(false); setBarbeiroSelecionado(null);
-      setShow(false);
 
+      setBarbeiros([...barbeiros, response.data.barbeiro]);
+      setLoadBarbeiro(false);
+      setBarbeiroSelecionado(null);
+      setShow(false);
     } catch (error) {
-      console.log(error)
+      setErroBarbeiro(error?.response?.data);
+      setLoadBarbeiro(false);
+      setBarbeiroSelecionado(null);
+      setShow(false);
     }
   };
 
@@ -58,7 +63,7 @@ export const BarbeiroProvider = ({ children }) => {
       setBarbeiros([...response.data]);
       setLoadBarbeiro(false);
       setShow(false);
-      setImagem(undefined)
+      setImagem(undefined);
     } catch (error) {}
   };
 
@@ -98,7 +103,9 @@ export const BarbeiroProvider = ({ children }) => {
         excluirBarbeiro,
         barbeiroSelecionado,
         setBarbeiroSelecionado,
-        limparCampos
+        limparCampos,
+        erroBarbeiro,
+        setErroBarbeiro,
       }}
     >
       {children}

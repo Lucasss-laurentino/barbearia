@@ -21,7 +21,7 @@ export const LoginProvider = ({ children }) => {
   const [cadastroError, setCadastroError] = useState(null);
   const [confirmarCodigo, setConfirmarCodigo] = useState(false);
   const [userCadastro, setUserCadastro] = useState({});
-  const [controlaLoginECadastro, setControlerLoginECadastro] = useState(true);
+  const [controlaLoginECadastro, setControlaLoginECadastro] = useState(true);
   const [esqueceuSenha, setEsqueceuSenha] = useState(false);
   const [barbearia, setBarbearia] = useState(null);
 
@@ -41,7 +41,7 @@ export const LoginProvider = ({ children }) => {
       setLoadLogin(false);
       setCadastroError(null);
       setEsqueceuSenha(false);
-      setControlerLoginECadastro(true);
+      setControlaLoginECadastro(true);
       if (!barbearia) {
         barbearia = response.data.user.NOME_BARBEARIA;
       }
@@ -105,7 +105,7 @@ export const LoginProvider = ({ children }) => {
       });
       if (!result) throw false;
       setEsqueceuSenha(false);
-      setControlerLoginECadastro(false);
+      setControlaLoginECadastro(false);
       setConfirmarCodigo(true);
       setLoadLogin(false);
       localStorage.setItem("email_recuperar", data.EMAIL_RECUPERAR_SENHA);
@@ -147,7 +147,7 @@ export const LoginProvider = ({ children }) => {
   const cancelarMudarSenha = async () => {
     Cookies.remove("token");
     setActive(2);
-    setControlerLoginECadastro(true);
+    setControlaLoginECadastro(true);
     setEsqueceuSenha(false);
   };
 
@@ -160,7 +160,7 @@ export const LoginProvider = ({ children }) => {
           localStorage.setItem("email_recuperar", '{}');
           Cookies.remove("token");
           setActive(4);
-          setControlerLoginECadastro(true);
+          setControlaLoginECadastro(true);
           setEsqueceuSenha(false);
         }
       }
@@ -206,7 +206,7 @@ export const LoginProvider = ({ children }) => {
         setUserCadastro,
         recuperarSenha,
         controlaLoginECadastro,
-        setControlerLoginECadastro,
+        setControlaLoginECadastro,
         esqueceuSenha,
         setEsqueceuSenha,
         mudarSenha,

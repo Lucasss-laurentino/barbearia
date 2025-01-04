@@ -40,7 +40,7 @@ export const Index = () => {
         pegarUsuario(),
         pegarServicos(barbearia),
         pegarBarbeiros(barbearia),
-        pegarLogo(barbearia)
+        pegarLogo(barbearia),
       ]);
     };
     carregarDadosNecessario();

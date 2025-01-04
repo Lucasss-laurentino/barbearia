@@ -14,8 +14,11 @@ export const Login = () => {
   const {
     confirmarCodigo,
     controlaLoginECadastro,
+    setControlaLoginECadastro,
     esqueceuSenha,
     setBarbearia,
+    setEsqueceuSenha,
+    setConfirmarCodigo,
   } = useContext(LoginContext);
 
   const { barbearia } = useParams();
@@ -35,6 +38,15 @@ export const Login = () => {
   useEffect(() => {
     if (barbearia) setBarbearia(barbearia);
   }, [barbearia]);
+
+  // direciona pra pagina de login com o formulario de cadastro aberto
+  useEffect(() => {
+    if (plano_id) {
+      setControlaLoginECadastro(false);
+      setEsqueceuSenha(false);
+      setConfirmarCodigo(false);
+    }
+  }, []);
 
   return (
     <>

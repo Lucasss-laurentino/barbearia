@@ -8,7 +8,6 @@ import { MutatingDots } from "react-loader-spinner";
 import { ServicoContext } from "../../../Context/ServicoContext";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useParams } from "react-router-dom";
 
 export const FormLogin = ({ barbearia }) => {
   // CONFIGURANDO USERFORM
@@ -26,7 +25,7 @@ export const FormLogin = ({ barbearia }) => {
     loadLogin,
     loginError,
     setLoginError,
-    setControlerLoginECadastro,
+    setControlaLoginECadastro,
     setEsqueceuSenha,
   } = useContext(LoginContext);
 
@@ -68,10 +67,12 @@ export const FormLogin = ({ barbearia }) => {
   };
 
   useEffect(() => {
-    const cleanedString = barbearia
-      .replace(/[^a-zA-Z0-9]/g, ' ') 
-      .replace(/\b\w/g, (char) => char.toUpperCase());  
-    setNome_limpo_barbearia(cleanedString);  
+    if (barbearia) {
+      const cleanedString = barbearia
+        .replace(/[^a-zA-Z0-9]/g, " ")
+        .replace(/\b\w/g, (char) => char.toUpperCase());
+      setNome_limpo_barbearia(cleanedString);
+    }
   }, [barbearia]);
 
   return (
@@ -98,7 +99,9 @@ export const FormLogin = ({ barbearia }) => {
         )}
       >
         <div className="col-12 text-center">
-          <h3 className="titulo-form-login my-4">{barbearia ? nome_limpo_barbearia : "Barba Cabelo & Bigode"}</h3>
+          <h3 className="titulo-form-login my-4">
+            {barbearia ? nome_limpo_barbearia : "Barba Cabelo & Bigode"}
+          </h3>
           <h5 className="text-white">Acesse sua conta</h5>
           <p className="m-0 p-form-login">
             Gerencie sua barbearia de forma fácil e rápida
@@ -211,7 +214,7 @@ export const FormLogin = ({ barbearia }) => {
                     className="m-0 col-12 text-center text-white cursor"
                     onClick={() => {
                       setLoginError(null);
-                      setControlerLoginECadastro(false);
+                      setControlaLoginECadastro(false);
                     }}
                   >
                     <strong>Não possui uma conta ?</strong> Faça seu cadastro

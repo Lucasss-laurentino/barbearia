@@ -11,6 +11,7 @@ import { useParams } from "react-router-dom";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ServicoContext } from "../../../Context/ServicoContext";
+import InputMask from "react-input-mask";
 
 export const FormCadastro = () => {
   const { barbearia } = useParams();
@@ -19,6 +20,7 @@ export const FormCadastro = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(!barbearia ? createUserSchemaADM : createUserSchema),
@@ -30,10 +32,18 @@ export const FormCadastro = () => {
     loadLogin,
     cadastroError,
     setCadastroError,
-    setControlerLoginECadastro,
+    setControlaLoginECadastro,
   } = useContext(LoginContext);
 
   const { setServicoEscolhido } = useContext(ServicoContext);
+
+  const handleNomeChange = (e) => {
+    let inputValue = e.target.value;
+    // Capitaliza a primeira letra e mantém as demais inalteradas
+    inputValue = inputValue.charAt(0).toUpperCase() + inputValue.slice(1);
+    // Atualiza o valor no formulário
+    setValue("NOME", inputValue);
+  };
 
   const verificarAntesDeConfirmar = (data) => {
     const storage = localStorage.getItem("agendamento");
@@ -53,6 +63,7 @@ export const FormCadastro = () => {
         });
       } else {
         setServicoEscolhido(null);
+        // função pra enviar email de confirmação
         confirmarEmail(data);
       }
     } else {
@@ -165,7 +176,7 @@ export const FormCadastro = () => {
           <div className="encapsula-span-input-login my-1">
             <div className="col-8 d-flex flex-column">
               <div className="col-12 d-flex justify-content-start align-items-center">
-                <span className="span-login">Seu Nome</span>
+                <span className="span-login">Nome</span>
               </div>
               <div className="col-12 d-flex justify-content-start align-items-center">
                 <div className="input-icone">
@@ -185,6 +196,7 @@ export const FormCadastro = () => {
                     className="input-login col-10"
                     placeholder="Digite o seu nome"
                     {...register("NOME")}
+                    onInput={handleNomeChange}
                   />
                 </div>
               </div>
@@ -197,6 +209,84 @@ export const FormCadastro = () => {
               </div>
             </div>
           </div>
+          {/* //CPF
+          {!barbearia && (
+            <div className="encapsula-span-input-login my-1">
+              <div className="col-8 d-flex flex-column">
+                <div className="col-12 d-flex justify-content-start align-items-center">
+                  <span className="span-login">CPF</span>
+                </div>
+                <div className="col-12 d-flex justify-content-start align-items-center">
+                  <div className="input-icone">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="23"
+                      height="23"
+                      fill="#fff"
+                      className="bi bi-person-vcard col-2"
+                      viewBox="0 0 16 16"
+                    >
+                      <path d="M5 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4m4-2.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5M9 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4A.5.5 0 0 1 9 8m1 2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5" />
+                      <path d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zM1 4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H8.96q.04-.245.04-.5C9 10.567 7.21 9 5 9c-2.086 0-3.8 1.398-3.984 3.181A1 1 0 0 1 1 12z" />
+                    </svg>
+                    <InputMask
+                      mask="999.999.999-99"
+                      type="text"
+                      className="input-login col-10"
+                      placeholder="Digite o seu cpf"
+                      {...register("CPF")}
+                    />
+                  </div>
+                </div>
+                <div className="col-12 d-flex justify-content-start align-items-center">
+                  {errors.CPF && (
+                    <p className="m-0 my-1 text-danger bg-white">
+                      *{errors.CPF.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+          // TELEFONE 
+          {!barbearia && (
+            <div className="encapsula-span-input-login my-1">
+              <div className="col-8 d-flex flex-column">
+                <div className="col-12 d-flex justify-content-start align-items-center">
+                  <span className="span-login">Celular</span>
+                </div>
+                <div className="col-12 d-flex justify-content-start align-items-center">
+                  <div className="input-icone">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="23"
+                      height="23"
+                      fill="#fff"
+                      className="bi bi-phone col-2"
+                      viewBox="0 0 16 16"
+                    >
+                      <path d="M11 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM5 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z" />
+                      <path d="M8 14a1 1 0 1 0 0-2 1 1 0 0 0 0 2" />
+                    </svg>
+                    <InputMask
+                      mask="(99) 99999-9999"
+                      type="text"
+                      className="input-login col-10"
+                      placeholder="Digite um número de contato"
+                      {...register("CELULAR")}
+                    />
+                  </div>
+                </div>
+                <div className="col-12 d-flex justify-content-start align-items-center">
+                  {errors.CELULAR && (
+                    <p className="m-0 my-1 text-danger bg-white">
+                      *{errors.CELULAR.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+          )} */}
           {/* SENHA, BTN CADASTRAR E LINK PRA LOGIN */}
           <div className="encapsula-span-input-login my-1">
             <div className="col-8 d-flex flex-column">
@@ -261,7 +351,7 @@ export const FormCadastro = () => {
                     className="m-0 col-12 text-center text-white my-3 cursor"
                     onClick={() => {
                       setCadastroError(null);
-                      setControlerLoginECadastro(true);
+                      setControlaLoginECadastro(true);
                     }}
                   >
                     <strong>Já possui uma conta ?</strong> Faça Login

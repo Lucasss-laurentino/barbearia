@@ -7,6 +7,8 @@ export const PlanoProvider = ({ children }) => {
     
     const [planos, setPlanos] = useState([]);
 
+    const [meuPlano, setMeuPlano] = useState(null);
+
     const getPlanos = async () => {
         try {
             const result = await http.get("/planos/getPlanos");
@@ -17,9 +19,19 @@ export const PlanoProvider = ({ children }) => {
         }
     }
 
+    const getMeuPlano = async (user) => {
+        try {
+            const result = await http.post("/planos/getMeuPlano", user, { withCredentials: true });
+            if (result.data?.erro) throw result?.error;
+            setMeuPlano(result.data.plano)
+        } catch (error) {
+            console.log(error);            
+        }
+    }
+
     return (
-        <PlanoContext.Provider value={{planos, getPlanos}}>
-            {children}
-        </PlanoContext.Provider>
-    )
+      <PlanoContext.Provider value={{ planos, getPlanos, getMeuPlano, meuPlano}}>
+        {children}
+      </PlanoContext.Provider>
+    );
 }

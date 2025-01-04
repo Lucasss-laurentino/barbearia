@@ -43,16 +43,12 @@ export const UserProvider = ({ children }) => {
   const editarUsuario = async (data, imagem) => {
     setLoad(true);
     const formData = new FormData();
-    if (user?.ADM) {
-      formData.append("NOME", data.NOME);
-      formData.append("NUMERO_CARTAO", data.NUMERO_CARTAO);
-      formData.append("NOME_BARBEARIA", data.NOME_BARBEARIA);
-      formData.append("LOGO", imagem);
-    } else {
-      formData.append("NOME", data.NOME);
-      formData.append("NUMERO_CARTAO", data.NUMERO_CARTAO);
-      formData.append("LOGO", imagem);
-    }
+
+    formData.append("NOME", data.NOME);
+    formData.append("NUMERO_CARTAO", data.NUMERO_CARTAO);
+    formData.append("NOME_BARBEARIA", data.NOME_BARBEARIA);
+    formData.append("LOGO", imagem);
+
     try {
       const result = await http.post("user/editarUsuario", formData, {
         withCredentials: true,
@@ -71,7 +67,7 @@ export const UserProvider = ({ children }) => {
     try {
       const result = await http.post("user/pegarLogo", { barbearia });
       if (!result) throw result;
-      setLogo(result.data)
+      setLogo(result.data);
     } catch (error) {}
   };
 
