@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { ListService } from "../ListServices";
 import { Menu } from "../Menu";
 import { MenuBottom } from "../MenuBottom";
@@ -9,7 +9,7 @@ import { Horarios } from "../Horarios";
 import { ListBarbeiros } from "../ListBarbeiros";
 import { UserContext } from "../../Context/UserContext";
 import { ServicoContext } from "../../Context/ServicoContext";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { BarbeiroContext } from "../../Context/BarbeiroContext";
 import { HorarioContext } from "../../Context/HorarioContext";
 import { HorarioMarcadoContext } from "../../Context/HorarioMarcadoContext";
@@ -30,6 +30,7 @@ export const Index = () => {
   const { buscarHorariosAgendado, setHorariosMarcado, setStorage } = useContext(
     HorarioMarcadoContext
   );
+  const navigate = useNavigate();
   const { barbearia } = useParams();
 
   useEffect(() => {
@@ -40,7 +41,7 @@ export const Index = () => {
         pegarUsuario(),
         pegarServicos(barbearia),
         pegarBarbeiros(barbearia),
-        pegarLogo(barbearia)
+        pegarLogo(barbearia),
       ]);
     };
     carregarDadosNecessario();
@@ -166,6 +167,17 @@ export const Index = () => {
       setActive(2);
     }
   }, []);
+
+  // verifica se o usuario ta no prazo do periodo de teste
+  useEffect(() => {
+    if (user.ADM) {
+      const vencimento = new Date(user.VENCIMENTO);
+      const agora = new Date();
+      if (vencimento <= agora) {
+        navigate(`/${barbearia}/assinaturabloqueada`);
+      }
+    }
+  }, [user]);
 
   return (
     <>

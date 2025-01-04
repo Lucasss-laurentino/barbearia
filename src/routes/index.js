@@ -16,6 +16,8 @@ import { LandingPage } from "../Components/LandingPage";
 import { Login } from "../Components/Login";
 import { PlanoProvider } from "../Context/PlanoContext";
 import { FormPagamento } from "../Components/FormPagamento";
+import { AvisoPagamentoAtrasado } from "../Components/AvisoPagamentoAtrasado";
+import { PagamentoProvider } from "../Context/PagamentoContext";
 
 export default function appRouter() {
   return (
@@ -32,16 +34,28 @@ export default function appRouter() {
                         <MenuProvider>
                           <LoginProvider>
                             <DataProvider>
-                              <Routes>
-                                <Route path="/*" element={<NotFound />} />
-                                <Route path="/" element={<LandingPage />} />
-                                <Route
-                                  path="/login/:plano_id"
-                                  element={<Login />}
-                                />
-                                <Route path="/:barbearia" element={<Index />} />
-                                <Route path="/:barbearia/pagamento" element={<FormPagamento />} />
-                              </Routes>
+                              <PagamentoProvider>
+                                <Routes>
+                                  <Route path="/*" element={<NotFound />} />
+                                  <Route path="/" element={<LandingPage />} />
+                                  <Route
+                                    path="/login/:plano_id"
+                                    element={<Login />}
+                                  />
+                                  <Route
+                                    path="/:barbearia"
+                                    element={<Index />}
+                                  />
+                                  <Route
+                                    path="/:barbearia/pagamento"
+                                    element={<FormPagamento />}
+                                  />
+                                  <Route
+                                    path="/:barbearia/assinaturabloqueada"
+                                    element={<AvisoPagamentoAtrasado />}
+                                  />
+                                </Routes>
+                              </PagamentoProvider>
                             </DataProvider>
                           </LoginProvider>
                         </MenuProvider>

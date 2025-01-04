@@ -13,18 +13,24 @@
 
 .card-form {
   height: 100vh;
-  overflow-y: auto;
-  padding-top: 6%;
-}
-
-@media (min-width: 768px) {
-  .card-form {
-    height: 100vh;
-    overflow-y: auto;
-    padding-top: 1%;
-  }
+  max-height: 100vh;
 }
 
 .adapt-this-page {
   margin-top: 4%;
+}
+
+.custom-encapsula-form-pg {
+  height: 100vh;
+  overflow-y: auto;
+}
+.formulario-page-pagamento {
+  width: 100%;
+  height: auto;
+
+  max-width: 500px;
+  background-color: rgba(81, 81, 87, 0.7);
+  backdrop-filter: blur(3px);
+  border-radius: 10px;
+
 }

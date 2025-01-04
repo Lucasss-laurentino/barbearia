@@ -6,7 +6,7 @@
 }
 
 .img-logo {
-  width: 80px; /* Largura fixa */
+  width: 20%; /* Largura fixa */
   height: 80px; /* Altura fixa */
   overflow: hidden; /* Esconde partes da imagem que saem do contêiner */
   border-radius: 10%; /* Torna a borda arredondada */

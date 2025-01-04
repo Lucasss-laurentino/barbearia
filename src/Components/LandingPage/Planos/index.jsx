@@ -1,7 +1,6 @@
 import "./index.css";
 
 export const Planos = ({ planos }) => {
-  console.log(planos);
   return (
     <>
       <section className="bg-light py-5 border-bottom">

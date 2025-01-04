@@ -21,7 +21,7 @@ export const LoginProvider = ({ children }) => {
   const [cadastroError, setCadastroError] = useState(null);
   const [confirmarCodigo, setConfirmarCodigo] = useState(false);
   const [userCadastro, setUserCadastro] = useState({});
-  const [controlaLoginECadastro, setControlerLoginECadastro] = useState(true);
+  const [controlaLoginECadastro, setControlaLoginECadastro] = useState(true);
   const [esqueceuSenha, setEsqueceuSenha] = useState(false);
   const [barbearia, setBarbearia] = useState(null);
   const [barbeariaClean, setBarbeariaClean] = useState("");
@@ -40,6 +40,7 @@ export const LoginProvider = ({ children }) => {
 
   const criarUsuario = async (codigo, barbearia = null, plano_id) => {
     setLoadLogin(true);
+
     try {
       const response = await http.post(
         "login/criarUsuario",
@@ -50,7 +51,7 @@ export const LoginProvider = ({ children }) => {
       setLoadLogin(false);
       setCadastroError(null);
       setEsqueceuSenha(false);
-      setControlerLoginECadastro(true);
+      setControlaLoginECadastro(true);
       if (!barbearia) {
         barbearia = response.data.user.NOME_BARBEARIA;
       }
@@ -70,6 +71,7 @@ export const LoginProvider = ({ children }) => {
         setUserCadastro(user);
         setConfirmarCodigo(true);
         setLoadLogin(false);
+        setCadastroError(null);
       }
     } catch (error) {
       setCadastroError(error?.response?.data?.message);
@@ -116,7 +118,7 @@ export const LoginProvider = ({ children }) => {
       });
       if (!result) throw false;
       setEsqueceuSenha(false);
-      setControlerLoginECadastro(false);
+      setControlaLoginECadastro(false);
       setConfirmarCodigo(true);
       setLoadLogin(false);
       localStorage.setItem("email_recuperar", data.EMAIL_RECUPERAR_SENHA);
@@ -158,7 +160,7 @@ export const LoginProvider = ({ children }) => {
   const cancelarMudarSenha = async () => {
     Cookies.remove("token");
     setActive(2);
-    setControlerLoginECadastro(true);
+    setControlaLoginECadastro(true);
     setEsqueceuSenha(false);
   };
 
@@ -171,7 +173,7 @@ export const LoginProvider = ({ children }) => {
           localStorage.setItem("email_recuperar", "{}");
           Cookies.remove("token");
           setActive(4);
-          setControlerLoginECadastro(true);
+          setControlaLoginECadastro(true);
           setEsqueceuSenha(false);
         }
       }
@@ -198,6 +200,26 @@ export const LoginProvider = ({ children }) => {
     }
   };
 
+  const formatarDataVencimento = async () => {
+    const hoje = new Date(); // Pega a data atual
+    const vencimento = new Date(hoje); // Cria uma nova data com a data atual
+
+    // Soma 15 dias à data de hoje
+    vencimento.setDate(hoje.getDate() + 15);
+
+    // Formata a data de vencimento para o formato yyyy-mm-dd hh:mm:ss
+    const anoVencimento = vencimento.getFullYear();
+    const mesVencimento = String(vencimento.getMonth() + 1).padStart(2, "0"); // Mês começa em 0, então somamos 1
+    const diaVencimento = String(vencimento.getDate()).padStart(2, "0");
+    const horas = String(vencimento.getHours()).padStart(2, "0"); // Horas com 2 dígitos
+    const minutos = String(vencimento.getMinutes()).padStart(2, "0"); // Minutos com 2 dígitos
+    const segundos = String(vencimento.getSeconds()).padStart(2, "0"); // Segundos com 2 dígitos
+
+    const dataVencimento = `${anoVencimento}-${mesVencimento}-${diaVencimento} ${horas}:${minutos}:${segundos}`;
+
+    return dataVencimento;
+  };
+
   return (
     <LoginContext.Provider
       value={{
@@ -217,7 +239,7 @@ export const LoginProvider = ({ children }) => {
         setUserCadastro,
         recuperarSenha,
         controlaLoginECadastro,
-        setControlerLoginECadastro,
+        setControlaLoginECadastro,
         esqueceuSenha,
         setEsqueceuSenha,
         mudarSenha,

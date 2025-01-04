@@ -60,8 +60,13 @@ export const ListBarbeiros = () => {
     setShowModalPagamentoAgendamento(false);
 
   // CONTEXTS
-  const { barbeiros, barbeiroSelecionado, setBarbeiroSelecionado } =
-    useContext(BarbeiroContext);
+  const {
+    barbeiros,
+    barbeiroSelecionado,
+    setBarbeiroSelecionado,
+    erroBarbeiro,
+    setErroBarbeiro,
+  } = useContext(BarbeiroContext);
   const {
     setHorarioMarcado,
     horarioMarcado,
@@ -167,6 +172,24 @@ export const ListBarbeiros = () => {
       }
     );
   }, []);
+
+  // ativa toast de erro caso tente cadastrar um barbeiro que excede o permitido do plano de assinatura
+  useEffect(() => {
+    if (erroBarbeiro !== null) {
+      toast.error(erroBarbeiro, {
+        position: "bottom-right",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+      setErroBarbeiro(null);
+    }
+  }, [erroBarbeiro]);
 
   return (
     <>
