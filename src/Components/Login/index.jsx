@@ -56,10 +56,10 @@ export const Login = () => {
             <FormLogin barbearia={barbearia} />
           )}
           {!controlaLoginECadastro && !esqueceuSenha && !confirmarCodigo && (
-            <FormCadastro />
+            <FormCadastro barbearia={barbearia}/>
           )}
 
-          {esqueceuSenha && controlaLoginECadastro && <RecuperarSenha />}
+          {esqueceuSenha && controlaLoginECadastro && <RecuperarSenha barbearia={barbearia}/>}
 
           {!esqueceuSenha && !controlaLoginECadastro && confirmarCodigo && (
             <ConfirmaCodigo

@@ -5,7 +5,7 @@ import { useContext } from "react";
 import { LoginContext } from "../../../Context/LoginContext";
 import { MutatingDots } from "react-loader-spinner";
 
-export const RecuperarSenha = () => {
+export const RecuperarSenha = ({barbearia}) => {
   const {
     register,
     handleSubmit,
@@ -20,6 +20,7 @@ export const RecuperarSenha = () => {
     setCadastroError,
     setEsqueceuSenha,
     loadLogin,
+    barbeariaClean,
   } = useContext(LoginContext);
 
   return (
@@ -29,7 +30,7 @@ export const RecuperarSenha = () => {
       onSubmit={handleSubmit(recuperarSenha)}
     >
       <div className="col-12 text-center">
-        <h3 className="titulo-form-login my-4">Barba Cabelo & Bigode</h3>
+        <h3 className="titulo-form-login my-4">{barbearia ? barbeariaClean : "Barba Cabelo & Bigode"}</h3>
         <h5 className="text-white">Recupere sua senha</h5>
         <p className="m-0 p-form-login">Receba um código em seu e-mail</p>
         {/* EMAIL */}

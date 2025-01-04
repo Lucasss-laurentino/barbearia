@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { http } from "../http";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "./UserContext";
@@ -24,6 +24,16 @@ export const LoginProvider = ({ children }) => {
   const [controlaLoginECadastro, setControlerLoginECadastro] = useState(true);
   const [esqueceuSenha, setEsqueceuSenha] = useState(false);
   const [barbearia, setBarbearia] = useState(null);
+  const [barbeariaClean, setBarbeariaClean] = useState("");
+
+  useEffect(() => {
+    if (barbearia) {
+      const cleanedString = barbearia
+        .replace(/[^a-zA-Z0-9]/g, " ")
+        .replace(/\b\w/g, (char) => char.toUpperCase());
+      setBarbeariaClean(cleanedString);
+    }
+  }, [barbearia]);
 
   // PRECISO MUDAR O NOME DAS FUNÇÕES PRA RECUPERAÇÃO DE SENHA
   // NOMES ESTÃO TROCADOS
@@ -31,7 +41,6 @@ export const LoginProvider = ({ children }) => {
   const criarUsuario = async (codigo, barbearia = null, plano_id) => {
     setLoadLogin(true);
     try {
-
       const response = await http.post(
         "login/criarUsuario",
         { user: userCadastro, codigo, plano_id },
@@ -82,10 +91,12 @@ export const LoginProvider = ({ children }) => {
               "agendamento",
               JSON.stringify(response.data.horario_marcado)
             );
-            setServicoEscolhido({id: response.data.horario_marcado.ID, contratado: true});
-            
+            setServicoEscolhido({
+              id: response.data.horario_marcado.ID,
+              contratado: true,
+            });
           } else {
-            localStorage.setItem("agendamento", '{}');
+            localStorage.setItem("agendamento", "{}");
           }
           if (barbearia) navigate(`/${barbearia}`);
           if (!barbearia) navigate(`/${response.data.user.NOME_BARBEARIA}`);
@@ -113,7 +124,7 @@ export const LoginProvider = ({ children }) => {
       console.log(error);
       setLoadLogin(false);
 
-      localStorage.setItem("email_recuperar", '{}');
+      localStorage.setItem("email_recuperar", "{}");
     }
   };
 
@@ -140,7 +151,7 @@ export const LoginProvider = ({ children }) => {
     } catch (error) {
       console.log(error);
       setLoadLogin(false);
-      localStorage.setItem("email_recuperar", '{}');
+      localStorage.setItem("email_recuperar", "{}");
     }
   };
 
@@ -157,7 +168,7 @@ export const LoginProvider = ({ children }) => {
       if (email) {
         const result = await http.post("login/changeSenha", { data, email });
         if (!result.erro) {
-          localStorage.setItem("email_recuperar", '{}');
+          localStorage.setItem("email_recuperar", "{}");
           Cookies.remove("token");
           setActive(4);
           setControlerLoginECadastro(true);
@@ -180,7 +191,7 @@ export const LoginProvider = ({ children }) => {
         !response.data.erro && setUser({});
         Cookies.remove("connect.sid");
         setServicoEscolhido("");
-        localStorage.setItem("agendamento", '{}');
+        localStorage.setItem("agendamento", "{}");
       } catch (error) {
         console.log(error);
       }
@@ -214,6 +225,8 @@ export const LoginProvider = ({ children }) => {
         setBarbearia,
         cancelarMudarSenha,
         changeSenha,
+        barbeariaClean,
+        setBarbeariaClean,
       }}
     >
       {children}

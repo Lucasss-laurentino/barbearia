@@ -12,7 +12,8 @@ export const ConfirmaCodigo = ({recuperaSenha, setRecuperaSenha, barbearia = nul
     loadLogin,
     cadastroError,
     setCadastroError,
-    mudarSenha
+    mudarSenha,
+    barbeariaClean,
   } = useContext(LoginContext);
 
   const {
@@ -30,7 +31,7 @@ export const ConfirmaCodigo = ({recuperaSenha, setRecuperaSenha, barbearia = nul
       onSubmit={handleSubmit(!recuperaSenha ? (data) => criarUsuario(data, barbearia, plano_id) : mudarSenha)}
     >
       <div className="col-12 text-center">
-        <h3 className="titulo-form-login my-4">Barba Cabelo & Bigode</h3>
+        <h3 className="titulo-form-login my-4">{barbearia ? barbeariaClean : "Barba Cabelo & Bigode"}</h3>
         <h5 className="text-white">Confirmação de código</h5>
         <p className="m-0 p-form-login">
           Insira o código recebido no seu email

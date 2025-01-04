@@ -12,8 +12,7 @@ import { ToastContainer, toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ServicoContext } from "../../../Context/ServicoContext";
 
-export const FormCadastro = () => {
-  const { barbearia } = useParams();
+export const FormCadastro = ({barbearia}) => {
 
   // CONFIGURANDO USER FORM
   const {
@@ -31,6 +30,7 @@ export const FormCadastro = () => {
     cadastroError,
     setCadastroError,
     setControlerLoginECadastro,
+    barbeariaClean,
   } = useContext(LoginContext);
 
   const { setServicoEscolhido } = useContext(ServicoContext);
@@ -83,7 +83,7 @@ export const FormCadastro = () => {
         onSubmit={handleSubmit((data) => verificarAntesDeConfirmar(data))}
       >
         <div className="col-12 text-center">
-          <h3 className="titulo-form-login my-4">Barba Cabelo & Bigode</h3>
+          <h3 className="titulo-form-login my-4">{barbearia ? barbeariaClean : "Barba Cabelo & Bigode"}</h3>
           <h5 className="text-white">Criar Conta</h5>
           <p className="m-0 p-form-login">
             Comece agora a gerenciar sua barbearia de forma fácil e prática.
