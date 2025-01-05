@@ -42,6 +42,14 @@ export const LoginProvider = ({ children }) => {
     setLoadLogin(true);
 
     try {
+      let dataVencimento;
+      if (!barbearia) {
+        dataVencimento = await formatarDataVencimento();
+        userCadastro.VENCIMENTO = dataVencimento;
+      } else {
+        userCadastro.VENCIMENTO = null;
+      }
+
       const response = await http.post(
         "login/criarUsuario",
         { user: userCadastro, codigo, plano_id },

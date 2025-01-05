@@ -1,5 +1,5 @@
 .fundo-imagem-pagamento {
-  height: 100vh;
+  height: auto;
   width: 100%;
   background-image: url("../../../public/barbearia_utensilios.avif");
   background-position: center;
@@ -18,19 +18,38 @@
 
 .adapt-this-page {
   margin-top: 4%;
+  margin-bottom: 4%;
+
 }
 
 .custom-encapsula-form-pg {
-  height: 100vh;
+  height: auto;
   overflow-y: auto;
 }
 .formulario-page-pagamento {
   width: 100%;
-  height: auto;
-
+  height: 100%;
   max-width: 500px;
   background-color: rgba(81, 81, 87, 0.7);
   backdrop-filter: blur(3px);
   border-radius: 10px;
+}
+.responsive-div-encapsula-campos {
+  height: 100%;
+}
 
+@media (min-width: 768px) {
+  .custom-encapsula-form-pg {
+    height: 100vh;
+    overflow-y: hidden;
+  }
+  .formulario-page-pagamento {
+    width: 100%;
+    height: 95vh;
+    overflow-y: scroll;
+    max-width: 500px;
+    background-color: rgba(81, 81, 87, 0.7);
+    backdrop-filter: blur(3px);
+    border-radius: 10px;
+  }
 }
