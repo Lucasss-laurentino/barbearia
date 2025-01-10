@@ -24,7 +24,8 @@ export const PagamentoProvider = ({ children }) => {
       const dadosUsuario = {
         NOME: data.NOME,
         CELULAR: data.CELULAR,
-        CPF: data.CPF
+        CPF: data.CPF,
+        CVC: data.CVC
       }
 
       if (card.hasErrors)

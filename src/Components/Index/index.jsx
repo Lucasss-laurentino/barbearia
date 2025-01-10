@@ -174,6 +174,11 @@ export const Index = () => {
       const vencimento = new Date(user.VENCIMENTO);
       const agora = new Date();
       if (vencimento <= agora) {
+
+        // antes de encaminhar pra pagina bloqueada
+        // verificar se usuario possui assinatura
+        // se nao possuir assinatura encaminhar direto pra pagina bloqueada
+        // se possuir assinatura manter o usuario usando o sistema e inserir avisos de fatura atrasada
         navigate(`/${barbearia}/assinaturabloqueada`);
       }
     }
