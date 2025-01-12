@@ -1,14 +1,18 @@
 import { createContext, useState } from "react";
 import { http } from "../http";
+import { useNavigate } from "react-router-dom";
 
 export const PagamentoContext = createContext();
 
 export const PagamentoProvider = ({ children }) => {
   const [cardEncrypted, setCardEncrypted] = useState(null);
   const [msgError, setMsgError] = useState(null);
+  const [pagamentoLoad, setPagamentoLoad] = useState(false);
+  const navigate = useNavigate();
 
-  const pagamento = async (data) => {
+  const pagamento = async (data, barbearia) => {
     try {
+      setPagamentoLoad(true);
       const NUMERO_CARTAO = data.NUMERO_CARTAO.replace(/\s/g, "");
       const dataExpira = data.EXPIRA.split("/");
       // criptografando dados do cartão
@@ -25,8 +29,8 @@ export const PagamentoProvider = ({ children }) => {
         NOME: data.NOME,
         CELULAR: data.CELULAR,
         CPF: data.CPF,
-        CVC: data.CVC
-      }
+        CVC: data.CVC,
+      };
 
       if (card.hasErrors)
         throw "Verifique os dados do seu cartão e tente novamente";
@@ -37,13 +41,16 @@ export const PagamentoProvider = ({ children }) => {
         { withCredentials: true }
       );
       if (!result) throw "Erro ao tentar fazer pagamento";
+      navigate(`/${barbearia}`);
+      setPagamentoLoad(false);
     } catch (error) {
       setMsgError(error);
+      setPagamentoLoad(false);
     }
   };
 
   return (
-    <PagamentoContext.Provider value={{ pagamento, msgError, setMsgError }}>
+    <PagamentoContext.Provider value={{ pagamento, msgError, setMsgError, pagamentoLoad, setPagamentoLoad }}>
       {children}
     </PagamentoContext.Provider>
   );

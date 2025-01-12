@@ -4,7 +4,12 @@
   background-image: url("../../../public/barbearia_utensilios.avif");
   background-position: center;
 }
-
+@media (max-width: 575px) {
+  .espacamento-top {
+    padding-top: 10px;
+  }
+    
+}
 .responsividade-form-pagamento {
   padding: 17% 0px 4% 0px;
   height: 100vh;

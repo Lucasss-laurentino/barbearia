@@ -42,15 +42,15 @@ export const Menu = () => {
                       </svg>
                     </li>
                   )}
-                  {/* PLANOS E ASSINATURAS */}
-                  {/* <li
+                  {/* ASSINATURA */}
+                  <li
                     className="col-12 px-4 d-flex justify-content-between align-items-center cursor"
                     onClick={() => {
                       setActive(6);
                       setClassMenu(false);
                     }}
                   >
-                    <p className="m-0">Planos e Assinaturas</p>
+                    <p className="m-0">Minha Assinatura</p>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="20"
@@ -62,7 +62,7 @@ export const Menu = () => {
                       <path d="M5 4a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5M5 8a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1z" />
                       <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1" />
                     </svg>
-                  </li> */}
+                  </li>
                   {/* SAIR */}
                   <li
                     className="col-12 px-4 d-flex justify-content-between align-items-center cursor"

@@ -9,6 +9,8 @@ import { pagamentoSchema } from "../../validations/pagamento";
 import { PagamentoContext } from "../../Context/PagamentoContext";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useParams } from "react-router-dom";
+import { MutatingDots } from "react-loader-spinner";
 
 export const FormPagamento = () => {
   const {
@@ -30,7 +32,7 @@ export const FormPagamento = () => {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    if(name === "EXPIRA") setState((prev) => ({ ...prev, ["expiry"]: value }));
+    if (name === "EXPIRA") setState((prev) => ({ ...prev, ["expiry"]: value }));
     setState((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -42,7 +44,9 @@ export const FormPagamento = () => {
     setValue("NOME", inputValue);
   };
 
-  const { pagamento, msgError, setMsgError } = useContext(PagamentoContext);
+  const { pagamento, msgError, setMsgError, pagamentoLoad } =
+    useContext(PagamentoContext);
+  const { barbearia } = useParams();
 
   useEffect(() => {
     if (msgError !== null) {
@@ -79,7 +83,7 @@ export const FormPagamento = () => {
         transition={Bounce}
       />
       <div className="fundo-imagem-pagamento">
-        <div className="cortina-transparente d-flex align-items-center">
+        <div className="cortina-transparente d-flex align-items-center espacamento-top">
           <div className="container-fluid">
             <div className="row">
               <div className="col-12 d-md-flex">
@@ -96,7 +100,9 @@ export const FormPagamento = () => {
                   <form
                     action=""
                     className="col-12 formulario-page-pagamento adapt-this-page"
-                    onSubmit={handleSubmit(pagamento)}
+                    onSubmit={handleSubmit((data) =>
+                      pagamento(data, barbearia)
+                    )}
                   >
                     <div className="col-12 text-center responsive-div-encapsula-campos">
                       <h5 className="text-white pt-3">Pagamento</h5>
@@ -316,7 +322,6 @@ export const FormPagamento = () => {
                                 placeholder="MM/AA"
                                 {...register("EXPIRA")}
                                 onChange={handleInputChange}
-                                
                               />
                             </div>
                             {errors.EXPIRA && (
@@ -326,12 +331,26 @@ export const FormPagamento = () => {
                             )}
                           </div>
                           <div className="col-12 d-flex justify-content-start align-items-center my-3 pb-4 flex-column">
-                            <button
-                              className="col-12 btn-form-login"
-                              type="submit"
-                            >
-                              Entrar
-                            </button>
+                            {!pagamentoLoad ? (
+                              <button
+                                className="col-12 btn-form-login"
+                                type="submit"
+                              >
+                                Entrar
+                              </button>
+                            ) : (
+                              <MutatingDots
+                              visible={true}
+                              height="100"
+                              width="100"
+                              color="#6d6d6d"
+                              secondaryColor="#6d6d6d"
+                              radius="12.5"
+                              ariaLabel="mutating-dots-loading"
+                              wrapperStyle={{}}
+                              wrapperClass="justify-content-center my-2"
+                            />
+                            )}
                           </div>
                         </div>
                       </div>

@@ -23,6 +23,7 @@ export const PlanoProvider = ({ children }) => {
         try {
             const result = await http.post("/planos/getMeuPlano", user, { withCredentials: true });
             if (result.data?.erro) throw result?.error;
+            console.log(result.data)
             setMeuPlano(result.data.plano)
         } catch (error) {
             console.log(error);            

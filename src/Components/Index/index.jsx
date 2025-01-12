@@ -20,6 +20,7 @@ import { Login } from "../Login";
 import { EditarSenha } from "../EditarSenha";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
+import { Assinatura } from "../Assinatura";
 
 export const Index = () => {
   const { active, setActive } = useContext(AbaBottomContext);
@@ -204,6 +205,7 @@ export const Index = () => {
                 {active === 3 && <ListBarbeiros />}
                 {active === 4 && <Finalizados />}
                 {active === 5 && <EditarUser user={user} />}
+                {active === 6 && <Assinatura />}
               </>
             ) : (
               // Se o usuário não for administrador
