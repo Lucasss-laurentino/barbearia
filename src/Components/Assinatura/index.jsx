@@ -8,7 +8,7 @@ import { AssinaturaContext } from "../../Context/AssinaturaContext";
 export const Assinatura = () => {
   const { planos, getPlanos, meuPlano, getMeuPlano } = useContext(PlanoContext);
   const { user } = useContext(UserContext);
-  const { getAssinatura, assinatura } = useContext(AssinaturaContext);
+  const { getAssinatura, assinatura, getParcelas, parcelas } = useContext(AssinaturaContext);
 
   const [state, setState] = useState({
     number: "",
@@ -22,6 +22,7 @@ export const Assinatura = () => {
     getPlanos();
     getMeuPlano(user);
     getAssinatura();
+    getParcelas();
   }, []);
 
   useEffect(() => {
@@ -40,16 +41,16 @@ export const Assinatura = () => {
     <>
       <div className="fundo-imagem">
         <div className="cortina-transparente">
-          <div className="assinatura-cards pb-1">
+          <div className="assinatura-cards pb-1 pt-xl-5">
             <div className="container-fluid">
               <h2 className="m-0 text-white">Planos:</h2>
             </div>
-            <ul className="lista-planos-assinatura">
+            <ul className="lista-planos-assinatura justify-content-xl-center">
               {planos.map((plano) => {
                 return (
-                  <li className="col-10 col-lg-6 col-xl-4 mx-2" key={plano.ID}>
+                  <li className="col-10 col-sm-4 col-xl-3 mx-1" key={plano.ID}>
                     <div className="card mb-3 mb-xl-0">
-                      <div className="card-body p-5">
+                      <div className="card-body p-3">
                         <div className="small text-uppercase fw-bold text-muted">
                           {plano.NOME}
                         </div>
@@ -200,7 +201,7 @@ export const Assinatura = () => {
               <h2 className="m-0 text-white">Parcelas:</h2>
             </div>
             <div className="col-12 mb-4">
-              <table class="table table-dark">
+              <table className="table table-dark">
                 <thead>
                   <tr>
                     <th scope="col">Vencimento</th>
@@ -209,12 +210,17 @@ export const Assinatura = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                  </tr>
-                  <tr>
-                  </tr>
-                  <tr>
-                  </tr>
+                  {parcelas.map((parcela) => {
+                    return (
+                      <>
+                        <tr>
+                          <td>{parcela?.vencimento}</td>
+                          <td>{parcela?.valor}</td>
+                          <td>{parcela?.pago}</td>
+                        </tr>
+                      </>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
