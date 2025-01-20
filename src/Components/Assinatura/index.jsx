@@ -8,7 +8,8 @@ import { AssinaturaContext } from "../../Context/AssinaturaContext";
 export const Assinatura = () => {
   const { planos, getPlanos, meuPlano, getMeuPlano } = useContext(PlanoContext);
   const { user } = useContext(UserContext);
-  const { getAssinatura, assinatura, getParcelas, parcelas } = useContext(AssinaturaContext);
+  const { getAssinatura, assinatura, getParcelas, parcelas } =
+    useContext(AssinaturaContext);
 
   const [state, setState] = useState({
     number: "",
@@ -216,7 +217,17 @@ export const Assinatura = () => {
                         <tr>
                           <td>{parcela?.vencimento}</td>
                           <td>{parcela?.valor}</td>
-                          <td>{parcela?.pago}</td>
+                          {parcela?.pago === "APPROVED" ? (
+                            <td>
+                              <img
+                                src="icones_menu_bottom/verificado.gif"
+                                className="img-fluid col-3 col-md-2 col-xl-1"
+                                alt=""
+                              />
+                            </td>
+                          ) : (
+                            ""
+                          )}
                         </tr>
                       </>
                     );

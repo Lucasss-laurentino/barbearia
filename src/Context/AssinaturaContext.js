@@ -22,7 +22,7 @@ export const AssinaturaProvider = ({children}) => {
     try {
       const result = await http.get("/assinatura/getParcelas", {withCredentials: true});
       if(!result) throw "Erro ao buscar assinatura";
-      setParcelas([result.data]);
+      setParcelas([...result.data]);
     } catch(error) {
       console.log(error);
     }
