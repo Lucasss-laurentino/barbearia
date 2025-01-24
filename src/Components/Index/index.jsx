@@ -21,6 +21,7 @@ import { EditarSenha } from "../EditarSenha";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import { Assinatura } from "../Assinatura";
+import { AssinaturaContext } from "../../Context/AssinaturaContext";
 
 export const Index = () => {
   const { active, setActive } = useContext(AbaBottomContext);
@@ -31,6 +32,8 @@ export const Index = () => {
   const { buscarHorariosAgendado, setHorariosMarcado, setStorage } = useContext(
     HorarioMarcadoContext
   );
+  const { verificarAssinatura } = useContext(AssinaturaContext);
+
   const navigate = useNavigate();
   const { barbearia } = useParams();
 
@@ -169,21 +172,9 @@ export const Index = () => {
     }
   }, []);
 
-  // verifica se o usuario ta no prazo do periodo de teste
   useEffect(() => {
-    if (user.ADM) {
-      const vencimento = new Date(user.VENCIMENTO);
-      const agora = new Date();
-      if (vencimento <= agora) {
-
-        // antes de encaminhar pra pagina bloqueada
-        // verificar se usuario possui assinatura
-        // se nao possuir assinatura encaminhar direto pra pagina bloqueada
-        // se possuir assinatura manter o usuario usando o sistema e inserir avisos de fatura atrasada
-        navigate(`/${barbearia}/assinaturabloqueada`);
-      }
-    }
-  }, [user]);
+    verificarAssinatura(barbearia);
+  }, []);
 
   return (
     <>

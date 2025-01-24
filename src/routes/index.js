@@ -56,6 +56,7 @@ export default function appRouter() {
                                       path="/:barbearia/assinaturabloqueada"
                                       element={<AvisoPagamentoAtrasado />}
                                     />
+                                    <Route path="/notfound" element={<NotFound/>}/>
                                   </Routes>
                                 </AssinaturaProvider>
                               </PagamentoProvider>

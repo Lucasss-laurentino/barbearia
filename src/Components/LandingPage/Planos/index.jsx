@@ -1,4 +1,5 @@
 import "./index.css";
+import { Fragment } from 'react';
 
 export const Planos = ({ planos }) => {
   return (
@@ -12,7 +13,7 @@ export const Planos = ({ planos }) => {
           <div className="row gx-5 justify-content-center">
             {planos.map((plano) => {
               return (
-                <>
+                <Fragment key={plano.ID}>
                   <div className="col-lg-6 col-xl-4">
                     <div className="card mb-5 mb-xl-0">
                       <div className="card-body p-5">
@@ -127,7 +128,7 @@ export const Planos = ({ planos }) => {
                       </div>
                     </div>
                   </div>
-                </>
+                </Fragment>
               );
             })}
           </div>

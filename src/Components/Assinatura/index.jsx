@@ -4,12 +4,19 @@ import { PlanoContext } from "../../Context/PlanoContext";
 import { UserContext } from "../../Context/UserContext";
 import Cards from "react-credit-cards-2";
 import { AssinaturaContext } from "../../Context/AssinaturaContext";
+import { ModalDesativarAssinatura } from "../ModalDesativarAssinatura";
 
 export const Assinatura = () => {
   const { planos, getPlanos, meuPlano, getMeuPlano } = useContext(PlanoContext);
   const { user } = useContext(UserContext);
-  const { getAssinatura, assinatura, getParcelas, parcelas } =
+  const { getAssinatura, assinatura, getParcelas, parcelas, desativarAssinatura } =
     useContext(AssinaturaContext);
+
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => {
+    setShow(false);
+  }
 
   const [state, setState] = useState({
     number: "",
@@ -40,6 +47,8 @@ export const Assinatura = () => {
 
   return (
     <>
+
+    <ModalDesativarAssinatura show={show} handleClose={handleClose}/>
       <div className="fundo-imagem">
         <div className="cortina-transparente">
           <div className="assinatura-cards pb-1 pt-xl-5">
@@ -193,7 +202,7 @@ export const Assinatura = () => {
             </div>
             <div className="col-12 mb-3">
               <div className="container">
-                <button className="btn btn-sm btn-danger">
+                <button className="btn btn-sm btn-danger" onClick={() => setShow(true)}>
                   Cancelar Assinatura
                 </button>
               </div>
@@ -211,10 +220,9 @@ export const Assinatura = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {parcelas.map((parcela) => {
+                  {parcelas.map((parcela, index) => {
                     return (
-                      <>
-                        <tr>
+                        <tr key={index}>
                           <td>{parcela?.vencimento}</td>
                           <td>{parcela?.valor}</td>
                           {parcela?.pago === "APPROVED" ? (
@@ -229,7 +237,6 @@ export const Assinatura = () => {
                             ""
                           )}
                         </tr>
-                      </>
                     );
                   })}
                 </tbody>

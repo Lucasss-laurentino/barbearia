@@ -1,5 +1,10 @@
-.notFound {
-  width: 100%;
+.fundo-imagem-notfound {
   height: 100vh;
-  background-color: #181818;
+  width: 100%;
+  background-image: url("../../../public/barbearia_utensilios.avif");
+  background-position: center;
+}
+
+.h-col {
+  height: 90vh;
 }
