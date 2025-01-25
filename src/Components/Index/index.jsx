@@ -34,9 +34,9 @@ export const Index = () => {
   );
   const { verificarAssinatura } = useContext(AssinaturaContext);
 
-  const navigate = useNavigate();
   const { barbearia } = useParams();
 
+  // tentar diminuir essas requisições
   useEffect(() => {
     const carregarDadosNecessario = async () => {
       await Promise.all([
@@ -173,8 +173,12 @@ export const Index = () => {
   }, []);
 
   useEffect(() => {
-    verificarAssinatura(barbearia);
-  }, []);
+    if(Object.keys(user).length === 0) {
+      verificarAssinatura(barbearia);
+    } else if(user?.ADM) {
+      verificarAssinatura(barbearia);
+    }
+  }, [user]);
 
   return (
     <>

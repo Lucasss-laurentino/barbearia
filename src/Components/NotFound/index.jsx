@@ -1,6 +1,7 @@
 import "./index.css";
 
 export const NotFound = () => {
+
   return (
     <>
        <div className="fundo-imagem-notfound">
