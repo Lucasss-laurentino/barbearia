@@ -15,10 +15,6 @@ export const AssinaturaProvider = ({ children }) => {
   const { logout } = useContext(LoginContext);
   const { user } = useContext(UserContext);
 
-  useEffect(() => {
-    console.log(user)
-  }, [user])
-
   const getAssinatura = async () => {
     try {
       const result = await http.get("/assinatura/getAssinatura", {
@@ -50,13 +46,23 @@ export const AssinaturaProvider = ({ children }) => {
       });
       if (!result) throw "Erro ao buscar assinatua";
       await logout();
-      window.location.href = "/";
+      navigate("/");
     } catch (error) {
       setErroAssinatura(
         "Erro ao cancelar assinatura, tente novamente mais tarde ou entre em contato com o suporte !"
       );
     }
   };
+
+  const ativarAssinatura = async (barbearia) => {
+    try {
+      const result = await http.get("assinatura/ativar", {withCredentials: true});
+      if(!result) throw "Erro ao ativar assinatura";
+      navigate(`/${barbearia}`);
+    } catch(error) {
+      console.log(error);
+    }
+  }
 
   // alem de verificar se a assinatura está ativa, verifica o vencimento da fatura
   const verificarAssinatura = async (barbearia) => {
@@ -87,9 +93,11 @@ export const AssinaturaProvider = ({ children }) => {
         erroAssinatura,
         setErroAssinatura,
         verificarAssinatura,
+        ativarAssinatura,
       }}
     >
       {children}
     </AssinaturaContext.Provider>
-  );
+  
+);
 };
