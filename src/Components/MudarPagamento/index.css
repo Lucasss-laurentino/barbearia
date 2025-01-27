@@ -1,0 +1,14 @@
+.roll-pagamento {
+  height: 88vh;
+  overflow-y: auto;
+  padding-bottom: 13%;
+}
+
+@media (min-width: 768px) {
+  .roll-pagamento {
+    height: auto;
+    overflow-y: auto;
+    padding-bottom: 0%;
+  }
+    
+}

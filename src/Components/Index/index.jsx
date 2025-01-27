@@ -9,7 +9,7 @@ import { Horarios } from "../Horarios";
 import { ListBarbeiros } from "../ListBarbeiros";
 import { UserContext } from "../../Context/UserContext";
 import { ServicoContext } from "../../Context/ServicoContext";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { BarbeiroContext } from "../../Context/BarbeiroContext";
 import { HorarioContext } from "../../Context/HorarioContext";
 import { HorarioMarcadoContext } from "../../Context/HorarioMarcadoContext";
@@ -22,6 +22,7 @@ import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import { Assinatura } from "../Assinatura";
 import { AssinaturaContext } from "../../Context/AssinaturaContext";
+import { MudarPagamento } from "../MudarPagamento";
 
 export const Index = () => {
   const { active, setActive } = useContext(AbaBottomContext);
@@ -201,6 +202,7 @@ export const Index = () => {
                 {active === 4 && <Finalizados />}
                 {active === 5 && <EditarUser user={user} />}
                 {active === 6 && <Assinatura />}
+                {active === 7 && <MudarPagamento />}
               </>
             ) : (
               // Se o usuário não for administrador

@@ -38,6 +38,7 @@
   background-color: rgba(81, 81, 87, 0.7);
   backdrop-filter: blur(3px);
   border-radius: 10px;
+  margin-bottom: 20%;
 }
 .responsive-div-encapsula-campos {
   height: 100%;
@@ -50,11 +51,12 @@
   }
   .formulario-page-pagamento {
     width: 100%;
-    height: 92vh;
+    height: 70vh;
     overflow-y: scroll;
     max-width: 500px;
     background-color: rgba(81, 81, 87, 0.7);
     backdrop-filter: blur(3px);
     border-radius: 10px;
+    margin-bottom: -20%;
   }
 }

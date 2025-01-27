@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import "./index.css";
 import { FormPagamento } from "../FormPagamento";
-import { UserContext } from "../../Context/UserContext";
 import { useNavigate, useParams } from "react-router-dom";
 import { AssinaturaContext } from "../../Context/AssinaturaContext";
 

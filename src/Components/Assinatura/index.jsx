@@ -5,18 +5,24 @@ import { UserContext } from "../../Context/UserContext";
 import Cards from "react-credit-cards-2";
 import { AssinaturaContext } from "../../Context/AssinaturaContext";
 import { ModalDesativarAssinatura } from "../ModalDesativarAssinatura";
+import { AbaBottomContext } from "../../Context/AbaBottomContext";
 
 export const Assinatura = () => {
   const { planos, getPlanos, meuPlano, getMeuPlano } = useContext(PlanoContext);
   const { user } = useContext(UserContext);
-  const { getAssinatura, assinatura, getParcelas, parcelas, desativarAssinatura } =
+  const { getAssinatura, assinatura, getParcelas, parcelas } =
     useContext(AssinaturaContext);
+  const { setActive, active } = useContext(AbaBottomContext);
 
   const [show, setShow] = useState(false);
 
   const handleClose = () => {
     setShow(false);
   }
+
+  useEffect(() => {
+    console.log(active);
+  }, [active])
 
   const [state, setState] = useState({
     number: "",
@@ -47,7 +53,6 @@ export const Assinatura = () => {
 
   return (
     <>
-
     <ModalDesativarAssinatura show={show} handleClose={handleClose}/>
       <div className="fundo-imagem">
         <div className="cortina-transparente">
@@ -186,7 +191,9 @@ export const Assinatura = () => {
               })}
             </ul>
             <div className="container-fluid mb-3">
-              <h2 className="m-0 text-white">Meio de Pagamento:</h2>
+              <h2 className="m-0 text-white">
+                Meio de Pagamento: <a onClick={() => setActive(7)} className="h6 text-white a-alterar-pagamento">Alterar</a>
+              </h2>
             </div>
             <div className="col-12 mt-sm-4 mb-4 col-md-6 d-flex justify-content-center align-items-center">
               <Cards
