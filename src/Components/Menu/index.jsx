@@ -63,6 +63,11 @@ export const Menu = () => {
                       <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1" />
                     </svg>
                   </li>
+                  <li
+                    className="col-12 px-4 d-flex justify-content-between align-items-center cursor"
+                  >
+                    <a className="text-white text-decoration-none" href="https://wa.me/5522999730597">Suporte</a>
+                  </li>
                   {/* SAIR */}
                   <li
                     className="col-12 px-4 d-flex justify-content-between align-items-center cursor"
