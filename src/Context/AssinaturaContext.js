@@ -82,6 +82,10 @@ export const AssinaturaProvider = ({ children }) => {
 
   };
 
+  const alterarMeioDePagamento = async (data) => {
+
+  }
+
   return (
     <AssinaturaContext.Provider
       value={{
@@ -94,6 +98,7 @@ export const AssinaturaProvider = ({ children }) => {
         setErroAssinatura,
         verificarAssinatura,
         ativarAssinatura,
+        alterarMeioDePagamento,
       }}
     >
       {children}

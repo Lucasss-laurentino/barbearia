@@ -12,3 +12,7 @@
   background-color: rgb(19, 19, 30, 0.8);
   overflow-y: auto;
 }
+
+.a-alterar-pagamento:hover {
+  cursor: pointer;
+}
