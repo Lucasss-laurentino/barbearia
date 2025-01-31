@@ -6,6 +6,7 @@ import Cards from "react-credit-cards-2";
 import { AssinaturaContext } from "../../Context/AssinaturaContext";
 import { ModalDesativarAssinatura } from "../ModalDesativarAssinatura";
 import { AbaBottomContext } from "../../Context/AbaBottomContext";
+import { ModalConfirmarMudarPlano } from "../ModalConfirmarMudarPlano";
 
 export const Assinatura = () => {
   const { planos, getPlanos, meuPlano, getMeuPlano } = useContext(PlanoContext);
@@ -15,14 +16,15 @@ export const Assinatura = () => {
   const { setActive, active } = useContext(AbaBottomContext);
 
   const [show, setShow] = useState(false);
-
+  const [showMudarPlano, setShowMudarPlano] = useState(false);
+  const [planosescolhido, setPlanoescolhido] = useState();
   const handleClose = () => {
     setShow(false);
   }
 
-  useEffect(() => {
-    console.log(active);
-  }, [active])
+  const handleCloseMudarPlano = () => {
+    setShowMudarPlano(false);
+  }
 
   const [state, setState] = useState({
     number: "",
@@ -53,6 +55,7 @@ export const Assinatura = () => {
 
   return (
     <>
+    <ModalConfirmarMudarPlano show={showMudarPlano} handleClose={handleCloseMudarPlano} plano={planosescolhido}/>
     <ModalDesativarAssinatura show={show} handleClose={handleClose}/>
       <div className="fundo-imagem">
         <div className="cortina-transparente">
@@ -158,7 +161,12 @@ export const Assinatura = () => {
                           meuPlano.ID_PAGSEGURO !== plano.ID_PAGSEGURO ? (
                             <a
                               className="btn btn-primary btn-lg text-btn-responsive-planos"
-                              href={`/login/${plano.ID}`}
+                              href="#"
+                              onClick={() => {
+                                setPlanoescolhido(plano)
+                                setShowMudarPlano(true)
+
+                              }}
                             >
                               Mudar Plano
                             </a>
@@ -167,7 +175,7 @@ export const Assinatura = () => {
                               className={
                                 "btn btn-primary btn-lg bg-success border-success text-btn-responsive-planos"
                               }
-                              href={`/login/${plano.ID}`}
+                              href="#"
                             >
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"

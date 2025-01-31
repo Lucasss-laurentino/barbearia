@@ -11,9 +11,8 @@ import { ToastContainer, toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useParams } from "react-router-dom";
 import { MutatingDots } from "react-loader-spinner";
-import { AssinaturaContext } from "../../Context/AssinaturaContext";
 
-export const FormPagamento = ({mudarPagamento = null}) => {
+export const FormPagamento = () => {
   const {
     register,
     handleSubmit,
@@ -48,7 +47,6 @@ export const FormPagamento = ({mudarPagamento = null}) => {
   const { pagamento, msgError, setMsgError, pagamentoLoad } =
     useContext(PagamentoContext);
   const { barbearia } = useParams();
-  const { alterarMeioDePagamento } = useContext(AssinaturaContext);
 
   useEffect(() => {
     if (msgError !== null) {
@@ -102,14 +100,7 @@ export const FormPagamento = ({mudarPagamento = null}) => {
                   <form
                     action=""
                     className="col-12 formulario-page-pagamento adapt-this-page"
-                    onSubmit={handleSubmit((data) => {
-                      if(mudarPagamento === null) {
-                        pagamento(data, barbearia)
-                      } else {
-                        alterarMeioDePagamento(data);
-                      }
-                    }
-                    )}
+                    onSubmit={handleSubmit((data) => {pagamento(data, barbearia)})}
                   >
                     <div className="col-12 text-center responsive-div-encapsula-campos">
                       <h5 className="text-white pt-3">Pagamento</h5>

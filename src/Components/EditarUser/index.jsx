@@ -12,7 +12,7 @@ import { jwtDecode } from "jwt-decode";
 import { MutatingDots } from "react-loader-spinner";
 
 export const EditarUser = () => {
-  const { editarUsuario, usuarioEditado, setUsuarioEditado, user, load, pegarUsuario } =
+  const { editarUsuario, usuarioEditado, setUsuarioEditado, user, load } =
     useContext(UserContext);
 
   const navigate = useNavigate();

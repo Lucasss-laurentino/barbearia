@@ -19,6 +19,8 @@ import { FormPagamento } from "../Components/FormPagamento";
 import { AvisoPagamentoAtrasado } from "../Components/AvisoPagamentoAtrasado";
 import { PagamentoProvider } from "../Context/PagamentoContext";
 import { AssinaturaProvider } from "../Context/AssinaturaContext";
+import { AtivarAssinatura } from "../Components/AtivarAssinatura";
+import { FormPagamento2 } from "../Components/FormPagamento2";
 
 export default function appRouter() {
   return (
@@ -54,7 +56,11 @@ export default function appRouter() {
                                     />
                                     <Route
                                       path="/:barbearia/assinaturabloqueada"
-                                      element={<AvisoPagamentoAtrasado />}
+                                      element={<FormPagamento2 />}
+                                    />
+                                    <Route 
+                                      path="/:barbearia/assinaturadesativada"
+                                      element={<AtivarAssinatura/>}
                                     />
                                     <Route path="/notfound" element={<NotFound/>}/>
                                   </Routes>

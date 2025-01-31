@@ -5,10 +5,11 @@ import { useContext, useEffect } from 'react';
 import { AssinaturaContext } from '../../Context/AssinaturaContext';
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { MutatingDots } from "react-loader-spinner";
 
 export const ModalDesativarAssinatura = ({show, handleClose}) => {
 
-    const { desativarAssinatura, erroAssinatura, setErroAssinatura } = useContext(AssinaturaContext);
+    const { desativarAssinatura, erroAssinatura, setErroAssinatura, assinaturaLoader } = useContext(AssinaturaContext);
     
     useEffect(() => {
         if(erroAssinatura !== null) {
@@ -59,7 +60,21 @@ export const ModalDesativarAssinatura = ({show, handleClose}) => {
                     Prezado(a) usuário(a), caso opte por prosseguir com esta ação, informamos que sua assinatura será 
                     desativada temporariamente caso nao retorne até o dia do vencimento da fatura a sua assinatura será cancelada permanentemente.
                 </p>
-                <button class="btn btn-sm btn-danger" onClick={desativarAssinatura}>Entendido</button>
+                {!assinaturaLoader ? (
+                    <button class="btn btn-sm btn-danger" onClick={desativarAssinatura}>Entendido</button>
+                ) : (
+                    <MutatingDots
+                    visible={true}
+                    height="100"
+                    width="100"
+                    color="#6d6d6d"
+                    secondaryColor="#6d6d6d"
+                    radius="12.5"
+                    ariaLabel="mutating-dots-loading"
+                    wrapperStyle={{}}
+                    wrapperClass="justify-content-center"
+                  />    
+                )}
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="primary">

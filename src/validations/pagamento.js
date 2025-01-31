@@ -3,8 +3,14 @@ import { cpf } from 'cpf-cnpj-validator';
 
 export const pagamentoSchema = yup.object({
   NOME: yup.string().required("Campo obrigatório"),
-  NUMERO_CARTAO: yup.string().required("Campo obrigatório").length(19, "Número de cartão inválido"),
-  CVC: yup.string().required("Campo obrigatório"),
+  NUMERO_CARTAO: yup
+  .string()
+  .required("Campo obrigatório")
+  .test("validar-numero-cartao", "Número de cartão inválido", (value) => {
+    // Remove espaços e verifica se o comprimento é 15 ou 16
+    const numeroLimpo = value.replace(/\s/g, '');
+    return numeroLimpo.length === 15 || numeroLimpo.length === 16;
+  }),  CVC: yup.string().required("Campo obrigatório"),
   EXPIRA: yup.string().required("Campo obrigatório"),
   CPF: yup
     .string()

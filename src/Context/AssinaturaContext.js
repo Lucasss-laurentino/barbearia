@@ -10,6 +10,8 @@ export const AssinaturaProvider = ({ children }) => {
   const [assinatura, setAssinatura] = useState();
   const [parcelas, setParcelas] = useState([]);
   const [erroAssinatura, setErroAssinatura] = useState(null);
+  const [assinaturaLoader, setAssinaturaLoader] = useState(false);
+
   const navigate = useNavigate();
 
   const { logout } = useContext(LoginContext);
@@ -41,13 +43,16 @@ export const AssinaturaProvider = ({ children }) => {
 
   const desativarAssinatura = async () => {
     try {
+      setAssinaturaLoader(true);
       const result = await http.get("/assinatura/desativar", {
         withCredentials: true,
       });
       if (!result) throw "Erro ao buscar assinatua";
       await logout();
+      setAssinaturaLoader(false);
       navigate("/");
     } catch (error) {
+      setAssinaturaLoader(false);
       setErroAssinatura(
         "Erro ao cancelar assinatura, tente novamente mais tarde ou entre em contato com o suporte !"
       );
@@ -56,9 +61,21 @@ export const AssinaturaProvider = ({ children }) => {
 
   const ativarAssinatura = async (barbearia) => {
     try {
+      setAssinaturaLoader(true);
       const result = await http.get("assinatura/ativar", {withCredentials: true});
       if(!result) throw "Erro ao ativar assinatura";
+      setAssinaturaLoader(false);
       navigate(`/${barbearia}`);
+    } catch(error) {
+      console.log(error);
+      setAssinaturaLoader(false);
+    }
+  }
+
+  const editarAssinatura = async (plano) => {
+    try {
+      const result = await http.post("assinatura/editar", {plano}, {withCredentials: true});
+      if(!result) throw "Erro ao editar assinatura";
     } catch(error) {
       console.log(error);
     }
@@ -66,7 +83,6 @@ export const AssinaturaProvider = ({ children }) => {
 
   // alem de verificar se a assinatura está ativa, verifica o vencimento da fatura
   const verificarAssinatura = async (barbearia) => {
-    
     try {
       const result = await http.post("/assinatura/verificarAssinatura", {
         barbearia,
@@ -74,12 +90,15 @@ export const AssinaturaProvider = ({ children }) => {
       if (!result) throw "Erro ao buscar assinatura";
     } catch (error) {
       if (user?.ADM) {
-        navigate(`/${barbearia}/assinaturabloqueada`);
+        if(error?.response?.data === 2) {
+          navigate(`/${barbearia}/assinaturadesativada`);
+        } else {
+          navigate(`/${barbearia}/assinaturabloqueada`);
+        }
       } else {
         navigate(`/${barbearia}/notfound`);
       }
     }
-
   };
 
   const alterarMeioDePagamento = async (data) => {
@@ -99,6 +118,8 @@ export const AssinaturaProvider = ({ children }) => {
         verificarAssinatura,
         ativarAssinatura,
         alterarMeioDePagamento,
+        assinaturaLoader,
+        editarAssinatura,
       }}
     >
       {children}
