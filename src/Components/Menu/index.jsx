@@ -71,6 +71,11 @@ export const Menu = () => {
                       <input class="form-check-input" style={{ marginLeft: "25%" }} type="checkbox" id="flexSwitchCheckChecked" />
                     </div>
                   </li>
+                  <li
+                    className="col-12 px-4 d-flex justify-content-between align-items-center cursor"
+                  >
+                    <a className="text-white text-decoration-none" href="https://wa.me/5522999730597">Suporte</a>
+                  </li>
                   {/* SAIR */}
                   <li
                     className="col-12 px-4 d-flex justify-content-between align-items-center cursor"
