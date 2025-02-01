@@ -10,9 +10,9 @@ import { useParams } from 'react-router-dom';
 import { MutatingDots } from "react-loader-spinner";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "react-credit-cards-2/dist/es/styles-compiled.css";
 
-
-export const FormPagamento = () => {
+export const FormPagamentoAssinatura = () => {
 
     const { pagamento, pagamentoLoad, msgError, setMsgError } = useContext(PagamentoContext);
     const { barbearia } = useParams();
@@ -182,7 +182,7 @@ export const FormPagamento = () => {
                                         />
                                     </div>
                                 </div>
-                                <form className='col-11 col-sm-11 p-4' onSubmit={handleSubmit(pagamento)}>
+                                <form className='col-11 col-sm-11 p-4' onSubmit={handleSubmit((data) => pagamento(data, barbearia))}>
                                     <div className="form-group col-12 mt-2">
                                         <input
                                             type="text"
@@ -207,9 +207,10 @@ export const FormPagamento = () => {
                                                 placeholder="CPF"
                                                 {...register("CPF")}
                                             />
-                                            {errors.NOME && (
+                                            {errors.CPF
+                                             && (
                                                 <p className="m-0 my-1 text-danger bg-white">
-                                                    *{errors.CPF.message}
+                                                    *{errors.CPF?.message}
                                                 </p>
                                             )}
                                         </div>

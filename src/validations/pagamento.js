@@ -22,7 +22,7 @@ export const pagamentoSchema = yup.object({
     .required("Campo obrigatório")
     .matches(
       /^\(\d{2}\) \d{5}-\d{4}$/,
-      "O número de celular precisa estar no formato (XX) XXXXX-XXXX"
+      "O número de celular precisa estar no formato correto"
     ),
 
 });

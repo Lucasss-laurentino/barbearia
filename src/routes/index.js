@@ -15,12 +15,10 @@ import { DataProvider } from "../Context/DataContext";
 import { LandingPage } from "../Components/LandingPage";
 import { Login } from "../Components/Login";
 import { PlanoProvider } from "../Context/PlanoContext";
-import { FormPagamento } from "../Components/FormPagamento";
 import { AvisoPagamentoAtrasado } from "../Components/AvisoPagamentoAtrasado";
 import { PagamentoProvider } from "../Context/PagamentoContext";
 import { AssinaturaProvider } from "../Context/AssinaturaContext";
 import { AtivarAssinatura } from "../Components/AtivarAssinatura";
-import { FormPagamento2 } from "../Components/FormPagamento2";
 
 export default function appRouter() {
   return (
@@ -51,13 +49,9 @@ export default function appRouter() {
                                       element={<Index />}
                                     />
                                     <Route
-                                      path="/:barbearia/pagamento"
-                                      element={<FormPagamento />}
-                                    />
-                                    <Route
                                       path="/:barbearia/assinaturabloqueada"
-                                      element={<FormPagamento2 />}
-                                    />
+                                      element={<AvisoPagamentoAtrasado/>}
+                                    /> 
                                     <Route 
                                       path="/:barbearia/assinaturadesativada"
                                       element={<AtivarAssinatura/>}

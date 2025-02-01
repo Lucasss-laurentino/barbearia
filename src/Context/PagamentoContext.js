@@ -44,7 +44,7 @@ export const PagamentoProvider = ({ children }) => {
       navigate(`/${barbearia}`);
       setPagamentoLoad(false);
     } catch (error) {
-      setMsgError(error);
+      setMsgError(error?.response?.data);
       setPagamentoLoad(false);
     }
   };

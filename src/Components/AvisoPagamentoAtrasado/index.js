@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./index.css";
-import { FormPagamento } from "../FormPagamento";
+import { FormPagamentoAssinatura } from "../FormPagamentoAssinatura";
 
 export const AvisoPagamentoAtrasado = () => {
   const [assinar, setAssinar] = useState(false);
@@ -30,7 +30,7 @@ export const AvisoPagamentoAtrasado = () => {
           </div>
         </div>
       ) : (
-        <FormPagamento />
+        <FormPagamentoAssinatura />
       )}
     </>
   );
