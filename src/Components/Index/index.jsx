@@ -174,11 +174,14 @@ export const Index = () => {
   }, []);
 
   useEffect(() => {
+    verificarAssinatura(barbearia);
+    /*
     if(Object.keys(user).length === 0) {
-      verificarAssinatura(barbearia);
+      verificarAssinatura(barbearia); // usuario nao adm direcionado pra 404
     } else if(user?.ADM) {
-      verificarAssinatura(barbearia);
+      verificarAssinatura(barbearia); // usuario adm direcionado pra pagina de pagamento
     }
+      */
   }, [user]);
 
   return (

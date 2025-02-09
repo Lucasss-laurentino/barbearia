@@ -42,7 +42,7 @@ export const Assinatura = () => {
   }, []);
 
   useEffect(() => {
-    if (assinatura) {
+    if (assinatura.ID_PAGSEGURO !== null) {
       setState({
         NUMERO_CARTAO: assinatura.PRIMEIROS_DIGITOS,
         expiry: assinatura.DATA_VENCIMENTO,

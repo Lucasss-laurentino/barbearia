@@ -1,9 +1,20 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./index.css";
 import { FormPagamentoAssinatura } from "../FormPagamentoAssinatura";
+import { AssinaturaContext } from "../../Context/AssinaturaContext";
+import { UserContext } from "../../Context/UserContext";
+import { useParams } from "react-router-dom";
 
 export const AvisoPagamentoAtrasado = () => {
   const [assinar, setAssinar] = useState(false);
+
+  const { verificarAssinatura } = useContext(AssinaturaContext);
+  const { user } = useContext(UserContext);
+  const { barbearia } = useParams();
+
+  useEffect(() => {
+    verificarAssinatura(barbearia);
+  }, [user]);
 
   return (
     <>

@@ -43,7 +43,7 @@ export const Menu = () => {
                     </li>
                   )}
                   {/* ASSINATURA */}
-                  {user?.ID_PAGSEGURO &&
+                  {user?.ID_PAGSEGURO !== null &&
                     <li
                       className="col-12 px-4 d-flex justify-content-between align-items-center cursor"
                       onClick={() => {

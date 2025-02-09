@@ -88,16 +88,42 @@ export const AssinaturaProvider = ({ children }) => {
         barbearia,
       });
       if (!result) throw "Erro ao buscar assinatura";
+      const planoResponse = result.data;
+      console.log(user);
+      switch(planoResponse) {
+        case 0: 
+            // Se planoResponse for 0, redireciona para a página da barbearia
+            navigate(`/${barbearia}`);
+            break;
+    
+        case 2: 
+            // Se planoResponse for 2, você pode adicionar a lógica aqui
+            console.log("Plano 2: Ação específica");
+            break;
+    
+        case 3: 
+            // Se planoResponse for 3, você pode adicionar a lógica aqui
+            console.log("Plano 3: Ação específica");
+            break;
+    
+        case 4: 
+            // Se planoResponse for 4, você pode adicionar a lógica aqui
+            console.log("Plano 4: Ação específica");
+            break;
+    
+        case 5: 
+            // Se planoResponse for 5, você pode adicionar a lógica aqui
+            console.log("Plano 5: Ação específica");
+            break;
+    
+        default:
+            // Caso planoResponse não seja nenhum dos valores acima
+            console.log("Plano não tratado ou inválido");
+            break;
+    }
+
     } catch (error) {
-      if (user?.ADM) {
-        if(error?.response?.data === 2) {
-          navigate(`/${barbearia}/assinaturadesativada`);
-        } else {
-          navigate(`/${barbearia}/assinaturabloqueada`);
-        }
-      } else {
-        navigate(`/${barbearia}/notfound`);
-      }
+      console.log(error);
     }
   };
 
