@@ -11,6 +11,7 @@ export const AssinaturaProvider = ({ children }) => {
   const [parcelas, setParcelas] = useState([]);
   const [erroAssinatura, setErroAssinatura] = useState(null);
   const [assinaturaLoader, setAssinaturaLoader] = useState(false);
+  const [loadAssinatura, setLoadAssinatura] = useState(false);
 
   const navigate = useNavigate();
 
@@ -89,7 +90,6 @@ export const AssinaturaProvider = ({ children }) => {
       });
       if (!result) throw "Erro ao buscar assinatura";
       const planoResponse = result.data;
-      console.log(user);
       switch(planoResponse) {
         case 0: 
             // Se planoResponse for 0, redireciona para a página da barbearia
@@ -116,6 +116,13 @@ export const AssinaturaProvider = ({ children }) => {
             console.log("Plano 5: Ação específica");
             break;
     
+        case 6:
+          // acabou tempo de teste
+          if(user?.ADM) {
+            navigate(`${barbearia}/assinaturabloqueada`);
+          } else {
+            navigate(`/notfound`);            
+          }
         default:
             // Caso planoResponse não seja nenhum dos valores acima
             console.log("Plano não tratado ou inválido");
@@ -146,6 +153,8 @@ export const AssinaturaProvider = ({ children }) => {
         alterarMeioDePagamento,
         assinaturaLoader,
         editarAssinatura,
+        loadAssinatura,
+        setLoadAssinatura
       }}
     >
       {children}

@@ -42,16 +42,20 @@ export const Assinatura = () => {
   }, []);
 
   useEffect(() => {
-    if (assinatura.ID_PAGSEGURO !== null) {
+    if (assinatura?.ID_PAGSEGURO !== null) {
       setState({
-        NUMERO_CARTAO: assinatura.PRIMEIROS_DIGITOS,
-        expiry: assinatura.DATA_VENCIMENTO,
+        NUMERO_CARTAO: assinatura?.PRIMEIROS_DIGITOS,
+        expiry: assinatura?.DATA_VENCIMENTO,
         cvc: "",
-        NOME: assinatura.NOME,
+        NOME: assinatura?.NOME,
         focus: "",
       });
     }
   }, [assinatura]);
+
+  useEffect(() => {
+    console.log(state);
+  }, [])
 
   return (
     <>
@@ -205,11 +209,12 @@ export const Assinatura = () => {
             </div>
             <div className="col-12 mt-sm-4 mb-4 col-md-6 d-flex justify-content-center align-items-center">
               <Cards
-                number={state.NUMERO_CARTAO}
-                expiry={state.expiry}
-                cvc={state.cvc}
-                name={state.NOME}
-                focused={state.focus}
+              // o problema e aqui os parametros
+                number={state?.NUMERO_CARTAO !== undefined ? state?.NUMERO_CARTAO : ""}
+                expiry={state?.expiry !== undefined ? state?.expiry : ""}
+                cvc={state?.cvc !== undefined ? state?.cvc : ""}
+                name={state?.NOME !== undefined ? state?.NOME : ""}
+                focused={state?.focus !== undefined ? state?.focus : ""}
               />
             </div>
             <div className="container-fluid mb-3">
