@@ -87,15 +87,14 @@ export const AssinaturaProvider = ({ children }) => {
     try {
       const result = await http.post("/assinatura/verificarAssinatura", {
         barbearia,
-      });
+      }, {withCredentials: true});
       if (!result) throw "Erro ao buscar assinatura";
-      const planoResponse = result.data;
+      const { planoResponse } = result.data;
+      const userReturn = result.data.userOBJ;
       switch(planoResponse) {
         case 0: 
-            // Se planoResponse for 0, redireciona para a página da barbearia
             navigate(`/${barbearia}`);
             break;
-    
         case 2: 
             // Se planoResponse for 2, você pode adicionar a lógica aqui
             console.log("Plano 2: Ação específica");
@@ -118,7 +117,7 @@ export const AssinaturaProvider = ({ children }) => {
     
         case 6:
           // acabou tempo de teste
-          if(user?.ADM) {
+          if(userReturn?.ADM) {
             navigate(`${barbearia}/assinaturabloqueada`);
           } else {
             navigate(`/notfound`);            
@@ -130,6 +129,7 @@ export const AssinaturaProvider = ({ children }) => {
     }
 
     } catch (error) {
+      navigate('/notfound');
       console.log(error);
     }
   };
