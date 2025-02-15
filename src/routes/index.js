@@ -38,7 +38,6 @@ export default function appRouter() {
                               <PagamentoProvider>
                                 <AssinaturaProvider>
                                   <Routes>
-                                    <Route path="/*" element={<NotFound />} />
                                     <Route path="/" element={<LandingPage />} />
                                     <Route
                                       path="/login/:plano_id"

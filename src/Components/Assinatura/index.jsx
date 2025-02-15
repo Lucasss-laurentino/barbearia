@@ -47,15 +47,11 @@ export const Assinatura = () => {
         NUMERO_CARTAO: assinatura?.PRIMEIROS_DIGITOS,
         expiry: assinatura?.DATA_VENCIMENTO,
         cvc: "",
-        NOME: assinatura?.NOME,
+        NOME: assinatura?.NOME_ASSINANTE,
         focus: "",
       });
     }
   }, [assinatura]);
-
-  useEffect(() => {
-    console.log(state);
-  }, [])
 
   return (
     <>

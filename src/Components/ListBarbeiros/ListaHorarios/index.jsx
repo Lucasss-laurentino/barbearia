@@ -3,9 +3,9 @@ import { ModalMarcarHorarioDeslogado } from "../ModalMarcarHorarioDeslogado";
 import { ServicoContext } from "../../../Context/ServicoContext";
 import { toast, Bounce } from "react-toastify";
 import { HorarioContext } from "../../../Context/HorarioContext";
-import { AnimacaoContext } from "../../../Context/AnimacaoHorarios";
 import { DataContext } from "../../../Context/DataContext";
 import { HorarioMarcadoContext } from "../../../Context/HorarioMarcadoContext";
+import { socket } from "../../../socket";
 
 export const ListaHorarios = ({
   barbeiro,
@@ -26,11 +26,11 @@ export const ListaHorarios = ({
     showModalMarcarHorarioDeslogado,
     setShowModalMarcarHorarioDeslogado,
     horarios,
+    setHorarios,
     marcarAlmoco,
     agendar,
   } = useContext(HorarioContext);
   const { horariosMarcado } = useContext(HorarioMarcadoContext);
-  const { setAnimaCalendario } = useContext(AnimacaoContext);
   const { data, pegarDataDeHoje } = useContext(DataContext);
   const [horariosDessaData, setHorariosDessaData] = useState([]);
   const [horaAtual, setHoraAtual] = useState();
@@ -72,6 +72,15 @@ export const ListaHorarios = ({
     const hora = hoje.getHours();
     const minutos = hoje.getMinutes().toString().padStart(2, "0");
     setHoraAtual(`${hora}:${minutos}`);
+  }, []);
+
+
+  // resposta socket pra nao renderizar horario marcado como almoço pelo adm
+  useEffect(() => {
+    const sockerInstancia = socket();
+    sockerInstancia.on(`almocoMarcadoUser${barbearia}`, (result) => {
+      setHorarios([...result]);
+    })
   }, []);
 
   return (
@@ -238,7 +247,7 @@ export const ListaHorarios = ({
                       {user.ADM && horario.INTERVALO && (
                         <button
                           className="btn btn-sm mx-2 border border-success text-success"
-                          onClick={() => marcarAlmoco(horario)}
+                          onClick={() => marcarAlmoco(horario, barbearia)}
                         >
                           Almoço
                         </button>
@@ -246,7 +255,7 @@ export const ListaHorarios = ({
                       {user.ADM && !horario.INTERVALO && (
                         <button
                           className="btn btn-sm bg-transparent mx-2 text-white border border-white"
-                          onClick={() => marcarAlmoco(horario)}
+                          onClick={() => marcarAlmoco(horario, barbearia)}
                         >
                           Almoço
                         </button>

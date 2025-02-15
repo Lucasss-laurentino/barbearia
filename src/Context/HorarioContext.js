@@ -1,5 +1,6 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { http } from "../http";
+import { socket } from "../socket";
 
 export const HorarioContext = createContext();
 
@@ -7,8 +8,7 @@ export const HorarioProvider = ({ children }) => {
   // STATES
   const [horarios, setHorarios] = useState([]);
   const [limparHoraAposExclusao, setLimparHoraAposExclusao] = useState(false);
-  const [usuarioTemHorarioMarcado, setUsuarioTemHorarioMarcado] =
-    useState(false);
+  const [usuarioTemHorarioMarcado, setUsuarioTemHorarioMarcado] = useState(false);
   const [errosHorarios, setErrosHorarios] = useState({
     erro: false,
     menssagem: "",
@@ -19,9 +19,23 @@ export const HorarioProvider = ({ children }) => {
   });
 
   const [loadHorarios, setLoadHorarios] = useState(false);
+  const [marcarAlmocoState, setMarcarAlmocoState] = useState({});
   const [agendamento, setAgendamento] = useState({});
-  const [showModalMarcarHorarioDeslogado, setShowModalMarcarHorarioDeslogado] =
-    useState(false);
+  const [showModalMarcarHorarioDeslogado, setShowModalMarcarHorarioDeslogado] = useState(false);
+  const [barbearia, setBarbearia] = useState("");
+
+  useEffect(() => {
+
+    if(Object.keys(marcarAlmocoState).length > 0) {
+      const socketInstancia = socket();
+      socketInstancia.emit(`marcarAlmoco`, marcarAlmocoState);
+  
+      socketInstancia.on(`almocoMarcado${barbearia}`, async (result) => {
+        setHorarios([...result]);
+      });  
+    }
+
+  }, [marcarAlmocoState]);
 
   // FUNÇÕES
 
@@ -93,7 +107,10 @@ export const HorarioProvider = ({ children }) => {
     } catch (error) {}
   };
 
-  const marcarAlmoco = async (horario) => {
+  const marcarAlmoco = async (horario, barbeariaParam) => {
+    setBarbearia(barbeariaParam);
+    setMarcarAlmocoState(horario);
+    /*
     try {
       const result = await http.post("/horario/marcarAlmoco", horario, {
         withCredentials: true,
@@ -104,6 +121,8 @@ export const HorarioProvider = ({ children }) => {
     } catch (error) {
       console.log(error);
     }
+    */
+
   };
 
   const agendar = async (

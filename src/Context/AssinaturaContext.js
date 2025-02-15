@@ -36,7 +36,18 @@ export const AssinaturaProvider = ({ children }) => {
         withCredentials: true,
       });
       if (!result) throw "Erro ao buscar assinatura";
-      setParcelas([...result.data]);
+      const parcelasReturn = result.data;
+      const parcelasFormatada = await parcelasReturn.map((parcela) => {
+        return {
+          pago: 'APPROVED',
+          valor: (parcela.valor / 100).toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+          }),
+          vencimento: parcela.vencimento,
+        };
+      })
+      setParcelas([...parcelasFormatada]);
     } catch (error) {
       console.log(error);
     }
