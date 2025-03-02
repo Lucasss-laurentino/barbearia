@@ -22,6 +22,11 @@ export const EditarUser = () => {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(editarUsuarioSchema),
+    defaultValues: {
+      NOME: user?.NOME,
+      NOME_BARBEARIA: user?.NOME_BARBEARIA,
+
+    }
   });
   const [imagem, setImagem] = useState();
 

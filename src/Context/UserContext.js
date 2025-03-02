@@ -29,6 +29,7 @@ export const UserProvider = ({ children }) => {
         ADM: response.data.ADM,
         BARBEIRO: response.data.BARBEIRO,
         VENCIMENTO: response.data.VENCIMENTO,
+        CHAVE_PIX: response.data.CHAVE_PIX,
       });
 
       setUserContrata((prevState) => ({
@@ -61,7 +62,9 @@ export const UserProvider = ({ children }) => {
       if (!result) throw "Erro ao editar perfil";
       setUser(result.data.user);
       setUsuarioEditado(true);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const pegarLogo = async (barbearia) => {
