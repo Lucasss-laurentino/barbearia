@@ -16,7 +16,7 @@ export const LandingPage = () => {
 
   return (
     <>
-      <NavbarLandingPage />
+      <NavbarLandingPage planos={planos} />
       <Header/>
       <Planos planos={planos} />
       <FeedBack />

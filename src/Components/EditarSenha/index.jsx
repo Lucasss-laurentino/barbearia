@@ -13,7 +13,7 @@ export const EditarSenha = () => {
     resolver: yupResolver(novaSenhaSchema),
   });
 
-  const { cancelarMudarSenha, changeSenha } = useContext(LoginContext);
+  const { cancelarMudarSenha, mudarSenha } = useContext(LoginContext);
 
   return (
     <>
@@ -24,7 +24,7 @@ export const EditarSenha = () => {
               <form
                 action=""
                 className="col-12 d-flex justify-content-center align-items-center flex-column"
-                onSubmit={handleSubmit(changeSenha)}
+                onSubmit={handleSubmit(mudarSenha)}
               >
                 <div className="col-12 col-lg-8 text-center">
                   <h4 className="text-white">Faça alteraçoes em sua senha</h4>
@@ -48,7 +48,7 @@ export const EditarSenha = () => {
                         <input
                           type="password"
                           className="input-editar-perfil col-12"
-                          placeholder={"************"}
+                          placeholder={"Senha"}
                           {...register("SENHA")}
                         />
                       </div>
@@ -93,7 +93,7 @@ export const EditarSenha = () => {
                         <input
                           type="password"
                           className="input-editar-perfil col-12"
-                          placeholder={"************"}
+                          placeholder={"Confirma Senha"}
                           {...register("CONFIRMAR_SENHA")}
                         />
                       </div>

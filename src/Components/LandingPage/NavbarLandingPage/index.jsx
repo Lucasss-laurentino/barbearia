@@ -1,6 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import "./index.css";
 
-export const NavbarLandingPage = () => {
+export const NavbarLandingPage = ({planos}) => {
+
+  const navigate = useNavigate();
+
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -39,7 +43,11 @@ export const NavbarLandingPage = () => {
                 </a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="/login/1">
+                <a className="nav-link" href=""  onClick={(e) => {
+                  e.preventDefault();
+                  navigate(`/login/1`, { state: { planos } })}
+                  }
+                >
                   Login
                 </a>
               </li>

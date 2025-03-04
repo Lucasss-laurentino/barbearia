@@ -4,18 +4,18 @@ import {
   createUserSchema,
   createUserSchemaADM,
 } from "../../../validations/createUserValidation";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { LoginContext } from "../../../Context/LoginContext";
 import { MutatingDots } from "react-loader-spinner";
-import { useParams } from "react-router-dom";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ServicoContext } from "../../../Context/ServicoContext";
 import InputMask from "react-input-mask";
+import { useLocation } from "react-router-dom";
+import { PlanoContext } from "../../../Context/PlanoContext";
 
-export const FormCadastro = ({barbearia}) => {
+export const FormCadastro = ({ barbearia, plano_id}) => {
 
-  // CONFIGURANDO USER FORM
   const {
     register,
     handleSubmit,
@@ -25,7 +25,6 @@ export const FormCadastro = ({barbearia}) => {
     resolver: yupResolver(!barbearia ? createUserSchemaADM : createUserSchema),
   });
 
-  // CONTEXT LOGIN
   const {
     confirmarEmail,
     loadLogin,
@@ -34,6 +33,10 @@ export const FormCadastro = ({barbearia}) => {
     setControlaLoginECadastro,
     barbeariaClean,
   } = useContext(LoginContext);
+
+  const location = useLocation();
+
+  const { setPlanos } = useContext(PlanoContext);
 
   const { setServicoEscolhido } = useContext(ServicoContext);
 
@@ -63,14 +66,18 @@ export const FormCadastro = ({barbearia}) => {
         });
       } else {
         setServicoEscolhido(null);
-        // função pra enviar email de confirmação
-        confirmarEmail(data);
+        confirmarEmail(data, plano_id, barbearia);
       }
     } else {
       setServicoEscolhido(null);
       confirmarEmail(data);
     }
   };
+
+  useEffect(() => {
+    const planos = location.state?.planos ? location.state.planos : [] ;
+    setPlanos([...planos]);
+  }, []);
 
   return (
     <>
@@ -94,7 +101,9 @@ export const FormCadastro = ({barbearia}) => {
         onSubmit={handleSubmit((data) => verificarAntesDeConfirmar(data))}
       >
         <div className="col-12 text-center">
-          <h3 className="titulo-form-login my-4">{barbearia ? barbeariaClean : "Barba Cabelo & Bigode"}</h3>
+          <h3 className="titulo-form-login my-4">
+            {barbearia ? barbeariaClean : "Barba Cabelo & Bigode"}
+          </h3>
           <h5 className="text-white">Criar Conta</h5>
           <p className="m-0 p-form-login">
             Comece agora a gerenciar sua barbearia de forma fácil e prática.
@@ -204,6 +213,36 @@ export const FormCadastro = ({barbearia}) => {
                 {errors.NOME && (
                   <p className="m-0 my-1 text-danger bg-white">
                     *{errors.NOME.message}
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+          {/* CELULAR */}
+          <div className="encapsula-span-input-login my-1">
+            <div className="col-8 d-flex flex-column">
+              <div className="col-12 d-flex justify-content-start align-items-center">
+                <span className="span-login">Celular</span>
+              </div>
+              <div className="col-12 d-flex justify-content-start align-items-center">
+                <div className="input-icone">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#fff" className="bi bi-phone" viewBox="0 0 16 16">
+                    <path d="M11 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM5 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+                    <path d="M8 14a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
+                  </svg>
+                  <InputMask
+                    mask="(99) 99999-9999"
+                    type="text"
+                    className="input-login col-10"
+                    placeholder="Número de contato"
+                    {...register("CELULAR")}
+                  />
+                </div>
+              </div>
+              <div className="col-12 d-flex justify-content-start align-items-center">
+                {errors.CELULAR && (
+                  <p className="m-0 my-1 text-danger bg-white">
+                    *{errors.CELULAR.message}
                   </p>
                 )}
               </div>

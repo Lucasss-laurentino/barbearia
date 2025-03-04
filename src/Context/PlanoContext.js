@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useCallback, useState } from "react";
 import { http } from "../http";
 
 export const PlanoContext = createContext();
@@ -29,8 +29,24 @@ export const PlanoProvider = ({ children }) => {
         }
     }
 
+    const verificaPlano = async (userCadastro, plano_id) => {
+        if(plano_id !== null) {
+            const plano = planos.find((plano) => plano.ID === parseInt(plano_id));
+
+            if(Object.keys(plano).length < 1) {
+              userCadastro.ADM = false;
+            } else {
+              userCadastro.ADM = true;
+            };     
+        } else {
+            userCadastro.ADM = false;
+        }
+
+        return userCadastro;
+    }
+
     return (
-      <PlanoContext.Provider value={{ planos, getPlanos, getMeuPlano, meuPlano}}>
+      <PlanoContext.Provider value={{ planos, getPlanos, getMeuPlano, meuPlano, setPlanos, verificaPlano}}>
         {children}
       </PlanoContext.Provider>
     );

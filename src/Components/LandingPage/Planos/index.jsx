@@ -1,7 +1,11 @@
+import { useNavigate } from "react-router-dom";
 import "./index.css";
 import { Fragment } from 'react';
 
 export const Planos = ({ planos }) => {
+
+  const navigate = useNavigate();
+
   return (
     <>
       <section className="bg-light py-5 border-bottom">
@@ -109,7 +113,11 @@ export const Planos = ({ planos }) => {
                         <div className="d-grid">
                           <a
                             className="btn btn-primary btn-lg text-btn-responsive-planos"
-                            href={`/login/${plano.ID}`}
+                            href=""
+                            onClick={(e) => {
+                              e.preventDefault();
+                              navigate(`/login/${plano.ID}`, { state: { planos } })}
+                            }
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"

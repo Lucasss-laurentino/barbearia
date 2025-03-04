@@ -8,9 +8,15 @@ export const createUserSchemaADM = yup.object({
 
   NOME_BARBEARIA: yup.string().required("Campo obrigatório"),
 
-  NOME: yup
+  NOME: yup.string().required("Campo obrigatório"),
+
+  CELULAR: yup
     .string()
-    .required("Campo obrigatório"),
+    .required("Campo obrigatório")
+    .matches(
+      /^\(\d{2}\) \d{5}-\d{4}$/,
+      "O número de celular precisa estar no formato correto"
+    ),
 
   SENHA: yup
     .string()

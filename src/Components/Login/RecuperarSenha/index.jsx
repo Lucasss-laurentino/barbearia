@@ -15,7 +15,7 @@ export const RecuperarSenha = ({barbearia}) => {
   });
 
   const {
-    recuperarSenha,
+    enviarEmailDeRecuperacao,
     cadastroError,
     setCadastroError,
     setEsqueceuSenha,
@@ -27,7 +27,7 @@ export const RecuperarSenha = ({barbearia}) => {
     <form
       action=""
       className="col-12 formulario-page-login"
-      onSubmit={handleSubmit(recuperarSenha)}
+      onSubmit={handleSubmit(enviarEmailDeRecuperacao)}
     >
       <div className="col-12 text-center">
         <h3 className="titulo-form-login my-4">{barbearia ? barbeariaClean : "Barba Cabelo & Bigode"}</h3>

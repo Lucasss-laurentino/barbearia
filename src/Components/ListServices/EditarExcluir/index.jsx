@@ -1,3 +1,5 @@
+import './index.css';
+
 export const EditarExcluir = ({servico, setEditarServico, setShowModalServico, setServicoASerExcluido, setShowModalExcluirServico}) => {
   return (
     <>

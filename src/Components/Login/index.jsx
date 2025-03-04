@@ -27,7 +27,8 @@ export const Login = () => {
   const [recuperaSenha, setRecuperaSenha] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem("email_recuperar")) {
+    // gatilho pra chamar a função -> validarCodigoMudarSenha em <ConfirmaCodigo/>
+    if (localStorage.getItem("email_recuperar") !== '{}') {
       setRecuperaSenha(true);
     } else {
       setRecuperaSenha(false);
@@ -68,7 +69,7 @@ export const Login = () => {
             <FormLogin barbearia={barbearia} />
           )}
           {!controlaLoginECadastro && !esqueceuSenha && !confirmarCodigo && (
-            <FormCadastro barbearia={barbearia}/>
+            <FormCadastro barbearia={barbearia} plano_id={plano_id}/>
           )}
 
           {esqueceuSenha && controlaLoginECadastro && <RecuperarSenha barbearia={barbearia}/>}

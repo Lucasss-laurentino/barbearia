@@ -12,7 +12,7 @@ export const ConfirmaCodigo = ({recuperaSenha, setRecuperaSenha, barbearia = nul
     loadLogin,
     cadastroError,
     setCadastroError,
-    mudarSenha,
+    validarCodigoMudarSenha,
     barbeariaClean,
   } = useContext(LoginContext);
 
@@ -28,7 +28,7 @@ export const ConfirmaCodigo = ({recuperaSenha, setRecuperaSenha, barbearia = nul
     <form
       action=""
       className="col-12 formulario-page-login"
-      onSubmit={handleSubmit(!recuperaSenha ? (data) => criarUsuario(data, barbearia, plano_id) : mudarSenha)}
+      onSubmit={handleSubmit(!recuperaSenha ? (data) => criarUsuario(data, barbearia, plano_id) : validarCodigoMudarSenha)}
     >
       <div className="col-12 text-center">
         <h3 className="titulo-form-login my-4">{barbearia ? barbeariaClean : "Barba Cabelo & Bigode"}</h3>

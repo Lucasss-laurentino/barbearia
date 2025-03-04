@@ -5,7 +5,7 @@ import { UserContext } from "./UserContext";
 import { AbaBottomContext } from "./AbaBottomContext";
 import Cookies from "js-cookie";
 import { ServicoContext } from "./ServicoContext";
-import { HorarioMarcadoContext } from "./HorarioMarcadoContext";
+import { PlanoContext } from "./PlanoContext";
 
 export const LoginContext = createContext();
 
@@ -14,7 +14,7 @@ export const LoginProvider = ({ children }) => {
 
   const { setActive } = useContext(AbaBottomContext);
   const { setServicoEscolhido } = useContext(ServicoContext);
-  const { setHorarioMarcado } = useContext(HorarioMarcadoContext);
+  const { verificaPlano } = useContext(PlanoContext);
   const { setUser, user } = useContext(UserContext);
   const [loadLogin, setLoadLogin] = useState(false);
   const [loginError, setLoginError] = useState(null);
@@ -35,15 +35,13 @@ export const LoginProvider = ({ children }) => {
     }
   }, [barbearia]);
 
-  // PRECISO MUDAR O NOME DAS FUNÇÕES PRA RECUPERAÇÃO DE SENHA
-  // NOMES ESTÃO TROCADOS
-
-  const criarUsuario = async (codigo, barbearia = null, plano_id) => {
-    setLoadLogin(true);
-
+  const criarUsuario = async (codigo, barbearia = null, plano_id = null) => {
     try {
+
+      setLoadLogin(true);
+
       let dataVencimento;
-      if (!barbearia) {
+      if (!barbearia || barbearia === null) {
         dataVencimento = await formatarDataVencimento();
         userCadastro.VENCIMENTO = dataVencimento;
       } else {
@@ -71,18 +69,24 @@ export const LoginProvider = ({ children }) => {
     }
   };
 
-  const confirmarEmail = async (user) => {
+  const confirmarEmail = async (user, plano_id = null, barbearia = null) => {
     try {
       setLoadLogin(true);
+      if(barbearia && barbearia !== null){
+        user.NOME_BARBEARIA = barbearia;
+      }
+      user = await verificaPlano(user, plano_id);
+
       const result = await http.post("login/confirmarEmail", { user });
       if (result) {
+        user.PLANO_ID = plano_id;
         setUserCadastro(user);
         setConfirmarCodigo(true);
         setLoadLogin(false);
         setCadastroError(null);
       }
     } catch (error) {
-      setCadastroError(error?.response?.data?.message);
+      setCadastroError(error?.response?.data);
       setLoadLogin(false);
     }
   };
@@ -117,12 +121,11 @@ export const LoginProvider = ({ children }) => {
     }
   };
 
-  // manda req pra enviar email pra confirmar a recuperação de senha
-  const recuperarSenha = async (data) => {
+  const enviarEmailDeRecuperacao = async (data) => {
     try {
       setLoadLogin(true);
-      const result = await http.post("/login/recuperarSenha", {
-        EMAIL: data.EMAIL_RECUPERAR_SENHA,
+      const result = await http.post("/login/enviarEmailDeRecuperacao", {
+        USER: {EMAIL: data.EMAIL_RECUPERAR_SENHA},
       });
       if (!result) throw false;
       setEsqueceuSenha(false);
@@ -138,21 +141,18 @@ export const LoginProvider = ({ children }) => {
     }
   };
 
-  // envia req pra mudar senha
-  const mudarSenha = async (data) => {
+  const validarCodigoMudarSenha = async (data) => {
     try {
       setLoadLogin(true);
-      const result = await http.post("/login/mudarSenha", {
+      const result = await http.post("/login/validarCodigoMudarSenha", {
         EMAIL: localStorage.getItem("email_recuperar"),
         CODIGO: data.CODIGO,
-        BARBEARIA: barbearia,
       });
       if (!result) throw false;
-      // setUser(result.data.objReturn.USER);
       setLoadLogin(false);
-      // Armazenando o token no cookie
-      const token = result.data.objReturn.token;
-      const barbeariaReturn = result.data.objReturn.NOME_BARBEARIA;
+
+      const token = result.data.TOKEN;
+      const barbeariaReturn = result.data.NOME_BARBEARIA;
       const expires = new Date();
       expires.setMinutes(expires.getMinutes() + 10);
       document.cookie = `token=${token}; expires=${expires.toUTCString()}; path=/`;
@@ -172,12 +172,12 @@ export const LoginProvider = ({ children }) => {
     setEsqueceuSenha(false);
   };
 
-  const changeSenha = async (data) => {
+  const mudarSenha = async (data) => {
     try {
       const email = localStorage.getItem("email_recuperar");
       if (email) {
-        const result = await http.post("login/changeSenha", { data, email });
-        if (!result.erro) {
+        const result = await http.post("login/mudarSenha", { data, email });
+        if (!result.data.erro) {
           localStorage.setItem("email_recuperar", "{}");
           Cookies.remove("token");
           setActive(4);
@@ -202,6 +202,9 @@ export const LoginProvider = ({ children }) => {
         Cookies.remove("connect.sid");
         setServicoEscolhido("");
         localStorage.setItem("agendamento", "{}");
+        setControlaLoginECadastro(true);
+        setEsqueceuSenha(false);
+        setConfirmarCodigo(false);
       } catch (error) {
         console.log(error);
       }
@@ -245,16 +248,16 @@ export const LoginProvider = ({ children }) => {
         setConfirmarCodigo,
         userCadastro,
         setUserCadastro,
-        recuperarSenha,
+        enviarEmailDeRecuperacao,
         controlaLoginECadastro,
         setControlaLoginECadastro,
         esqueceuSenha,
         setEsqueceuSenha,
-        mudarSenha,
+        validarCodigoMudarSenha,
         barbearia,
         setBarbearia,
         cancelarMudarSenha,
-        changeSenha,
+        mudarSenha,
         barbeariaClean,
         setBarbeariaClean,
       }}
