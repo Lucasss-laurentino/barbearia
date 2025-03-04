@@ -13,7 +13,7 @@ export const AvisoPagamentoAtrasado = () => {
   const { barbearia } = useParams();
 
   useEffect(() => {
-    verificarAssinatura(barbearia);
+   // verificarAssinatura(barbearia);
   }, [user]);
 
   return (

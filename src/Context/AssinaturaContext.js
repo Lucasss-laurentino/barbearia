@@ -93,16 +93,14 @@ export const AssinaturaProvider = ({ children }) => {
     }
   }
 
-  // alem de verificar se a assinatura está ativa, verifica o vencimento da fatura
   const verificarAssinatura = async (barbearia) => {
     try {
       const result = await http.post("/assinatura/verificarAssinatura", {
         barbearia,
       }, {withCredentials: true});
       if (!result) throw "Erro ao buscar assinatura";
-      const { planoResponse } = result.data;
-      const userReturn = result.data.userOBJ;
-      switch(planoResponse) {
+      const { assinaturaVerificada } = result.data;
+      switch(assinaturaVerificada.codigo) {
         case 0: 
             navigate(`/${barbearia}`);
             break;
@@ -127,12 +125,13 @@ export const AssinaturaProvider = ({ children }) => {
             break;
     
         case 6:
-          // acabou tempo de teste
-          if(userReturn?.ADM) {
-            navigate(`${barbearia}/assinaturabloqueada`);
-          } else {
-            navigate(`/notfound`);            
-          }
+            if(!assinaturaVerificada.logado || !assinaturaVerificada.adm) {
+              navigate(`/notfound`);            
+            }
+            if(assinaturaVerificada.adm){
+              navigate(`${barbearia}/assinaturabloqueada`);
+            }
+            break;
         default:
             // Caso planoResponse não seja nenhum dos valores acima
             console.log("Plano não tratado ou inválido");

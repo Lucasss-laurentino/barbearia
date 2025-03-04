@@ -177,6 +177,7 @@ export const Index = () => {
     verificarAssinatura(barbearia);
   }, [user]);
 
+
   return (
     <>
       <div className="body">
