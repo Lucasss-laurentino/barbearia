@@ -1,8 +1,7 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { http } from "../http";
 import { LoginContext } from "./LoginContext";
 import { useNavigate } from "react-router-dom";
-import { UserContext } from "./UserContext";
 
 export const AssinaturaContext = createContext();
 
@@ -16,7 +15,61 @@ export const AssinaturaProvider = ({ children }) => {
   const navigate = useNavigate();
 
   const { logout } = useContext(LoginContext);
-  const { user } = useContext(UserContext);
+
+  const criarAssinaturaPagBank = async (data, barbearia) => {
+    try {
+      
+      setAssinaturaLoader(true);
+      
+      const card = await criptografaCartao(data);
+
+      const dadosUsuario = await formatarDadosAssinaturaPagBank(data);
+
+      if (card.hasErrors)
+        throw new Error("Verifique os dados do seu cartão e tente novamente");
+
+      const result = await http.post(
+        "assinatura/criarAssinaturaPagBank",
+        { card, dadosUsuario },
+        { withCredentials: true }
+      );
+
+      if (!result) throw "Erro ao tentar fazer pagamento";
+      navigate(`/${barbearia}`);
+      setAssinaturaLoader(false);
+
+    } catch (error) {
+      //setMsgError(error?.response?.data);
+      setAssinaturaLoader(false);
+    }
+  };
+
+  const formatarDadosAssinaturaPagBank = async (data) => {
+    const dadosUsuario = {
+      NOME: data.NOME,
+      CELULAR: data.CELULAR,
+      CPF: data.CPF,
+      CVC: data.CVC,
+    };
+    return dadosUsuario;
+  }
+
+  const criptografaCartao = async (data) => {
+
+    const NUMERO_CARTAO = data.NUMERO_CARTAO.replace(/\s/g, "");
+    const dataExpira = data.EXPIRA.split("/");
+
+    const card = window.PagSeguro.encryptCard({
+      publicKey: process.env.REACT_APP_PK_PAGBANK,
+      holder: data.NOME,
+      number: NUMERO_CARTAO,
+      expMonth: dataExpira[0],
+      expYear: `20${dataExpira[1]}`,
+      securityCode: data.CVC,
+    });
+
+    return card;
+  }
 
   const getAssinatura = async () => {
     try {
@@ -39,14 +92,14 @@ export const AssinaturaProvider = ({ children }) => {
       const parcelasReturn = result.data;
       const parcelasFormatada = await parcelasReturn.map((parcela) => {
         return {
-          pago: 'APPROVED',
-          valor: (parcela.valor / 100).toLocaleString('pt-BR', {
-            style: 'currency',
-            currency: 'BRL',
+          pago: "APPROVED",
+          valor: (parcela.valor / 100).toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL",
           }),
           vencimento: parcela.vencimento,
         };
-      })
+      });
       setParcelas([...parcelasFormatada]);
     } catch (error) {
       console.log(error);
@@ -74,83 +127,91 @@ export const AssinaturaProvider = ({ children }) => {
   const ativarAssinatura = async (barbearia) => {
     try {
       setAssinaturaLoader(true);
-      const result = await http.get("assinatura/ativar", {withCredentials: true});
-      if(!result) throw "Erro ao ativar assinatura";
+      const result = await http.get("assinatura/ativar", {
+        withCredentials: true,
+      });
+      if (!result) throw "Erro ao ativar assinatura";
       setAssinaturaLoader(false);
       navigate(`/${barbearia}`);
-    } catch(error) {
+    } catch (error) {
       console.log(error);
       setAssinaturaLoader(false);
     }
-  }
+  };
 
   const editarAssinatura = async (plano) => {
     try {
-      const result = await http.post("assinatura/editar", {plano}, {withCredentials: true});
-      if(!result) throw "Erro ao editar assinatura";
-    } catch(error) {
-      console.log(error);
-    }
-  }
-
-  const verificarAssinatura = async (barbearia) => {
-    try {
-      const result = await http.post("/assinatura/verificarAssinatura", {
-        barbearia,
-      }, {withCredentials: true});
-      if (!result) throw "Erro ao buscar assinatura";
-      const { assinaturaVerificada } = result.data;
-      switch(assinaturaVerificada.codigo) {
-        case 0: 
-            navigate(`/${barbearia}`);
-            break;
-        case 2: 
-            // Se planoResponse for 2, você pode adicionar a lógica aqui
-            console.log("Plano 2: Ação específica");
-            break;
-    
-        case 3: 
-            // Se planoResponse for 3, você pode adicionar a lógica aqui
-            console.log("Plano 3: Ação específica");
-            break;
-    
-        case 4: 
-            // Se planoResponse for 4, você pode adicionar a lógica aqui
-            console.log("Plano 4: Ação específica");
-            break;
-    
-        case 5: 
-            // Se planoResponse for 5, você pode adicionar a lógica aqui
-            console.log("Plano 5: Ação específica");
-            break;
-    
-        case 6:
-            if(!assinaturaVerificada.logado || !assinaturaVerificada.adm) {
-              navigate(`/notfound`);            
-            }
-            if(assinaturaVerificada.adm){
-              navigate(`${barbearia}/assinaturabloqueada`);
-            }
-            break;
-        default:
-            // Caso planoResponse não seja nenhum dos valores acima
-            console.log("Plano não tratado ou inválido");
-            break;
-    }
-
+      const result = await http.post(
+        "assinatura/editar",
+        { plano },
+        { withCredentials: true }
+      );
+      if (!result) throw "Erro ao editar assinatura";
     } catch (error) {
-      navigate('/notfound');
       console.log(error);
     }
   };
 
-  const alterarMeioDePagamento = async (data) => {
+  const verificarAssinatura = async (barbearia) => {
+    try {
+      const result = await http.post(
+        "/assinatura/verificarAssinatura",
+        {
+          barbearia,
+        },
+        { withCredentials: true }
+      );
+      if (!result) throw "Erro ao buscar assinatura";
+      const { assinaturaVerificada } = result.data;
+      switch (assinaturaVerificada.codigo) {
+        case 0:
+          navigate(`/${barbearia}`);
+          break;
+        case 2:
+          // Se planoResponse for 2, você pode adicionar a lógica aqui
+          console.log("Plano 2: Ação específica");
+          break;
 
-  }
+        case 3:
+          // Se planoResponse for 3, você pode adicionar a lógica aqui
+          console.log("Plano 3: Ação específica");
+          break;
+
+        case 4:
+          // Se planoResponse for 4, você pode adicionar a lógica aqui
+          console.log("Plano 4: Ação específica");
+          break;
+
+        case 5:
+          // Se planoResponse for 5, você pode adicionar a lógica aqui
+          console.log("Plano 5: Ação específica");
+          break;
+
+        case 6:
+          if (!assinaturaVerificada.logado || !assinaturaVerificada.adm) {
+            navigate(`/notfound`);
+          }
+          if (assinaturaVerificada.adm) {
+            navigate(`${barbearia}/assinaturabloqueada`);
+          }
+          break;
+        default:
+          // Caso planoResponse não seja nenhum dos valores acima
+          console.log("Plano não tratado ou inválido");
+          break;
+      }
+    } catch (error) {
+      navigate("/notfound");
+      console.log(error);
+    }
+  };
+
+  const alterarMeioDePagamento = async (data) => {};
 
   return (
     <AssinaturaContext.Provider
       value={{
+        criarAssinaturaPagBank,
         getAssinatura,
         assinatura,
         getParcelas,
@@ -164,11 +225,10 @@ export const AssinaturaProvider = ({ children }) => {
         assinaturaLoader,
         editarAssinatura,
         loadAssinatura,
-        setLoadAssinatura
+        setLoadAssinatura,
       }}
     >
       {children}
     </AssinaturaContext.Provider>
-  
-);
+  );
 };
