@@ -3,17 +3,19 @@ import "./index.css";
 import { FormPagamentoAssinatura } from "../FormPagamentoAssinatura";
 import { AssinaturaContext } from "../../Context/AssinaturaContext";
 import { UserContext } from "../../Context/UserContext";
-import { useParams } from "react-router-dom";
+import { PlanoContext } from "../../Context/PlanoContext";
 
 export const AvisoPagamentoAtrasado = () => {
   const [assinar, setAssinar] = useState(false);
 
-  const { verificarAssinatura } = useContext(AssinaturaContext);
+  const { getAssinatura } = useContext(AssinaturaContext);
+  const { getMeuPlano } = useContext(PlanoContext);
+
   const { user } = useContext(UserContext);
-  const { barbearia } = useParams();
 
   useEffect(() => {
-   // verificarAssinatura(barbearia);
+   getAssinatura();
+   getMeuPlano();
   }, [user]);
 
   return (

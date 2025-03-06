@@ -5,18 +5,19 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { pagamentoSchema } from "../../validations/pagamento";
 import InputMask from "react-input-mask";
-import { PagamentoContext } from "../../Context/PagamentoContext";
 import { useParams } from "react-router-dom";
 import { MutatingDots } from "react-loader-spinner";
-import { ToastContainer, toast, Bounce } from "react-toastify";
+import { ToastContainer, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "react-credit-cards-2/dist/es/styles-compiled.css";
 import { AssinaturaContext } from "../../Context/AssinaturaContext";
+import { PlanoContext } from "../../Context/PlanoContext";
 
 export const FormPagamentoAssinatura = () => {
-  const { assinaturaLoader, criarAssinaturaPagBank } =
-    useContext(AssinaturaContext);
+  const { assinaturaLoader, criarAssinaturaPagBank, assinatura } = useContext(AssinaturaContext);
+  const { meuPlano } = useContext(PlanoContext);
   const { barbearia } = useParams();
+
   const [state, setState] = useState({
     number: "",
     expiry: "",
@@ -40,31 +41,13 @@ export const FormPagamentoAssinatura = () => {
 
   const handleNomeChange = (e) => {
     let inputValue = e.target.value;
-    // Capitaliza a primeira letra e mantém as demais inalteradas
     inputValue = inputValue.charAt(0).toUpperCase() + inputValue.slice(1);
-    // Atualiza o valor no formulário
     setValue("NOME", inputValue);
   };
 
-  /*
-    useEffect(() => {
-        if (msgError !== null) {
-            toast.error(msgError, {
-                position: "bottom-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-                transition: Bounce,
-            });
-
-            setMsgError(null);
-        }
-    }, [msgError]);
-*/
+  useEffect(() => {
+    console.log(meuPlano);
+  }, [])
 
   return (
     <>
@@ -89,10 +72,10 @@ export const FormPagamentoAssinatura = () => {
               {/* CARD PLANO */}
               <div className="d-none d-md-flex col-5 justify-content-center align-items-center flex-column">
                 <div className="small text-uppercase fw-bold text-muted">
-                  Plano Start
+                  {meuPlano.NOME}
                 </div>
                 <div className="mb-3">
-                  <span className="display-4 fw-bold">60</span>
+                  <span className="display-4 fw-bold">{meuPlano.PRECO}</span>
                   <span className="text-muted">/ mês</span>
                 </div>
                 <ul className="list-unstyled mb-4">
@@ -108,7 +91,17 @@ export const FormPagamentoAssinatura = () => {
                       <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0" />
                       <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z" />
                     </svg>
-                    <strong>Profissionais</strong>
+                    {meuPlano.ID === 1 &&
+                      <strong>2 Profissionais</strong>
+                    }
+                    {meuPlano.ID === 2 &&
+                      <strong>4 Profissionais</strong>
+
+                    }
+                    {meuPlano.ID === 3 &&
+                      <strong>Profissionais ilimitado</strong>
+
+                    }
                   </li>
                   <li className="mb-2">
                     <svg

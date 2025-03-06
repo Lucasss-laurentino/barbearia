@@ -18,6 +18,10 @@ export const Menu = () => {
     setShowModalHabilitarCobranca(false);
   }
 
+  useEffect(() => {
+    console.log(user);
+  }, []);
+
   return (
     <>
     <ModalHabilitarCobranca

@@ -30,6 +30,7 @@ export const UserProvider = ({ children }) => {
         BARBEIRO: response.data.BARBEIRO,
         VENCIMENTO: response.data.VENCIMENTO,
         CHAVE_PIX: response.data.CHAVE_PIX,
+        ID_PAGSEGURO: response.data.ID_PAGSEGURO,
       });
 
       setUserContrata((prevState) => ({

@@ -56,19 +56,24 @@ export const AssinaturaProvider = ({ children }) => {
 
   const criptografaCartao = async (data) => {
 
-    const NUMERO_CARTAO = data.NUMERO_CARTAO.replace(/\s/g, "");
-    const dataExpira = data.EXPIRA.split("/");
+    try {
+      const NUMERO_CARTAO = data.NUMERO_CARTAO.replace(/\s/g, "");
+      const dataExpira = data.EXPIRA.split("/");
+  
+      const card = window.PagSeguro.encryptCard({
+        publicKey: process.env.REACT_APP_PK_PAGBANK,
+        holder: data.NOME,
+        number: NUMERO_CARTAO,
+        expMonth: dataExpira[0],
+        expYear: `20${dataExpira[1]}`,
+        securityCode: data.CVC,
+      });
+      return card;
+  
+    } catch(error) {
+      console.log(error)
+    }
 
-    const card = window.PagSeguro.encryptCard({
-      publicKey: process.env.REACT_APP_PK_PAGBANK,
-      holder: data.NOME,
-      number: NUMERO_CARTAO,
-      expMonth: dataExpira[0],
-      expYear: `20${dataExpira[1]}`,
-      securityCode: data.CVC,
-    });
-
-    return card;
   }
 
   const getAssinatura = async () => {
