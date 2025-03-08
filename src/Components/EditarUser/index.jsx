@@ -6,16 +6,18 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { editarUsuarioSchema } from "../../validations/editarUsuario";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import { MutatingDots } from "react-loader-spinner";
 
 export const EditarUser = () => {
-  const { editarUsuario, usuarioEditado, setUsuarioEditado, user, load } =
+  const { editarUsuario, usuarioEditado, setUsuarioEditado, user, load, setLogo } =
     useContext(UserContext);
 
   const navigate = useNavigate();
+  const { barbearia } = useParams();
+
   const {
     register,
     handleSubmit,
@@ -44,10 +46,13 @@ export const EditarUser = () => {
         transition: Bounce,
       });
 
-      setTimeout(() => {
-        navigate(`/${user.NOME_BARBEARIA}`);
+      setLogo(user.IMG_LOGO)
+      if(barbearia === user.NOME_BARBEARIA) {
+        navigate(`/${barbearia}`);
         setUsuarioEditado(false);
-      }, 3000);
+      } else {
+        window.location.href = `/${user.NOME_BARBEARIA}`;
+      }
     }
   }, [usuarioEditado]);
 

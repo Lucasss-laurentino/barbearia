@@ -22,16 +22,7 @@ export const UserProvider = ({ children }) => {
       });
       if (!response.data || !response.data.ID)
         throw new Error("Usuário não encontrado");
-      setUser({
-        ID: response.data.ID,
-        NOME: response.data.NOME,
-        NOME_BARBEARIA: response.data.NOME_BARBEARIA,
-        ADM: response.data.ADM,
-        BARBEIRO: response.data.BARBEIRO,
-        VENCIMENTO: response.data.VENCIMENTO,
-        CHAVE_PIX: response.data.CHAVE_PIX,
-        ID_PAGSEGURO: response.data.ID_PAGSEGURO,
-      });
+      setUser(response.data);
       setUserContrata((prevState) => ({
         ...prevState,
         user: response.data,
@@ -45,9 +36,9 @@ export const UserProvider = ({ children }) => {
   const editarUsuario = async (data, imagem) => {
     setLoad(true);
     const formData = new FormData();
-
-    formData.append("NOME", data.NOME);
-    formData.append("NUMERO_CARTAO", data.NUMERO_CARTAO);
+    console.log(user);
+    formData.append("NOME", data.NOME === user.NOME ? "" : data.NOME);
+    formData.append("SENHA", data.SENHA);
     formData.append("NOME_BARBEARIA", data.NOME_BARBEARIA);
     formData.append("LOGO", imagem);
 
@@ -59,11 +50,11 @@ export const UserProvider = ({ children }) => {
         },
       });
       setLoad(false);
-      if (!result) throw "Erro ao editar perfil";
+      if (result?.data?.erro) throw new Error(result.data.message);
       setUser(result.data.user);
       setUsuarioEditado(true);
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
     }
   };
 

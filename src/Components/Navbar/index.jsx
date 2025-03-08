@@ -2,10 +2,13 @@ import "./index.css";
 import { useContext } from "react";
 import { MenuContext } from "../../Context/MenuContext";
 import { UserContext } from "../../Context/UserContext";
+import { useParams } from "react-router-dom";
 
 export const Navbar = () => {
   const { setClassMenu, classMenu } = useContext(MenuContext);
   const { user, logout, logo } = useContext(UserContext);
+  const { barbearia } = useParams();
+
   return (
     <>
       <div className="container-fluid per-nav-bar">
@@ -13,9 +16,9 @@ export const Navbar = () => {
           <div className="col-12 py-2 d-flex justify-content-between align-items-center">
             <div className="img-logo">
               {logo ? (
-                <img src={`${process.env.REACT_APP_API_LOGO}${logo}`} width="100%" alt="" />
+                <img src={`${process.env.REACT_APP_API_LOGO}${logo}`} className="btn-home" onClick={() => window.location.href = `/${barbearia}`} width="100%" alt="" />
               ) : (
-                <img src="/logo-fotor.png" width="100%" alt="" />
+                <img src="/logo-fotor.png" width="100%" alt=""  className="btn-home" onClick={() => window.location.href = `/${barbearia}`}/>
               )}
             </div>
             {user?.ID && (

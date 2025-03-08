@@ -6,18 +6,22 @@
 }
 
 .img-logo {
-  width: 20%; /* Largura fixa */
-  height: 80px; /* Altura fixa */
-  overflow: hidden; /* Esconde partes da imagem que saem do contêiner */
-  border-radius: 10%; /* Torna a borda arredondada */
-  position: relative; /* Necessário para o posicionamento da imagem */
+  width: 20%; 
+  height: 80px; 
+  overflow: hidden; 
+  border-radius: 10%; 
+  position: relative; 
   display: flex;
-  justify-content: center; /* Centraliza a imagem horizontalmente */
-  align-items: center; /* Centraliza a imagem verticalmente */
+  justify-content: center; 
+  align-items: center;
 }
 
 .img-logo img {
-  width: 100%; /* A imagem vai ocupar 100% da largura do contêiner */
-  height: 100%; /* A imagem vai ocupar 100% da altura do contêiner */
-  object-fit: contain; /* Ajusta a imagem para manter a proporção, sem distorção */
+  width: 100%; 
+  height: 100%; 
+  object-fit: contain;
+}
+
+.btn-home {
+  cursor: pointer;
 }
