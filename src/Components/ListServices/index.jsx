@@ -1,5 +1,5 @@
 import "./index.css";
-import { Fragment, useContext, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect } from "react";
 import { ServicoContext } from "../../Context/ServicoContext";
 import { UserContext } from "../../Context/UserContext";
 import { ModalServico } from "../ModalServico";
@@ -48,6 +48,7 @@ export const ListService = () => {
   }, [servicoEscolhido]);
 
   useEffect(() => {
+    // se existir um horario agendado, seta servicoAgendado pra mostrar icone verificado em "escolher"
     pegarServicos(barbearia);
     if (
       localStorage.getItem("agendamento") &&

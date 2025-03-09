@@ -10,6 +10,7 @@
   z-index: 2;
 }
 
+
 .encapsula-calendario {
   width: 100%;
   display: flex;
@@ -19,7 +20,7 @@
   top: 16%;
   transition: top 0.3s ease-in-out;
   flex-direction: column;
-  z-index: 2;
+  z-index: 5;
 }
 
 .close-calendario {
@@ -29,4 +30,12 @@
 .close-calendario > button {
   background-color: white;
   border: none;
+}
+
+@media (max-width: 370px) {
+  .react-calendar {
+    width: 100%;
+    max-width: 260px;
+    z-index: 5;
+  }
 }

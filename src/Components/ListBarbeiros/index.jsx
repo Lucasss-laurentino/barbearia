@@ -1,9 +1,8 @@
 // BIBLIOTECA IMPORTS
 import { useEffect, useState } from "react";
-import { ModalBarbeiros } from "../ModalBarbeiros";
 import "./index.css";
 import { Fragment, useContext } from "react";
-import { ModalHorarios } from "../ModalHorarios";
+import { ModalHorarioBarbeiro } from "./ModalHorarioBarbeiro";
 import { ModalExcluir } from "../ModalExcluir";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -22,18 +21,10 @@ import { HorarioMarcadoContext } from "../../Context/HorarioMarcadoContext";
 import { useParams } from "react-router-dom";
 import { socket } from "../../socket";
 import { Calendario } from "../Calendar";
-import { ServicoContext } from "../../Context/ServicoContext";
+import { ModalBarbeiro } from "./ModalBarbeiro";
 
-// COMPONENTE
 export const ListBarbeiros = () => {
-  // STATES
-  const [show, setShow] = useState(false);
-  const [showHorarios, setShowHorarios] = useState(false);
-  const [barbeiro, setBarbeiro] = useState({});
-  const [showExcluirHorario, setExcluirHorario] = useState(false);
-  const [horarioSelecionado, setHorarioSelecionado] = useState(null);
-  const [showModalPagamentoAgendamento, setShowModalPagamentoAgendamento] =
-    useState(false);
+
   const [classeCalendario, setClasseCalendario] = useState(
     "encapsula-calendario-hidden"
   );
@@ -41,23 +32,6 @@ export const ListBarbeiros = () => {
 
   const [id, setId] = useState();
   const [horarioObjeto, setHorarioObjeto] = useState({});
-  // HANDLES
-  const handleCloseExcluirHorario = () => {
-    setExcluirHorario(false);
-    setHorarioSelecionado(null);
-  };
-  const handleClose = () => {
-    setShow(false);
-    setBarbeiroSelecionado(null);
-  };
-  const handleCloseHorario = () => {
-    setShowHorarios(false);
-    setHorarioSelecionado(null);
-  };
-  const handleShow = () => setShow(true);
-
-  const closeModalPagamentoAgendamento = () =>
-    setShowModalPagamentoAgendamento(false);
 
   // CONTEXTS
   const {
@@ -66,7 +40,25 @@ export const ListBarbeiros = () => {
     setBarbeiroSelecionado,
     erroBarbeiro,
     setErroBarbeiro,
+    pegarBarbeiros,
+    showModalPagamentoAgendamento,
+    closeModalPagamentoAgendamento,
+    showHorariosBarbeiro,
+    setShowHorariosBarbeiro,
+    handleCloseHorarioBarbeiro,
+    horarioSelecionado,
+    setHorarioSelecionado,
+    barbeiro,
+    setBarbeiro,
+    showModalBarbeiro, 
+    setShowModalBarbeiro,
+    handleCloseModalBarbeiro,
+    showExcluirHorario, 
+    setExcluirHorario,
+    handleCloseExcluirHorario,
+    handleShowModalBarbeiro,
   } = useContext(BarbeiroContext);
+  
   const {
     setHorarioMarcado,
     horarioMarcado,
@@ -82,10 +74,11 @@ export const ListBarbeiros = () => {
     setUsuarioTemHorarioMarcado,
     errosHorarios,
     setErrosHorarios,
+    pegarHorarios
   } = useContext(HorarioContext);
+  
   const { abrirListaHorarios } = useContext(AnimacaoContext);
   const { user } = useContext(UserContext);
-  const { setServicoEscolhido } = useContext(ServicoContext);
   const { barbearia } = useParams();
 
   // USE EFFECTS
@@ -94,28 +87,9 @@ export const ListBarbeiros = () => {
   }, [showExcluirHorario]);
 
   useEffect(() => {
-    if (errosHorarios?.erro) {
-      toast.error(errosHorarios.menssagem, {
-        position: "bottom-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-      });
-
-      setErrosHorarios({
-        erro: false,
-        menssagem: "",
-      });
-    }
-  }, [errosHorarios]);
-
-  useEffect(() => {
     setHorariosAberto(false);
+    pegarBarbeiros(barbearia);
+    pegarHorarios(barbearia);
   }, []);
 
   useEffect(() => {
@@ -141,9 +115,9 @@ export const ListBarbeiros = () => {
         setHorarioMarcado(obj.HORA);
       }
       setStorage(obj);
-    } else if(localStorage.getItem("agendamento") === '{}') {
+    } else if (localStorage.getItem("agendamento") === "{}") {
       setStorage({});
-    } 
+    }
   }, [localStorage.getItem("agendamento")]);
 
   useEffect(() => {
@@ -173,7 +147,7 @@ export const ListBarbeiros = () => {
     );
   }, []);
 
-  // ativa toast de erro caso tente cadastrar um barbeiro que excede o permitido do plano de assinatura
+  // toast erros
   useEffect(() => {
     if (erroBarbeiro !== null) {
       toast.error(erroBarbeiro, {
@@ -189,7 +163,26 @@ export const ListBarbeiros = () => {
       });
       setErroBarbeiro(null);
     }
-  }, [erroBarbeiro]);
+    
+    if (errosHorarios?.erro) {
+      toast.error(errosHorarios.menssagem, {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+
+      setErrosHorarios({
+        erro: false,
+        menssagem: "",
+      });
+    }
+  }, [erroBarbeiro, errosHorarios]);
 
   return (
     <>
@@ -198,20 +191,22 @@ export const ListBarbeiros = () => {
         handleClose={closeModalPagamentoAgendamento}
         horarioSelecionado={horarioSelecionado}
       />
-      <ModalHorarios
-        show={showHorarios}
-        setShow={setShowHorarios}
-        handleClose={handleCloseHorario}
+      <ModalHorarioBarbeiro
+        show={showHorariosBarbeiro}
+        setShow={setShowHorariosBarbeiro}
+        handleClose={handleCloseHorarioBarbeiro}
         barbeiro={barbeiro}
         horario={horarioSelecionado}
         setHorarioSelecionado={setHorarioSelecionado}
       />
-      <ModalBarbeiros
-        show={show}
-        setShow={setShow}
-        handleClose={handleClose}
+
+      <ModalBarbeiro
+        show={showModalBarbeiro}
+        setShow={setShowModalBarbeiro}
+        handleClose={handleCloseModalBarbeiro}
         barbeiro={barbeiroSelecionado}
       />
+
       <ModalExcluir
         show={showExcluirHorario}
         handleClose={handleCloseExcluirHorario}
@@ -242,61 +237,55 @@ export const ListBarbeiros = () => {
         setClasseCalendario={setClasseCalendario}
       />
 
-      {user.ADM && <SpanAdd handleShow={handleShow} barbeiros={barbeiros} />}
-      <div className="fundo-imagem">
-        <div className="cortina-transparente">
-          <div className="container-fluid">
-            <div className="row justify-content-center">
-              <div className="col-12 col-sm-10 d-flex justify-content-center align-items-center">
-                <ul className="col-12 list-style heiht-scroll">
-                  {barbeiros.map((barbeiro) => {
-                    const horariosFiltrado = horarios.filter(
-                      (h) => h.BARBEIRO_ID === barbeiro.ID
-                    );
-                    return (
-                      <Fragment key={barbeiro.ID}>
-                        <li className="py-1 border-list-services text-claro">
-                          <FotoEIcones
-                            barbeiro={barbeiro}
-                            user={user}
-                            setBarbeiroSelecionado={setBarbeiroSelecionado}
-                            setExcluirHorario={setExcluirHorario}
-                            setId={setId}
-                            setShow={setShow}
-                            abrirListaHorarios={abrirListaHorarios}
-                            horariosAberto={horariosAberto}
-                            setHorariosAberto={setHorariosAberto}
-                          />
-                          <div className="d-flex z-ind justify-content-center align-items-center flex-column">
-                            <ListaHorarios
-                              barbeiro={barbeiro}
-                              user={user}
-                              horariosFiltrado={horariosFiltrado}
-                              setBarbeiro={setBarbeiro}
-                              setShowHorarios={setShowHorarios}
-                              setClasseCalendario={setClasseCalendario}
-                              setHorarioSelecionado={setHorarioSelecionado}
-                              horarioSelecionado={horarioSelecionado}
-                              setExcluirHorario={setExcluirHorario}
-                              setId={setId}
-                              barbearia={barbearia}
-                              setCalendarioAberto={setCalendarioAberto}
+      {user?.ADM && <SpanAdd handleShow={handleShowModalBarbeiro} barbeiros={barbeiros} />}
+
+      <div className="container-fluid">
+        <div className="row justify-content-center">
+          <div className="col-12 col-sm-10 d-flex justify-content-center align-items-center p-0">
+            <ul className="col-12 list-style heiht-scroll">
+              {barbeiros.map((barbeiro) => {
+                const horariosFiltrado = horarios.filter(
+                  (h) => h.BARBEIRO_ID === barbeiro.ID
+                );
+                return (
+                  <Fragment key={barbeiro.ID}>
+                    <li className="py-1 border-list-services text-claro">
+                      <FotoEIcones
+                        barbeiro={barbeiro}
+                        user={user}
+                        setId={setId}
+                        abrirListaHorarios={abrirListaHorarios}
+                        horariosAberto={horariosAberto}
+                        setHorariosAberto={setHorariosAberto}
+                      />
+                      <div className="d-flex z-ind justify-content-center align-items-center flex-column">
+                        <ListaHorarios
+                          barbeiro={barbeiro}
+                          user={user}
+                          horariosFiltrado={horariosFiltrado}
+                          setBarbeiro={setBarbeiro}
+                          setShowHorarios={setShowHorariosBarbeiro}
+                          setClasseCalendario={setClasseCalendario}
+                          setHorarioSelecionado={setHorarioSelecionado}
+                          horarioSelecionado={horarioSelecionado}
+                          setExcluirHorario={setExcluirHorario}
+                          setId={setId}
+                          barbearia={barbearia}
+                          setCalendarioAberto={setCalendarioAberto}
+                        />
+                        {storage !== null &&
+                          storage?.BARBEIRO?.ID === barbeiro?.ID && (
+                            <HoraMarcada
+                              horario={horarioObjeto}
+                              desmarcarHorario={desmarcarHorario}
                             />
-                            {storage !== null &&
-                              storage?.BARBEIRO?.ID === barbeiro?.ID && (
-                                <HoraMarcada
-                                  horario={horarioObjeto}
-                                  desmarcarHorario={desmarcarHorario}
-                                />
-                              )}
-                          </div>
-                        </li>
-                      </Fragment>
-                    );
-                  })}
-                </ul>
-              </div>
-            </div>
+                          )}
+                      </div>
+                    </li>
+                  </Fragment>
+                );
+              })}
+            </ul>
           </div>
         </div>
       </div>

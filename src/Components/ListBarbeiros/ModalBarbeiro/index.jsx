@@ -2,12 +2,12 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { barbeiroEditarSchema, barbeiroSchema } from "../../validations/barbeiroValidation";
+import { barbeiroEditarSchema, barbeiroSchema } from "../../../validations/barbeiroValidation";
 import { useContext, useEffect } from "react";
-import { BarbeiroContext } from "../../Context/BarbeiroContext";
+import { BarbeiroContext } from "../../../Context/BarbeiroContext";
 import { MutatingDots } from "react-loader-spinner";
 
-export const ModalBarbeiros = ({ show, setShow, handleClose, barbeiro = null }) => {
+export const ModalBarbeiro = ({ show, setShow, handleClose, barbeiro = null }) => {
   const {
     register,
     handleSubmit,

@@ -3,11 +3,11 @@ import Modal from "react-bootstrap/Modal";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useContext, useEffect } from "react";
-import { horariosSchema } from "../../validations/horariosValidation";
-import { HorarioContext } from "../../Context/HorarioContext";
+import { horariosSchema } from "../../../validations/horariosValidation";
+import { HorarioContext } from "../../../Context/HorarioContext";
 import { MutatingDots } from "react-loader-spinner";
 
-export const ModalHorarios = ({
+export const ModalHorarioBarbeiro = ({
   show,
   setShow,
   handleClose,
@@ -98,9 +98,7 @@ export const ModalHorarios = ({
                 onChange={handleTimeChange}
               />
               {errors.HORA && (
-                <p className="m-0 my-1 text-danger">
-                  *{errors.HORA.message}
-                </p>
+                <p className="m-0 my-1 text-danger">*{errors.HORA.message}</p>
               )}
             </div>
             {loadHorarios ? (

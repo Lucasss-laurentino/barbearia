@@ -21,6 +21,7 @@ import { AssinaturaProvider } from "../Context/AssinaturaContext";
 import { AtivarAssinatura } from "../Components/AtivarAssinatura";
 import { PageDefault } from "../Components/PageDefault";
 import { ListService } from "../Components/ListServices";
+import { ListBarbeiros } from "../Components/ListBarbeiros";
 
 export default function appRouter() {
   return (
@@ -49,18 +50,9 @@ export default function appRouter() {
                                         element={<Login />}
                                       />
 
-                                      <Route
-                                        path="/:barbearia"
-                                        element={<PageDefault />}
-                                      >
-                                        <Route
-                                          path="/:barbearia/servicos"
-                                          element={<ListService />}
-                                        />
-                                        <Route
-                                          path="/:barbearia/agendamento"
-                                          element={<ListService />}
-                                        />
+                                      <Route path="/:barbearia" element={<PageDefault />}>
+                                        <Route path="/:barbearia/servicos" element={<ListService />}/>
+                                        <Route path="/:barbearia/agendamento" element={<ListBarbeiros />}/>
                                       </Route>
 
                                       <Route

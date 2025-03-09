@@ -1,15 +1,21 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useState } from "react";
 import { http } from "../http";
-import { UserContext } from "./UserContext";
 
 export const BarbeiroContext = createContext();
 
 export const BarbeiroProvider = ({ children }) => {
+
   const [barbeiros, setBarbeiros] = useState([]);
+  const [barbeiro, setBarbeiro] = useState({});
   const [imagem, setImagem] = useState();
   const [loadBarbeiro, setLoadBarbeiro] = useState(false);
   const [barbeiroSelecionado, setBarbeiroSelecionado] = useState(null);
   const [erroBarbeiro, setErroBarbeiro] = useState(null);
+  const [showModalPagamentoAgendamento, setShowModalPagamentoAgendamento] = useState(false);
+  const [showHorariosBarbeiro, setShowHorariosBarbeiro] = useState(false);
+  const [horarioSelecionado, setHorarioSelecionado] = useState(null);
+  const [showModalBarbeiro, setShowModalBarbeiro] = useState(false);
+  const [showExcluirHorario, setExcluirHorario] = useState(false);
 
   const criarBarbeiro = async (data, setShow) => {
     try {
@@ -89,6 +95,30 @@ export const BarbeiroProvider = ({ children }) => {
     setImagem(undefined);
   };
 
+  const closeModalPagamentoAgendamento = () => {
+    setShowModalPagamentoAgendamento(false);
+  }
+
+  const handleCloseHorarioBarbeiro = () => {
+    setShowHorariosBarbeiro(false);
+    setHorarioSelecionado(null);
+  };
+
+  const handleCloseModalBarbeiro = () => {
+    setShowModalBarbeiro(false);
+    setBarbeiroSelecionado(null);
+  };
+
+  const handleCloseExcluirHorario = () => {
+    setExcluirHorario(false);
+    setHorarioSelecionado(null);
+  };
+
+  const handleShowModalBarbeiro = () => {
+    setShowModalBarbeiro(true);
+  }
+
+
   return (
     <BarbeiroContext.Provider
       value={{
@@ -107,6 +137,23 @@ export const BarbeiroProvider = ({ children }) => {
         limparCampos,
         erroBarbeiro,
         setErroBarbeiro,
+        showModalPagamentoAgendamento, 
+        setShowModalPagamentoAgendamento,
+        closeModalPagamentoAgendamento,
+        showHorariosBarbeiro, 
+        setShowHorariosBarbeiro,
+        handleCloseHorarioBarbeiro,
+        horarioSelecionado, 
+        setHorarioSelecionado,
+        barbeiro, 
+        setBarbeiro,
+        showModalBarbeiro, 
+        setShowModalBarbeiro,
+        handleCloseModalBarbeiro,
+        showExcluirHorario, 
+        setExcluirHorario,
+        handleCloseExcluirHorario,
+        handleShowModalBarbeiro,
       }}
     >
       {children}

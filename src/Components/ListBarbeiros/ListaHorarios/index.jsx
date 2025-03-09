@@ -128,7 +128,7 @@ export const ListaHorarios = ({
                   </div>
                   <div className="col-6 d-flex justify-content-center align-items-center">
                     <div className="d-flex justify-content-end align-items-center">
-                      {user.ADM && horario.INTERVALO && (
+                      {user?.ADM && horario.INTERVALO && (
                         <button
                           className="btn btn-sm mx-2 border border-success text-success"
                           onClick={() => marcarAlmoco(horario)}
@@ -136,7 +136,7 @@ export const ListaHorarios = ({
                           Almoço
                         </button>
                       )}
-                      {user.ADM && !horario.INTERVALO && (
+                      {user?.ADM && !horario.INTERVALO && (
                         <button
                           className="btn btn-sm bg-transparent mx-2 text-white border border-white"
                           onClick={() => marcarAlmoco(horario)}
@@ -144,7 +144,7 @@ export const ListaHorarios = ({
                           Almoço
                         </button>
                       )}
-                      {!user.ADM && (
+                      {!user?.ADM && (
                         <button
                           className="btn btn-sm bg-transparent mx-2 text-white"
                           onClick={() => {

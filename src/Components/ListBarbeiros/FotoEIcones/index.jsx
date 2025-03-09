@@ -1,6 +1,15 @@
+import { useContext } from 'react';
 import './index.css';
+import { BarbeiroContext } from '../../../Context/BarbeiroContext';
 
-export const FotoEIcones = ({ barbeiro, user, setBarbeiroSelecionado, setExcluirHorario, setId, setShow, abrirListaHorarios, horariosAberto, setHorariosAberto }) => {
+export const FotoEIcones = ({barbeiro, user, setId, abrirListaHorarios, horariosAberto, setHorariosAberto }) => {
+  
+  const { 
+    setBarbeiroSelecionado,
+    setExcluirHorario,
+    setShowModalBarbeiro,
+  } = useContext(BarbeiroContext);
+  
   return (
     <>
       <div className="d-flex justify-content-between align-items-center">
@@ -11,7 +20,7 @@ export const FotoEIcones = ({ barbeiro, user, setBarbeiroSelecionado, setExcluir
               className="img-fluid"
               src={process.env.REACT_APP_API_URL + barbeiro.IMAGEM}
               width="100%"
-              alt={barbeiro.NOME} // Adicionado para acessibilidade
+              alt={barbeiro.NOME}
             />
           </div>
           <div className="col-9">
@@ -20,7 +29,7 @@ export const FotoEIcones = ({ barbeiro, user, setBarbeiroSelecionado, setExcluir
         </div>
         {/* ICONE RELOGIO E ICONES ADMINISTRATIVOS */}
         <div className="d-flex justify-content-end align-items-center col-4 flex-column">
-          {user.ADM && (
+          {user?.ADM && (
             <div className="container-fluid d-flex justify-content-center align-items-center mt-1 mb-3">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -47,7 +56,7 @@ export const FotoEIcones = ({ barbeiro, user, setBarbeiroSelecionado, setExcluir
                 viewBox="0 0 16 16"
                 onClick={() => {
                   setBarbeiroSelecionado(barbeiro);
-                  setShow(true);
+                  setShowModalBarbeiro(true);
                 }}
               >
                 <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
