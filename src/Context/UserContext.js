@@ -5,17 +5,14 @@ export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [load, setLoad] = useState(false);
-  const [user, setUser] = useState({
-    ID: "",
-    NOME_BARBEARIA: "",
-    BARBEIRO: false,
-  });
+  const [user, setUser] = useState(null);
   const [usuarioEditado, setUsuarioEditado] = useState(false);
   // esse objeto controla oque o usuário vai setando durante a navegação pelo sistema
   const [userContrata, setUserContrata] = useState({ user: null });
   const [logo, setLogo] = useState();
 
   const pegarUsuario = async () => {
+
     try {
       const response = await http.get(`/user/getUser`, {
         withCredentials: true,

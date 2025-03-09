@@ -19,58 +19,81 @@ import { AvisoPagamentoAtrasado } from "../Components/AvisoPagamentoAtrasado";
 import { PagamentoProvider } from "../Context/PagamentoContext";
 import { AssinaturaProvider } from "../Context/AssinaturaContext";
 import { AtivarAssinatura } from "../Components/AtivarAssinatura";
+import { PageDefault } from "../Components/PageDefault";
+import { ListService } from "../Components/ListServices";
 
 export default function appRouter() {
   return (
     <Router>
-      <PlanoProvider>
-        <UserProvider>
-          <ServicoProvider>
-            <BarbeiroProvider>
-              <HorarioProvider>
-                <MeuHorarioProvider>
-                  <HorarioMarcadoProvider>
-                    <AnimacaoProvider>
-                      <AbaBottomProvider>
-                        <MenuProvider>
-                          <LoginProvider>
-                            <DataProvider>
-                              <PagamentoProvider>
-                                <AssinaturaProvider>
-                                  <Routes>
-                                    <Route path="/" element={<LandingPage />} />
-                                    <Route
-                                      path="/login/:plano_id"
-                                      element={<Login />}
-                                    />
-                                    <Route
-                                      path="/:barbearia"
-                                      element={<Index />}
-                                    />
-                                    <Route
-                                      path="/:barbearia/assinaturabloqueada"
-                                      element={<AvisoPagamentoAtrasado/>}
-                                    /> 
-                                    <Route 
-                                      path="/:barbearia/assinaturadesativada"
-                                      element={<AtivarAssinatura/>}
-                                    />
-                                    <Route path="/notfound" element={<NotFound/>}/>
-                                  </Routes>
-                                </AssinaturaProvider>
-                              </PagamentoProvider>
-                            </DataProvider>
-                          </LoginProvider>
-                        </MenuProvider>
-                      </AbaBottomProvider>
-                    </AnimacaoProvider>
-                  </HorarioMarcadoProvider>
-                </MeuHorarioProvider>
-              </HorarioProvider>
-            </BarbeiroProvider>
-          </ServicoProvider>
-        </UserProvider>
-      </PlanoProvider>
+        <PlanoProvider>
+          <UserProvider>
+            <ServicoProvider>
+              <BarbeiroProvider>
+                <HorarioProvider>
+                  <MeuHorarioProvider>
+                    <HorarioMarcadoProvider>
+                      <AnimacaoProvider>
+                        <AbaBottomProvider>
+                          <MenuProvider>
+                            <LoginProvider>
+                              <DataProvider>
+                                <PagamentoProvider>
+                                  <AssinaturaProvider>
+                                    <Routes>
+                                      <Route
+                                        path="/"
+                                        element={<LandingPage />}
+                                      />
+                                      <Route
+                                        path="/login/:plano_id"
+                                        element={<Login />}
+                                      />
+
+                                      <Route
+                                        path="/:barbearia"
+                                        element={<PageDefault />}
+                                      >
+                                        <Route
+                                          path="/:barbearia/servicos"
+                                          element={<ListService />}
+                                        />
+                                        <Route
+                                          path="/:barbearia/agendamento"
+                                          element={<ListService />}
+                                        />
+                                      </Route>
+
+                                      <Route
+                                        path="/:barbearia/teste"
+                                        element={<Index />}
+                                      />
+                                      <Route
+                                        path="/:barbearia/assinaturabloqueada"
+                                        element={<AvisoPagamentoAtrasado />}
+                                      />
+                                      <Route
+                                        path="/:barbearia/assinaturadesativada"
+                                        element={<AtivarAssinatura />}
+                                      />
+                                      <Route
+                                        path="/notfound"
+                                        element={<NotFound />}
+                                      />
+                                    </Routes>
+                                  </AssinaturaProvider>
+                                </PagamentoProvider>
+                              </DataProvider>
+                            </LoginProvider>
+                          </MenuProvider>
+                        </AbaBottomProvider>
+                      </AnimacaoProvider>
+                    </HorarioMarcadoProvider>
+                  </MeuHorarioProvider>
+                </HorarioProvider>
+              </BarbeiroProvider>
+            </ServicoProvider>
+          </UserProvider>
+        </PlanoProvider>
     </Router>
   );
 }

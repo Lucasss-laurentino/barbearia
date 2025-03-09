@@ -1,17 +1,23 @@
 import './index.css';
 import { EditarExcluir } from "../EditarExcluir";
+import { useContext, useEffect } from 'react';
+import { ServicoContext } from '../../../Context/ServicoContext';
 
 export const PageEContratado = ({
   user,
   servico,
-  servicoEscolhido,
-  servicoAgendado,
-  setServicoEscolhido,
   setEditarServico,
   setShowModalServico,
   setServicoASerExcluido,
   setShowModalExcluirServico,
 }) => {
+
+  const { 
+    servicoAgendado,
+    servicoEscolhido,
+    setServicoEscolhido,  
+  } = useContext(ServicoContext);
+
   return (
     <>
       <div className="d-flex justify-content-end align-items-center col-3">
@@ -22,7 +28,7 @@ export const PageEContratado = ({
           servicoAgendado?.ID === servico.ID ? (
             <div className="container imagem-height">
               <img
-                src="icones_menu_bottom/verificado.gif"
+                src="/icones_menu_bottom/verificado.gif"
                 className="img-fluid mx-3 cursor"
                 alt=""
                 onClick={() => setServicoEscolhido({})}

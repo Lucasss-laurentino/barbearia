@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useCallback } from "react";
 import { http } from "../http";
 
 export const ServicoContext = createContext();
@@ -8,6 +8,11 @@ export const ServicoProvider = ({ children }) => {
 
   const [servicoEscolhido, setServicoEscolhido] = useState();
   const [loadCriarServico, setLoadCriarServico] = useState(false);
+  const [servicoAgendado, setServicoAgendado] = useState({});
+  const [showModalServico, setShowModalServico] = useState(false);
+  const [showModalExcluirServico, setShowModalExcluirServico] = useState(false);
+  const [editarServicoState, setEditarServicoState] = useState(null);
+  const [servicoASerExcluido, setServicoASerExcluido] = useState();
 
   const criarServico = async (data, imagem, setShow, setImagem) => {
     try {
@@ -84,6 +89,16 @@ export const ServicoProvider = ({ children }) => {
     } catch (error) {}
   };
 
+  const handleCloseServico = useCallback(() => {
+    setEditarServicoState(null);
+    setShowModalServico(false);
+  });
+
+  const handleCloseExcluirServico = useCallback(() => {
+    setShowModalExcluirServico(false);
+  });
+
+
   return (
     <ServicoContext.Provider
       value={{
@@ -97,6 +112,18 @@ export const ServicoProvider = ({ children }) => {
         editarServico,
         loadCriarServico,
         setLoadCriarServico,
+        servicoAgendado, 
+        setServicoAgendado,
+        showModalServico, 
+        setShowModalServico,
+        showModalExcluirServico,
+        setShowModalExcluirServico,
+        editarServicoState, 
+        setEditarServicoState,
+        handleCloseServico,
+        handleCloseExcluirServico,
+        servicoASerExcluido, 
+        setServicoASerExcluido,
       }}
     >
       {children}

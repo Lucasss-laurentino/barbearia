@@ -118,7 +118,7 @@ export const ListaHorarios = ({
           <p className="m-0 cursor">{data}</p>
         </li>
 
-        {horariosDessaData.map((horario) => {
+        {horariosDessaData.length > 0 && horariosDessaData.map((horario) => {
           if (!horario?.INTERVALO && !user?.ADM) {
             return (
               <Fragment key={horario.ID}>
@@ -353,6 +353,14 @@ export const ListaHorarios = ({
             );
           }
         })}
+
+        {horariosDessaData.length < 1 &&
+          <>
+          <div className="d-flex justify-content-center align-items-center">
+            <h6 className="p-0 m-0 text-white">Nenhum Horário disponível</h6>
+          </div>
+          </>
+        }
       </ul>
     </>
   );

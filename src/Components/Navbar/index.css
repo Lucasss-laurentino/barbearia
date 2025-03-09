@@ -6,7 +6,7 @@
 }
 
 .img-logo {
-  width: 20%; 
+  width: 180px; 
   height: 80px; 
   overflow: hidden; 
   border-radius: 10%; 
@@ -24,4 +24,17 @@
 
 .btn-home {
   cursor: pointer;
+}
+
+@media (max-width: 726px) {
+  .img-logo {
+    width: 140px;
+  }
+}
+
+
+@media (max-width: 358px) {
+  .img-logo {
+    width: 110px;
+  }
 }

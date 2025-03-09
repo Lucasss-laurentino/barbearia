@@ -64,6 +64,7 @@ export const BarbeiroProvider = ({ children }) => {
       setLoadBarbeiro(false);
       setShow(false);
       setImagem(undefined);
+      setBarbeiroSelecionado(null);
     } catch (error) {}
   };
 
