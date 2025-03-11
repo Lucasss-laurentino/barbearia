@@ -5,6 +5,8 @@
   background-image: url('../../../public/barbearia_utensilios.avif');
   background-position: center;
   position: relative;
+
+  overflow: hidden;
 }
 
 .background-transparente {

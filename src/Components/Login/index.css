@@ -8,6 +8,10 @@
   height: 100vh;
   background-image: url("../../../public/barbearia_utensilios.avif");
   background-position: center;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .scroll-login {

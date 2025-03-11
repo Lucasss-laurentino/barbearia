@@ -84,58 +84,54 @@ export const Horarios = () => {
 
   return (
     <>
-      <div className="fundo-imagem">
-        <div className="cortina-transparente">
-          <div className="container-fluid tamanho-maximo">
-            <div className="row justify-content-center">
-              <div className="col-12 col-sm-10 col-md-8 d-flex justify-content-center align-items-center">
-                <div className="col-12 head-horarios">
-                  <div className="col-5 quantia-agendamento-horarios">
-                    <div className="col-12 px-1 align-qnt-agendamento">
-                      <h5 className="">{horariosOrdenados?.length}</h5>
-                      <p className="m-0">Agendamentos</p>
-                    </div>
-                  </div>
-                  <div className="col-7 align-qnt-agendamento">
-                    <h5>{lucroDiario}</h5>
-                    <p className="m-0">Faturamento previsto</p>
-                  </div>
+      <div className="container-fluid tamanho-maximo">
+        <div className="row justify-content-center">
+          <div className="col-12 col-sm-10 col-md-8 d-flex justify-content-center align-items-center">
+            <div className="col-12 head-horarios">
+              <div className="col-5 quantia-agendamento-horarios">
+                <div className="col-12 px-1 align-qnt-agendamento">
+                  <h5 className="">{horariosOrdenados?.length}</h5>
+                  <p className="m-0">Agendamentos</p>
                 </div>
               </div>
-              <div className="col-12 col-sm-10 col-md-8 d-flex justify-content-center align-items-center">
-                <ul className="col-12 m-0 p-0 list-style scroll-horarios">
-                  {horariosOrdenados.length > 0 ? horariosOrdenados?.map((horario, index) => {
-                    const hora = horarios.find(
-                      (h) => h.ID === horario?.HORARIO_ID
-                    );
-                    const servico = servicos.find(
-                      (s) => s.ID === horario?.SERVICO_ID
-                    );
-                    return (
-                      <Li
-                        key={index}
-                        horario={horario}
-                        hora={hora}
-                        servico={servico}
-                        barbeiros={barbeiros}
-                        aceitarHorarioPendente={aceitarHorarioPendente}
-                        recusarHorarioPendente={recusarHorarioPendente}
-                        cancelarMeuHorarioMarcadoAdm={
-                          cancelarMeuHorarioMarcadoAdm
-                        }
-                        finalizarHorarioAgendado={finalizarHorarioAgendado}
-                      />
-                    );
-                  }) : 
-                  
-                    <div className="d-flex justify-content-center align-items-center" style={{ height: '200px' }}>
-                      <h3 className="text-white">Nenhum horário agendado</h3>
-                    </div>
-                    
-                  }
-                </ul>
+              <div className="col-7 align-qnt-agendamento">
+                <h5>{lucroDiario}</h5>
+                <p className="m-0">Faturamento previsto</p>
               </div>
             </div>
+          </div>
+          <div className="col-12 col-sm-10 col-md-8 d-flex justify-content-center align-items-center">
+            <ul className="col-12 m-0 p-0 list-style scroll-horarios">
+              {horariosOrdenados.length > 0 ? horariosOrdenados?.map((horario, index) => {
+                const hora = horarios.find(
+                  (h) => h.ID === horario?.HORARIO_ID
+                );
+                const servico = servicos.find(
+                  (s) => s.ID === horario?.SERVICO_ID
+                );
+                return (
+                  <Li
+                    key={index}
+                    horario={horario}
+                    hora={hora}
+                    servico={servico}
+                    barbeiros={barbeiros}
+                    aceitarHorarioPendente={aceitarHorarioPendente}
+                    recusarHorarioPendente={recusarHorarioPendente}
+                    cancelarMeuHorarioMarcadoAdm={
+                      cancelarMeuHorarioMarcadoAdm
+                    }
+                    finalizarHorarioAgendado={finalizarHorarioAgendado}
+                  />
+                );
+              }) :
+
+                <div className="d-flex justify-content-center align-items-center" style={{ height: '200px' }}>
+                  <h3 className="text-white">Nenhum horário agendado</h3>
+                </div>
+
+              }
+            </ul>
           </div>
         </div>
       </div>

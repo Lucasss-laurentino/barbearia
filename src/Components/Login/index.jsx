@@ -51,6 +51,10 @@ export const Login = () => {
 
   return (
     <>
+      <div class="page-login">
+        <FormLogin />
+      </div>
+    {/*
       <div
         className={
           active === 4
@@ -84,6 +88,7 @@ export const Login = () => {
           )}
         </div>
       </div>
+      */}
     </>
   );
 };

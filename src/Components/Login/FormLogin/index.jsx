@@ -8,9 +8,10 @@ import { MutatingDots } from "react-loader-spinner";
 import { ServicoContext } from "../../../Context/ServicoContext";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 export const FormLogin = ({ barbearia }) => {
-  // CONFIGURANDO USERFORM
+
   const {
     register,
     handleSubmit,
@@ -19,7 +20,8 @@ export const FormLogin = ({ barbearia }) => {
     resolver: yupResolver(loginSchema),
   });
 
-  // CONTEXT LOGIN
+  const navigate = useNavigate();
+
   const {
     login,
     loadLogin,
@@ -40,7 +42,7 @@ export const FormLogin = ({ barbearia }) => {
     }
   }, [errors.EMAIL_LOGIN, errors.SENHA_LOGIN]);
 
-  const verificarAntesDoLogin = (data, barbearia) => {
+  const verificarAntesDoLogin = (data) => {
     const storage = localStorage.getItem("agendamento");
     if (storage) {
       const obj = JSON.parse(storage);
@@ -65,6 +67,14 @@ export const FormLogin = ({ barbearia }) => {
       login(data, barbearia);
     }
   };
+
+  const verificarEretornarApaginaAnterior = () => {
+    if(barbearia) {
+      navigate(`/${barbearia}`);
+    } else {
+      navigate('/');
+    }
+  }
 
   useEffect(() => {
     if (barbearia) {
@@ -95,10 +105,19 @@ export const FormLogin = ({ barbearia }) => {
         action=""
         className="col-12 formulario-page-login"
         onSubmit={handleSubmit((data) =>
-          verificarAntesDoLogin(data, barbearia)
+          verificarAntesDoLogin(data)
         )}
       >
         <div className="col-12 text-center">
+          <div class="col-12 pt-2">
+            <div class="hover-cursor col-3" onClick={() => verificarEretornarApaginaAnterior()}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#fff" class="bi bi-arrow-left-square-fill" viewBox="0 0 16 16">
+                <path d="M16 14a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2zm-4.5-6.5H5.707l2.147-2.146a.5.5 0 1 0-.708-.708l-3 3a.5.5 0 0 0 0 .708l3 3a.5.5 0 0 0 .708-.708L5.707 8.5H11.5a.5.5 0 0 0 0-1"/>
+              </svg>
+              <p class="m-0 text-white mx-1">Voltar</p>
+            </div>
+          </div>
+
           <h3 className="titulo-form-login my-4">
             {barbearia ? nome_limpo_barbearia : "Barba Cabelo & Bigode"}
           </h3>

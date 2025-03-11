@@ -22,11 +22,16 @@ import { AtivarAssinatura } from "../Components/AtivarAssinatura";
 import { PageDefault } from "../Components/PageDefault";
 import { ListService } from "../Components/ListServices";
 import { ListBarbeiros } from "../Components/ListBarbeiros";
+import { Horarios } from "../Components/Horarios";
+import { Finalizados } from "../Components/Finalizados";
+import { EditarUser } from "../Components/EditarUser";
+import { MenuFooterProvider } from "../Context/MenuFooterContext";
 
 export default function appRouter() {
   return (
     <Router>
-        <PlanoProvider>
+      <PlanoProvider>
+        <MenuFooterProvider>
           <UserProvider>
             <ServicoProvider>
               <BarbeiroProvider>
@@ -51,9 +56,15 @@ export default function appRouter() {
                                       />
 
                                       <Route path="/:barbearia" element={<PageDefault />}>
-                                        <Route path="/:barbearia/servicos" element={<ListService />}/>
-                                        <Route path="/:barbearia/agendamento" element={<ListBarbeiros />}/>
+                                        <Route path="/:barbearia/servicos" element={<ListService />} />
+                                        <Route path="/:barbearia/agendamentos" element={<Horarios />} />
+                                        <Route path="/:barbearia/financeiro" element={<Finalizados />} />
+                                        <Route path="/:barbearia/barbeiros" element={<ListBarbeiros />} />
+                                        <Route path="/:barbearia/editarconta" element={<EditarUser />} />
                                       </Route>
+
+                                      <Route path="/:barbearia/login" element={<Login />} />
+
 
                                       <Route
                                         path="/:barbearia/teste"
@@ -85,7 +96,8 @@ export default function appRouter() {
               </BarbeiroProvider>
             </ServicoProvider>
           </UserProvider>
-        </PlanoProvider>
+        </MenuFooterProvider>
+      </PlanoProvider>
     </Router>
   );
 }

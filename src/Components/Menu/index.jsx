@@ -1,26 +1,28 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import "./index.css";
 import { MenuContext } from "../../Context/MenuContext";
 import { UserContext } from "../../Context/UserContext";
-import { AbaBottomContext } from "../../Context/AbaBottomContext";
 import { LoginContext } from "../../Context/LoginContext";
 import { ModalHabilitarCobranca } from "../ModalHabilitarCobranca";
+import { useNavigate, useParams } from "react-router-dom";
+import { MenuFooterContext } from "../../Context/MenuFooterContext";
 
 export const Menu = () => {
   const { classMenu, setClassMenu } = useContext(MenuContext);
   const { logout } = useContext(LoginContext);
-  const { setActive } = useContext(AbaBottomContext);
   const { user } = useContext(UserContext);
+  const { setActive } = useContext(MenuFooterContext);
+
+
+  const { barbearia } = useParams();
+
+  const navigate = useNavigate();
 
   const [showModalHabilitarCobranca, setShowModalHabilitarCobranca] = useState(false);
 
   const handleClose = () => {
     setShowModalHabilitarCobranca(false);
   }
-
-  useEffect(() => {
-    console.log(user);
-  }, []);
 
   return (
     <>
@@ -41,8 +43,9 @@ export const Menu = () => {
                     <li
                       className="col-12 px-4 d-flex justify-content-between align-items-center cursor"
                       onClick={() => {
-                        setActive(5);
                         setClassMenu(false);
+                        setActive(-1)
+                        navigate(`/${barbearia}/editarconta`);
                       }}
                     >
                       <p className="m-0">Minha Conta</p>
@@ -63,7 +66,7 @@ export const Menu = () => {
                     <li
                       className="col-12 px-4 d-flex justify-content-between align-items-center cursor"
                       onClick={() => {
-                        setActive(6);
+                       // setActive(6);
                         setClassMenu(false);
                       }}
                     >
@@ -120,7 +123,7 @@ export const Menu = () => {
                     onClick={() => {
                       logout();
                       setClassMenu(false);
-                      setActive(2);
+                    //  setActive(2);
                     }}
                   >
                     <p className="m-0">Sair</p>

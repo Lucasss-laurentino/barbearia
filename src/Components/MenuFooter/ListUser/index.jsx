@@ -25,7 +25,7 @@ export const ListUser = () => {
       text: "Agendamento",
       svg: AgendamentoIcon,
       svgDark: AgendamentoIconDark,
-      url: `/${barbearia}/agendamento`,
+      url: `/${barbearia}/barbeiros`,
     },
     {
       text: "Meus Horários",

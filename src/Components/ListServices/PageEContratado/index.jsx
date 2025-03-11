@@ -1,6 +1,6 @@
 import './index.css';
 import { EditarExcluir } from "../EditarExcluir";
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { ServicoContext } from '../../../Context/ServicoContext';
 
 export const PageEContratado = ({

@@ -100,7 +100,7 @@ export const Index = () => {
           const storage = JSON.parse(localStorage.getItem("agendamento"));
           if (
             storage &&
-            storage.ID === horarioParametro.horarioNaoPendente.ID
+            storage?.ID === horarioParametro.horarioNaoPendente?.ID
           ) {
             storage.RESERVADO = horarioNaoPendente.RESERVADO;
             localStorage.setItem("agendamento", JSON.stringify(storage));
@@ -140,7 +140,7 @@ export const Index = () => {
           localStorage.getItem("agendamento") !== "{}"
         ) {
           const storage = JSON.parse(localStorage.getItem("agendamento"));
-          if (storage.ID === horarioResponse.horarioRecusado.ID)
+          if (storage?.ID === horarioResponse.horarioRecusado?.ID)
             localStorage.setItem("agendamento", "{}");
           setServicoEscolhido();
         }
@@ -174,7 +174,7 @@ export const Index = () => {
   }, []);
 
   useEffect(() => {
-    verificarAssinatura(barbearia);
+    //verificarAssinatura(barbearia);
   }, [user]);
 
 
@@ -182,22 +182,22 @@ export const Index = () => {
     <>
       <div className="body">
         {/* Navbar para dispositivos móveis (excluindo quando o usuário não estiver logado e active for 4) */}
-        {!user.ID && active !== 4 && <Navbar />}
-        {user.ID && <Navbar />}
-        {user.ID && <Menu />}
+        {!user?.ID && active !== 4 && <Navbar />}
+        {user?.ID && <Navbar />}
+        {user?.ID && <Menu />}
 
         {/* Condições para renderizar diferentes componentes com base no estado do usuário e 'active' */}
         {user?.ID ? (
           // Se o usuário estiver logado
           <>
             {/* Condições para usuários administradores */}
-            {user.ADM ? (
+            {user?.ADM ? (
               <>
                 {active === 1 && <ListService />}
                 {active === 2 && <Horarios />}
                 {active === 3 && <ListBarbeiros />}
                 {active === 4 && <Finalizados />}
-                {active === 5 && <EditarUser user={user} />}
+                {active === 5 && <EditarUser />}
                 {active === 6 && <Assinatura />}
                 {active === 7 && <MudarPagamento />}
               </>

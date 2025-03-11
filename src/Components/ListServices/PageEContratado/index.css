@@ -2,3 +2,9 @@
   width: 23px;
   cursor: pointer;
 }
+
+.nome-servico {
+  word-wrap: break-word; /* Permite quebrar palavras longas */
+  overflow-wrap: break-word; /* Força quebra de palavras */
+  white-space: normal; /* Permite quebras de linha naturais */
+}

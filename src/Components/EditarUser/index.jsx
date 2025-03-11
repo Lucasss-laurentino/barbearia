@@ -12,7 +12,7 @@ import { jwtDecode } from "jwt-decode";
 import { MutatingDots } from "react-loader-spinner";
 
 export const EditarUser = () => {
-  const { editarUsuario, usuarioEditado, setUsuarioEditado, user, load, setLogo } =
+  const { pegarUsuario, editarUsuario, usuarioEditado, setUsuarioEditado, user, load, setLogo } =
     useContext(UserContext);
 
   const navigate = useNavigate();
@@ -183,7 +183,7 @@ export const EditarUser = () => {
                     )}
                   </div>
                   {/* NOME_BARBEARIA */}
-                  {user.ADM && (
+                  {user?.ADM && (
                     <div className="col-12 d-flex justify-content-center align-itens-center flex-column mt-4">
                       <div className="col-12 d-flex justify-content-center align-itens-center">
                         <div className="col-2 icon-input-editar-perfil">
