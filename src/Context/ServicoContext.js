@@ -1,5 +1,6 @@
 import { createContext, useState, useCallback } from "react";
 import { http } from "../http";
+import { Bounce, toast } from "react-toastify";
 
 export const ServicoContext = createContext();
 
@@ -89,6 +90,41 @@ export const ServicoProvider = ({ children }) => {
     } catch (error) {}
   };
 
+  const verificarServicoEscolhido = (servico) => {
+    if(!servicoEscolhido || Object.keys(servicoEscolhido).length < 1) {
+      setServicoEscolhido({
+        id: servico.ID,
+        contratado: true,
+      })
+    } else if(servicoEscolhido) {
+      if(servico.ID === servicoEscolhido.id) {
+        setServicoEscolhido({})
+      } else {
+        setServicoEscolhido({
+          id: servico.ID,
+          contratado: true,
+        })          
+      }
+    }
+  }
+
+  const gerarErroToast = () => {
+    toast.error(
+      "Escolha um serviço antes de agendar um horário !",
+      {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      }
+    );
+  }
+
   const handleCloseServico = useCallback(() => {
     setEditarServicoState(null);
     setShowModalServico(false);
@@ -124,6 +160,8 @@ export const ServicoProvider = ({ children }) => {
         handleCloseExcluirServico,
         servicoASerExcluido, 
         setServicoASerExcluido,
+        verificarServicoEscolhido,
+        gerarErroToast
       }}
     >
       {children}

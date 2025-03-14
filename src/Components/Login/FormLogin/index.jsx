@@ -9,8 +9,9 @@ import { ServicoContext } from "../../../Context/ServicoContext";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import { Voltar } from "../Voltar";
 
-export const FormLogin = ({ barbearia }) => {
+export const FormLogin = ({ barbearia, setFormAtivo }) => {
 
   const {
     register,
@@ -68,14 +69,6 @@ export const FormLogin = ({ barbearia }) => {
     }
   };
 
-  const verificarEretornarApaginaAnterior = () => {
-    if(barbearia) {
-      navigate(`/${barbearia}`);
-    } else {
-      navigate('/');
-    }
-  }
-
   useEffect(() => {
     if (barbearia) {
       const cleanedString = barbearia
@@ -109,15 +102,7 @@ export const FormLogin = ({ barbearia }) => {
         )}
       >
         <div className="col-12 text-center">
-          <div class="col-12 pt-2">
-            <div class="hover-cursor col-3" onClick={() => verificarEretornarApaginaAnterior()}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#fff" class="bi bi-arrow-left-square-fill" viewBox="0 0 16 16">
-                <path d="M16 14a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2zm-4.5-6.5H5.707l2.147-2.146a.5.5 0 1 0-.708-.708l-3 3a.5.5 0 0 0 0 .708l3 3a.5.5 0 0 0 .708-.708L5.707 8.5H11.5a.5.5 0 0 0 0-1"/>
-              </svg>
-              <p class="m-0 text-white mx-1">Voltar</p>
-            </div>
-          </div>
-
+          <Voltar barbearia={barbearia}/>
           <h3 className="titulo-form-login my-4">
             {barbearia ? nome_limpo_barbearia : "Barba Cabelo & Bigode"}
           </h3>
@@ -225,7 +210,7 @@ export const FormLogin = ({ barbearia }) => {
                   </button>
                   <p
                     className="m-0 col-12 text-center text-white my-3 p-esqueci-senha"
-                    onClick={() => setEsqueceuSenha(true)}
+                    onClick={() => setFormAtivo(3)}
                   >
                     Esqueci minha senha
                   </p>
@@ -233,7 +218,7 @@ export const FormLogin = ({ barbearia }) => {
                     className="m-0 col-12 text-center text-white cursor"
                     onClick={() => {
                       setLoginError(null);
-                      setControlaLoginECadastro(false);
+                      setFormAtivo(2)
                     }}
                   >
                     <strong>Não possui uma conta ?</strong> Faça seu cadastro

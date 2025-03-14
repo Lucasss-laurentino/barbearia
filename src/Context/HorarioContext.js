@@ -17,7 +17,6 @@ export const HorarioProvider = ({ children }) => {
     ABERTO: false,
     BARBEIRO_ID: 0,
   });
-
   const [loadHorarios, setLoadHorarios] = useState(false);
   const [marcarAlmocoState, setMarcarAlmocoState] = useState({});
   const [agendamento, setAgendamento] = useState({});
@@ -26,18 +25,16 @@ export const HorarioProvider = ({ children }) => {
 
   useEffect(() => {
 
-    if(Object.keys(marcarAlmocoState).length > 0) {
+    if (Object.keys(marcarAlmocoState).length > 0) {
       const socketInstancia = socket();
       socketInstancia.emit(`marcarAlmoco`, marcarAlmocoState);
-  
+
       socketInstancia.on(`almocoMarcado${barbearia}`, async (result) => {
         setHorarios([...result]);
-      });  
+      });
     }
 
   }, [marcarAlmocoState]);
-
-  // FUNÇÕES
 
   const ordenarHorarios = async (horariosResponse) => {
     const horariosOrdenados = await horariosResponse.sort((a, b) => {
@@ -73,7 +70,7 @@ export const HorarioProvider = ({ children }) => {
       const response = await http.get(`horario/pegarHorarios/${barbearia}`);
       if (!response) throw "Erro ao buscar horarios";
       ordenarHorarios(response.data);
-    } catch (erro) {}
+    } catch (erro) { }
   };
 
   const editarHorario = async (data, horario, setShow, setValue) => {
@@ -90,7 +87,7 @@ export const HorarioProvider = ({ children }) => {
       setValue("HORA", "");
       setLoadHorarios(false);
       setShow(false);
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const excluirHorario = async (horario, handleClose, setLoadExcluir) => {
@@ -104,7 +101,7 @@ export const HorarioProvider = ({ children }) => {
       setLimparHoraAposExclusao(true);
       setLoadExcluir(false);
       handleClose();
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const marcarAlmoco = async (horario, barbeariaParam) => {
@@ -125,42 +122,6 @@ export const HorarioProvider = ({ children }) => {
 
   };
 
-  const agendar = async (
-    data,
-    horarioSelecionado,
-    servicoEscolhido,
-    dataEscolhida,
-    user = null
-  ) => {
-    try {
-      const { NOME_CLIENTE } = data;
-
-      let agendamentoObj;
-      if (user !== null) {
-        agendamentoObj = {
-          NOME_CLIENTE,
-          ID: user.ID,
-          HORA: horarioSelecionado,
-          SERVICO: servicoEscolhido,
-          DATA: dataEscolhida,
-          STATUS: 1, // 1 = reservado / 0 = nao reservado
-        };
-      } else {
-        agendamentoObj = {
-          NOME_CLIENTE,
-          HORA: horarioSelecionado,
-          SERVICO: servicoEscolhido,
-          DATA: dataEscolhida,
-          STATUS: 1, // 1 = reservado / 0 = nao reservado
-        };
-      }
-      // agendamento é escutado em horarioMarcadoContext (trazer esse useEffect pra cá)
-      setAgendamento(agendamentoObj); // ativa useEffect
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return (
     <HorarioContext.Provider
       value={{
@@ -179,7 +140,6 @@ export const HorarioProvider = ({ children }) => {
         errosHorarios,
         setErrosHorarios,
         ordenarHorarios,
-        agendar,
         agendamento,
         showModalMarcarHorarioDeslogado,
         setShowModalMarcarHorarioDeslogado,

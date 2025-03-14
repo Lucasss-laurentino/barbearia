@@ -26,6 +26,8 @@ import { Horarios } from "../Components/Horarios";
 import { Finalizados } from "../Components/Finalizados";
 import { EditarUser } from "../Components/EditarUser";
 import { MenuFooterProvider } from "../Context/MenuFooterContext";
+import { SocketProvider } from "../Context/SocketContext";
+import { FinanceiroProvider } from "../Context/FinanceiroContext";
 
 export default function appRouter() {
   return (
@@ -45,44 +47,48 @@ export default function appRouter() {
                               <DataProvider>
                                 <PagamentoProvider>
                                   <AssinaturaProvider>
-                                    <Routes>
-                                      <Route
-                                        path="/"
-                                        element={<LandingPage />}
-                                      />
-                                      <Route
-                                        path="/login/:plano_id"
-                                        element={<Login />}
-                                      />
+                                    <FinanceiroProvider>
+                                      <SocketProvider>
+                                        <Routes>
+                                          <Route
+                                            path="/"
+                                            element={<LandingPage />}
+                                          />
+                                          <Route
+                                            path="/login/:plano_id"
+                                            element={<Login />}
+                                          />
 
-                                      <Route path="/:barbearia" element={<PageDefault />}>
-                                        <Route path="/:barbearia/servicos" element={<ListService />} />
-                                        <Route path="/:barbearia/agendamentos" element={<Horarios />} />
-                                        <Route path="/:barbearia/financeiro" element={<Finalizados />} />
-                                        <Route path="/:barbearia/barbeiros" element={<ListBarbeiros />} />
-                                        <Route path="/:barbearia/editarconta" element={<EditarUser />} />
-                                      </Route>
+                                          <Route path="/:barbearia" element={<PageDefault />}>
+                                            <Route path="/:barbearia/servicos" element={<ListService />} />
+                                            <Route path="/:barbearia/agendamentos" element={<Horarios />} />
+                                            <Route path="/:barbearia/financeiro" element={<Finalizados />} />
+                                            <Route path="/:barbearia/barbeiros" element={<ListBarbeiros />} />
+                                            <Route path="/:barbearia/editarconta" element={<EditarUser />} />
+                                          </Route>
 
-                                      <Route path="/:barbearia/login" element={<Login />} />
+                                          <Route path="/:barbearia/login" element={<Login />} />
 
 
-                                      <Route
-                                        path="/:barbearia/teste"
-                                        element={<Index />}
-                                      />
-                                      <Route
-                                        path="/:barbearia/assinaturabloqueada"
-                                        element={<AvisoPagamentoAtrasado />}
-                                      />
-                                      <Route
-                                        path="/:barbearia/assinaturadesativada"
-                                        element={<AtivarAssinatura />}
-                                      />
-                                      <Route
-                                        path="/notfound"
-                                        element={<NotFound />}
-                                      />
-                                    </Routes>
+                                          <Route
+                                            path="/:barbearia/teste"
+                                            element={<Index />}
+                                          />
+                                          <Route
+                                            path="/:barbearia/assinaturabloqueada"
+                                            element={<AvisoPagamentoAtrasado />}
+                                          />
+                                          <Route
+                                            path="/:barbearia/assinaturadesativada"
+                                            element={<AtivarAssinatura />}
+                                          />
+                                          <Route
+                                            path="/notfound"
+                                            element={<NotFound />}
+                                          />
+                                        </Routes>
+                                      </SocketProvider>
+                                    </FinanceiroProvider>
                                   </AssinaturaProvider>
                                 </PagamentoProvider>
                               </DataProvider>

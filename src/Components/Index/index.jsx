@@ -53,6 +53,7 @@ export const Index = () => {
   }, [barbearia]);
 
   // eventos socket direcionado aos usuarios
+  /*
   useEffect(() => {
     const socketInstancia = socket();
     socketInstancia.on(
@@ -63,6 +64,7 @@ export const Index = () => {
         setHorariosMarcado([...agendamentoReturn.horariosMarcado]);
       }
     );
+    
 
     // recusa horario marcado, disponibilizando horario pra todos usuarios e tirando a pendencia do usuario que marcou o horario
     socketInstancia.on(
@@ -147,6 +149,7 @@ export const Index = () => {
       }
     );
   }, []);
+  */
 
   // gravar em um localStorage o parametro barbearia pra quando um usuario editar a conta saber pra qual url envia-lo de volta
   useEffect(() => {

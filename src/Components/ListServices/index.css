@@ -13,7 +13,7 @@
     border-top: 1px solid rgb(107, 107, 107);
     border-bottom: 1px solid rgb(107, 107, 107);
     background-color:rgb(63,62,70, 0.4);
-
+    cursor: pointer;
 }
 .list-style {
     list-style: none;

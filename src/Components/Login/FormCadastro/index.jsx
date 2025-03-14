@@ -13,8 +13,9 @@ import { ServicoContext } from "../../../Context/ServicoContext";
 import InputMask from "react-input-mask";
 import { useLocation } from "react-router-dom";
 import { PlanoContext } from "../../../Context/PlanoContext";
+import { Voltar } from "../Voltar";
 
-export const FormCadastro = ({ barbearia, plano_id}) => {
+export const FormCadastro = ({ barbearia, plano_id, setFormAtivo}) => {
 
   const {
     register,
@@ -101,13 +102,16 @@ export const FormCadastro = ({ barbearia, plano_id}) => {
         onSubmit={handleSubmit((data) => verificarAntesDeConfirmar(data))}
       >
         <div className="col-12 text-center">
+          <Voltar barbearia={barbearia}/>
           <h3 className="titulo-form-login my-4">
             {barbearia ? barbeariaClean : "Barba Cabelo & Bigode"}
           </h3>
           <h5 className="text-white">Criar Conta</h5>
-          <p className="m-0 p-form-login">
-            Comece agora a gerenciar sua barbearia de forma fácil e prática.
-          </p>
+          {!barbearia &&
+            <p className="m-0 p-form-login">
+              Comece agora a gerenciar sua barbearia de forma fácil e prática.
+            </p>
+          }
           {/* EMAIL */}
           <div className="encapsula-span-input-login my-1">
             <div className="col-8 d-flex flex-column">
@@ -312,7 +316,7 @@ export const FormCadastro = ({ barbearia, plano_id}) => {
                     className="m-0 col-12 text-center text-white my-3 cursor"
                     onClick={() => {
                       setCadastroError(null);
-                      setControlaLoginECadastro(true);
+                      setFormAtivo(1);
                     }}
                   >
                     <strong>Já possui uma conta ?</strong> Faça Login

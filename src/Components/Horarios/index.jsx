@@ -3,83 +3,38 @@ import "./index.css";
 import { HorarioMarcadoContext } from "../../Context/HorarioMarcadoContext";
 import { ServicoContext } from "../../Context/ServicoContext";
 import { HorarioContext } from "../../Context/HorarioContext";
-import { BarbeiroContext } from "../../Context/BarbeiroContext";
 import { Li } from "./Li";
-import { UserContext } from "../../Context/UserContext";
+import { useParams } from "react-router-dom";
+import { BarbeiroContext } from "../../Context/BarbeiroContext";
+import { FinanceiroContext } from "../../Context/FinanceiroContext";
 
 export const Horarios = () => {
   const {
     horariosMarcado,
-    aceitarHorarioPendente,
-    recusarHorarioPendente,
-    cancelarMeuHorarioMarcadoAdm,
-    finalizarHorarioAgendado,
     buscarHorariosAgendado,
+    ordenaAgendamentos,
+    agendamentosOrdenados,
   } = useContext(HorarioMarcadoContext);
-  const { servicos } = useContext(ServicoContext);
-  const { user } = useContext(UserContext);
-  const { horarios } = useContext(HorarioContext);
-  const { barbeiros } = useContext(BarbeiroContext);
-  const [lucroDiario, setLucroDiario] = useState();
-  const [horariosOrdenados, setHorariosOrdenados] = useState([]);
+  const { pegarServicos } = useContext(ServicoContext);
+  const { pegarHorarios } = useContext(HorarioContext);
+  const { pegarBarbeiros } = useContext(BarbeiroContext);
+  const { calculaFaturamentoPrevisto, lucroDiario } = useContext(FinanceiroContext);
+  const { barbearia } = useParams();
   const [hoje] = useState(new Date());
 
-  const limparValor = (valor) => {
-    return valor
-      ? parseFloat(valor.replace(/R\$|\./g, "").replace(",", "."))
-      : "";
-  };
-
-  // busca todos horarios marcados dessa barbearia
   useEffect(() => {
-    buscarHorariosAgendado(user?.NOME_BARBEARIA);
+    buscarHorariosAgendado(barbearia);
+    pegarHorarios(barbearia);
+    pegarServicos(barbearia);
+    pegarBarbeiros(barbearia);
   }, []);
 
-  // setando um faturamento previsto
   useEffect(() => {
-    let precos = [];
-    horariosOrdenados?.forEach((horarioMarcado) => {
-      const servico = servicos.find((s) => s.ID === horarioMarcado?.SERVICO_ID);
-      precos.push(limparValor(servico?.PRECO));
-    });
-    const total = precos.reduce(
-      (valorAcumulado, valorAtual) => valorAcumulado + valorAtual,
-      0
-    );
-    setLucroDiario(
-      `R$ ${total.toLocaleString("pt-BR", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      })}`
-    );
-  }, [horariosMarcado, horariosOrdenados]);
+    calculaFaturamentoPrevisto();
+  }, [horariosMarcado, agendamentosOrdenados]);
 
   useEffect(() => {
-    if (horariosMarcado) {
-      const ordenados = [...horariosMarcado].sort((a, b) => {
-        // Primeiro, ordenar pela propriedade RESERVADO (2, 1, 0)
-        if (a.RESERVADO !== b.RESERVADO) {
-          return b.RESERVADO - a.RESERVADO; // RESERVADO = 2 vem primeiro, depois 1, depois 0
-        }
-
-        // Se ambos têm o mesmo valor de RESERVADO, ordenar pelo HORARIO_ID
-        const horarioA = a.HORARIO_ID; // O valor do HORARIO_ID
-        const horarioB = b.HORARIO_ID; // O valor do HORARIO_ID
-
-        // Ordenar pelo HORARIO_ID em ordem crescente
-        return horarioA - horarioB; // Ordenação numérica
-      });
-
-      const horariosDeHoje = ordenados.filter((horarioOrdenado) => {
-        const dataFormatada = `${hoje.toLocaleString("pt-BR", {
-          day: "2-digit",
-        })}/${hoje.toLocaleString("pt-BR", {
-          month: "2-digit",
-        })}/${hoje.toLocaleString("pt-BR", { year: "numeric" })}`;
-        return horarioOrdenado.DATA === dataFormatada;
-      });
-      setHorariosOrdenados(horariosDeHoje);
-    }
+    ordenaAgendamentos();
   }, [horariosMarcado, hoje]);
 
   return (
@@ -90,7 +45,7 @@ export const Horarios = () => {
             <div className="col-12 head-horarios">
               <div className="col-5 quantia-agendamento-horarios">
                 <div className="col-12 px-1 align-qnt-agendamento">
-                  <h5 className="">{horariosOrdenados?.length}</h5>
+                  <h5 className="">{agendamentosOrdenados?.length}</h5>
                   <p className="m-0">Agendamentos</p>
                 </div>
               </div>
@@ -102,34 +57,12 @@ export const Horarios = () => {
           </div>
           <div className="col-12 col-sm-10 col-md-8 d-flex justify-content-center align-items-center">
             <ul className="col-12 m-0 p-0 list-style scroll-horarios">
-              {horariosOrdenados.length > 0 ? horariosOrdenados?.map((horario, index) => {
-                const hora = horarios.find(
-                  (h) => h.ID === horario?.HORARIO_ID
-                );
-                const servico = servicos.find(
-                  (s) => s.ID === horario?.SERVICO_ID
-                );
-                return (
-                  <Li
-                    key={index}
-                    horario={horario}
-                    hora={hora}
-                    servico={servico}
-                    barbeiros={barbeiros}
-                    aceitarHorarioPendente={aceitarHorarioPendente}
-                    recusarHorarioPendente={recusarHorarioPendente}
-                    cancelarMeuHorarioMarcadoAdm={
-                      cancelarMeuHorarioMarcadoAdm
-                    }
-                    finalizarHorarioAgendado={finalizarHorarioAgendado}
-                  />
-                );
+              {agendamentosOrdenados.length > 0 ? agendamentosOrdenados?.map((horario, index) => {
+                return (<Li key={index} horario={horario} />);
               }) :
-
                 <div className="d-flex justify-content-center align-items-center" style={{ height: '200px' }}>
                   <h3 className="text-white">Nenhum horário agendado</h3>
                 </div>
-
               }
             </ul>
           </div>

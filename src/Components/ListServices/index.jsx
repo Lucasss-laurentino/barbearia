@@ -27,6 +27,7 @@ export const ListService = () => {
     servicoAgendado,
     servicoASerExcluido,
     editarServicoState,
+    verificarServicoEscolhido,
   } = useContext(ServicoContext);
   
   const { user, setUserContrata } = useContext(UserContext);
@@ -94,6 +95,7 @@ export const ListService = () => {
                           <li
                             className="py-1 border-list-services text-claro"
                             id={`item-servico-${servico.ID}`}
+                            onClick={() => verificarServicoEscolhido(servico)}
                           >
                             <div className="d-flex justify-content-between align-items-center">
                               <NomeImgPrazo servico={servico} />

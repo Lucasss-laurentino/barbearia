@@ -1,15 +1,37 @@
+import { useContext, useEffect, useState } from "react";
 import "./index.css";
+import { HorarioMarcadoContext } from "../../../Context/HorarioMarcadoContext";
+import { BarbeiroContext } from "../../../Context/BarbeiroContext";
+import { ServicoContext } from "../../../Context/ServicoContext";
+import { HorarioContext } from "../../../Context/HorarioContext";
+import { SocketContext } from "../../../Context/SocketContext";
 
 export const Li = ({
   horario,
-  hora,
-  servico,
-  barbeiros,
-  aceitarHorarioPendente,
-  recusarHorarioPendente,
-  cancelarMeuHorarioMarcadoAdm,
-  finalizarHorarioAgendado,
 }) => {
+
+  const { 
+    aceitarHorarioPendente,
+    cancelarMeuHorarioMarcadoAdm,
+    finalizarHorarioAgendado,
+  } = useContext(HorarioMarcadoContext);
+
+  const { barbeiros } = useContext(BarbeiroContext);
+  const { servicos } = useContext(ServicoContext);
+  const { horarios } = useContext(HorarioContext);
+  const { recusarHorarioPendente } = useContext(SocketContext);
+
+  const [hora, setHora] = useState();
+  const [servico, setServico] = useState();
+
+  useEffect(() => {
+    const horaFind = horarios.find(horario => (horario.HORARIO_ID === horario.HORARIO_ID));
+    setHora(horaFind);
+
+    const servicoFind = servicos.find(servico => servico.ID === horario.SERVICO_ID);
+    setServico(servicoFind)
+  }, [horarios, servicos])
+
   return (
     <li className="py-1 border-list-services text-claro">
       <div className="col-12 d-flex justify-content-between align-items-center flex-column">

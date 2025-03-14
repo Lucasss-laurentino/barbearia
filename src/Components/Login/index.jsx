@@ -25,6 +25,13 @@ export const Login = () => {
   const { plano_id } = useParams();
 
   const [recuperaSenha, setRecuperaSenha] = useState(false);
+  const [formAtivo, setFormAtivo] = useState(() => {
+    if(barbearia) { // inicia com o login aberto
+      return 1;
+    } else { // inicia com cadastro aberto
+      return 2;
+    }
+  });
 
   useEffect(() => {
     // gatilho pra chamar a função -> validarCodigoMudarSenha em <ConfirmaCodigo/>
@@ -52,43 +59,35 @@ export const Login = () => {
   return (
     <>
       <div class="page-login">
-        <FormLogin />
-      </div>
-    {/*
-      <div
-        className={
-          active === 4
-            ? "container-fluid page-login d-flex justify-content-center align-items-start"
-            : "container-fluid page-login d-flex justify-content-center align-items-center"
+        {formAtivo === 1 && 
+          <FormLogin 
+            barbearia={barbearia} 
+            setFormAtivo={setFormAtivo} 
+          />
         }
-      >
-        <div
-          className={
-            active === 4
-              ? "row col-12 justify-content-center scroll-login pt-5 mt-5"
-              : "row col-12 justify-content-center scroll-login"
-          }
-        >
-          {controlaLoginECadastro && !esqueceuSenha && (
-            <FormLogin barbearia={barbearia} />
-          )}
-          {!controlaLoginECadastro && !esqueceuSenha && !confirmarCodigo && (
-            <FormCadastro barbearia={barbearia} plano_id={plano_id}/>
-          )}
-
-          {esqueceuSenha && controlaLoginECadastro && <RecuperarSenha barbearia={barbearia}/>}
-
-          {!esqueceuSenha && !controlaLoginECadastro && confirmarCodigo && (
-            <ConfirmaCodigo
-              recuperaSenha={recuperaSenha}
-              setRecuperaSenha={setRecuperaSenha}
-              barbearia={barbearia}
-              plano_id={plano_id}
-            />
-          )}
-        </div>
+        {formAtivo === 2 && 
+          <FormCadastro 
+            barbearia={barbearia} 
+            plano_id={plano_id} 
+            setFormAtivo={setFormAtivo}
+          />
+        }
+        {formAtivo === 3 &&
+          <RecuperarSenha 
+            barbearia={barbearia}
+            setFormAtivo={setFormAtivo}
+          />
+        }
+        {formAtivo === 4 &&
+          <ConfirmaCodigo
+            recuperaSenha={recuperaSenha}
+            setRecuperaSenha={setRecuperaSenha}
+            barbearia={barbearia}
+            plano_id={plano_id}
+            setFormAtivo={setFormAtivo}
+          />
+        }
       </div>
-      */}
     </>
   );
 };

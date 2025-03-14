@@ -74,7 +74,6 @@ export const ListaHorarios = ({
     setHoraAtual(`${hora}:${minutos}`);
   }, []);
 
-
   // resposta socket pra nao renderizar horario marcado como almoço pelo adm
   useEffect(() => {
     const sockerInstancia = socket();
@@ -185,7 +184,7 @@ export const ListaHorarios = ({
                           Marcar
                         </button>
                       )}
-                      {user.ADM && (
+                      {user?.ADM && (
                         <>
                           <button
                             className="btn btn-sm bg-transparent text-white mx-2"
@@ -235,16 +234,16 @@ export const ListaHorarios = ({
                 </li>
               </Fragment>
             );
-          } else if(user.ADM){
+          } else if(user?.ADM){
             return (
-              <Fragment key={horario.ID}>
+              <Fragment key={horario?.ID}>
                 <li className="d-flex justify-content-around align-items-center my-2">
                   <div className="col-6 d-flex justify-content-center align-items-center">
-                    <p className="m-0 p-0">{horario.HORA}</p>
+                    <p className="m-0 p-0">{horario?.HORA}</p>
                   </div>
                   <div className="col-6 d-flex justify-content-center align-items-center">
                     <div className="d-flex justify-content-end align-items-center">
-                      {user.ADM && horario.INTERVALO && (
+                      {user?.ADM && horario.INTERVALO && (
                         <button
                           className="btn btn-sm mx-2 border border-success text-success"
                           onClick={() => marcarAlmoco(horario, barbearia)}
@@ -252,7 +251,7 @@ export const ListaHorarios = ({
                           Almoço
                         </button>
                       )}
-                      {user.ADM && !horario.INTERVALO && (
+                      {user?.ADM && !horario.INTERVALO && (
                         <button
                           className="btn btn-sm bg-transparent mx-2 text-white border border-white"
                           onClick={() => marcarAlmoco(horario, barbearia)}
@@ -260,7 +259,7 @@ export const ListaHorarios = ({
                           Almoço
                         </button>
                       )}
-                      {!user.ADM && (
+                      {!user?.ADM && (
                         <button
                           className="btn btn-sm bg-transparent mx-2 text-white"
                           onClick={() => {
@@ -301,7 +300,7 @@ export const ListaHorarios = ({
                           Marcar
                         </button>
                       )}
-                      {user.ADM && (
+                      {user?.ADM && (
                         <>
                           <button
                             className="btn btn-sm bg-transparent text-white mx-2"

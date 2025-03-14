@@ -5,6 +5,7 @@ import { agendarDeslogadoSchema } from "../../../validations/agendarDeslogado";
 import { useContext } from "react";
 import { HorarioContext } from "../../../Context/HorarioContext";
 import { DataContext } from "../../../Context/DataContext";
+import { SocketContext } from "../../../Context/SocketContext";
 
 export const ModalMarcarHorarioDeslogado = ({
   show,
@@ -18,7 +19,7 @@ export const ModalMarcarHorarioDeslogado = ({
     setShow(false);
   };
 
-  const { agendar } = useContext(HorarioContext);
+  const { agendarViaSocket } = useContext(SocketContext);
   const { data } = useContext(DataContext);
 
   const {
@@ -31,8 +32,9 @@ export const ModalMarcarHorarioDeslogado = ({
   });
 
   const onSubmit = (dataParametro) => {
-    agendar(dataParametro, horarioSelecionado, servicoEscolhido, data);
+    agendarViaSocket(dataParametro, horarioSelecionado, servicoEscolhido, data);
   }
+  
   return (
     <>
       <Modal

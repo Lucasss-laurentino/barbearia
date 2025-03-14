@@ -4,8 +4,9 @@ import { recuperarSenhaSchema } from "../../../validations/recuperarSenha";
 import { useContext } from "react";
 import { LoginContext } from "../../../Context/LoginContext";
 import { MutatingDots } from "react-loader-spinner";
+import { Voltar } from "../Voltar";
 
-export const RecuperarSenha = ({barbearia}) => {
+export const RecuperarSenha = ({barbearia, setFormAtivo}) => {
   const {
     register,
     handleSubmit,
@@ -30,6 +31,7 @@ export const RecuperarSenha = ({barbearia}) => {
       onSubmit={handleSubmit(enviarEmailDeRecuperacao)}
     >
       <div className="col-12 text-center">
+        <Voltar barbearia={barbearia}/>
         <h3 className="titulo-form-login my-4">{barbearia ? barbeariaClean : "Barba Cabelo & Bigode"}</h3>
         <h5 className="text-white">Recupere sua senha</h5>
         <p className="m-0 p-form-login">Receba um código em seu e-mail</p>
@@ -102,7 +104,7 @@ export const RecuperarSenha = ({barbearia}) => {
                     className="m-0 col-12 text-center text-white cursor my-2 pt-2"
                     onClick={() => {
                       setCadastroError(null);
-                      setEsqueceuSenha(false);
+                      setFormAtivo(1);
                     }}
                   >
                     Voltar

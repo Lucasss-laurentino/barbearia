@@ -24,7 +24,7 @@ export const FotoEIcones = ({barbeiro, user, setId, abrirListaHorarios, horarios
             />
           </div>
           <div className="col-9">
-            <h6 className="m-0">{barbeiro.NOME}</h6>
+            <h6 className="m-0 nome-barbeiro">{barbeiro.NOME}</h6>
           </div>
         </div>
         {/* ICONE RELOGIO E ICONES ADMINISTRATIVOS */}
@@ -68,7 +68,7 @@ export const FotoEIcones = ({barbeiro, user, setId, abrirListaHorarios, horarios
             </div>
           )}
           <div
-            className="col-9 px-1"
+            className="icon-relogio-responsivo px-1"
             onClick={() =>
               abrirListaHorarios(barbeiro.ID, horariosAberto, setHorariosAberto)
             }

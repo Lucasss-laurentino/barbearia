@@ -61,8 +61,6 @@ export const ListBarbeiros = () => {
   
   const {
     setHorarioMarcado,
-    horarioMarcado,
-    desmarcarHorario,
     storage,
     setStorage,
   } = useContext(HorarioMarcadoContext);
@@ -277,7 +275,6 @@ export const ListBarbeiros = () => {
                           storage?.BARBEIRO?.ID === barbeiro?.ID && (
                             <HoraMarcada
                               horario={horarioObjeto}
-                              desmarcarHorario={desmarcarHorario}
                             />
                           )}
                       </div>

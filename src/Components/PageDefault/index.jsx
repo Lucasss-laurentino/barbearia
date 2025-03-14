@@ -5,12 +5,14 @@ import { MenuFooter } from '../MenuFooter';
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../Context/UserContext';
 import { Menu } from '../Menu';
+import { SocketContext } from '../../Context/SocketContext';
 
 export const PageDefault = () => {
 
   const navigate = useNavigate();
   const { pegarUsuario, user } = useContext(UserContext);
   const { barbearia } = useParams();
+  const { setBarbearia } = useContext(SocketContext);
 
   useEffect(() => {
     pegarUsuario();
@@ -26,6 +28,10 @@ export const PageDefault = () => {
       navigate(`/${barbearia}/agendamentos`);
     }
   }, [user])
+
+  useEffect(() => {
+    setBarbearia(barbearia); // inicia conexão socket que depende de 'barbearia'
+  }, [barbearia])
 
   return (
     <>

@@ -5,7 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { confirmarCodigoSchema } from "../../../validations/ConfirmarCodigo";
 import { MutatingDots } from "react-loader-spinner";
 
-export const ConfirmaCodigo = ({recuperaSenha, setRecuperaSenha, barbearia = null, plano_id = null}) => {
+export const ConfirmaCodigo = ({recuperaSenha, setRecuperaSenha, barbearia = null, plano_id = null, setFormAtivo}) => {
   const {
     setLoadLogin,
     criarUsuario,
