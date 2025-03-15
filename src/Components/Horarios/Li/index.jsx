@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import "./index.css";
-import { HorarioMarcadoContext } from "../../../Context/HorarioMarcadoContext";
 import { BarbeiroContext } from "../../../Context/BarbeiroContext";
 import { ServicoContext } from "../../../Context/ServicoContext";
 import { HorarioContext } from "../../../Context/HorarioContext";
@@ -10,16 +9,15 @@ export const Li = ({
   horario,
 }) => {
 
-  const { 
-    aceitarHorarioPendente,
-    cancelarMeuHorarioMarcadoAdm,
-    finalizarHorarioAgendado,
-  } = useContext(HorarioMarcadoContext);
-
   const { barbeiros } = useContext(BarbeiroContext);
   const { servicos } = useContext(ServicoContext);
   const { horarios } = useContext(HorarioContext);
-  const { recusarHorarioPendente } = useContext(SocketContext);
+  const { 
+    recusarHorarioPendente,
+    aceitarHorarioPendente,
+    cancelarHorarioMarcadoAdm,
+    finalizarHorarioAgendado,
+  } = useContext(SocketContext);
 
   const [hora, setHora] = useState();
   const [servico, setServico] = useState();
@@ -156,7 +154,7 @@ export const Li = ({
               </button>
               <button
                 className="btn btn-sm btn-danger"
-                onClick={() => cancelarMeuHorarioMarcadoAdm(horario)}
+                onClick={() => cancelarHorarioMarcadoAdm(horario)}
               >
                 Cancelar
               </button>

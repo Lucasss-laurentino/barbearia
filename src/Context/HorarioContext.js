@@ -8,7 +8,6 @@ export const HorarioProvider = ({ children }) => {
   // STATES
   const [horarios, setHorarios] = useState([]);
   const [limparHoraAposExclusao, setLimparHoraAposExclusao] = useState(false);
-  const [usuarioTemHorarioMarcado, setUsuarioTemHorarioMarcado] = useState(false);
   const [errosHorarios, setErrosHorarios] = useState({
     erro: false,
     menssagem: "",
@@ -143,8 +142,6 @@ export const HorarioProvider = ({ children }) => {
         agendamento,
         showModalMarcarHorarioDeslogado,
         setShowModalMarcarHorarioDeslogado,
-        usuarioTemHorarioMarcado,
-        setUsuarioTemHorarioMarcado,
         marcarAlmoco,
       }}
     >

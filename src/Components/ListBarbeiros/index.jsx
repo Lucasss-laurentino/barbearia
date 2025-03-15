@@ -19,9 +19,9 @@ import { HorarioContext } from "../../Context/HorarioContext";
 import { UserContext } from "../../Context/UserContext";
 import { HorarioMarcadoContext } from "../../Context/HorarioMarcadoContext";
 import { useParams } from "react-router-dom";
-import { socket } from "../../socket";
 import { Calendario } from "../Calendar";
 import { ModalBarbeiro } from "./ModalBarbeiro";
+import { SocketContext } from "../../Context/SocketContext";
 
 export const ListBarbeiros = () => {
 
@@ -37,7 +37,6 @@ export const ListBarbeiros = () => {
   const {
     barbeiros,
     barbeiroSelecionado,
-    setBarbeiroSelecionado,
     erroBarbeiro,
     setErroBarbeiro,
     pegarBarbeiros,
@@ -61,21 +60,19 @@ export const ListBarbeiros = () => {
   
   const {
     setHorarioMarcado,
-    storage,
-    setStorage,
   } = useContext(HorarioMarcadoContext);
 
   const {
     horarios,
     horariosAberto,
     setHorariosAberto,
-    setUsuarioTemHorarioMarcado,
     errosHorarios,
     setErrosHorarios,
     pegarHorarios
   } = useContext(HorarioContext);
   
   const { abrirListaHorarios } = useContext(AnimacaoContext);
+  const { storage, setStorage } = useContext(SocketContext);
   const { user } = useContext(UserContext);
   const { barbearia } = useParams();
 
@@ -109,7 +106,6 @@ export const ListBarbeiros = () => {
     ) {
       const obj = JSON.parse(localStorage.getItem("agendamento"));
       if (obj?.RESERVADO !== 0) {
-        setUsuarioTemHorarioMarcado(true);
         setHorarioMarcado(obj.HORA);
       }
       setStorage(obj);
@@ -124,26 +120,6 @@ export const ListBarbeiros = () => {
       setStorage(horarioObjeto);
     }
   }, [horarioObjeto]);
-
-  // tira a flag de horario aceito quando esse horario é finalizado pelo adm
-  useEffect(() => {
-    const socketInstancia = socket();
-    socketInstancia.on(
-      `confirmarFinalizacaoHorarioAgendado${barbearia}`,
-      (horarioFinalizado) => {
-        if (
-          localStorage.getItem("agendamento") &&
-          localStorage.getItem("agendamento") !== "{}"
-        ) {
-          const storage = JSON.parse(localStorage.getItem("agendamento"));
-          if (storage.ID === horarioFinalizado.ID) {
-            localStorage.setItem("agendamento", "{}");
-            setStorage(null);
-          }
-        }
-      }
-    );
-  }, []);
 
   // toast erros
   useEffect(() => {

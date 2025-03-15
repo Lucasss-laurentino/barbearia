@@ -1,15 +1,10 @@
 import './index.css';
 import { useState, useEffect, useContext } from "react";
-import { HorarioMarcadoContext } from "../../../Context/HorarioMarcadoContext";
 import { SocketContext } from '../../../Context/SocketContext';
 
 export const HoraMarcada = ({ horario }) => {
   const [meuHorario, setMeuHorario] = useState({});
-  const { cancelarMeuHorarioMarcado } = useContext(
-    HorarioMarcadoContext
-  );
-
-  const { cancelarMeuHorarioPendente } = useContext(SocketContext);
+  const { cancelarMeuHorarioPendente, cancelarMeuHorarioMarcado } = useContext(SocketContext);
 
   useEffect(() => {
     if (horario) {
@@ -21,10 +16,16 @@ export const HoraMarcada = ({ horario }) => {
 
   return (
     <>
-      <div class="agendamento-dados">
-        <p class="agendamento-hora">{meuHorario?.HORA}</p>
-        <p class="agendamento-data">{meuHorario?.DATA}</p>
-        <p class="agendamento-status bg-warning">{meuHorario?.RESERVADO === 2 ? "Pendente" : "Aceito"}</p>
+      <div className="agendamento-dados">
+        <p className="agendamento-hora">{meuHorario?.HORA}</p>
+        <p className="agendamento-data">{meuHorario?.DATA}</p>
+        <p className={
+          meuHorario.RESERVADO === 2 ? 
+          "agendamento-status bg-warning" :
+           "agendamento-status bg-success"}>
+            {meuHorario?.RESERVADO === 2 ? "Pendente" : "Aceito"
+          }
+        </p>
         <a
           className="agendamento-cancelar mx-1"
           onClick={() => {

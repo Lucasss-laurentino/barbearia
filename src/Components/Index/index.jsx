@@ -54,16 +54,7 @@ export const Index = () => {
 
   // eventos socket direcionado aos usuarios
   /*
-  useEffect(() => {
-    const socketInstancia = socket();
-    socketInstancia.on(
-      `agendamentoResultado${barbearia}`,
-      async (agendamentoReturn) => {
-        setHorarios(agendamentoReturn.horarios);
-        // const { agendamento } = agendamentoReturn;
-        setHorariosMarcado([...agendamentoReturn.horariosMarcado]);
-      }
-    );
+ 
     
 
     // recusa horario marcado, disponibilizando horario pra todos usuarios e tirando a pendencia do usuario que marcou o horario
@@ -84,67 +75,6 @@ export const Index = () => {
             setStorage(null);
             setServicoEscolhido(null);
           }
-        }
-      }
-    );
-
-    // aceita horario pendente
-    socketInstancia.on(
-      `confirmarHorarioPendenteAceitoUsuario${barbearia}`,
-      (horarioParametro) => {
-        const { horarios, horarioNaoPendente } = horarioParametro;
-        const agendamentoStorage = localStorage.getItem("agendamento");
-        if (
-          agendamentoStorage &&
-          agendamentoStorage !== "" &&
-          agendamentoStorage !== "{}"
-        ) {
-          const storage = JSON.parse(localStorage.getItem("agendamento"));
-          if (
-            storage &&
-            storage?.ID === horarioParametro.horarioNaoPendente?.ID
-          ) {
-            storage.RESERVADO = horarioNaoPendente.RESERVADO;
-            localStorage.setItem("agendamento", JSON.stringify(storage));
-          }
-        }
-        setHorariosMarcado(horarioParametro.horariosMarcado);
-        setHorarios(horarios);
-      }
-    );
-
-    // confirma horario pendente cancelado
-    socketInstancia.on(
-      `confirmarCancelamentoHorarioPendente${barbearia}`,
-      (horarioPendenteCancelado) => {
-        setHorarios(horarioPendenteCancelado.horarios);
-        setHorariosMarcado(horarioPendenteCancelado.horariosMarcado);
-      }
-    );
-
-    // horario cancelado pelo usuario (depois de aceito)
-    socketInstancia.on(
-      `horarioMarcadoCancelado${barbearia}`,
-      (horarioResponse) => {
-        setHorariosMarcado(horarioResponse.horariosMarcado);
-        setHorarios(horarioResponse.horarios);
-      }
-    );
-
-    // horario cancelado pelo adm (depois de aceito)
-    socketInstancia.on(
-      `horarioMarcadoCanceladoAdm${barbearia}`,
-      (horarioResponse) => {
-        setHorariosMarcado(horarioResponse.horariosMarcado);
-        setHorarios(horarioResponse.horarios);
-        if (
-          localStorage.getItem("agendamento") &&
-          localStorage.getItem("agendamento") !== "{}"
-        ) {
-          const storage = JSON.parse(localStorage.getItem("agendamento"));
-          if (storage?.ID === horarioResponse.horarioRecusado?.ID)
-            localStorage.setItem("agendamento", "{}");
-          setServicoEscolhido();
         }
       }
     );

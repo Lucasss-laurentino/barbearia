@@ -35,7 +35,7 @@ export const ListaHorarios = ({
   const [horariosDessaData, setHorariosDessaData] = useState([]);
   const [horaAtual, setHoraAtual] = useState();
 
-  // filtra horarios pra exibir somente horarios de hoje, horarios acima da hora atual e horarios disponiveis
+  // filtra horarios pra exibir
   useEffect(() => {
     if (user?.ADM) {
       setHorariosDessaData([...horariosFiltrado]);
@@ -93,7 +93,7 @@ export const ListaHorarios = ({
         barbearia={barbearia}
       />
       <ul className="horarios-fechado" id={barbeiro.ID}>
-        {/* ADICIONA NOVO HORARIO */}
+       
         {user?.ADM && (
           <li
             className="d-flex justify-content-center align-items-center my-3 text-white"
@@ -106,7 +106,6 @@ export const ListaHorarios = ({
           </li>
         )}
 
-        {/* MOSTRA DATA ATUAL */}
         <li
           className="d-flex justify-content-center align-items-center my-3 text-white"
           onClick={() => {
@@ -149,11 +148,9 @@ export const ListaHorarios = ({
                           onClick={() => {
                             if (servicoEscolhido) {
                               if (!user?.ID) {
-                                // ATIVA MODAL PRA ENVIAR O NOME E DE LA É FEITO O AGENDAMENTO
                                 setHorarioSelecionado(horario);
                                 setShowModalMarcarHorarioDeslogado(true);
                               } else {
-                                // AGENDAMENTO DIRETO AQUI
                                 setHorarioSelecionado(horario);
                                 agendar(
                                   { NOME_CLIENTE: user.NOME },
