@@ -19,6 +19,7 @@ export const SocketProvider = ({ children }) => {
     const { barbeiros } = useContext(BarbeiroContext);
     const { servicos, setServicoEscolhido } = useContext(ServicoContext);
     const { setHorariosMarcado, horariosMarcado } = useContext(HorarioMarcadoContext);
+    
     const [socketInstancia] = useState(socket());
     const [barbearia, setBarbearia] = useState(null);
 
@@ -28,11 +29,12 @@ export const SocketProvider = ({ children }) => {
         socketInstancia.on(
             `agendamentoResultado${barbearia}`,
             async (agendamentoReturn) => {
-                setHorarios(agendamentoReturn.horarios);
+                setHorarios([...agendamentoReturn.horarios]);
                 setHorariosMarcado([...agendamentoReturn.horariosMarcado]);
             }
         );
     }, [barbearia]);
+
 
     useEffect(() => {
         socketInstancia.on(
@@ -132,6 +134,17 @@ export const SocketProvider = ({ children }) => {
         );
     }, [barbearia]);
 
+    useEffect(() => {
+        socketInstancia.on(
+            `confirmarCancelamentoHorarioPendente${barbearia}`,
+            (horarioPendenteCancelado) => {
+              setHorarios(horarioPendenteCancelado.horarios);
+              setHorariosMarcado(horarioPendenteCancelado.horariosMarcado);
+            }
+          );
+      
+    }, [barbearia]);
+
     // FUNÇÕES SÃO CONEXÕES SOCKET DESTINADAS AO ADM
 
     const agendarViaSocket = async (data, horarioSelecionado, servicoEscolhido, dataEscolhida, user = null) => {
@@ -143,7 +156,8 @@ export const SocketProvider = ({ children }) => {
             socketInstancia.on("confirmarAgendamento", async (agendamento) => {
                 const agendamentoRetornado = agendamento.agendamento;
                 setHorarios(agendamento.horarios);
-                setHorariosMarcado([...agendamento.horariosMarcado]);
+                console.log(horariosMarcado);
+                setHorariosMarcado([...horariosMarcado, agendamento.agendamento]);
                 const agendamentoObj = await formataAgendamentoRetornado(agendamentoRetornado);
                 localStorage.setItem("agendamento", JSON.stringify(agendamentoObj));
                 setStorage(agendamentoObj);

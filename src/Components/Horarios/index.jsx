@@ -34,6 +34,7 @@ export const Horarios = () => {
   }, [horariosMarcado, agendamentosOrdenados]);
 
   useEffect(() => {
+    console.log(horariosMarcado);
     ordenaAgendamentos();
   }, [horariosMarcado, hoje]);
 

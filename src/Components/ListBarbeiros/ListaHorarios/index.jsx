@@ -41,7 +41,6 @@ export const ListaHorarios = ({
       setHorariosDessaData([...horariosFiltrado]);
     } else {
       const hora = new Date().getHours();
-
       const horariosDisponiveis = horariosFiltrado.filter((horario) => {
         if (horario.HORA.split(":")[0] > hora) {
           return horario;
@@ -49,7 +48,7 @@ export const ListaHorarios = ({
       });
 
       const horarios = horariosDisponiveis.filter((horarioDisponivel) => {
-        if (data) {
+        // if (data) {
           const horario = horariosMarcado.some((hM) => {
             if (hM.HORARIO_ID === horarioDisponivel.ID) {
               if (hM.DATA === data) {
@@ -60,7 +59,7 @@ export const ListaHorarios = ({
           if (!horario) {
             return horarioDisponivel;
           }
-        }
+        //}
       });
       setHorariosDessaData([...horarios]);
     }
@@ -117,7 +116,7 @@ export const ListaHorarios = ({
         </li>
 
         {horariosDessaData.length > 0 && horariosDessaData.map((horario) => {
-          if (!horario?.INTERVALO && !user?.ADM) {
+          if (!horario.INTERVALO && !user?.ADM) {
             return (
               <Fragment key={horario.ID}>
                 <li className="d-flex justify-content-around align-items-center my-2">

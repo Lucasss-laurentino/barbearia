@@ -60,6 +60,7 @@ export const ListBarbeiros = () => {
   
   const {
     setHorarioMarcado,
+    buscarHorariosAgendado
   } = useContext(HorarioMarcadoContext);
 
   const {
@@ -85,6 +86,7 @@ export const ListBarbeiros = () => {
     setHorariosAberto(false);
     pegarBarbeiros(barbearia);
     pegarHorarios(barbearia);
+    buscarHorariosAgendado(barbearia);
   }, []);
 
   useEffect(() => {

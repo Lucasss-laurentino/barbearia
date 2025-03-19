@@ -23,7 +23,7 @@ export const Li = ({
   const [servico, setServico] = useState();
 
   useEffect(() => {
-    const horaFind = horarios.find(horario => (horario.HORARIO_ID === horario.HORARIO_ID));
+    const horaFind = horarios.find(h => (h.ID === horario.HORARIO_ID));
     setHora(horaFind);
 
     const servicoFind = servicos.find(servico => servico.ID === horario.SERVICO_ID);
@@ -57,7 +57,7 @@ export const Li = ({
             </div>
           </div>
           <div className="col-2">
-            <div className="encapsula-icon d-flex justify-content-end align-items-center mx-4">
+            <div className="encapsula-icon-wpp">
               <div className="icon pt-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -76,25 +76,25 @@ export const Li = ({
         <div className="col-12 d-flex">
           <div className="col-8 d-flex justify-content-center">
             <div className="container p-0">
-              <h6 className="mx-2 my-1">Cliente: {horario?.USER_NOME}</h6>
-              <p className="mx-2">Serviço: {servico?.NOME_SERVICO}</p>
+              <h6 className="mx-2 my-1 texto-responsivo">Cliente: {horario?.USER_NOME}</h6>
+              <p className="mx-2 texto-responsivo">Serviço: {servico?.NOME_SERVICO}</p>
             </div>
           </div>
           <div className="col-4">
             <div className="container d-flex justify-content-center align-items-end flex-column">
-              <h6 className="my-2">{servico?.PRECO}</h6>
-              <p className="m-0">{servico?.PRAZO}</p>
+              <h6 className="my-2 texto-responsivo">{servico?.PRECO}</h6>
+              <p className="m-0 texto-responsivo">{servico?.PRAZO}</p>
             </div>
           </div>
         </div>
       </div>
       <hr className="my-1" />
       <div className="col-12 d-flex justify-content-around align-items-center personalizar-div-foto">
-        <div className="col-2">
+        <div className="col-2 d-flex justify-content-center align-items-center">
           {barbeiros.map((barbeiro) => {
             if (barbeiro.ID === horario.BARBEIRO_ID) {
               return (
-                <div className="div-redonda-servico" key={barbeiro.ID}>
+                <div className="div-redonda-horarios" key={barbeiro.ID}>
                   <img
                     src={process.env.REACT_APP_API_URL + barbeiro.IMAGEM}
                     className="img-fluid"
@@ -110,7 +110,7 @@ export const Li = ({
           {barbeiros.map((barbeiro) => {
             if (barbeiro?.ID === horario?.BARBEIRO_ID) {
               return (
-                <h6 className="mx-4" key={barbeiro?.ID}>
+                <h6 className="mx-4 texto-responsivo" key={barbeiro?.ID}>
                   {barbeiro.NOME}
                 </h6>
               );
