@@ -12,26 +12,18 @@ export const Login = () => {
   const { active } = useContext(AbaBottomContext);
   // context login
   const {
-    confirmarCodigo,
-    controlaLoginECadastro,
     setControlaLoginECadastro,
-    esqueceuSenha,
     setBarbearia,
     setEsqueceuSenha,
     setConfirmarCodigo,
+    formAtivo, 
+    setFormAtivo,
   } = useContext(LoginContext);
 
   const { barbearia } = useParams();
   const { plano_id } = useParams();
 
   const [recuperaSenha, setRecuperaSenha] = useState(false);
-  const [formAtivo, setFormAtivo] = useState(() => {
-    if(barbearia) { // inicia com o login aberto
-      return 1;
-    } else { // inicia com cadastro aberto
-      return 2;
-    }
-  });
 
   useEffect(() => {
     // gatilho pra chamar a função -> validarCodigoMudarSenha em <ConfirmaCodigo/>
@@ -51,7 +43,7 @@ export const Login = () => {
   useEffect(() => {
     if (plano_id) {
       setControlaLoginECadastro(false);
-      setEsqueceuSenha(false);
+      // setEsqueceuSenha(false);
       setConfirmarCodigo(false);
     }
   }, []);

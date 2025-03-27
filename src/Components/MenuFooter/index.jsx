@@ -7,7 +7,7 @@ export const MenuFooter = ({user}) => {
     <>
       <div className="menu-footer">
         {user?.ADM && <ListAdm />}
-        {!user?.ADM && <ListUser/>}
+        {!user?.ADM && <ListUser user={user}/>}
       </div>
     </>
   )

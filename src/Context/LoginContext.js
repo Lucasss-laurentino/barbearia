@@ -25,6 +25,13 @@ export const LoginProvider = ({ children }) => {
   const [esqueceuSenha, setEsqueceuSenha] = useState(false);
   const [barbearia, setBarbearia] = useState(null);
   const [barbeariaClean, setBarbeariaClean] = useState("");
+  const [formAtivo, setFormAtivo] = useState(() => {
+    if (barbearia) { // inicia com o login aberto
+      return 1;
+    } else { // inicia com cadastro aberto
+      return 2;
+    }
+  });
 
   useEffect(() => {
     if (barbearia) {
@@ -37,9 +44,7 @@ export const LoginProvider = ({ children }) => {
 
   const criarUsuario = async (codigo, barbearia = null, plano_id = null) => {
     try {
-
       setLoadLogin(true);
-
       let dataVencimento;
       if (!barbearia || barbearia === null) {
         dataVencimento = await formatarDataVencimento();
@@ -56,8 +61,7 @@ export const LoginProvider = ({ children }) => {
       setUser(response.data.user);
       setLoadLogin(false);
       setCadastroError(null);
-      setEsqueceuSenha(false);
-      setControlaLoginECadastro(true);
+      setFormAtivo(1);
       if (!barbearia) {
         barbearia = response.data.user.NOME_BARBEARIA;
       }
@@ -72,17 +76,17 @@ export const LoginProvider = ({ children }) => {
   const confirmarEmail = async (user, plano_id = null, barbearia = null) => {
     try {
       setLoadLogin(true);
-      if(barbearia && barbearia !== null){
+      if (barbearia && barbearia !== null) {
         user.NOME_BARBEARIA = barbearia;
       }
       user = await verificaPlano(user, plano_id);
 
       const result = await http.post("login/confirmarEmail", { user });
-      if (result) {
+      if (result.data.resultado) {
         user.PLANO_ID = plano_id;
         setUserCadastro(user);
-        setConfirmarCodigo(true);
         setLoadLogin(false);
+        setFormAtivo(4)
         setCadastroError(null);
       }
     } catch (error) {
@@ -125,7 +129,7 @@ export const LoginProvider = ({ children }) => {
     try {
       setLoadLogin(true);
       const result = await http.post("/login/enviarEmailDeRecuperacao", {
-        USER: {EMAIL: data.EMAIL_RECUPERAR_SENHA},
+        USER: { EMAIL: data.EMAIL_RECUPERAR_SENHA },
       });
       if (!result) throw false;
       setEsqueceuSenha(false);
@@ -244,7 +248,6 @@ export const LoginProvider = ({ children }) => {
         logout,
         setCadastroError,
         confirmarEmail,
-        confirmarCodigo,
         setConfirmarCodigo,
         userCadastro,
         setUserCadastro,
@@ -260,6 +263,8 @@ export const LoginProvider = ({ children }) => {
         mudarSenha,
         barbeariaClean,
         setBarbeariaClean,
+        formAtivo, 
+        setFormAtivo,
       }}
     >
       {children}

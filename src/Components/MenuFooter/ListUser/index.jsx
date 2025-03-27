@@ -6,44 +6,50 @@ import MeusHorariosIcon from "../Icones/meusHorarios/clock-three-svgrepo-com.svg
 import MeusHorariosIconDark from "../Icones/meusHorarios/meusHorarios-dark.svg";
 import LoginIcon from "../Icones/login/login-3-svgrepo-com.svg";
 import LoginIconDark from "../Icones/login/login-dark.svg";
-import { useState } from "react";
+import PerfilIcon from '../Icones/perfil/perfilPreto.svg';
+import PerfilIconBranco from '../Icones/perfil/perfilBranco.svg';
+
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-export const ListUser = () => {
+export const ListUser = ({user}) => {
 
   const { barbearia } = useParams();
   const navigate = useNavigate();
 
-  const [itensMenu, setItemsMenu] = useState([
-    {
-      text: "Serviços",
-      svg: ServiceIcon,
-      svgDark: ServiceIconDark,
-      url: `/${barbearia}/servicos`,
-    },
-    {
-      text: "Agendamento",
-      svg: AgendamentoIcon,
-      svgDark: AgendamentoIconDark,
-      url: `/${barbearia}/barbeiros`,
-    },
-    {
-      text: "Meus Horários",
-      svg: MeusHorariosIcon,
-      svgDark: MeusHorariosIconDark,
-      url: `/${barbearia}/meusHorarios`,
-    },
-    {
-      text: "Login",
-      svg: LoginIcon,
-      svgDark: LoginIconDark,
-      url: `/${barbearia}/login`,
-    },
-
-  
-  ]);
+  const [itensMenu, setItemsMenu] = useState([]);
 
   const [active, setActive] = useState(0);
+
+  useEffect(() => {
+    setItemsMenu([
+        {
+          text: "Serviços",
+          svg: ServiceIcon,
+          svgDark: ServiceIconDark,
+          url: `/${barbearia}/servicos`,
+        },
+        {
+          text: "Agendamento",
+          svg: AgendamentoIcon,
+          svgDark: AgendamentoIconDark,
+          url: `/${barbearia}/barbeiros`,
+        },
+        {
+          text: "Meus Horários",
+          svg: MeusHorariosIcon,
+          svgDark: MeusHorariosIconDark,
+          url: `/${barbearia}/meusHorarios`,
+        },
+        {
+          text: user?.ID ? "Perfil" : "Login",
+          svg: user?.ID ? PerfilIconBranco : LoginIcon,
+          svgDark: PerfilIcon,
+          url: user?.ID ? `/${barbearia}/editarconta` : `/${barbearia}/login`,
+        },
+      ]);
+
+  }, [user]);
 
   const ativarPagina = (index, item) => {
     setActive(index);
