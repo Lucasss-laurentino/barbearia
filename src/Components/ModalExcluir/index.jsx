@@ -1,36 +1,26 @@
 import "./index.css";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { ServicoContext } from "../../Context/ServicoContext";
 import { MutatingDots } from "react-loader-spinner";
-import { HorarioContext } from "../../Context/HorarioContext";
-import { BarbeiroContext } from "../../Context/BarbeiroContext";
 
 export const ModalExcluir = ({
   show,
   handleClose,
   itemParaExclusao,
-  idItemExclusao /* idItemExclusao é um id unico pra diferenciar itemParaExclusao decidindo entao qual rumo a requisição deve tomar */,
+  nomeItemExclusao,
+  funcExcluir,
 }) => {
-  const { excluirServico } = useContext(ServicoContext);
-  const { excluirHorario } = useContext(HorarioContext);
-  const { excluirBarbeiro, setBarbeiroSelecionado, barbeiroSelecionado } = useContext(BarbeiroContext);
+
   const [loadExcluir, setLoadExcluir] = useState(false);
+
   const excluirEFecharModal = () => {
-    if (idItemExclusao === 1) {
-      excluirServico(itemParaExclusao, setLoadExcluir);
-      handleClose();
-    }
-    if (idItemExclusao === 2)
-      excluirHorario(itemParaExclusao, handleClose, setLoadExcluir);
-    if (idItemExclusao === 3)
-      excluirBarbeiro(itemParaExclusao, handleClose, setLoadExcluir);
+    funcExcluir(itemParaExclusao, setLoadExcluir);
   };
 
   const reiniciarVariaveisEFecharModal = () => {
     handleClose();
-    setBarbeiroSelecionado(null);
+    //setBarbeiroSelecionado(null);
   }
 
   return (
@@ -48,11 +38,7 @@ export const ModalExcluir = ({
             <div className="row">
               <div className="col-12 text-center">
                 <h6 className="m-0">
-                  Deseja excluir esse{" "}
-                  {(idItemExclusao === 1 && "Serviço") ||
-                    (idItemExclusao === 2 && "Horario") ||
-                    (idItemExclusao === 3 && "Barbeiro")}{" "}
-                  ?
+                  Deseja excluir esse {nomeItemExclusao} ?
                 </h6>
               </div>
             </div>
@@ -75,13 +61,8 @@ export const ModalExcluir = ({
             </div>
           ) : (
             <>
-              <Button variant="secondary" onClick={handleClose}>
-                Não
-              </Button>
-
-              <Button variant="danger" onClick={() => excluirEFecharModal()}>
-                Sim
-              </Button>
+              <Button variant="secondary" onClick={handleClose}>Não</Button>
+              <Button variant="danger" onClick={() => excluirEFecharModal()}>Sim</Button>
             </>
           )}
         </Modal.Footer>

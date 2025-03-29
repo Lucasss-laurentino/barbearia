@@ -46,7 +46,6 @@ export const ListaHorarios = ({
           return horario;
         }
       });
-
       const horarios = horariosDisponiveis.filter((horarioDisponivel) => {
         // if (data) {
           const horario = horariosMarcado.some((hM) => {
@@ -295,6 +294,7 @@ export const ListaHorarios = ({
                         >
                           Marcar
                         </button>
+                      
                       )}
                       {user?.ADM && (
                         <>
@@ -347,7 +347,8 @@ export const ListaHorarios = ({
               </Fragment>
             );
           }
-        })}
+      
+      })}
 
         {horariosDessaData.length < 1 &&
           <>

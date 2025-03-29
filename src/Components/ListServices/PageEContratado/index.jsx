@@ -6,8 +6,6 @@ import { ServicoContext } from '../../../Context/ServicoContext';
 export const PageEContratado = ({
   user,
   servico,
-  setEditarServico,
-  setShowModalServico,
   setServicoASerExcluido,
   setShowModalExcluirServico,
 }) => {
@@ -43,8 +41,6 @@ export const PageEContratado = ({
           {user?.ADM && (
             <EditarExcluir
               servico={servico}
-              setEditarServico={setEditarServico}
-              setShowModalServico={setShowModalServico}
               setServicoASerExcluido={setServicoASerExcluido}
               setShowModalExcluirServico={setShowModalExcluirServico}
             />

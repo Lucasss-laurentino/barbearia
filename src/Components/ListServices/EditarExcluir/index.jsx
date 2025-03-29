@@ -1,13 +1,18 @@
+import { useContext } from 'react';
 import './index.css';
+import { ServicoContext } from '../../../Context/ServicoContext';
 
-export const EditarExcluir = ({servico, setEditarServico, setShowModalServico, setServicoASerExcluido, setShowModalExcluirServico}) => {
+export const EditarExcluir = ({servico, setServicoASerExcluido, setShowModalExcluirServico}) => {
+  
+  const { setShowModalServico, setEditarServicoState } = useContext(ServicoContext);
+  
   return (
     <>
       <div className="d-flex justify-content-start align-items-center mt-2">
         <div
           className="edit m-0 p-0"
           onClick={() => {
-            setEditarServico(servico);
+            setEditarServicoState(servico);
             setShowModalServico(true);
           }}
         >

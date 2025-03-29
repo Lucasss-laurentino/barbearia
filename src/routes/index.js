@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Index } from "../Components/Index";
 import { MenuProvider } from "../Context/MenuContext";
 import { AbaBottomProvider } from "../Context/AbaBottomContext";
 import { UserProvider } from "../Context/UserContext";
@@ -28,6 +27,7 @@ import { EditarUser } from "../Components/EditarUser";
 import { MenuFooterProvider } from "../Context/MenuFooterContext";
 import { SocketProvider } from "../Context/SocketContext";
 import { FinanceiroProvider } from "../Context/FinanceiroContext";
+import { Barbeiros } from "../Components/Barbeiros";
 
 export default function appRouter() {
   return (
@@ -63,17 +63,11 @@ export default function appRouter() {
                                             <Route path="/:barbearia/servicos" element={<ListService />} />
                                             <Route path="/:barbearia/agendamentos" element={<Horarios />} />
                                             <Route path="/:barbearia/financeiro" element={<Finalizados />} />
-                                            <Route path="/:barbearia/barbeiros" element={<ListBarbeiros />} />
+                                            <Route path="/:barbearia/barbeiros" element={<Barbeiros />} />
                                             <Route path="/:barbearia/editarconta" element={<EditarUser />} />
                                           </Route>
 
                                           <Route path="/:barbearia/login" element={<Login />} />
-
-
-                                          <Route
-                                            path="/:barbearia/teste"
-                                            element={<Index />}
-                                          />
                                           <Route
                                             path="/:barbearia/assinaturabloqueada"
                                             element={<AvisoPagamentoAtrasado />}

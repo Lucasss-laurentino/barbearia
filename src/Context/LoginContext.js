@@ -39,7 +39,9 @@ export const LoginProvider = ({ children }) => {
         .replace(/[^a-zA-Z0-9]/g, " ")
         .replace(/\b\w/g, (char) => char.toUpperCase());
       setBarbeariaClean(cleanedString);
+      setFormAtivo(1);
     }
+    if(!barbearia) setFormAtivo(2);
   }, [barbearia]);
 
   const criarUsuario = async (codigo, barbearia = null, plano_id = null) => {

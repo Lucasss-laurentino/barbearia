@@ -20,7 +20,6 @@ import { UserContext } from "../../Context/UserContext";
 import { HorarioMarcadoContext } from "../../Context/HorarioMarcadoContext";
 import { useParams } from "react-router-dom";
 import { Calendario } from "../Calendar";
-import { ModalBarbeiro } from "./ModalBarbeiro";
 import { SocketContext } from "../../Context/SocketContext";
 
 export const ListBarbeiros = () => {
@@ -174,13 +173,6 @@ export const ListBarbeiros = () => {
         barbeiro={barbeiro}
         horario={horarioSelecionado}
         setHorarioSelecionado={setHorarioSelecionado}
-      />
-
-      <ModalBarbeiro
-        show={showModalBarbeiro}
-        setShow={setShowModalBarbeiro}
-        handleClose={handleCloseModalBarbeiro}
-        barbeiro={barbeiroSelecionado}
       />
 
       <ModalExcluir

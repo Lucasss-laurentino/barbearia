@@ -16,6 +16,7 @@ export const BarbeiroProvider = ({ children }) => {
   const [horarioSelecionado, setHorarioSelecionado] = useState(null);
   const [showModalBarbeiro, setShowModalBarbeiro] = useState(false);
   const [showExcluirHorario, setExcluirHorario] = useState(false);
+  const [showModalExcluirBarbeiro, setShowModalExcluirBarbeiro] = useState(false);
 
   const criarBarbeiro = async (data, setShow) => {
     try {
@@ -74,7 +75,7 @@ export const BarbeiroProvider = ({ children }) => {
     } catch (error) {}
   };
 
-  const excluirBarbeiro = async (barbeiro, handleClose, setLoadExcluir) => {
+  const excluirBarbeiro = async (barbeiro, setLoadExcluir) => {
     try {
       setLoadExcluir(true);
       const response = await http.delete(
@@ -84,7 +85,7 @@ export const BarbeiroProvider = ({ children }) => {
       setBarbeiros([...response.data]);
       setLoadExcluir(false);
       setBarbeiroSelecionado(null);
-      handleClose();
+      handleCloseExcluirBarbeiro();
     } catch (error) {}
   };
 
@@ -118,6 +119,9 @@ export const BarbeiroProvider = ({ children }) => {
     setShowModalBarbeiro(true);
   }
 
+  const handleCloseExcluirBarbeiro = () => {
+    setShowModalExcluirBarbeiro(false);
+  }
 
   return (
     <BarbeiroContext.Provider
@@ -154,6 +158,9 @@ export const BarbeiroProvider = ({ children }) => {
         setExcluirHorario,
         handleCloseExcluirHorario,
         handleShowModalBarbeiro,
+        showModalExcluirBarbeiro, 
+        setShowModalExcluirBarbeiro,
+        handleCloseExcluirBarbeiro
       }}
     >
       {children}
