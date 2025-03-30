@@ -51,6 +51,7 @@ export const LoginProvider = ({ children }) => {
       if (!barbearia || barbearia === null) {
         dataVencimento = await formatarDataVencimento();
         userCadastro.VENCIMENTO = dataVencimento;
+        userCadastro.ADM = true;
       } else {
         userCadastro.VENCIMENTO = null;
       }

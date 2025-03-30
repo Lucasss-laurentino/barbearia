@@ -7,7 +7,7 @@ import { useContext, useEffect } from "react";
 import { BarbeiroContext } from "../../Context/BarbeiroContext";
 import { MutatingDots } from "react-loader-spinner";
 
-export const ModalBarbeiro = ({ show, setShow, handleClose}) => {
+export const ModalBarbeiroEditar = ({ show, setShow, handleClose, barbeiro}) => {
  
   const {
     register,
@@ -15,14 +15,14 @@ export const ModalBarbeiro = ({ show, setShow, handleClose}) => {
     setValue,
     formState: { errors },
   } = useForm({
-      resolver: yupResolver(barbeiroSchema),
+      resolver: yupResolver(barbeiroEditarSchema),
   });
 
   const { 
-    criarBarbeiro, 
     imagem, 
     setImagem, 
     loadBarbeiro, 
+    editarBarbeiro 
   } = useContext(BarbeiroContext);
   
   const limparCampos = () => {
@@ -31,6 +31,13 @@ export const ModalBarbeiro = ({ show, setShow, handleClose}) => {
     handleClose();
     setImagem(undefined);
   };
+
+  useEffect(() => {
+    if (barbeiro && show) {
+      setValue("NOME", barbeiro.NOME);
+      setValue("IMAGEM", barbeiro.IMAGEM);
+    }
+  }, [show]);
 
   return (
     <>
@@ -43,13 +50,13 @@ export const ModalBarbeiro = ({ show, setShow, handleClose}) => {
       >
         <Modal.Header closeButton>
           <Modal.Title>
-            Cadastre um Barbeiro
+            Editar Barbeiro
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form
             encType="multipart/form-data"
-            onSubmit={handleSubmit((data) => criarBarbeiro(data, setShow))}
+            onSubmit={handleSubmit((data) => editarBarbeiro(barbeiro, data, setShow, setImagem))}
           >
             <div className="form-group">
               <label>Nome</label>
@@ -94,9 +101,7 @@ export const ModalBarbeiro = ({ show, setShow, handleClose}) => {
                 wrapperClass=""
               />
             ) : (
-              <button type="submit" className="btn btn-primary">
-                Cadastrar
-              </button>
+              <button type="submit" className="btn btn-primary">Editar</button>
             )}
           </form>
         </Modal.Body>

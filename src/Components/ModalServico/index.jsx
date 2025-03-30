@@ -29,16 +29,16 @@ export const ModalServico = ({
 
   const formatCurrency = (event) => {
     const value = event.target.value
-      .replace(/\D/g, "") // Remove todos os caracteres que não são dígitos
-      .replace(/(\d)(\d{8})$/, "$1.$2") // Adiciona o decimal
-      .replace(/(\d)(\d{5})$/, "$1.$2") // Adiciona a vírgula para centavos
-      .replace(/(\d)(\d{2})$/, "$1,$2") // Adiciona a vírgula
-      .replace(/^\D+/g, "") // Remove caracteres não numéricos no início
-      .replace(/(\d)(\d{3})(\d)/, "$1.$2$3") // Adiciona ponto a cada 3 dígitos
-      .replace(/(\d)(\d{3})(\d)/, "$1.$2$3") // Adiciona ponto a cada 3 dígitos
-      .replace(/(\d)(?=\d{3})$/, "$1,"); // Formata com a vírgula correta
+      .replace(/\D/g, "") 
+      .replace(/(\d)(\d{8})$/, "$1.$2")
+      .replace(/(\d)(\d{5})$/, "$1.$2") 
+      .replace(/(\d)(\d{2})$/, "$1,$2") 
+      .replace(/^\D+/g, "") 
+      .replace(/(\d)(\d{3})(\d)/, "$1.$2$3") 
+      .replace(/(\d)(\d{3})(\d)/, "$1.$2$3") 
+      .replace(/(\d)(?=\d{3})$/, "$1,"); 
 
-    event.target.value = `R$ ${value}`; // Prepara o valor final
+    event.target.value = `R$ ${value}`; 
   };
 
   const limparCampos = () => {
@@ -49,7 +49,6 @@ export const ModalServico = ({
     handleClose();
   };
 
-  // Efeito para preencher os campos se for edição
   useEffect(() => {
     if (servico) {
       setValue("NOME_SERVICO", servico.NOME_SERVICO);

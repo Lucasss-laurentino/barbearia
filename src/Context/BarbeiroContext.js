@@ -14,9 +14,7 @@ export const BarbeiroProvider = ({ children }) => {
   const [showModalPagamentoAgendamento, setShowModalPagamentoAgendamento] = useState(false);
   const [showHorariosBarbeiro, setShowHorariosBarbeiro] = useState(false);
   const [horarioSelecionado, setHorarioSelecionado] = useState(null);
-  const [showModalBarbeiro, setShowModalBarbeiro] = useState(false);
   const [showExcluirHorario, setExcluirHorario] = useState(false);
-  const [showModalExcluirBarbeiro, setShowModalExcluirBarbeiro] = useState(false);
 
   const criarBarbeiro = async (data, setShow) => {
     try {
@@ -85,15 +83,7 @@ export const BarbeiroProvider = ({ children }) => {
       setBarbeiros([...response.data]);
       setLoadExcluir(false);
       setBarbeiroSelecionado(null);
-      handleCloseExcluirBarbeiro();
     } catch (error) {}
-  };
-
-  const limparCampos = (setValue, handleClose) => {
-    setValue("NOME", "");
-    setValue("IMAGEM", "");
-    handleClose();
-    setImagem(undefined);
   };
 
   const closeModalPagamentoAgendamento = () => {
@@ -105,23 +95,10 @@ export const BarbeiroProvider = ({ children }) => {
     setHorarioSelecionado(null);
   };
 
-  const handleCloseModalBarbeiro = () => {
-    setShowModalBarbeiro(false);
-    setBarbeiroSelecionado(null);
-  };
-
   const handleCloseExcluirHorario = () => {
     setExcluirHorario(false);
     setHorarioSelecionado(null);
   };
-
-  const handleShowModalBarbeiro = () => {
-    setShowModalBarbeiro(true);
-  }
-
-  const handleCloseExcluirBarbeiro = () => {
-    setShowModalExcluirBarbeiro(false);
-  }
 
   return (
     <BarbeiroContext.Provider
@@ -138,7 +115,6 @@ export const BarbeiroProvider = ({ children }) => {
         excluirBarbeiro,
         barbeiroSelecionado,
         setBarbeiroSelecionado,
-        limparCampos,
         erroBarbeiro,
         setErroBarbeiro,
         showModalPagamentoAgendamento, 
@@ -151,16 +127,9 @@ export const BarbeiroProvider = ({ children }) => {
         setHorarioSelecionado,
         barbeiro, 
         setBarbeiro,
-        showModalBarbeiro, 
-        setShowModalBarbeiro,
-        handleCloseModalBarbeiro,
         showExcluirHorario, 
         setExcluirHorario,
         handleCloseExcluirHorario,
-        handleShowModalBarbeiro,
-        showModalExcluirBarbeiro, 
-        setShowModalExcluirBarbeiro,
-        handleCloseExcluirBarbeiro
       }}
     >
       {children}

@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import "./index.css";
 import { Fragment, useContext } from "react";
-import { ModalHorarioBarbeiro } from "./ModalHorarioBarbeiro";
 import { ModalExcluir } from "../ModalExcluir";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -48,9 +47,6 @@ export const ListBarbeiros = () => {
     setHorarioSelecionado,
     barbeiro,
     setBarbeiro,
-    showModalBarbeiro, 
-    setShowModalBarbeiro,
-    handleCloseModalBarbeiro,
     showExcluirHorario, 
     setExcluirHorario,
     handleCloseExcluirHorario,
@@ -166,14 +162,14 @@ export const ListBarbeiros = () => {
         handleClose={closeModalPagamentoAgendamento}
         horarioSelecionado={horarioSelecionado}
       />
-      <ModalHorarioBarbeiro
+      {/* <ModalHorarioBarbeiro
         show={showHorariosBarbeiro}
         setShow={setShowHorariosBarbeiro}
         handleClose={handleCloseHorarioBarbeiro}
         barbeiro={barbeiro}
         horario={horarioSelecionado}
         setHorarioSelecionado={setHorarioSelecionado}
-      />
+      /> */}
 
       <ModalExcluir
         show={showExcluirHorario}
