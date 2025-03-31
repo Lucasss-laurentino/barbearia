@@ -24,7 +24,7 @@ export const BarbeiroProvider = ({ children }) => {
   */
   const [quemAcionouModalExcluir, setQuemAcionouModalExcluir] = useState(false); // 0 = barbeiro, 1 = horario
 
-  const criarBarbeiro = async (data, setShow) => {
+  const criarBarbeiro = async (data, setShow, setValue) => {
     try {
       setLoadBarbeiro(true);
       const formData = new FormData();
@@ -40,6 +40,8 @@ export const BarbeiroProvider = ({ children }) => {
       setBarbeiros([...barbeiros, response.data.barbeiro]);
       setLoadBarbeiro(false);
       setBarbeiroSelecionado(null);
+      setValue("NOME", "");
+      setValue("IMAGEM", "");  
       setShow(false);
     } catch (error) {
       setErroBarbeiro(error?.response?.data);
@@ -81,7 +83,7 @@ export const BarbeiroProvider = ({ children }) => {
     } catch (error) {}
   };
 
-  const excluirBarbeiro = async (barbeiro, setLoadExcluir) => {
+  const excluirBarbeiro = async (barbeiro, setLoadExcluir, setShow) => {
     try {
       setLoadExcluir(true);
       const response = await http.delete(
@@ -91,6 +93,7 @@ export const BarbeiroProvider = ({ children }) => {
       setBarbeiros([...response.data]);
       setLoadExcluir(false);
       setBarbeiroSelecionado(null);
+      setShow(false);
     } catch (error) {}
   };
 

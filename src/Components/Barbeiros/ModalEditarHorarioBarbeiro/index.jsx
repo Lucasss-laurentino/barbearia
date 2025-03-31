@@ -31,8 +31,6 @@ export const ModalEditarHorarioBarbeiro = ({
     setLimparHoraAposExclusao,
   } = useContext(HorarioContext);
 
-  const { data } = useContext(DataContext);
-
   const handleTimeChange = (e) => {
     const value = e.target.value.replace(/\D/g, ""); 
     const formattedValue = value.replace(/(\d{2})(\d{2})/, "$1:$2");
@@ -77,9 +75,7 @@ export const ModalEditarHorarioBarbeiro = ({
         <Modal.Body>
           <form
             encType="multipart/form-data"
-            onSubmit={handleSubmit( // sendo acionado sozinho, verificar causa!
-              editarHorario(data, horario, setShow, setValue)
-            )}
+            onSubmit={handleSubmit((data) => editarHorario(data, horario, setShow, setValue))}
           >
             <div className="form-group my-2">
               <label>Hora</label>

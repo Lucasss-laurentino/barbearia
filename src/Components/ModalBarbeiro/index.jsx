@@ -2,12 +2,12 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { barbeiroEditarSchema, barbeiroSchema } from "../../validations/barbeiroValidation";
-import { useContext, useEffect } from "react";
+import { barbeiroSchema } from "../../validations/barbeiroValidation";
+import { useContext } from "react";
 import { BarbeiroContext } from "../../Context/BarbeiroContext";
 import { MutatingDots } from "react-loader-spinner";
 
-export const ModalBarbeiro = ({ show, setShow, handleClose}) => {
+export const ModalBarbeiro = ({ show, setShow}) => {
  
   const {
     register,
@@ -18,9 +18,8 @@ export const ModalBarbeiro = ({ show, setShow, handleClose}) => {
       resolver: yupResolver(barbeiroSchema),
   });
 
-  const { 
+  const {
     criarBarbeiro, 
-    imagem, 
     setImagem, 
     loadBarbeiro, 
   } = useContext(BarbeiroContext);
@@ -28,8 +27,8 @@ export const ModalBarbeiro = ({ show, setShow, handleClose}) => {
   const limparCampos = () => {
     setValue("NOME", "");
     setValue("IMAGEM", "");
-    handleClose();
     setImagem(undefined);
+    setShow(false);
   };
 
   return (
@@ -49,7 +48,7 @@ export const ModalBarbeiro = ({ show, setShow, handleClose}) => {
         <Modal.Body>
           <form
             encType="multipart/form-data"
-            onSubmit={handleSubmit((data) => criarBarbeiro(data, setShow))}
+            onSubmit={handleSubmit((data) => criarBarbeiro(data, setShow, setValue))}
           >
             <div className="form-group">
               <label>Nome</label>

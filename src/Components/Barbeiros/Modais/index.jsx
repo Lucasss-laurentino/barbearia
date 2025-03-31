@@ -20,7 +20,6 @@ export const Modais = () => {
     quemAcionouModalExcluir,
     showModalCriarBarbeiro,
     setShowModalCriarBarbeiro,
-    handleCloseModalBarbeiro,
   } = useContext(BarbeiroContext);
 
   const {
@@ -59,7 +58,6 @@ export const Modais = () => {
       <ModalBarbeiro
         show={showModalCriarBarbeiro}
         setShow={setShowModalCriarBarbeiro}
-        handleClose={handleCloseModalBarbeiro}
       />
 
       <ModalEditarHorarioBarbeiro

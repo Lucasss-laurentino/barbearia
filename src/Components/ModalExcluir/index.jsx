@@ -15,18 +15,14 @@ export const ModalExcluir = ({
   const [loadExcluir, setLoadExcluir] = useState(false);
 
   const excluirEFecharModal = () => {
-    funcExcluir(itemParaExclusao, setLoadExcluir);
+    funcExcluir(itemParaExclusao, setLoadExcluir, setShow);
   };
-
-  useEffect(() => {
-    console.log(show)
-  }, [show])
 
   return (
     <>
       <Modal
         show={show}
-        onHide={() => setShow(!show)}
+        onHide={() => setShow(false)}
         backdrop="static"
         centered
         keyboard={false}
