@@ -48,7 +48,7 @@ export const ListBarbeiros = () => {
     barbeiro,
     setBarbeiro,
     showExcluirHorario, 
-    setExcluirHorario,
+ //   setExcluirHorario,
     handleCloseExcluirHorario,
     handleShowModalBarbeiro,
   } = useContext(BarbeiroContext);
@@ -206,7 +206,7 @@ export const ListBarbeiros = () => {
       <div className="container-fluid">
         <div className="row justify-content-center">
           <div className="col-12 col-sm-10 d-flex justify-content-center align-items-center p-0">
-            <ul className="col-12 list-style heiht-scroll">
+            {/* <ul className="col-12 list-style heiht-scroll">
               {barbeiros.map((barbeiro) => {
                 const horariosFiltrado = horarios.filter(
                   (h) => h.BARBEIRO_ID === barbeiro.ID
@@ -232,7 +232,7 @@ export const ListBarbeiros = () => {
                           setClasseCalendario={setClasseCalendario}
                           setHorarioSelecionado={setHorarioSelecionado}
                           horarioSelecionado={horarioSelecionado}
-                          setExcluirHorario={setExcluirHorario}
+                  //        setExcluirHorario={setExcluirHorario}
                           setId={setId}
                           barbearia={barbearia}
                           setCalendarioAberto={setCalendarioAberto}
@@ -248,7 +248,7 @@ export const ListBarbeiros = () => {
                   </Fragment>
                 );
               })}
-            </ul>
+            </ul> */}
           </div>
         </div>
       </div>

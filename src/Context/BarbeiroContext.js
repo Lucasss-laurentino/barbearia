@@ -9,12 +9,20 @@ export const BarbeiroProvider = ({ children }) => {
   const [barbeiro, setBarbeiro] = useState({});
   const [imagem, setImagem] = useState();
   const [loadBarbeiro, setLoadBarbeiro] = useState(false);
-  const [barbeiroSelecionado, setBarbeiroSelecionado] = useState(null);
+  const [barbeiroSelecionado, setBarbeiroSelecionado] = useState(null); // props pras modais
   const [erroBarbeiro, setErroBarbeiro] = useState(null);
   const [showModalPagamentoAgendamento, setShowModalPagamentoAgendamento] = useState(false);
   const [showHorariosBarbeiro, setShowHorariosBarbeiro] = useState(false);
-  const [horarioSelecionado, setHorarioSelecionado] = useState(null);
-  const [showExcluirHorario, setExcluirHorario] = useState(false);
+  const [showModalEditar, setShowModalEditar] = useState(false);
+  const [showModalExcluir, setShowModalExcluir] = useState(false);
+  const [showModalCriarBarbeiro, setShowModalCriarBarbeiro] = useState(false);
+  
+  /* 
+    Modal de exclusão serve pra excluir qualquer entidade, e eu tenho duas entidades no mesmo componente
+    oque quer dizer que tanto excluir barbeiro ou excluir horario pode abrir esse modal
+    entao esse componente identifica quem está abrindo o modal de exclusão pra passar as props certas.
+  */
+  const [quemAcionouModalExcluir, setQuemAcionouModalExcluir] = useState(false); // 0 = barbeiro, 1 = horario
 
   const criarBarbeiro = async (data, setShow) => {
     try {
@@ -90,15 +98,11 @@ export const BarbeiroProvider = ({ children }) => {
     setShowModalPagamentoAgendamento(false);
   }
 
-  const handleCloseHorarioBarbeiro = () => {
-    setShowHorariosBarbeiro(false);
-    setHorarioSelecionado(null);
-  };
+  const handleCloseModalEditar = () => setShowModalEditar(false);
 
-  const handleCloseExcluirHorario = () => {
-    setExcluirHorario(false);
-    setHorarioSelecionado(null);
-  };
+  const handleCloseModalExcluir = () => setShowModalExcluir(false);
+
+  const handleShowModalBarbeiro = () => setShowModalCriarBarbeiro(true);
 
   return (
     <BarbeiroContext.Provider
@@ -117,19 +121,24 @@ export const BarbeiroProvider = ({ children }) => {
         setBarbeiroSelecionado,
         erroBarbeiro,
         setErroBarbeiro,
-        showModalPagamentoAgendamento, 
+        showModalPagamentoAgendamento,
         setShowModalPagamentoAgendamento,
         closeModalPagamentoAgendamento,
-        showHorariosBarbeiro, 
+        showHorariosBarbeiro,
         setShowHorariosBarbeiro,
-        handleCloseHorarioBarbeiro,
-        horarioSelecionado, 
-        setHorarioSelecionado,
-        barbeiro, 
+        barbeiro,
         setBarbeiro,
-        showExcluirHorario, 
-        setExcluirHorario,
-        handleCloseExcluirHorario,
+        showModalEditar,
+        setShowModalEditar,
+        handleCloseModalEditar,
+        showModalExcluir,
+        setShowModalExcluir,
+        handleCloseModalExcluir,
+        quemAcionouModalExcluir,
+        setQuemAcionouModalExcluir,
+        handleShowModalBarbeiro,
+        showModalCriarBarbeiro,
+        setShowModalCriarBarbeiro,
       }}
     >
       {children}

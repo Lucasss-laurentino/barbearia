@@ -17,10 +17,14 @@ export const HorarioProvider = ({ children }) => {
     BARBEIRO_ID: 0,
   });
   const [loadHorarios, setLoadHorarios] = useState(false);
+  const [loadEditarHorarioBarbeiro, setLoadEditarHorarioBarbeiro] = useState(false);
   const [marcarAlmocoState, setMarcarAlmocoState] = useState({});
   const [agendamento, setAgendamento] = useState({});
   const [showModalMarcarHorarioDeslogado, setShowModalMarcarHorarioDeslogado] = useState(false);
   const [barbearia, setBarbearia] = useState("");
+  const [showExcluirHorario, setExcluirHorario] = useState(false);
+  const [horarioSelecionado, setHorarioSelecionado] = useState(null);
+  const [showModalEditarHorarioBarbeiro, setShowModalEditarHorarioBarbeiro] = useState(false);
 
   useEffect(() => {
 
@@ -74,7 +78,7 @@ export const HorarioProvider = ({ children }) => {
 
   const editarHorario = async (data, horario, setShow, setValue) => {
     try {
-      setLoadHorarios(true);
+      setLoadEditarHorarioBarbeiro(true);
       const response = await http.put(
         `horario/editarHorario/${horario.ID}`,
         data,
@@ -84,12 +88,14 @@ export const HorarioProvider = ({ children }) => {
       );
       ordenarHorarios(response.data);
       setValue("HORA", "");
-      setLoadHorarios(false);
+      setLoadEditarHorarioBarbeiro(false);
       setShow(false);
-    } catch (error) { }
+    } catch (error) {
+      console.log(error)
+     }
   };
 
-  const excluirHorario = async (horario, handleClose, setLoadExcluir) => {
+  const excluirHorario = async (horario, setLoadExcluir) => {
     try {
       setLoadExcluir(true);
       const response = await http.delete(
@@ -99,27 +105,35 @@ export const HorarioProvider = ({ children }) => {
       ordenarHorarios(response.data);
       setLimparHoraAposExclusao(true);
       setLoadExcluir(false);
-      handleClose();
-    } catch (error) { }
+      handleCloseExcluirHorario();
+    } catch (error) {
+      console.log(error);
+     }
   };
 
-  const marcarAlmoco = async (horario, barbeariaParam) => {
-    setBarbearia(barbeariaParam);
-    setMarcarAlmocoState(horario);
-    /*
+  const marcarAlmoco = async (horario) => { 
     try {
       const result = await http.post("/horario/marcarAlmoco", horario, {
         withCredentials: true,
       });
       if (!result) throw "Erro ao marcar horário de almoço";
-
-      setHorarios(result.data);
+      setMarcarAlmocoState(() => {
+        let horarioAlmoco = result.data.find((horario) => horario?.INTERVALO);
+        if (horarioAlmoco === null) {
+            return horarioAlmoco
+        }
+        return {};
+      });
+        setHorarios([...result.data]);
     } catch (error) {
       console.log(error);
     }
-    */
-
   };
+
+   const handleCloseExcluirHorario = () => {
+     setExcluirHorario(false);
+     setHorarioSelecionado(null);
+   };
 
   return (
     <HorarioContext.Provider
@@ -143,6 +157,15 @@ export const HorarioProvider = ({ children }) => {
         showModalMarcarHorarioDeslogado,
         setShowModalMarcarHorarioDeslogado,
         marcarAlmoco,
+        showExcluirHorario,
+        setExcluirHorario,
+        handleCloseExcluirHorario,
+        horarioSelecionado,
+        setHorarioSelecionado,
+        showModalEditarHorarioBarbeiro,
+        setShowModalEditarHorarioBarbeiro,
+        loadEditarHorarioBarbeiro,
+        setLoadEditarHorarioBarbeiro,
       }}
     >
       {children}

@@ -12,7 +12,7 @@ export const DadosBarbeiro = ({ barbeiro }) => {
         <>
             <div className="d-flex justify-content-between align-items-center">
                 <div className="d-flex justify-content-start align-items-center col-8">
-                    <div className="col-3 mx-3 div-redonda-barbeiro">
+                    <div className="col-3 mx-2 div-redonda-barbeiro">
                         <img
                             className="img-fluid"
                             src={process.env.REACT_APP_API_URL + barbeiro.IMAGEM}
@@ -20,7 +20,7 @@ export const DadosBarbeiro = ({ barbeiro }) => {
                             alt={barbeiro.NOME}
                         />
                     </div>
-                    <div className="col-9">
+                    <div className="col-7 overflow-hidden">
                         <h6 className="m-0 nome-barbeiro">{barbeiro.NOME}</h6>
                     </div>
                 </div>

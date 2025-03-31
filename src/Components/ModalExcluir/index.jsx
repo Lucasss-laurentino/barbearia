@@ -1,12 +1,12 @@
 import "./index.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { MutatingDots } from "react-loader-spinner";
 
 export const ModalExcluir = ({
   show,
-  handleClose,
+  setShow,
   itemParaExclusao,
   nomeItemExclusao,
   funcExcluir,
@@ -18,16 +18,15 @@ export const ModalExcluir = ({
     funcExcluir(itemParaExclusao, setLoadExcluir);
   };
 
-  const reiniciarVariaveisEFecharModal = () => {
-    handleClose();
-    //setBarbeiroSelecionado(null);
-  }
+  useEffect(() => {
+    console.log(show)
+  }, [show])
 
   return (
     <>
       <Modal
         show={show}
-        onHide={reiniciarVariaveisEFecharModal}
+        onHide={() => setShow(!show)}
         backdrop="static"
         centered
         keyboard={false}
@@ -61,7 +60,7 @@ export const ModalExcluir = ({
             </div>
           ) : (
             <>
-              <Button variant="secondary" onClick={handleClose}>Não</Button>
+              <Button variant="secondary" onClick={() => setShow(false)}>Não</Button>
               <Button variant="danger" onClick={() => excluirEFecharModal()}>Sim</Button>
             </>
           )}

@@ -185,7 +185,7 @@ export const ListaHorarios = ({
                             className="btn btn-sm bg-transparent text-white mx-2"
                             onClick={() => {
                               setHorarioSelecionado(horario);
-                              setExcluirHorario(true);
+                          //    setExcluirHorario(true);
                               setId(2);
                             }}
                           >
@@ -302,7 +302,7 @@ export const ListaHorarios = ({
                             className="btn btn-sm bg-transparent text-white mx-2"
                             onClick={() => {
                               setHorarioSelecionado(horario);
-                              setExcluirHorario(true);
+                             // setExcluirHorario(true);
                               setId(2);
                             }}
                           >

@@ -6,7 +6,7 @@ export const FotoEIcones = ({barbeiro, user, setId, abrirListaHorarios, horarios
   
   const { 
     setBarbeiroSelecionado,
-    setExcluirHorario,
+ //   setExcluirHorario,
     setShowModalBarbeiro,
   } = useContext(BarbeiroContext);
   
@@ -39,7 +39,7 @@ export const FotoEIcones = ({barbeiro, user, setId, abrirListaHorarios, horarios
                 className="bi bi-trash3-fill mx-1 cursor"
                 viewBox="0 0 16 16"
                 onClick={() => {
-                  setExcluirHorario(true);
+            //      setExcluirHorario(true);
                   setBarbeiroSelecionado(barbeiro);
                   setId(3);
                 }}

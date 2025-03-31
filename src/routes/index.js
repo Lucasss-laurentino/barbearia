@@ -20,7 +20,6 @@ import { AssinaturaProvider } from "../Context/AssinaturaContext";
 import { AtivarAssinatura } from "../Components/AtivarAssinatura";
 import { PageDefault } from "../Components/PageDefault";
 import { ListService } from "../Components/ListServices";
-import { ListBarbeiros } from "../Components/ListBarbeiros";
 import { Horarios } from "../Components/Horarios";
 import { Finalizados } from "../Components/Finalizados";
 import { EditarUser } from "../Components/EditarUser";

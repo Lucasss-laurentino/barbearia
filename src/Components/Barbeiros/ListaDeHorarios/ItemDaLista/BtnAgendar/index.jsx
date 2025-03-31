@@ -7,12 +7,13 @@ import { UserContext } from '../../../../../Context/UserContext';
 import { BarbeiroContext } from '../../../../../Context/BarbeiroContext';
 import { SocketContext } from '../../../../../Context/SocketContext';
 import { DataContext } from '../../../../../Context/DataContext';
+import { HorarioContext } from '../../../../../Context/HorarioContext';
 
 export const BtnAgendar = ({horario}) => {
 
     const { servicoEscolhido } = useContext(ServicoContext);
     const { user } = useContext(UserContext);
-    const { setHorarioSelecionado } = useContext(BarbeiroContext);
+    const { setHorarioSelecionado } = useContext(HorarioContext);
     const { agendarViaSocket } = useContext(SocketContext);
     const { data } = useContext(DataContext);
 

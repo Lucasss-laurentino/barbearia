@@ -40,10 +40,10 @@ export const ListaDeHorarios = ({barbeiro}) => {
         setHorariosDessaData([...horariosFiltrado]);
     }
 
-    useEffect(() => {     
+    useEffect(() => {
         const horariosDesseBarbeiro = horarios.filter((horario) => (horario.BARBEIRO_ID === barbeiro.ID));
         if(user?.ADM) setHorariosDessaData([...horariosDesseBarbeiro]);
-        aplicarFiltragensPraExibirHorarios();
+        if(!user?.ADM) aplicarFiltragensPraExibirHorarios();
     },[horarios]);
 
     return (
@@ -53,7 +53,7 @@ export const ListaDeHorarios = ({barbeiro}) => {
                     { user?.ADM && <AdicionarHorario barbeiro={barbeiro} /> }
                     <Data />
                     {horariosDessaData.map((horarioFiltrado) => (
-                        <ItemDaLista horario={horarioFiltrado}/>
+                      <ItemDaLista horario={horarioFiltrado} key={horarioFiltrado.ID} barbeiro={barbeiro} />
                     ))}
                 </ul>
             </div>

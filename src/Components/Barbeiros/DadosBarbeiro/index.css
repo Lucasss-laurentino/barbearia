@@ -1,0 +1,16 @@
+.div-redonda-barbeiro {
+  width: 60px; 
+  height: 60px;
+  overflow: hidden;
+  border-radius: 50%;
+  position: relative;
+}
+
+.div-redonda-barbeiro img {
+  width: 100%; 
+  height: 100%;
+  object-fit: cover; 
+  position: absolute;
+  top: 0;
+  left: 0;
+}

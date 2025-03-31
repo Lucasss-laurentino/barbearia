@@ -6,13 +6,13 @@ import { useContext, useEffect } from "react";
 import { horariosSchema } from "../../../validations/horariosValidation";
 import { HorarioContext } from "../../../Context/HorarioContext";
 import { MutatingDots } from "react-loader-spinner";
+import { DataContext } from "../../../Context/DataContext";
 
-export const ModalHorarioBarbeiro = ({
+export const ModalEditarHorarioBarbeiro = ({
   show,
   setShow,
-  handleClose,
   barbeiro,
-  horario = null,
+  horario,
   setHorarioSelecionado,
 }) => {
   const {
@@ -25,26 +25,18 @@ export const ModalHorarioBarbeiro = ({
   });
 
   const {
-    criarHorario,
-    loadHorarios,
+    loadEditarHorarioBarbeiro,
     editarHorario,
     limparHoraAposExclusao,
     setLimparHoraAposExclusao,
-    errosHorarios,
   } = useContext(HorarioContext);
 
-  const handleTimeChange = (e) => {
-    const value = e.target.value.replace(/\D/g, ""); // Remove caracteres não numéricos
-    const formattedValue = value.replace(/(\d{2})(\d{2})/, "$1:$2"); // Formata como HH:MM
-    setValue("HORA", formattedValue.slice(0, 5));
-  };
+  const { data } = useContext(DataContext);
 
-  const editarOuCriar = (data) => {
-    if (horario !== null) {
-      editarHorario(data, horario, setShow, setValue);
-    } else {
-      criarHorario(data, barbeiro, setShow, setValue);
-    }
+  const handleTimeChange = (e) => {
+    const value = e.target.value.replace(/\D/g, ""); 
+    const formattedValue = value.replace(/(\d{2})(\d{2})/, "$1:$2");
+    setValue("HORA", formattedValue.slice(0, 5));
   };
 
   useEffect(() => {
@@ -74,7 +66,7 @@ export const ModalHorarioBarbeiro = ({
     <>
       <Modal
         show={show}
-        onHide={handleClose}
+        onHide={() => setShow(false)}
         backdrop="static"
         centered
         keyboard={false}
@@ -85,7 +77,9 @@ export const ModalHorarioBarbeiro = ({
         <Modal.Body>
           <form
             encType="multipart/form-data"
-            onSubmit={handleSubmit(editarOuCriar)}
+            onSubmit={handleSubmit( // sendo acionado sozinho, verificar causa!
+              editarHorario(data, horario, setShow, setValue)
+            )}
           >
             <div className="form-group my-2">
               <label>Hora</label>
@@ -101,7 +95,7 @@ export const ModalHorarioBarbeiro = ({
                 <p className="m-0 my-1 text-danger">*{errors.HORA.message}</p>
               )}
             </div>
-            {loadHorarios ? (
+            {loadEditarHorarioBarbeiro ? (
               <MutatingDots
                 visible={true}
                 height={"100"}
@@ -115,13 +109,13 @@ export const ModalHorarioBarbeiro = ({
               />
             ) : (
               <button type="submit" className="btn btn-primary">
-                {horario !== null ? "Editar" : "Cadastrar"}
+                Editar
               </button>
             )}
           </form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={() => setShow(false)}>
             Fechar
           </Button>
         </Modal.Footer>

@@ -12,8 +12,8 @@ export const BtnIntervalo = ({horario}) => {
         <>
             <button
                 className={`
-                    ${user?.ADM && horario.INTERVALO ? "btn btn-sm mx-2 border border-success text-success" : ""} 
-                    ${user?.ADM && !horario.INTERVALO ? "btn btn-sm bg-transparent mx-2 text-white border border-white" : ""}`
+                    ${user?.ADM && horario.INTERVALO ? "btn-almoco-ativado" : ""} 
+                    ${user?.ADM && !horario.INTERVALO ? "btn-almoco-desativado" : ""}`
                 }
                 onClick={() => marcarAlmoco(horario)}
             >
