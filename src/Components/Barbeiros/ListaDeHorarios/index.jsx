@@ -12,39 +12,21 @@ export const ListaDeHorarios = ({barbeiro}) => {
 
     const { user } = useContext(UserContext);
     const [horariosDessaData, setHorariosDessaData] = useState([]);
-    const { horarios } = useContext(HorarioContext);
+    const [horariosDesseBarbeiro, setHorariosDesseBarbeiro] = useState([]);
+    const { horarios, aplicarFiltragensPraExibirHorarios } = useContext(HorarioContext);
     const { data } = useContext(DataContext);
     const { horariosMarcado } = useContext(HorarioMarcadoContext);
 
-    const aplicarFiltragensPraExibirHorarios = () => {
-        const hora = new Date().getHours();
-        const horariosAcimaDaHoraAtual = horariosDessaData.filter((horario) => {
-          if (horario.HORA.split(":")[0] > hora) {
-            return horario;
-          }
+    useEffect(() => {
+        setHorariosDesseBarbeiro(() => {
+          return horarios.filter((horario) => (horario.BARBEIRO_ID === barbeiro.ID))
         });
-        const horariosFiltrado = horariosAcimaDaHoraAtual.filter((horarioDisponivel) => {
-            if (data) {
-              const horariosNaoAgendado = horariosMarcado.some((horarioMarcado) => {
-                if (horarioMarcado.HORARIO_ID === horarioDisponivel.ID) {
-                  if (horarioMarcado.DATA === data) {
-                    return horarioMarcado;
-                  }
-                }
-              });
-              if (!horariosNaoAgendado) {
-                return horarioDisponivel;
-              }
-            }
-        });
-        setHorariosDessaData([...horariosFiltrado]);
-    }
+    },[horarios]);
 
     useEffect(() => {
-        const horariosDesseBarbeiro = horarios.filter((horario) => (horario.BARBEIRO_ID === barbeiro.ID));
-        if(user?.ADM) setHorariosDessaData([...horariosDesseBarbeiro]);
-        if(!user?.ADM) aplicarFiltragensPraExibirHorarios();
-    },[horarios]);
+      if(user?.ADM) setHorariosDessaData([...horariosDesseBarbeiro]);
+      if(!user?.ADM) aplicarFiltragensPraExibirHorarios(horariosDesseBarbeiro, setHorariosDessaData, data, horariosMarcado);
+    }, [horariosDesseBarbeiro])
 
     return (
         <>

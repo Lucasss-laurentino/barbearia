@@ -61,7 +61,7 @@ export const ModalDesativarAssinatura = ({show, handleClose}) => {
                     desativada temporariamente caso nao retorne até o dia do vencimento da fatura a sua assinatura será cancelada permanentemente.
                 </p>
                 {!assinaturaLoader ? (
-                    <button class="btn btn-sm btn-danger" onClick={desativarAssinatura}>Entendido</button>
+                    <button className="btn btn-sm btn-danger" onClick={desativarAssinatura}>Entendido</button>
                 ) : (
                     <MutatingDots
                     visible={true}

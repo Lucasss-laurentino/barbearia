@@ -27,6 +27,7 @@ import { MenuFooterProvider } from "../Context/MenuFooterContext";
 import { SocketProvider } from "../Context/SocketContext";
 import { FinanceiroProvider } from "../Context/FinanceiroContext";
 import { Barbeiros } from "../Components/Barbeiros";
+import { EditarSenha } from "../Components/EditarSenha";
 
 export default function appRouter() {
   return (
@@ -57,15 +58,14 @@ export default function appRouter() {
                                             path="/login/:plano_id"
                                             element={<Login />}
                                           />
-
                                           <Route path="/:barbearia" element={<PageDefault />}>
                                             <Route path="/:barbearia/servicos" element={<ListService />} />
-                                            <Route path="/:barbearia/agendamentos" element={<Horarios />} />
+                                            <Route path="/:barbearia/agendamentos" element={<Horarios />}/>
                                             <Route path="/:barbearia/financeiro" element={<Finalizados />} />
-                                            <Route path="/:barbearia/barbeiros" element={<Barbeiros />} />
-                                            <Route path="/:barbearia/editarconta" element={<EditarUser />} />
+                                            <Route path="/:barbearia/barbeiros" element={<Barbeiros />}/>
+                                            <Route path="/:barbearia/editarconta" element={<EditarUser />}/>
                                           </Route>
-
+                                          <Route path="/alterarSenha" element={<EditarSenha />} />
                                           <Route path="/:barbearia/login" element={<Login />} />
                                           <Route
                                             path="/:barbearia/assinaturabloqueada"

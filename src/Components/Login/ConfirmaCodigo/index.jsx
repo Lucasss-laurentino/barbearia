@@ -4,8 +4,10 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { confirmarCodigoSchema } from "../../../validations/ConfirmarCodigo";
 import { MutatingDots } from "react-loader-spinner";
+import { Voltar } from "../Voltar";
+import { Input } from "../Inputs";
 
-export const ConfirmaCodigo = ({recuperaSenha, setRecuperaSenha, barbearia = null, plano_id = null, setFormAtivo}) => {
+export const ConfirmaCodigo = ({ barbearia = null, plano_id = null, setFormAtivo }) => {
   const {
     setLoadLogin,
     criarUsuario,
@@ -13,6 +15,7 @@ export const ConfirmaCodigo = ({recuperaSenha, setRecuperaSenha, barbearia = nul
     cadastroError,
     setCadastroError,
     validarCodigoMudarSenha,
+    recuperaSenha,
     barbeariaClean,
   } = useContext(LoginContext);
 
@@ -24,46 +27,33 @@ export const ConfirmaCodigo = ({recuperaSenha, setRecuperaSenha, barbearia = nul
     resolver: yupResolver(confirmarCodigoSchema),
   });
 
+  const setarLocalStorageEenviarCodigo = (data) => {
+    validarCodigoMudarSenha(data, barbearia);
+  }
+
   return (
-    <form
-      action=""
-      className="col-12 formulario-page-login"
-      onSubmit={handleSubmit(!recuperaSenha ? (data) => criarUsuario(data, barbearia, plano_id) : validarCodigoMudarSenha)}
-    >
-      <div className="col-12 text-center">
-        <h3 className="titulo-form-login my-4">{barbearia ? barbeariaClean : "Barba Cabelo & Bigode"}</h3>
-        <h5 className="text-white">Confirmação de código</h5>
-        <p className="m-0 p-form-login">
-          Insira o código recebido no seu email
-        </p>
-        {/* EMAIL */}
-        <div className="encapsula-span-input-login my-3">
-          <div className="col-8 d-flex flex-column">
-            {/* SPAN */}
-            <div className="col-12 d-flex justify-content-start align-items-center"></div>
-            {/* ICONE E INPUT */}
-            <div className="col-12 d-flex justify-content-start align-items-center">
-              <div className="input-icone">
-                <input
-                  type="text"
-                  className="input-login col-10"
-                  placeholder="Digite o código"
-                  {...register("CODIGO")}
-                />
-              </div>
-            </div>
-            <div className="col-12 d-flex justify-content-start align-items-center">
-              {cadastroError !== null && (
-                <p className="m-0 my-1 text-danger bg-white">
-                  *{cadastroError}
-                </p>
-              )}
-            </div>
-          </div>
-        </div>
-        <div className="encapsula-span-input-login my-3">
-          <div className="col-8 d-flex flex-column">
-            <div className="col-12 d-flex justify-content-start align-items-center my-3 flex-column">
+    <>
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-12">
+            <form
+              action=""
+              className="col-12 formulario-page-login"
+              onSubmit={handleSubmit(!recuperaSenha ? (data) => criarUsuario(data, barbearia, plano_id) : (data) => setarLocalStorageEenviarCodigo(data))}
+            >
+              <Voltar barbearia={barbearia} />
+              <p className="m-0 p-form-login">Insira o código recebido no seu email</p>
+              <Input
+                register={register}
+                errors={errors}
+                span={"Código"}
+                nomeInput={"CODIGO"}
+                type={"text"}
+                placeholder={"Digite o codigo"}
+                icon={
+                  <></>
+                }
+              />
               {loadLogin ? (
                 <MutatingDots
                   visible={true}
@@ -74,28 +64,19 @@ export const ConfirmaCodigo = ({recuperaSenha, setRecuperaSenha, barbearia = nul
                   radius="12.5"
                   ariaLabel="mutating-dots-loading"
                   wrapperStyle={{}}
-                  wrapperClass="justify-content-center my-2"
+                  wrapperClass="justify-content-center"
                 />
               ) : (
                 <>
-                  <button className="col-12 btn-form-login" type="submit">
-                    Enviar
+                  <button className="btn-form-login" type="submit">
+                    Confirmar
                   </button>
-                  <p
-                    className="m-0 col-12 text-center text-white cursor my-2 pt-2"
-                    onClick={() => {
-                      setLoadLogin(false);
-                      setCadastroError(null);
-                    }}
-                  >
-                    Voltar
-                  </p>
                 </>
               )}
-            </div>
+            </form>
           </div>
         </div>
       </div>
-    </form>
+    </>
   );
 };

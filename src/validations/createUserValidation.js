@@ -30,6 +30,14 @@ export const createUserSchema = yup.object({
     .string()
     .email("Formato de email inválido")
     .required("Campo obrigatório"),
+  CELULAR: yup
+    .string()
+    .required("Campo obrigatório")
+    .matches(
+      /^\(\d{2}\) \d{5}-\d{4}$/,
+      "O número de celular precisa estar no formato correto"
+    ),
+
   NOME: yup.string().required("Campo obrigatório"),
   SENHA: yup
     .string()

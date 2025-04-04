@@ -1,0 +1,43 @@
+.titulo-e-textos-form-login {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.titulo-e-textos-form-login > * {
+    text-align: center;
+}
+
+.titulo-form-login {
+    width: 100%;
+    color: rgb(247, 244, 244);
+    font-family: "barber";
+    margin: 0px;
+}
+  
+.p-form-login {
+    color: #acaaaa;
+    font-size: 15px;
+    font-weight: lighter;
+    padding: 4px;
+}
+
+.text-acesse-sua-conta {
+    color: white;
+    margin: 0;
+}
+
+@media (max-width: 500px) {
+    .titulo-form-login {
+        font-size: 20px;
+    }
+    .p-form-login {
+        color: #acaaaa;
+        font-size: 12px;
+        font-weight: lighter;
+    }
+    .text-acesse-sua-conta {
+        font-size: 13px;
+    }
+    
+}

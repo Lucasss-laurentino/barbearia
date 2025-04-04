@@ -6,6 +6,7 @@ import { AbaBottomContext } from "./AbaBottomContext";
 import Cookies from "js-cookie";
 import { ServicoContext } from "./ServicoContext";
 import { PlanoContext } from "./PlanoContext";
+import { toast, Bounce } from "react-toastify";
 
 export const LoginContext = createContext();
 
@@ -19,12 +20,12 @@ export const LoginProvider = ({ children }) => {
   const [loadLogin, setLoadLogin] = useState(false);
   const [loginError, setLoginError] = useState(null);
   const [cadastroError, setCadastroError] = useState(null);
-  const [confirmarCodigo, setConfirmarCodigo] = useState(false);
   const [userCadastro, setUserCadastro] = useState({});
-  const [controlaLoginECadastro, setControlaLoginECadastro] = useState(true);
   const [esqueceuSenha, setEsqueceuSenha] = useState(false);
   const [barbearia, setBarbearia] = useState(null);
   const [barbeariaClean, setBarbeariaClean] = useState("");
+  const [recuperaSenha, setRecuperaSenha] = useState(false);
+  const [loadEditarSenha, setLoadEditarSenha] = useState(false);
   const [formAtivo, setFormAtivo] = useState(() => {
     if (barbearia) { // inicia com o login aberto
       return 1;
@@ -41,7 +42,7 @@ export const LoginProvider = ({ children }) => {
       setBarbeariaClean(cleanedString);
       setFormAtivo(1);
     }
-    if(!barbearia) setFormAtivo(2);
+    if (!barbearia) setFormAtivo(2);
   }, [barbearia]);
 
   const criarUsuario = async (codigo, barbearia = null, plano_id = null) => {
@@ -135,65 +136,66 @@ export const LoginProvider = ({ children }) => {
         USER: { EMAIL: data.EMAIL_RECUPERAR_SENHA },
       });
       if (!result) throw false;
-      setEsqueceuSenha(false);
-      setControlaLoginECadastro(false);
-      setConfirmarCodigo(true);
+      setFormAtivo(4);
       setLoadLogin(false);
-      localStorage.setItem("email_recuperar", data.EMAIL_RECUPERAR_SENHA);
+      setRecuperaSenha(true); // ativa condicional no submit do formulário pra verificar o codigo
     } catch (error) {
-      console.log(error);
       setLoadLogin(false);
-
-      localStorage.setItem("email_recuperar", "{}");
     }
   };
 
-  const validarCodigoMudarSenha = async (data) => {
+  const validarCodigoMudarSenha = async (data, barbeariaParametro) => {
     try {
       setLoadLogin(true);
-      const result = await http.post("/login/validarCodigoMudarSenha", {
-        EMAIL: localStorage.getItem("email_recuperar"),
-        CODIGO: data.CODIGO,
-      });
+      const result = await http.post("/login/validarCodigoMudarSenha",
+        { CODIGO: data.CODIGO }, { withCredentials: true }
+      );
       if (!result) throw false;
       setLoadLogin(false);
-
-      const token = result.data.TOKEN;
-      const barbeariaReturn = result.data.NOME_BARBEARIA;
-      const expires = new Date();
-      expires.setMinutes(expires.getMinutes() + 10);
-      document.cookie = `token=${token}; expires=${expires.toUTCString()}; path=/`;
-      navigate(`/${barbeariaReturn}`);
-      setActive(5);
+      // serve apenas pra redirecionar o usuario apos a mudança de senha ja que a rota de mudança de senha nao faz parte da rota que leva o parametro da barbearia
+      localStorage.setItem("barbeariaAlterarSenha", barbeariaParametro);
+      navigate(`/alterarSenha`);
     } catch (error) {
       console.log(error);
       setLoadLogin(false);
-      localStorage.setItem("email_recuperar", "{}");
     }
   };
 
   const cancelarMudarSenha = async () => {
     Cookies.remove("token");
     setActive(2);
-    setControlaLoginECadastro(true);
     setEsqueceuSenha(false);
   };
 
   const mudarSenha = async (data) => {
     try {
-      const email = localStorage.getItem("email_recuperar");
-      if (email) {
-        const result = await http.post("login/mudarSenha", { data, email });
-        if (!result.data.erro) {
-          localStorage.setItem("email_recuperar", "{}");
-          Cookies.remove("token");
-          setActive(4);
-          setControlaLoginECadastro(true);
-          setEsqueceuSenha(false);
+      setLoadEditarSenha(true)
+      const result = await http.post("login/mudarSenha", { data }, { withCredentials: true });
+      if (result.data.erro) throw new Error(result.message);
+      setEsqueceuSenha(false);
+      toast.success("Senha alterada, você será redirecionado pra pagina de login!",
+        {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          transition: Bounce,
         }
-      }
+      );
+      const barbeariaLoginPath = localStorage.getItem("barbeariaAlterarSenha");
+      localStorage.setItem("barbeariaAlterarSenha", "");
+      setFormAtivo(1);
+      setLoginError(null);
+      setInterval(() => {
+        navigate(`/${barbeariaLoginPath}/login`);
+      }, 5000)
     } catch (error) {
       console.log(error);
+      setLoadEditarSenha(false);
     }
   };
 
@@ -209,9 +211,7 @@ export const LoginProvider = ({ children }) => {
         Cookies.remove("connect.sid");
         setServicoEscolhido("");
         localStorage.setItem("agendamento", "{}");
-        setControlaLoginECadastro(true);
         setEsqueceuSenha(false);
-        setConfirmarCodigo(false);
       } catch (error) {
         console.log(error);
       }
@@ -251,12 +251,9 @@ export const LoginProvider = ({ children }) => {
         logout,
         setCadastroError,
         confirmarEmail,
-        setConfirmarCodigo,
         userCadastro,
         setUserCadastro,
         enviarEmailDeRecuperacao,
-        controlaLoginECadastro,
-        setControlaLoginECadastro,
         esqueceuSenha,
         setEsqueceuSenha,
         validarCodigoMudarSenha,
@@ -266,8 +263,12 @@ export const LoginProvider = ({ children }) => {
         mudarSenha,
         barbeariaClean,
         setBarbeariaClean,
-        formAtivo, 
+        formAtivo,
         setFormAtivo,
+        recuperaSenha,
+        setRecuperaSenha,
+        loadEditarSenha, 
+        setLoadEditarSenha,
       }}
     >
       {children}

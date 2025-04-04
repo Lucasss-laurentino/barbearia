@@ -32,7 +32,7 @@ export const ModalHabilitarCobranca = ({ show, handleClose }) => {
               </div>
               <input
                 type="text"
-                class="form-control"
+                className="form-control"
                 aria-describedby="basic-addon1"
               />
             </div>

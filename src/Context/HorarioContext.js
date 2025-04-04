@@ -130,6 +130,31 @@ export const HorarioProvider = ({ children }) => {
     }
   };
 
+  const aplicarFiltragensPraExibirHorarios = (horariosDessaData, setHorariosDessaData, data, horariosMarcado) => {
+    const hora = new Date().getHours();
+    const horariosAcimaDaHoraAtual = horariosDessaData.filter((horario) => {
+      if (horario.HORA.split(":")[0] > hora) {
+        return horario;
+      }
+    });
+    const horariosFiltrado = horariosAcimaDaHoraAtual.filter((horarioDisponivel) => {
+        if (data) {
+          const horariosNaoAgendado = horariosMarcado.some((horarioMarcado) => {
+            if (horarioMarcado.HORARIO_ID === horarioDisponivel.ID) {
+              if (horarioMarcado.DATA === data) {
+                return horarioMarcado;
+              }
+            }
+          });
+          if (!horariosNaoAgendado) {
+            return horarioDisponivel;
+          }
+        }
+    });
+    setHorariosDessaData([...horariosFiltrado]);
+}
+
+
    const handleCloseExcluirHorario = () => {
      setExcluirHorario(false);
      setHorarioSelecionado(null);
@@ -166,6 +191,7 @@ export const HorarioProvider = ({ children }) => {
         setShowModalEditarHorarioBarbeiro,
         loadEditarHorarioBarbeiro,
         setLoadEditarHorarioBarbeiro,
+        aplicarFiltragensPraExibirHorarios,
       }}
     >
       {children}

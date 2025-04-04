@@ -12,7 +12,7 @@ import { jwtDecode } from "jwt-decode";
 import { MutatingDots } from "react-loader-spinner";
 
 export const EditarUser = () => {
-  const { pegarUsuario, editarUsuario, usuarioEditado, setUsuarioEditado, user, load, setLogo } =
+  const { editarUsuario, usuarioEditado, setUsuarioEditado, user, load, setLogo } =
     useContext(UserContext);
 
   const navigate = useNavigate();
@@ -27,7 +27,6 @@ export const EditarUser = () => {
     defaultValues: {
       NOME: user?.NOME,
       NOME_BARBEARIA: user?.NOME_BARBEARIA,
-
     }
   });
   const [imagem, setImagem] = useState();

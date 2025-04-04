@@ -4,7 +4,6 @@ import { ToastContainer, toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ServicoContext } from '../../../../../Context/ServicoContext';
 import { UserContext } from '../../../../../Context/UserContext';
-import { BarbeiroContext } from '../../../../../Context/BarbeiroContext';
 import { SocketContext } from '../../../../../Context/SocketContext';
 import { DataContext } from '../../../../../Context/DataContext';
 import { HorarioContext } from '../../../../../Context/HorarioContext';

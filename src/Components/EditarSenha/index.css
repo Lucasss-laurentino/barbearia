@@ -1,0 +1,39 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+.background-foto {
+    width: 100%;
+    height: 100vh;
+    background-image: url('../../../public/barbearia_utensilios.avif');
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.background-transparente-alterar-senha {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(19, 19, 30, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-alterar-senha {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    width: 300px;
+    text-align: center;
+}
+
+h2 {
+    color: #fff;
+    margin-bottom: 20px;
+}

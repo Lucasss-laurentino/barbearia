@@ -1,0 +1,18 @@
+.error-message {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+    color: #eb9d9b; /* Vermelho Bootstrap */
+    background-color: rgba(255, 0, 0, 0.4); /* Fundo suave */
+    border-radius: 5px;
+    padding: 5px 8px;
+    margin-top: 5px;
+    width: fit-content;
+  }
+  
+  .error-message svg {
+    width: 16px;
+    height: 16px;
+    fill: #d9534f;
+  }

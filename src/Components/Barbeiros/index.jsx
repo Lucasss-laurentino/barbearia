@@ -7,6 +7,7 @@ import { ListaDeHorarios } from "./ListaDeHorarios";
 import { SpanAdd } from "../SpanAdd";
 import { UserContext } from "../../Context/UserContext";
 import { Modais } from "./Modais";
+import { HorarioContext } from "../../Context/HorarioContext";
 
 export const Barbeiros = () => {
   const { barbearia } = useParams();
@@ -14,10 +15,13 @@ export const Barbeiros = () => {
   const { pegarBarbeiros, barbeiros, handleShowModalBarbeiro } =
     useContext(BarbeiroContext);
 
+  const { pegarHorarios } = useContext(HorarioContext);
+
   const { user } = useContext(UserContext);
 
   useEffect(() => {
     pegarBarbeiros(barbearia);
+    pegarHorarios(barbearia);
   }, []);
 
   return (
