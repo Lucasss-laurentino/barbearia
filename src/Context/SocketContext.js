@@ -35,7 +35,6 @@ export const SocketProvider = ({ children }) => {
         );
     }, [barbearia]);
 
-
     useEffect(() => {
         socketInstancia.on(
             `confirmarHorarioRecusadoUsuario${barbearia}`,

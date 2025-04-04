@@ -5,6 +5,8 @@ import { ModalExcluir } from "../../ModalExcluir";
 import { BarbeiroContext } from "../../../Context/BarbeiroContext";
 import { HorarioContext } from "../../../Context/HorarioContext";
 import { ModalEditarHorarioBarbeiro } from "../ModalEditarHorarioBarbeiro";
+import { ModalMarcarHorarioDeslogado } from "../ModalMarcarHorarioDeslogado";
+import { ServicoContext } from "../../../Context/ServicoContext";
 
 export const Modais = () => {
   const [propsModal, setPropsModal] = useState(null);
@@ -29,8 +31,12 @@ export const Modais = () => {
     setExcluirHorario,
     showModalEditarHorarioBarbeiro,
     setShowModalEditarHorarioBarbeiro,
-    setHorarioSelecionado
+    setHorarioSelecionado,
+    showModalMarcarHorarioDeslogado,
+    setShowModalMarcarHorarioDeslogado
   } = useContext(HorarioContext);
+
+  const { servicoEscolhido } = useContext(ServicoContext);
 
   useEffect(() => {
     if (quemAcionouModalExcluir === 0) {
@@ -53,6 +59,10 @@ export const Modais = () => {
     }
   }, [quemAcionouModalExcluir, showModalExcluir, showExcluirHorario]);
 
+  useEffect(() => {
+    console.log("servicoEscolhido no Modais:", servicoEscolhido);
+  }, [servicoEscolhido]);
+
   return (
     <>
       <ModalBarbeiro
@@ -73,6 +83,13 @@ export const Modais = () => {
         setShow={setShowModalEditar}
         handleClose={handleCloseModalEditar}
         barbeiro={barbeiroSelecionado}
+      />
+
+      <ModalMarcarHorarioDeslogado
+        show={showModalMarcarHorarioDeslogado}
+        setShow={setShowModalMarcarHorarioDeslogado}
+        horarioSelecionado={horarioSelecionado}
+        setvicoEscolhido={servicoEscolhido}
       />
 
       {propsModal !== null && (

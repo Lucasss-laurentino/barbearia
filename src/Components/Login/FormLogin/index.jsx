@@ -48,6 +48,8 @@ export const FormLogin = ({ barbearia, setFormAtivo }) => {
     if (storage) {
       const obj = JSON.parse(storage);
       if (obj?.ID) {
+        // usuarios nao pode fazer login tendo um horario agendado
+        // caso contrario o usuario pode agendar um, fazer login e agendar outro.
         toast.error("Não é possivel fazer login com um horário agendado !", {
           position: "bottom-right",
           autoClose: 3000,

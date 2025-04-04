@@ -17,29 +17,21 @@ export const AssinaturaProvider = ({ children }) => {
   const { logout } = useContext(LoginContext);
 
   const criarAssinaturaPagBank = async (data, barbearia) => {
-    try {
-      
-      setAssinaturaLoader(true);
-      
+    try {      
+      setAssinaturaLoader(true);      
       const card = await criptografaCartao(data);
-
       const dadosUsuario = await formatarDadosAssinaturaPagBank(data);
-
       if (card.hasErrors)
         throw new Error("Verifique os dados do seu cartão e tente novamente");
-
       const result = await http.post(
         "assinatura/criarAssinaturaPagBank",
         { card, dadosUsuario },
         { withCredentials: true }
       );
-
       if (!result) throw "Erro ao tentar fazer pagamento";
       navigate(`/${barbearia}`);
       setAssinaturaLoader(false);
-
     } catch (error) {
-      //setMsgError(error?.response?.data);
       setAssinaturaLoader(false);
     }
   };
@@ -55,11 +47,9 @@ export const AssinaturaProvider = ({ children }) => {
   }
 
   const criptografaCartao = async (data) => {
-
     try {
       const NUMERO_CARTAO = data.NUMERO_CARTAO.replace(/\s/g, "");
       const dataExpira = data.EXPIRA.split("/");
-  
       const card = window.PagSeguro.encryptCard({
         publicKey: process.env.REACT_APP_PK_PAGBANK,
         holder: data.NOME,
@@ -68,12 +58,10 @@ export const AssinaturaProvider = ({ children }) => {
         expYear: `20${dataExpira[1]}`,
         securityCode: data.CVC,
       });
-      return card;
-  
+      return card; 
     } catch(error) {
       console.log(error)
     }
-
   }
 
   const getAssinatura = async () => {
@@ -95,6 +83,7 @@ export const AssinaturaProvider = ({ children }) => {
       });
       if (!result) throw "Erro ao buscar assinatura";
       const parcelasReturn = result.data;
+      // tirar await do map
       const parcelasFormatada = await parcelasReturn.map((parcela) => {
         return {
           pago: "APPROVED",
@@ -176,22 +165,18 @@ export const AssinaturaProvider = ({ children }) => {
           // Se planoResponse for 2, você pode adicionar a lógica aqui
           console.log("Plano 2: Ação específica");
           break;
-
         case 3:
           // Se planoResponse for 3, você pode adicionar a lógica aqui
           console.log("Plano 3: Ação específica");
           break;
-
         case 4:
           // Se planoResponse for 4, você pode adicionar a lógica aqui
           console.log("Plano 4: Ação específica");
           break;
-
         case 5:
           // Se planoResponse for 5, você pode adicionar a lógica aqui
           console.log("Plano 5: Ação específica");
           break;
-
         case 6:
           if (!assinaturaVerificada.logado || !assinaturaVerificada.adm) {
             navigate(`/notfound`);
@@ -207,7 +192,6 @@ export const AssinaturaProvider = ({ children }) => {
       }
     } catch (error) {
       navigate("/notfound");
-      console.log(error);
     }
   };
 

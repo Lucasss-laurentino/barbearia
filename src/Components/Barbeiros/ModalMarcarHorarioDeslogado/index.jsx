@@ -3,7 +3,6 @@ import Modal from "react-bootstrap/Modal";
 import { useForm } from "react-hook-form";
 import { agendarDeslogadoSchema } from "../../../validations/agendarDeslogado";
 import { useContext } from "react";
-import { HorarioContext } from "../../../Context/HorarioContext";
 import { DataContext } from "../../../Context/DataContext";
 import { SocketContext } from "../../../Context/SocketContext";
 
@@ -12,7 +11,6 @@ export const ModalMarcarHorarioDeslogado = ({
   setShow,
   horarioSelecionado,
   servicoEscolhido,
-  barbearia
 }) => {
   const handleClose = () => {
     setValue("NOME_CLIENTE", "");

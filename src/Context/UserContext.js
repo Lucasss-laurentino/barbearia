@@ -8,7 +8,6 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [usuarioEditado, setUsuarioEditado] = useState(false);
   // esse objeto controla oque o usuário vai setando durante a navegação pelo sistema
-  const [userContrata, setUserContrata] = useState({ user: null });
   const [logo, setLogo] = useState();
 
   const pegarUsuario = async () => {
@@ -20,13 +19,8 @@ export const UserProvider = ({ children }) => {
       if (!response.data || !response.data.ID)
         throw new Error("Usuário não encontrado");
       setUser(response.data);
-      setUserContrata((prevState) => ({
-        ...prevState,
-        user: response.data,
-      }));
     } catch (error) {
       setUser({});
-      setUserContrata({});
     }
   };
 
@@ -69,8 +63,6 @@ export const UserProvider = ({ children }) => {
         user,
         setUser,
         pegarUsuario,
-        userContrata,
-        setUserContrata,
         editarUsuario,
         usuarioEditado,
         setUsuarioEditado,

@@ -13,6 +13,7 @@ export const PageEContratado = ({
   const { 
     servicoAgendado,
     servicoEscolhido,
+    setServicoEscolhido,
   } = useContext(ServicoContext);
 
   return (
@@ -26,7 +27,7 @@ export const PageEContratado = ({
             <div className="container imagem-height">
               <img
                 src="/icones_menu_bottom/verificado.gif"
-                className="img-fluid mx-3 cursor"
+                className="img-fluid mx-1 cursor"
                 alt=""
               />
             </div>
@@ -34,6 +35,12 @@ export const PageEContratado = ({
             <a
               href="#"
               className="d-block m-0 mt-2 text-success text-decoration-none nome-servico"
+              onClick={() =>
+                setServicoEscolhido({
+                  id: servico.ID,
+                  contratado: true,
+                })
+              }
             >
               Escolher
             </a>

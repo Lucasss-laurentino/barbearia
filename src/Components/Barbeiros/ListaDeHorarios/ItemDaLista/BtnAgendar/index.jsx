@@ -8,16 +8,16 @@ import { SocketContext } from '../../../../../Context/SocketContext';
 import { DataContext } from '../../../../../Context/DataContext';
 import { HorarioContext } from '../../../../../Context/HorarioContext';
 
-export const BtnAgendar = ({horario}) => {
+export const BtnAgendar = ({ horario }) => {
 
     const { servicoEscolhido } = useContext(ServicoContext);
     const { user } = useContext(UserContext);
-    const { setHorarioSelecionado } = useContext(HorarioContext);
+    const { setHorarioSelecionado, setShowModalMarcarHorarioDeslogado } = useContext(HorarioContext);
     const { agendarViaSocket } = useContext(SocketContext);
     const { data } = useContext(DataContext);
 
     const verificaAntesDeAgendar = () => {
-        if(!servicoEscolhido) {
+        if (!servicoEscolhido) {
             toast.error("Escolha um serviço antes de agendar um horário !",
                 {
                     position: "bottom-right",
@@ -35,8 +35,8 @@ export const BtnAgendar = ({horario}) => {
 
         if (servicoEscolhido && !user?.ID) {
             setHorarioSelecionado(horario);
-            // setShowModalMarcarHorarioDeslogado(true);            
-        } else if(servicoEscolhido && user?.ID) {
+            setShowModalMarcarHorarioDeslogado(true);            
+        } else if (servicoEscolhido && user?.ID) {
             setHorarioSelecionado(horario);
             agendarViaSocket(
                 { NOME_CLIENTE: user.NOME },

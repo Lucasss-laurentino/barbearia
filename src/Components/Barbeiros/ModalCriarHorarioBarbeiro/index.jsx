@@ -27,6 +27,8 @@ export const ModalCriarHorarioBarbeiro = ({
     loadHorarios,
     limparHoraAposExclusao,
     setLimparHoraAposExclusao,
+    errosHorarios,
+    setErrosHorarios,
   } = useContext(HorarioContext);
 
   const handleTimeChange = (e) => {
@@ -48,11 +50,16 @@ export const ModalCriarHorarioBarbeiro = ({
     }
   }, [limparHoraAposExclusao]);
 
+  const limparErroEFechar = () => {
+    setErrosHorarios({ erro: false, menssagem: "" });
+    handleClose();
+  }
+
   return (
     <>
       <Modal
         show={show}
-        onHide={handleClose}
+        onHide={limparErroEFechar}
         backdrop="static"
         centered
         keyboard={false}
@@ -78,6 +85,7 @@ export const ModalCriarHorarioBarbeiro = ({
               {errors.HORA && (
                 <p className="m-0 my-1 text-danger">*{errors.HORA.message}</p>
               )}
+              {errosHorarios.erro && <p className="m-0 my-1 text-danger">*{errosHorarios.menssagem}</p>}
             </div>
             {loadHorarios ? (
               <MutatingDots
@@ -99,7 +107,7 @@ export const ModalCriarHorarioBarbeiro = ({
           </form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={limparErroEFechar}>
             Fechar
           </Button>
         </Modal.Footer>

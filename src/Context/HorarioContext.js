@@ -62,9 +62,8 @@ export const HorarioProvider = ({ children }) => {
       setShow(false);
     } catch (erro) {
       setErrosHorarios({ erro: true, menssagem: erro?.response?.data });
-      setTimeout(() => {
-        setLoadHorarios(false);
-      }, 4000);
+      setLoadHorarios(false);
+     
     }
   };
 

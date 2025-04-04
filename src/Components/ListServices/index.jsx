@@ -30,22 +30,11 @@ export const ListService = () => {
     verificarServicoEscolhido,
   } = useContext(ServicoContext);
   
-  const { user, setUserContrata } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const { barbearia } = useParams();
 
   useEffect(() => {
-    if (servicoEscolhido?.id) {
-      setUserContrata((prevState) => ({
-        ...prevState,
-        servicoEscolhido,
-      }));
-    } else {
-      setUserContrata((prevState) => ({
-        ...prevState,
-        servicoEscolhido: {},
-      }));
-      setServicoAgendado({});
-    }
+    if (!servicoEscolhido?.id) setServicoAgendado({});
   }, [servicoEscolhido]);
 
   useEffect(() => {

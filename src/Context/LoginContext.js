@@ -103,7 +103,7 @@ export const LoginProvider = ({ children }) => {
     try {
       setLoadLogin(true);
       await http
-        .post("/login/login", { user }, { withCredentials: true })
+        .post("/login/login", { user, barbearia }, { withCredentials: true })
         .then((response) => {
           setUser(response.data.user);
           setLoadLogin(false);
