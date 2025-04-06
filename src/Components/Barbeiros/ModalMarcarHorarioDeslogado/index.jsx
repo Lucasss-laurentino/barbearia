@@ -10,7 +10,6 @@ export const ModalMarcarHorarioDeslogado = ({
   show,
   setShow,
   horarioSelecionado,
-  servicoEscolhido,
 }) => {
   const handleClose = () => {
     setValue("NOME_CLIENTE", "");
@@ -30,7 +29,7 @@ export const ModalMarcarHorarioDeslogado = ({
   });
 
   const onSubmit = (dataParametro) => {
-    agendarViaSocket(dataParametro, horarioSelecionado, servicoEscolhido, data);
+    agendarViaSocket(dataParametro, horarioSelecionado, data);
   }
   
   return (

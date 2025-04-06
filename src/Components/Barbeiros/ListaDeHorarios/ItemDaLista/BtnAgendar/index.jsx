@@ -41,7 +41,6 @@ export const BtnAgendar = ({ horario }) => {
             agendarViaSocket(
                 { NOME_CLIENTE: user.NOME },
                 horario,
-                servicoEscolhido,
                 data,
                 user
             );

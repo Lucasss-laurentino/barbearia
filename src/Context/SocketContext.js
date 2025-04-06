@@ -17,8 +17,8 @@ export const SocketProvider = ({ children }) => {
         setShowModalMarcarHorarioDeslogado
     } = useContext(HorarioContext);
     const { barbeiros } = useContext(BarbeiroContext);
-    const { servicos, setServicoEscolhido } = useContext(ServicoContext);
-    const { setHorariosMarcado, horariosMarcado } = useContext(HorarioMarcadoContext);
+    const { servicos, servicoEscolhido, setServicoEscolhido } = useContext(ServicoContext);
+    const { setHorariosMarcado, horariosMarcado, setHorarioMarcado } = useContext(HorarioMarcadoContext);
     
     const [socketInstancia] = useState(socket());
     const [barbearia, setBarbearia] = useState(null);
@@ -146,7 +146,7 @@ export const SocketProvider = ({ children }) => {
 
     // FUNÇÕES SÃO CONEXÕES SOCKET DESTINADAS AO ADM
 
-    const agendarViaSocket = async (data, horarioSelecionado, servicoEscolhido, dataEscolhida, user = null) => {
+    const agendarViaSocket = async (data, horarioSelecionado, dataEscolhida, user = null) => {
         const agendamentoOBJ = await formatarAgendamento(data.NOME_CLIENTE, horarioSelecionado, servicoEscolhido, user, dataEscolhida);
         if (agendamentoOBJ.erro) throw new Error("Erro ao formatar agendamento");
         const { agendamento } = agendamentoOBJ;
@@ -155,10 +155,11 @@ export const SocketProvider = ({ children }) => {
             socketInstancia.on("confirmarAgendamento", async (agendamento) => {
                 const agendamentoRetornado = agendamento.agendamento;
                 setHorarios(agendamento.horarios);
-                console.log(horariosMarcado);
                 setHorariosMarcado([...horariosMarcado, agendamento.agendamento]);
                 const agendamentoObj = await formataAgendamentoRetornado(agendamentoRetornado);
-                localStorage.setItem("agendamento", JSON.stringify(agendamentoObj));
+                // se o usuário nao estiver logado o agendamento fica salvo no localStorage
+                if (user === null) localStorage.setItem("agendamento", JSON.stringify(agendamentoObj));
+                setHorarioMarcado(agendamentoOBJ);
                 setStorage(agendamentoObj);
                 setShowModalMarcarHorarioDeslogado(false);
             });

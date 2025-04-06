@@ -87,7 +87,6 @@ export const ListaHorarios = ({
         show={showModalMarcarHorarioDeslogado}
         setShow={setShowModalMarcarHorarioDeslogado}
         horarioSelecionado={horarioSelecionado}
-        servicoEscolhido={servicoEscolhido}
         barbearia={barbearia}
       />
       <ul className="horarios-fechado" id={barbeiro.ID}>

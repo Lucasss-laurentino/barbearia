@@ -1,13 +1,21 @@
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { http } from "../http";
+import { UserContext } from "./UserContext";
 
 export const HorarioMarcadoContext = createContext();
 
 export const HorarioMarcadoProvider = ({ children }) => {
   const [horarioMarcado, setHorarioMarcado] = useState();
+  const [meusHorarios, setMeusHorarios] = useState([]);
   const [horariosMarcado, setHorariosMarcado] = useState([]);
   const [agendamentosOrdenados, setAgendamentosOrdenados] = useState([]);
+  // sem esse gatilho re-renderiza PageDefault e nao aciona o item do menuFooter
+  const [
+    gatilhoPraDirecionarPraMeusHorarios,
+    setGatilhoPraDirecionarPraMeusHorarios,
+  ] = useState(false);
   const [hoje] = useState(new Date());
+  const { user } = useContext(UserContext);
 
   const ordenaAgendamentos = () => {
     if (horariosMarcado.length > 0) {
@@ -37,7 +45,7 @@ export const HorarioMarcadoProvider = ({ children }) => {
     } else {
       setAgendamentosOrdenados(horariosMarcado);
     }
-  }
+  };
 
   const buscarHorariosAgendado = async (barbearia) => {
     try {
@@ -50,7 +58,62 @@ export const HorarioMarcadoProvider = ({ children }) => {
       console.log(error);
     }
   };
-  
+
+  const pegarMeuHorarioMarcado = async () => {
+    try {
+      const objFormatado = await formatarObjePraEnvio();
+      if (objFormatado?.erro) throw new Error(objFormatado.mensagem);
+      const { objEnvio } = objFormatado;
+      const result = await http.post("/horario/buscarMeuHorarioMarcado", {
+        agendamento: objEnvio,
+      });
+      if (!result) throw new Error("");
+      if (!objEnvio.logado) setHorarioMarcado(result.data);
+     
+      // se usuario estiver logado, seta meusHorarios e chama uma função pra pegar a hora marcada e setar horarioMarcado
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const formatarObjePraEnvio = async () => {
+    try {
+      let objPraEnviarNaRequisicao;
+      if (!user?.ID)
+        objPraEnviarNaRequisicao = await pegarHorarioMarcadoDeslogado();
+      // se tem esse erro é porque alem de nao logado o usuario nao tem hora marcada
+      if (objPraEnviarNaRequisicao?.erro)
+        throw new Error(objPraEnviarNaRequisicao.mensagem);
+      if (user?.ID) {
+        objPraEnviarNaRequisicao.USER = user;
+        objPraEnviarNaRequisicao.logado = true;
+      }
+      return { erro: false, objEnvio: objPraEnviarNaRequisicao };
+    } catch (error) {
+      return { erro: false, mensagem: error.Mesage };
+    }
+  };
+
+  const pegarHorarioMarcadoDeslogado = async () => {
+    try {
+      const horarioAgendado = localStorage.getItem("agendamento");
+      if (Object.keys(horarioAgendado).length > 0) {
+        return {
+          erro: false,
+          horarioAgendado: JSON.parse(horarioAgendado),
+          logado: false,
+        };
+      }
+      return {
+        erro: true,
+        mensagem: "Agendamento não encontrado!",
+        logado: false,
+      };
+    } catch (error) {
+      return { erro: true, mensagem: error.Mesage, logado: false };
+    }
+  };
+
   return (
     <HorarioMarcadoContext.Provider
       value={{
@@ -59,12 +122,17 @@ export const HorarioMarcadoProvider = ({ children }) => {
         buscarHorariosAgendado,
         horariosMarcado,
         setHorariosMarcado,
-        agendamentosOrdenados, 
+        agendamentosOrdenados,
         setAgendamentosOrdenados,
         ordenaAgendamentos,
+        pegarMeuHorarioMarcado,
+        gatilhoPraDirecionarPraMeusHorarios,
+        setGatilhoPraDirecionarPraMeusHorarios,
+        meusHorarios,
+        setMeusHorarios,
       }}
     >
       {children}
     </HorarioMarcadoContext.Provider>
-);
+  );
 };

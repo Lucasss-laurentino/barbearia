@@ -28,6 +28,7 @@ import { SocketProvider } from "../Context/SocketContext";
 import { FinanceiroProvider } from "../Context/FinanceiroContext";
 import { Barbeiros } from "../Components/Barbeiros";
 import { EditarSenha } from "../Components/EditarSenha";
+import { MeusHorarios } from "../Components/MeusHorarios";
 
 export default function appRouter() {
   return (
@@ -63,7 +64,8 @@ export default function appRouter() {
                                             <Route path="/:barbearia/agendamentos" element={<Horarios />}/>
                                             <Route path="/:barbearia/financeiro" element={<Finalizados />} />
                                             <Route path="/:barbearia/barbeiros" element={<Barbeiros />}/>
-                                            <Route path="/:barbearia/editarconta" element={<EditarUser />}/>
+                                            <Route path="/:barbearia/editarconta" element={<EditarUser />} />
+                                            <Route path="/:barbearia/meusHorarios" element={<MeusHorarios/>} />
                                           </Route>
                                           <Route path="/alterarSenha" element={<EditarSenha />} />
                                           <Route path="/:barbearia/login" element={<Login />} />

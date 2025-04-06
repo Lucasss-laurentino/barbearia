@@ -58,11 +58,7 @@ export const Modais = () => {
       });
     }
   }, [quemAcionouModalExcluir, showModalExcluir, showExcluirHorario]);
-
-  useEffect(() => {
-    console.log("servicoEscolhido no Modais:", servicoEscolhido);
-  }, [servicoEscolhido]);
-
+  
   return (
     <>
       <ModalBarbeiro
@@ -89,7 +85,6 @@ export const Modais = () => {
         show={showModalMarcarHorarioDeslogado}
         setShow={setShowModalMarcarHorarioDeslogado}
         horarioSelecionado={horarioSelecionado}
-        setvicoEscolhido={servicoEscolhido}
       />
 
       {propsModal !== null && (

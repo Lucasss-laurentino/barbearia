@@ -17,17 +17,19 @@ export const HorarioProvider = ({ children }) => {
     BARBEIRO_ID: 0,
   });
   const [loadHorarios, setLoadHorarios] = useState(false);
-  const [loadEditarHorarioBarbeiro, setLoadEditarHorarioBarbeiro] = useState(false);
+  const [loadEditarHorarioBarbeiro, setLoadEditarHorarioBarbeiro] =
+    useState(false);
   const [marcarAlmocoState, setMarcarAlmocoState] = useState({});
   const [agendamento, setAgendamento] = useState({});
-  const [showModalMarcarHorarioDeslogado, setShowModalMarcarHorarioDeslogado] = useState(false);
+  const [showModalMarcarHorarioDeslogado, setShowModalMarcarHorarioDeslogado] =
+    useState(false);
   const [barbearia, setBarbearia] = useState("");
   const [showExcluirHorario, setExcluirHorario] = useState(false);
   const [horarioSelecionado, setHorarioSelecionado] = useState(null);
-  const [showModalEditarHorarioBarbeiro, setShowModalEditarHorarioBarbeiro] = useState(false);
+  const [showModalEditarHorarioBarbeiro, setShowModalEditarHorarioBarbeiro] =
+    useState(false);
 
   useEffect(() => {
-
     if (Object.keys(marcarAlmocoState).length > 0) {
       const socketInstancia = socket();
       socketInstancia.emit(`marcarAlmoco`, marcarAlmocoState);
@@ -36,7 +38,6 @@ export const HorarioProvider = ({ children }) => {
         setHorarios([...result]);
       });
     }
-
   }, [marcarAlmocoState]);
 
   const ordenarHorarios = async (horariosResponse) => {
@@ -63,7 +64,6 @@ export const HorarioProvider = ({ children }) => {
     } catch (erro) {
       setErrosHorarios({ erro: true, menssagem: erro?.response?.data });
       setLoadHorarios(false);
-     
     }
   };
 
@@ -72,7 +72,7 @@ export const HorarioProvider = ({ children }) => {
       const response = await http.get(`horario/pegarHorarios/${barbearia}`);
       if (!response) throw "Erro ao buscar horarios";
       ordenarHorarios(response.data);
-    } catch (erro) { }
+    } catch (erro) {}
   };
 
   const editarHorario = async (data, horario, setShow, setValue) => {
@@ -90,8 +90,8 @@ export const HorarioProvider = ({ children }) => {
       setLoadEditarHorarioBarbeiro(false);
       setShow(false);
     } catch (error) {
-      console.log(error)
-     }
+      console.log(error);
+    }
   };
 
   const excluirHorario = async (horario, setLoadExcluir) => {
@@ -107,10 +107,10 @@ export const HorarioProvider = ({ children }) => {
       handleCloseExcluirHorario();
     } catch (error) {
       console.log(error);
-     }
+    }
   };
 
-  const marcarAlmoco = async (horario) => { 
+  const marcarAlmoco = async (horario) => {
     try {
       const result = await http.post("/horario/marcarAlmoco", horario, {
         withCredentials: true,
@@ -119,24 +119,30 @@ export const HorarioProvider = ({ children }) => {
       setMarcarAlmocoState(() => {
         let horarioAlmoco = result.data.find((horario) => horario?.INTERVALO);
         if (horarioAlmoco === null) {
-            return horarioAlmoco
+          return horarioAlmoco;
         }
         return {};
       });
-        setHorarios([...result.data]);
+      setHorarios([...result.data]);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const aplicarFiltragensPraExibirHorarios = (horariosDessaData, setHorariosDessaData, data, horariosMarcado) => {
+  const aplicarFiltragensPraExibirHorarios = (
+    horariosDessaData,
+    setHorariosDessaData,
+    data,
+    horariosMarcado
+  ) => {
     const hora = new Date().getHours();
     const horariosAcimaDaHoraAtual = horariosDessaData.filter((horario) => {
       if (horario.HORA.split(":")[0] > hora) {
         return horario;
       }
     });
-    const horariosFiltrado = horariosAcimaDaHoraAtual.filter((horarioDisponivel) => {
+    const horariosFiltrado = horariosAcimaDaHoraAtual.filter(
+      (horarioDisponivel) => {
         if (data) {
           const horariosNaoAgendado = horariosMarcado.some((horarioMarcado) => {
             if (horarioMarcado.HORARIO_ID === horarioDisponivel.ID) {
@@ -149,15 +155,15 @@ export const HorarioProvider = ({ children }) => {
             return horarioDisponivel;
           }
         }
-    });
+      }
+    );
     setHorariosDessaData([...horariosFiltrado]);
-}
+  };
 
-
-   const handleCloseExcluirHorario = () => {
-     setExcluirHorario(false);
-     setHorarioSelecionado(null);
-   };
+  const handleCloseExcluirHorario = () => {
+    setExcluirHorario(false);
+    setHorarioSelecionado(null);
+  };
 
   return (
     <HorarioContext.Provider

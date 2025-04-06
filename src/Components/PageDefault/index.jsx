@@ -1,14 +1,13 @@
-import { Outlet, useNavigate, useParams } from 'react-router-dom';
-import { Navbar } from '../Navbar';
-import './index.css';
-import { MenuFooter } from '../MenuFooter';
-import { useContext, useEffect, useState } from 'react';
-import { UserContext } from '../../Context/UserContext';
-import { Menu } from '../Menu';
-import { SocketContext } from '../../Context/SocketContext';
+import { Outlet, useNavigate, useParams } from "react-router-dom";
+import { Navbar } from "../Navbar";
+import "./index.css";
+import { MenuFooter } from "../MenuFooter";
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "../../Context/UserContext";
+import { Menu } from "../Menu";
+import { SocketContext } from "../../Context/SocketContext";
 
 export const PageDefault = () => {
-
   const navigate = useNavigate();
   const { pegarUsuario, user } = useContext(UserContext);
   const { barbearia } = useParams();
@@ -19,19 +18,31 @@ export const PageDefault = () => {
   }, []);
 
   useEffect(() => {
+    // redireciona pra servicos ou agendamentos somente se a url for diferente de alguma de rotasPermitidas
+    const caminho = window.location.pathname;
+    const subRota = caminho.split(`/${barbearia}/`)[1];
+    const rotasPermitidas = [
+      "servicos",
+      "agendamentos",
+      "financeiro",
+      "barbeiros",
+      "editarconta",
+      "meusHorarios",
+    ];
     // Dependendo se o usuario for adm ou cliente e direcionado pra rotas diferente
-    if(user !== null && !user?.ADM) {
-      navigate(`/${barbearia}/servicos`);
+    if (!subRota || !rotasPermitidas.includes(subRota)) {
+      if (user === null || !user?.ADM) {
+        navigate(`/${barbearia}/servicos`);
+      }
+      if (user !== null && user?.ADM) {
+        navigate(`/${barbearia}/agendamentos`);
+      }
     }
-
-    if(user !== null && user?.ADM) {
-      navigate(`/${barbearia}/agendamentos`);
-    }
-  }, [user])
+  }, [user]);
 
   useEffect(() => {
     setBarbearia(barbearia); // inicia conexão socket que depende de 'barbearia'
-  }, [barbearia])
+  }, [barbearia]);
 
   return (
     <>
@@ -40,9 +51,9 @@ export const PageDefault = () => {
           <Navbar />
           <Menu />
           <Outlet />
-          <MenuFooter user={user}/>
+          <MenuFooter user={user} />
         </div>
-      </div>      
+      </div>
     </>
-  )
-}
+  );
+};

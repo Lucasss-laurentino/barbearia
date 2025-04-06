@@ -5,68 +5,86 @@ import AgendamentoIconDark from "../Icones/agendamento/agendamento-dark.svg";
 import MeusHorariosIcon from "../Icones/meusHorarios/clock-three-svgrepo-com.svg";
 import MeusHorariosIconDark from "../Icones/meusHorarios/meusHorarios-dark.svg";
 import LoginIcon from "../Icones/login/login-3-svgrepo-com.svg";
-import LoginIconDark from "../Icones/login/login-dark.svg";
 import PerfilIcon from '../Icones/perfil/perfilPreto.svg';
 import PerfilIconBranco from '../Icones/perfil/perfilBranco.svg';
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { HorarioMarcadoContext } from "../../../Context/HorarioMarcadoContext";
 
 export const ListUser = ({user}) => {
 
   const { barbearia } = useParams();
   const navigate = useNavigate();
 
-  const [itensMenu, setItemsMenu] = useState([]);
+  const { gatilhoPraDirecionarPraMeusHorarios } = useContext(HorarioMarcadoContext);
 
-  const [active, setActive] = useState(0);
+  const [itensMenu, setItemsMenu] = useState([]);
+  const [subRota, setSubRota] = useState("");
 
   useEffect(() => {
+
+    const caminho = window.location.pathname;
+    setSubRota(caminho.split(`/${barbearia}/`)[1]);
+
     setItemsMenu([
-        {
-          text: "Serviços",
-          svg: ServiceIcon,
-          svgDark: ServiceIconDark,
-          url: `/${barbearia}/servicos`,
-        },
-        {
-          text: "Agendamento",
-          svg: AgendamentoIcon,
-          svgDark: AgendamentoIconDark,
-          url: `/${barbearia}/barbeiros`,
-        },
-        {
-          text: "Meus Horários",
-          svg: MeusHorariosIcon,
-          svgDark: MeusHorariosIconDark,
-          url: `/${barbearia}/meusHorarios`,
-        },
-        {
-          text: user?.ID ? "Perfil" : "Login",
-          svg: user?.ID ? PerfilIconBranco : LoginIcon,
-          svgDark: PerfilIcon,
-          url: user?.ID ? `/${barbearia}/editarconta` : `/${barbearia}/login`,
-        },
-      ]);
+      {
+        id: 1,
+        rota: "servicos",
+        text: "Serviços",
+        svg: ServiceIcon,
+        svgDark: ServiceIconDark,
+        url: `/${barbearia}/servicos`,
+      },
+      {
+        id: 2,
+        rota: "barbeiros",
+        text: "Agendamento",
+        svg: AgendamentoIcon,
+        svgDark: AgendamentoIconDark,
+        url: `/${barbearia}/barbeiros`,
+      },
+      {
+        id: 3,
+        rota: "meusHorarios",
+        text: "Meus Horários",
+        svg: MeusHorariosIcon,
+        svgDark: MeusHorariosIconDark,
+        url: `/${barbearia}/meusHorarios`,
+      },
+      {
+        id: 4,
+        rota: user?.ID ? "editarconta" : "login",
+        text: user?.ID ? "Perfil" : "Login",
+        svg: user?.ID ? PerfilIconBranco : LoginIcon,
+        svgDark: PerfilIcon,
+        url: user?.ID ? `/${barbearia}/editarconta` : `/${barbearia}/login`,
+      },
+    ]);
 
-  }, [user]);
+  }, [user, subRota]);
 
-  const ativarPagina = (index, item) => {
-    setActive(index);
+  const ativarPagina = (item) => {
+    //setActive(index);
+    setSubRota(item.rota);
     navigate(item.url)  
   }
+
+  useEffect(() => {
+    if (gatilhoPraDirecionarPraMeusHorarios) ativarPagina(2, { url: `/${barbearia}/meusHorarios` })
+  }, [gatilhoPraDirecionarPraMeusHorarios]);
 
   return (
     <>
       <ul className="list-options-menu">
-        {itensMenu.map((item, index) => (
+        {itensMenu.map((item) => (
           <li 
-            key={index} 
-            onClick={() => ativarPagina(index, item)} 
-            className={active === index ? "item-menu-footer bg-white text-dark" : "item-menu-footer"}
+            key={item.id} 
+            onClick={() => ativarPagina(item)} 
+            className={subRota === item.rota ? "item-menu-footer bg-white text-dark" : "item-menu-footer"}
           >
             <div className="icone-item">
-              <img src={active === index ? item.svgDark : item.svg} alt="" className="img-fluid" />
+              <img src={subRota === item.rota ? item.svgDark : item.svg} alt="" className="img-fluid" />
             </div>
             <div className="nome-item my-1">
               <p className="m-0">{item.text}</p>

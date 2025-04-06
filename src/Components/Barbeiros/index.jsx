@@ -8,6 +8,7 @@ import { SpanAdd } from "../SpanAdd";
 import { UserContext } from "../../Context/UserContext";
 import { Modais } from "./Modais";
 import { HorarioContext } from "../../Context/HorarioContext";
+import { HoraMarcada } from "./HoraMarcada";
 
 export const Barbeiros = () => {
   const { barbearia } = useParams();
@@ -45,6 +46,7 @@ export const Barbeiros = () => {
                   >
                     <DadosBarbeiro barbeiro={barbeiro} />
                     <ListaDeHorarios barbeiro={barbeiro} />
+                    <HoraMarcada barbeiro={barbeiro} />
                   </li>
                 );
               })}
