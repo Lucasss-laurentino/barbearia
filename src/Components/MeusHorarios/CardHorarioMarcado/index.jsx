@@ -19,7 +19,7 @@ export const CardHorarioMarcado = ({ horario }) => {
         {meuHorarioMarcado?.reservado === 2 ? (
           <span className="status-flag pendente">Pendente</span>
         ) : (
-          <span className="status-flag aceito">Pendente</span>
+          <span className="status-flag aceito">Aceito</span>
         )}
       </div>
       <p>

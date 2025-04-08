@@ -9,6 +9,7 @@ import { UserContext } from "../../Context/UserContext";
 import { Modais } from "./Modais";
 import { HorarioContext } from "../../Context/HorarioContext";
 import { HoraMarcada } from "./HoraMarcada";
+import { HorarioMarcadoContext } from "../../Context/HorarioMarcadoContext";
 
 export const Barbeiros = () => {
   const { barbearia } = useParams();
@@ -17,6 +18,7 @@ export const Barbeiros = () => {
     useContext(BarbeiroContext);
 
   const { pegarHorarios } = useContext(HorarioContext);
+  const { horarioMarcado } = useContext(HorarioMarcadoContext);
 
   const { user } = useContext(UserContext);
 
@@ -46,7 +48,7 @@ export const Barbeiros = () => {
                   >
                     <DadosBarbeiro barbeiro={barbeiro} />
                     <ListaDeHorarios barbeiro={barbeiro} />
-                    <HoraMarcada barbeiro={barbeiro} />
+                    {horarioMarcado && <HoraMarcada barbeiro={barbeiro} /> }
                   </li>
                 );
               })}

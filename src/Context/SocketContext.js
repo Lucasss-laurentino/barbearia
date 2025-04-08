@@ -42,7 +42,7 @@ export const SocketProvider = ({ children }) => {
                 const { horarios, horarioRecusado } = horarioParametro;
                 setHorarios(horarios);
                 setHorariosMarcado(horarioParametro.horariosMarcado)
-
+                setHorarioMarcado();
                 if (
                     localStorage.getItem("agendamento") &&
                     localStorage.getItem("agendamento") !== "{}"
@@ -74,10 +74,11 @@ export const SocketProvider = ({ children }) => {
                     const storage = JSON.parse(localStorage.getItem("agendamento"));
                     if (
                         storage &&
-                        storage?.ID === horarioParametro.horarioNaoPendente?.ID
+                        storage?.ID === horarioParametro.horarioNaoPendente?.id
                     ) {
-                        storage.RESERVADO = horarioNaoPendente.RESERVADO;
+                        storage.RESERVADO = horarioNaoPendente.reservado;
                         localStorage.setItem("agendamento", JSON.stringify(storage));
+                        setHorarioMarcado(horarioNaoPendente);
                     }
                 }
                 setHorariosMarcado(horarioParametro.horariosMarcado);
