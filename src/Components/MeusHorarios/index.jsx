@@ -21,7 +21,7 @@ export const MeusHorarios = () => {
   return (
     <>
       <div className="container-horarios">
-        <CardHorarioMarcado horario={horarioMarcado} />
+        {horarioMarcado && <CardHorarioMarcado horario={horarioMarcado} />}
         {/*<CardHorariosMarcadosAnterior />  // testar quando criar um usuario e agendar um horario logado.     */}
       </div>
     </>

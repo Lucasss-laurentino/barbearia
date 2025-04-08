@@ -19,7 +19,7 @@ export const SocketProvider = ({ children }) => {
     const { barbeiros } = useContext(BarbeiroContext);
     const { servicos, servicoEscolhido, setServicoEscolhido } = useContext(ServicoContext);
     const { setHorariosMarcado, horariosMarcado, setHorarioMarcado } = useContext(HorarioMarcadoContext);
-    
+
     const [socketInstancia] = useState(socket());
     const [barbearia, setBarbearia] = useState(null);
 
@@ -137,11 +137,11 @@ export const SocketProvider = ({ children }) => {
         socketInstancia.on(
             `confirmarCancelamentoHorarioPendente${barbearia}`,
             (horarioPendenteCancelado) => {
-              setHorarios(horarioPendenteCancelado.horarios);
-              setHorariosMarcado(horarioPendenteCancelado.horariosMarcado);
+                setHorarios(horarioPendenteCancelado.horarios);
+                setHorariosMarcado(horarioPendenteCancelado.horariosMarcado);
             }
-          );
-      
+        );
+
     }, [barbearia]);
 
     // FUNÇÕES SÃO CONEXÕES SOCKET DESTINADAS AO ADM
@@ -206,10 +206,11 @@ export const SocketProvider = ({ children }) => {
             "horarioPendenteCancelado",
             (horarioPendenteCancelado) => {
                 localStorage.setItem("agendamento", '{}');
-                setHorarios([...horarioPendenteCancelado.horarios])
-                setServicoEscolhido({})
+                setHorarios([...horarioPendenteCancelado.horarios]);
+                setServicoEscolhido({});
+                setHorarioMarcado();
                 setHorariosMarcado([...horarioPendenteCancelado.horariosMarcado]);
-                setStorage(null)
+                setStorage(null);
             }
         );
     }
