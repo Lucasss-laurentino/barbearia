@@ -9,8 +9,9 @@ import PerfilIcon from '../Icones/perfil/perfilPreto.svg';
 import PerfilIconBranco from '../Icones/perfil/perfilBranco.svg';
 
 import { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { HorarioMarcadoContext } from "../../../Context/HorarioMarcadoContext";
+import { MenuFooterContext } from "../../../Context/MenuFooterContext";
 
 export const ListUser = ({user}) => {
 
@@ -18,15 +19,13 @@ export const ListUser = ({user}) => {
   const navigate = useNavigate();
 
   const { gatilhoPraDirecionarPraMeusHorarios } = useContext(HorarioMarcadoContext);
-
+  const {subRota, setSubRota, setRotaAnterior} = useContext(MenuFooterContext);
   const [itensMenu, setItemsMenu] = useState([]);
-  const [subRota, setSubRota] = useState("");
+  const location = useLocation();
 
   useEffect(() => {
-
-    const caminho = window.location.pathname;
+    const caminho = location.pathname;
     setSubRota(caminho.split(`/${barbearia}/`)[1]);
-
     setItemsMenu([
       {
         id: 1,
@@ -61,11 +60,10 @@ export const ListUser = ({user}) => {
         url: user?.ID ? `/${barbearia}/editarconta` : `/${barbearia}/login`,
       },
     ]);
-
-  }, [user, subRota]);
+  }, [user, location]);
 
   const ativarPagina = (item) => {
-    //setActive(index);
+    if(item.rota !== "login") setRotaAnterior(item.rota);
     setSubRota(item.rota);
     navigate(item.url)  
   }

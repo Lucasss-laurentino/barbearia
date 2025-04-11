@@ -1,13 +1,16 @@
+import { useContext } from 'react';
 import './index.css';
 import { useNavigate } from "react-router-dom";
+import { MenuFooterContext } from '../../../Context/MenuFooterContext';
 
 export const Voltar = ({barbearia}) => {
     
     const navigate = useNavigate();
+    const { rotaAnterior } = useContext(MenuFooterContext);
 
     const verificarEretornarApaginaAnterior = () => {
         if(barbearia) {
-          navigate(`/${barbearia}`);
+          navigate(`/${barbearia}/${rotaAnterior !== '' ? rotaAnterior : 'servicos'}`);
         } else {
           navigate('/');
         }

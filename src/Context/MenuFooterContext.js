@@ -5,17 +5,24 @@ export const MenuFooterContext = createContext();
 
 export const MenuFooterProvider = ({children}) => {
  
-    const [active, setActive] = useState(0);
-
+  const [subRota, setSubRota] = useState("");
+  // esse state é usado pra voltar a pagina no form login pra ser direcionado pra pagina que estava antes de ir pra login
+  const [rotaAnterior, setRotaAnterior] = useState("");
     const navigate = useNavigate();
 
-    const ativarPagina = (index, item) => {
-      setActive(index);
-      navigate(item.url)  
+    const ativarPagina = (item) => {
+      navigate(item.url)
+      setSubRota(item.url);
     }
 
     return (
-        <MenuFooterContext.Provider value={{active, setActive, ativarPagina}}>
+        <MenuFooterContext.Provider value={{
+          subRota,
+          setSubRota, 
+          ativarPagina,
+          rotaAnterior,
+          setRotaAnterior
+        }}>
             {children}
         </MenuFooterContext.Provider>
     )

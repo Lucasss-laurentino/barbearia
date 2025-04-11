@@ -199,7 +199,7 @@ export const LoginProvider = ({ children }) => {
     }
   };
 
-  const logout = async () => {
+  const logout = async (barbeariaParametro) => {
     if (user) {
       try {
         const response = await http.post(
@@ -212,6 +212,7 @@ export const LoginProvider = ({ children }) => {
         setServicoEscolhido("");
         localStorage.setItem("agendamento", "{}");
         setEsqueceuSenha(false);
+        navigate(`${barbeariaParametro}/servicos`);
       } catch (error) {
         console.log(error);
       }

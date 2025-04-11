@@ -9,9 +9,9 @@ export const UserProvider = ({ children }) => {
   const [usuarioEditado, setUsuarioEditado] = useState(false);
   // esse objeto controla oque o usuário vai setando durante a navegação pelo sistema
   const [logo, setLogo] = useState();
+  const [verificandoUsuarioLogado, setVerificandoUsuarioLogado] = useState(false);
 
   const pegarUsuario = async () => {
-
     try {
       const response = await http.get(`/user/getUser`, {
         withCredentials: true,
@@ -20,7 +20,9 @@ export const UserProvider = ({ children }) => {
         throw new Error("Usuário não encontrado");
       setUser(response.data);
     } catch (error) {
-      setUser({});
+      setUser(null);
+    } finally {
+      setVerificandoUsuarioLogado(true);
     }
   };
 
@@ -71,6 +73,8 @@ export const UserProvider = ({ children }) => {
         pegarLogo,
         logo,
         setLogo,
+        verificandoUsuarioLogado,
+        setVerificandoUsuarioLogado
       }}
     >
       {children}

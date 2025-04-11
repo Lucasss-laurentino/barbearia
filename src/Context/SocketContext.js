@@ -103,6 +103,7 @@ export const SocketProvider = ({ children }) => {
             (horarioResponse) => {
                 setHorariosMarcado(horarioResponse.horariosMarcado);
                 setHorarios(horarioResponse.horarios);
+                setHorarioMarcado();
                 if (
                     localStorage.getItem("agendamento") &&
                     localStorage.getItem("agendamento") !== "{}"

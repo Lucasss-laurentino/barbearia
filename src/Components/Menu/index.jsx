@@ -121,7 +121,7 @@ export const Menu = () => {
                   <li
                     className="col-12 px-4 d-flex justify-content-between align-items-center cursor"
                     onClick={() => {
-                      logout();
+                      logout(barbearia);
                       setClassMenu(false);
                     //  setActive(2);
                     }}
