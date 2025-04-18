@@ -129,35 +129,35 @@ export const HorarioProvider = ({ children }) => {
     }
   };
 
-  const aplicarFiltragensPraExibirHorarios = (
-    horariosDessaData,
-    setHorariosDessaData,
-    data,
-    horariosMarcado
-  ) => {
-    const hora = new Date().getHours();
-    const horariosAcimaDaHoraAtual = horariosDessaData.filter((horario) => {
-      if (horario.HORA.split(":")[0] > hora) {
-        return horario;
+  const horariosDesseBarbeiro = (barbeiro) => {
+    return horarios.filter((horario) => horario.BARBEIRO_ID === barbeiro.ID);
+  };
+
+  const filtraHorariosPelaHora = async (horariosBarbeiro) => {
+    if (horariosBarbeiro.length < 1) {
+      return null;
+    }
+    const horariosDisponiveis = horariosBarbeiro.filter((horarioBarbeiro) => {
+      const hora = new Date().getHours();
+      if (horarioBarbeiro.HORA.split(":")[0] > hora) {
+        return horarioBarbeiro;
       }
     });
-    const horariosFiltrado = horariosAcimaDaHoraAtual.filter(
-      (horarioDisponivel) => {
-        if (data) {
-          const horariosNaoAgendado = horariosMarcado.some((horarioMarcado) => {
-            if (horarioMarcado.HORARIO_ID === horarioDisponivel.ID) {
-              if (horarioMarcado.DATA === data) {
-                return horarioMarcado;
-              }
-            }
-          });
-          if (!horariosNaoAgendado) {
-            return horarioDisponivel;
-          }
-        }
+    return horariosDisponiveis;
+  };
+
+  const filtraHorariosDisponiveis = async (
+    horariosFiltradoPelaHora,
+    horariosMarcado,
+    data
+  ) => {
+    const horariosDisponiveis = horariosFiltradoPelaHora.filter(horarioFiltradoPelaHora => {
+      const horarioEncontrado = horariosMarcado.find(hM => (hM.HORARIO_ID === horarioFiltradoPelaHora.ID && data === hM.DATA));
+      if (!horarioEncontrado) {
+        return horarioFiltradoPelaHora;
       }
-    );
-    setHorariosDessaData([...horariosFiltrado]);
+    })
+    return horariosDisponiveis;
   };
 
   const handleCloseExcluirHorario = () => {
@@ -196,7 +196,9 @@ export const HorarioProvider = ({ children }) => {
         setShowModalEditarHorarioBarbeiro,
         loadEditarHorarioBarbeiro,
         setLoadEditarHorarioBarbeiro,
-        aplicarFiltragensPraExibirHorarios,
+        horariosDesseBarbeiro,
+        filtraHorariosPelaHora,
+        filtraHorariosDisponiveis,
       }}
     >
       {children}

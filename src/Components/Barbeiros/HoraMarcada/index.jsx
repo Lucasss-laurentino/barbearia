@@ -32,7 +32,7 @@ export const HoraMarcada = ({ barbeiro }) => {
           <p
             className="ver-mais"
             title="Ver todos os horários"
-            onClick={() => setGatilhoPraDirecionarPraMeusHorarios(true)}
+            onClick={() => navigate(`/${barbearia}/meusHorarios`)}
           >
             <span className="texto">Ver mais</span>
             <svg

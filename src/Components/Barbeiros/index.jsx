@@ -18,13 +18,16 @@ export const Barbeiros = () => {
     useContext(BarbeiroContext);
 
   const { pegarHorarios } = useContext(HorarioContext);
-  const { horarioMarcado } = useContext(HorarioMarcadoContext);
+  const { horarioMarcado, pegarMeuHorarioMarcado } = useContext(
+    HorarioMarcadoContext
+  );
 
   const { user } = useContext(UserContext);
 
   useEffect(() => {
     pegarBarbeiros(barbearia);
     pegarHorarios(barbearia);
+    pegarMeuHorarioMarcado();
   }, []);
 
   return (
