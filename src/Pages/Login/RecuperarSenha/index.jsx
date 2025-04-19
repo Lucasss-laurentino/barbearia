@@ -5,7 +5,7 @@ import { useContext } from "react";
 import { LoginContext } from "../../../Context/LoginContext";
 import { MutatingDots } from "react-loader-spinner";
 import { Voltar } from "../Voltar";
-import { Input } from "../Inputs";
+import { Input } from "../Input";
 
 export const RecuperarSenha = ({ barbearia, setFormAtivo }) => {
   const {

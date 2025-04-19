@@ -8,7 +8,7 @@ import { useParams } from "react-router-dom";
 import { BarbeiroContext } from "../../Context/BarbeiroContext";
 import { FinanceiroContext } from "../../Context/FinanceiroContext";
 
-export const Horarios = () => {
+export const Agendamentos = () => {
   const {
     horariosMarcado,
     buscarHorariosAgendado,

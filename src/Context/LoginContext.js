@@ -7,6 +7,8 @@ import Cookies from "js-cookie";
 import { ServicoContext } from "./ServicoContext";
 import { PlanoContext } from "./PlanoContext";
 import { toast, Bounce } from "react-toastify";
+import { LoginService } from "../Services/LoginServices";
+import { setarLocalStorageComHorarioMarcado } from "../Utils/LoginUtils";
 
 export const LoginContext = createContext();
 
@@ -27,9 +29,11 @@ export const LoginProvider = ({ children }) => {
   const [recuperaSenha, setRecuperaSenha] = useState(false);
   const [loadEditarSenha, setLoadEditarSenha] = useState(false);
   const [formAtivo, setFormAtivo] = useState(() => {
-    if (barbearia) { // inicia com o login aberto
+    if (barbearia) {
+      // inicia com o login aberto
       return 1;
-    } else { // inicia com cadastro aberto
+    } else {
+      // inicia com cadastro aberto
       return 2;
     }
   });
@@ -46,8 +50,9 @@ export const LoginProvider = ({ children }) => {
   }, [barbearia]);
 
   const criarUsuario = async (codigo, barbearia = null, plano_id = null) => {
+    setLoadLogin(true);
     try {
-      setLoadLogin(true);
+  
       let dataVencimento;
       if (!barbearia || barbearia === null) {
         dataVencimento = await formatarDataVencimento();
@@ -90,7 +95,7 @@ export const LoginProvider = ({ children }) => {
         user.PLANO_ID = plano_id;
         setUserCadastro(user);
         setLoadLogin(false);
-        setFormAtivo(4)
+        setFormAtivo(4);
         setCadastroError(null);
       }
     } catch (error) {
@@ -100,31 +105,26 @@ export const LoginProvider = ({ children }) => {
   };
 
   const login = async (user, barbearia) => {
+    let dadosRetornado = null;
+    setLoadLogin(true);
     try {
-      setLoadLogin(true);
-      await http
-        .post("/login/login", { user, barbearia }, { withCredentials: true })
-        .then((response) => {
-          setUser(response.data.user);
-          setLoadLogin(false);
-          setActive(2);
-          if (response.data.horario_marcado) {
-            localStorage.setItem(
-              "agendamento",
-              JSON.stringify(response.data.horario_marcado)
-            );
-            setServicoEscolhido({
-              id: response.data.horario_marcado.ID,
-              contratado: true,
-            });
-          } else {
-            localStorage.setItem("agendamento", "{}");
-          }
-          if (barbearia) navigate(`/${barbearia}`);
-          if (!barbearia) navigate(`/${response.data.user.NOME_BARBEARIA}`);
+      const { erro, resposta } = await LoginService(user, barbearia);
+      if (erro) throw new Error(resposta.response.data.message);
+      dadosRetornado = resposta.data;
+      if (dadosRetornado?.horario_marcado) {
+        setarLocalStorageComHorarioMarcado(dadosRetornado?.horario_marcado);
+        setServicoEscolhido({
+          id: dadosRetornado.horario_marcado.ID,
+          contratado: true,
         });
+      }
+      if (barbearia) navigate(`/${barbearia}`); // login pela pagina da barbearia
+      if (!barbearia) navigate(`/${dadosRetornado.user.NOME_BARBEARIA}`); // login pela pagina de introdução ao sistema
     } catch (error) {
-      setLoginError(error?.response.data.message);
+      setLoginError(error?.message);
+      setLoadLogin(false);
+    } finally {
+      setUser(dadosRetornado?.user);
       setLoadLogin(false);
     }
   };
@@ -147,8 +147,10 @@ export const LoginProvider = ({ children }) => {
   const validarCodigoMudarSenha = async (data, barbeariaParametro) => {
     try {
       setLoadLogin(true);
-      const result = await http.post("/login/validarCodigoMudarSenha",
-        { CODIGO: data.CODIGO }, { withCredentials: true }
+      const result = await http.post(
+        "/login/validarCodigoMudarSenha",
+        { CODIGO: data.CODIGO },
+        { withCredentials: true }
       );
       if (!result) throw false;
       setLoadLogin(false);
@@ -169,11 +171,16 @@ export const LoginProvider = ({ children }) => {
 
   const mudarSenha = async (data) => {
     try {
-      setLoadEditarSenha(true)
-      const result = await http.post("login/mudarSenha", { data }, { withCredentials: true });
+      setLoadEditarSenha(true);
+      const result = await http.post(
+        "login/mudarSenha",
+        { data },
+        { withCredentials: true }
+      );
       if (result.data.erro) throw new Error(result.message);
       setEsqueceuSenha(false);
-      toast.success("Senha alterada, você será redirecionado pra pagina de login!",
+      toast.success(
+        "Senha alterada, você será redirecionado pra pagina de login!",
         {
           position: "bottom-right",
           autoClose: 5000,
@@ -192,7 +199,7 @@ export const LoginProvider = ({ children }) => {
       setLoginError(null);
       setInterval(() => {
         navigate(`/${barbeariaLoginPath}/login`);
-      }, 5000)
+      }, 5000);
     } catch (error) {
       console.log(error);
       setLoadEditarSenha(false);
@@ -268,7 +275,7 @@ export const LoginProvider = ({ children }) => {
         setFormAtivo,
         recuperaSenha,
         setRecuperaSenha,
-        loadEditarSenha, 
+        loadEditarSenha,
         setLoadEditarSenha,
       }}
     >

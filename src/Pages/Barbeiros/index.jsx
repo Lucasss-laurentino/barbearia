@@ -4,12 +4,12 @@ import { BarbeiroContext } from "../../Context/BarbeiroContext";
 import { useParams } from "react-router-dom";
 import { DadosBarbeiro } from "./DadosBarbeiro";
 import { ListaDeHorarios } from "./ListaDeHorarios";
-import { SpanAdd } from "../SpanAdd";
 import { UserContext } from "../../Context/UserContext";
-import { Modais } from "./Modais";
 import { HorarioContext } from "../../Context/HorarioContext";
 import { HoraMarcada } from "./HoraMarcada";
 import { HorarioMarcadoContext } from "../../Context/HorarioMarcadoContext";
+import { Modais } from "../../Components/Modais";
+import { SpanAddServico } from "../Servicos/SpanAddServico";
 
 export const Barbeiros = () => {
   const { barbearia } = useParams();
@@ -32,12 +32,9 @@ export const Barbeiros = () => {
 
   return (
     <>
-      {/* Modais precisam ser renderizadas nesse componente */}
-      {/* Componentes filhos ficam dentro de listas, isso causaria re-renderizações nos modais */}
       <Modais />
-
       {user?.ADM && (
-        <SpanAdd handleShow={handleShowModalBarbeiro} barbeiros={barbeiros} />
+        <SpanAddServico handleShow={handleShowModalBarbeiro} barbeiros={barbeiros} />
       )}
       <div className="container-fluid">
         <div className="row justify-content-center">

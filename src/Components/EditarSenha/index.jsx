@@ -4,10 +4,10 @@ import { useForm } from "react-hook-form";
 import { novaSenhaSchema } from "../../validations/novaSenha";
 import { useContext } from "react";
 import { LoginContext } from "../../Context/LoginContext";
-import { Input } from '../Login/Inputs';
 import { ToastContainer, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { MutatingDots } from 'react-loader-spinner';
+import { Input } from '../../Pages/Login/Input';
 
 export const EditarSenha = () => {
   const {

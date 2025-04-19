@@ -3,8 +3,8 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { servicoEditarSchema, servicoSchema } from "../../validations/servicoValidation";
-import { ServicoContext } from "../../Context/ServicoContext";
+import { servicoEditarSchema, servicoSchema } from "../../../validations/servicoValidation";
+import { ServicoContext } from "../../../Context/ServicoContext";
 import { MutatingDots } from "react-loader-spinner";
 
 export const ModalServico = ({

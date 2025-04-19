@@ -1,15 +1,14 @@
 import { FormCadastro } from "./FormCadastro";
-import { FormLogin } from "./FormLogin";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import "./index.css";
 import { RecuperarSenha } from "./RecuperarSenha";
 import { LoginContext } from "../../Context/LoginContext";
-import { ConfirmaCodigo } from "./ConfirmaCodigo";
 import { useParams } from "react-router-dom";
+import { FormLogin } from "./FormLogin";
+import { ConfirmaCodigo } from "./ConfirmaCodigo";
 
 export const Login = () => {
 
-  // context login
   const {
     setBarbearia,
     formAtivo, 
@@ -28,7 +27,7 @@ export const Login = () => {
     <>
       <div className="page-login">
         {formAtivo === 1 && 
-          <FormLogin 
+          <FormLogin
             barbearia={barbearia} 
             setFormAtivo={setFormAtivo} 
           />

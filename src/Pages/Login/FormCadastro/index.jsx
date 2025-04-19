@@ -15,7 +15,7 @@ import { useLocation } from "react-router-dom";
 import { PlanoContext } from "../../../Context/PlanoContext";
 import { Voltar } from "../Voltar";
 import { TitulosETextos } from "../FormLogin/TitulosETextos";
-import { Input } from "../Inputs";
+import { Input } from "../Input";
 import { ErrosFormLogin } from "../ErrosFormLogin";
 
 export const FormCadastro = ({ barbearia, plano_id, setFormAtivo }) => {
@@ -42,14 +42,6 @@ export const FormCadastro = ({ barbearia, plano_id, setFormAtivo }) => {
   const { setPlanos } = useContext(PlanoContext);
 
   const { setServicoEscolhido } = useContext(ServicoContext);
-
-  const handleNomeChange = (e) => {
-    let inputValue = e.target.value;
-    // Capitaliza a primeira letra e mantém as demais inalteradas
-    inputValue = inputValue.charAt(0).toUpperCase() + inputValue.slice(1);
-    // Atualiza o valor no formulário
-    setValue("NOME", inputValue);
-  };
 
   const verificarAntesDeConfirmar = (data) => {
     const storage = localStorage.getItem("agendamento");

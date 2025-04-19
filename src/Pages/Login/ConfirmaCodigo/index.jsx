@@ -5,7 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { confirmarCodigoSchema } from "../../../validations/ConfirmarCodigo";
 import { MutatingDots } from "react-loader-spinner";
 import { Voltar } from "../Voltar";
-import { Input } from "../Inputs";
+import { Input } from "../Input";
 
 export const ConfirmaCodigo = ({ barbearia = null, plano_id = null, setFormAtivo }) => {
   const {

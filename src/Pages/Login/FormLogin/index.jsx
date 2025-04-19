@@ -7,11 +7,10 @@ import { LoginContext } from "../../../Context/LoginContext";
 import { ServicoContext } from "../../../Context/ServicoContext";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
 import { Voltar } from "../Voltar";
 import { TitulosETextos } from "./TitulosETextos";
 import { MutatingDots } from "react-loader-spinner";
-import { Input } from "../Inputs";
+import { Input } from "../Input";
 import { ErrosFormLogin } from "../ErrosFormLogin";
 
 export const FormLogin = ({ barbearia, setFormAtivo }) => {
@@ -24,8 +23,6 @@ export const FormLogin = ({ barbearia, setFormAtivo }) => {
     resolver: yupResolver(loginSchema),
   });
 
-  const navigate = useNavigate();
-
   const {
     login,
     loadLogin,
@@ -37,19 +34,19 @@ export const FormLogin = ({ barbearia, setFormAtivo }) => {
 
   const [nome_limpo_barbearia, setNome_limpo_barbearia] = useState("");
 
-  useEffect(() => {
+  useEffect(() => { // limpa erros
     if (errors.EMAIL_LOGIN || errors.SENHA_LOGIN) {
       setLoginError(null);
     }
   }, [errors.EMAIL_LOGIN, errors.SENHA_LOGIN]);
 
   const verificarAntesDoLogin = (data) => {
+    // usuarios nao pode fazer login tendo um horario agendado
+    // caso contrario o usuario pode agendar um, fazer login e agendar outro.
     const storage = localStorage.getItem("agendamento");
     if (storage) {
       const obj = JSON.parse(storage);
       if (obj?.ID) {
-        // usuarios nao pode fazer login tendo um horario agendado
-        // caso contrario o usuario pode agendar um, fazer login e agendar outro.
         toast.error("Não é possivel fazer login com um horário agendado !", {
           position: "bottom-right",
           autoClose: 3000,
@@ -71,7 +68,7 @@ export const FormLogin = ({ barbearia, setFormAtivo }) => {
     }
   };
 
-  useEffect(() => {
+  useEffect(() => { // limpa nome da barbearia (url) pra exibir no layout
     if (barbearia) {
       const cleanedString = barbearia
         .replace(/[^a-zA-Z0-9]/g, " ")

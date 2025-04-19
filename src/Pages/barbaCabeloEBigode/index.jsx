@@ -6,7 +6,7 @@ import { NavbarLandingPage } from "./NavbarLandingPage";
 import { Planos } from "./Planos";
 import { PlanoContext } from "../../Context/PlanoContext";
 
-export const LandingPage = () => {
+export const BarbaCabeloEBigode = () => {
 
   const { getPlanos, planos } = useContext(PlanoContext);
 

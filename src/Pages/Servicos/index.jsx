@@ -2,15 +2,15 @@ import "./index.css";
 import { Fragment, useContext, useEffect } from "react";
 import { ServicoContext } from "../../Context/ServicoContext";
 import { UserContext } from "../../Context/UserContext";
-import { ModalServico } from "../ModalServico";
-import { ModalExcluir } from "../ModalExcluir";
 import { LoadServico } from "./LoadServico";
 import { SpanAddServico } from "./SpanAddServico";
 import { NomeImgPrazo } from "./NomeImgPrazo";
 import { PageEContratado } from "./PageEContratado";
 import { useParams } from "react-router-dom";
+import { ModalServico } from "./ModalServico";
+import { ModalExcluir } from "../../Components/ModalExcluir";
 
-export const ListService = () => {
+export const Servicos = () => {
 
   const { 
     servicos,

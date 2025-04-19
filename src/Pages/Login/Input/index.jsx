@@ -1,4 +1,3 @@
-import { useForm } from 'react-hook-form';
 import { ErrosFormLogin } from '../ErrosFormLogin';
 
 export const Input = ({ register, errors, span, nomeInput, type, placeholder, icon }) => {
