@@ -4,7 +4,7 @@ import { HorarioMarcadoContext } from "../../Context/HorarioMarcadoContext";
 import { ServicoContext } from "../../Context/ServicoContext";
 import { HorarioContext } from "../../Context/HorarioContext";
 import { Li } from "./Li";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { BarbeiroContext } from "../../Context/BarbeiroContext";
 import { FinanceiroContext } from "../../Context/FinanceiroContext";
 
@@ -21,7 +21,6 @@ export const Horarios = () => {
   const { calculaFaturamentoPrevisto, lucroDiario } = useContext(FinanceiroContext);
   const { barbearia } = useParams();
   const [hoje] = useState(new Date());
-  const navigate = useNavigate();
 
   useEffect(() => {
     buscarHorariosAgendado(barbearia);
