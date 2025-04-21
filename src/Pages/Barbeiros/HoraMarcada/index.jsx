@@ -2,23 +2,21 @@ import { useContext, useEffect, useState } from "react";
 import "./index.css";
 import { HorarioMarcadoContext } from "../../../Context/HorarioMarcadoContext";
 import { useNavigate, useParams } from "react-router-dom";
+import { BarbeariaContext } from "../../../Context/BarbeariaContext";
 
 export const HoraMarcada = ({ barbeiro }) => {
   const { horarioMarcado } = useContext(HorarioMarcadoContext);
   const navigate = useNavigate();
-  const { barbearia } = useParams();
-  const [meuHorario, setMeuHorario] = useState(null);
+  const { barbearia } = useContext(BarbeariaContext);
+  const [meuHorario, setMeuHorario] = useState();
 
-  useEffect(() => {
-    if (horarioMarcado) setMeuHorario(horarioMarcado);
-    const horarioAgendado = localStorage.getItem("agendamento");
-    if (horarioAgendado && horarioAgendado !== "{}")
-      setMeuHorario(JSON.parse(horarioAgendado));
-  }, [horarioMarcado, localStorage.getItem("agendamento")]);
-
+    useEffect(() => {
+      setMeuHorario(horarioMarcado);
+    }, [horarioMarcado]);
+  
   return (
     <>
-      {meuHorario !== null && meuHorario.BARBEIRO_ID === barbeiro.ID && (
+      {meuHorario && meuHorario.BARBEIRO_ID === barbeiro.ID && (
         <div className="linha-agendamento">
           <span className="hora">{meuHorario?.HORA}</span>
           <span className="data">{meuHorario?.DATA}</span>

@@ -5,7 +5,6 @@ import { AtivarAssinatura } from "../Components/AtivarAssinatura";
 import { Finalizados } from "../Components/Finalizados";
 import { EditarUser } from "../Components/EditarUser";
 import { EditarSenha } from "../Components/EditarSenha";
-import { MeusHorarios } from "../Components/MeusHorarios";
 import { Barbeiros } from "../Pages/Barbeiros";
 import { Agendamentos } from "../Pages/Agendamentos";
 import { Servicos } from "../Pages/Servicos";
@@ -15,23 +14,29 @@ import { Login } from "../Pages/Login";
 import { AppProviders } from "./AppProvider";
 import { RotasProtegida } from "./RotasProtegida";
 import { IndexRedireciona } from "./IndexRedireciona";
+import { MeusHorarios } from "../Pages/MeusHorarios";
 
 export default function appRouter() {
   return (
     <Router>
       <AppProviders>
-        {" "}
         {/* COMPONENTE AppProviders ENCAPSULA AS ROTAS COM OS PROVIDERS DOS CONTEXTS */}
         <Routes>
           <Route path="/" element={<BarbaCabeloEBigode />} />
 
           <Route path="/login/:plano_id" element={<Login />} />
 
-          <Route path="/:barbearia" element={<PaginaPadrao />}>
+          <Route
+            path="/:barbearia"
+            element={<PaginaPadrao />}
+          >
             <Route index element={<IndexRedireciona />} />
 
             <Route element={<RotasProtegida />}>
-              <Route path="/:barbearia/agendamentos" element={<Agendamentos />}/>
+              <Route
+                path="/:barbearia/agendamentos"
+                element={<Agendamentos />}
+              />
               <Route path="/:barbearia/financeiro" element={<Finalizados />} />
             </Route>
 

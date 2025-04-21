@@ -2,28 +2,28 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { socket } from "../socket";
 import { HorarioContext } from "./HorarioContext";
 import { HorarioMarcadoContext } from "./HorarioMarcadoContext";
-import { BarbeiroContext } from "./BarbeiroContext";
 import { ServicoContext } from "./ServicoContext";
+import { useFormatarHorarioMarcado } from "../Hooks/horarioMarcado";
+import { BarbeariaContext } from "./BarbeariaContext";
 
 export const SocketContext = createContext();
 
 export const SocketProvider = ({ children }) => {
   const [storage, setStorage] = useState(null);
-
-  const { setHorarios, horarios, setShowModalMarcarHorarioDeslogado } =
+  const { formatarHorarioMarcado } = useFormatarHorarioMarcado();
+  const { setHorarios, setShowModalMarcarHorarioDeslogado } =
     useContext(HorarioContext);
-  const { barbeiros } = useContext(BarbeiroContext);
-  const { servicos, servicoEscolhido, setServicoEscolhido } =
+  const { barbearia } = useContext(BarbeariaContext);
+  const { servicoEscolhido, setServicoEscolhido } =
     useContext(ServicoContext);
   const { setHorariosMarcado, horariosMarcado, setHorarioMarcado } = useContext(
     HorarioMarcadoContext
   );
-
   const [socketInstancia] = useState(socket());
-  const [barbearia, setBarbearia] = useState(null);
+
+  const [erroFinalizarHorario, setErroFinalizarHorario] = useState();
 
   // ----- USE EFFECTS SÃO CONEXÕES SOCKETS DESTINADAS AO USUARIO
-
   useEffect(() => {
     socketInstancia.on(
       `agendamentoResultado${barbearia}`,
@@ -117,15 +117,10 @@ export const SocketProvider = ({ children }) => {
     socketInstancia.on(
       `confirmarFinalizacaoHorarioAgendado${barbearia}`,
       (horarioFinalizado) => {
-        if (
-          localStorage.getItem("agendamento") &&
-          localStorage.getItem("agendamento") !== "{}"
-        ) {
-          const storage = JSON.parse(localStorage.getItem("agendamento"));
-          if (storage.ID === horarioFinalizado.ID) {
-            localStorage.setItem("agendamento", "{}");
-            setStorage(null);
-          }
+        const storage = JSON.parse(localStorage.getItem("agendamento"));
+        if (storage?.ID === horarioFinalizado.ID) { 
+          localStorage.setItem("agendamento", "{}");
+          setHorarioMarcado();
         }
       }
     );
@@ -164,14 +159,15 @@ export const SocketProvider = ({ children }) => {
         const agendamentoRetornado = agendamento.agendamento;
         setHorarios(agendamento.horarios);
         setHorariosMarcado([...horariosMarcado, agendamento.agendamento]);
-        const agendamentoObj = await formataAgendamentoRetornado(
+        const agendamentoObjFormatadoPraExibicao = await formatarHorarioMarcado(
           agendamentoRetornado
         );
-        // se o usuário nao estiver logado o agendamento fica salvo no localStorage
-        if (user === null)
-          localStorage.setItem("agendamento", JSON.stringify(agendamentoObj));
-        setHorarioMarcado(agendamentoOBJ);
-        setStorage(agendamentoObj);
+        localStorage.setItem(
+          "agendamento",
+          JSON.stringify(agendamentoObjFormatadoPraExibicao)
+        );
+        setHorarioMarcado(agendamentoObjFormatadoPraExibicao);
+        setStorage(agendamentoObjFormatadoPraExibicao);
         setShowModalMarcarHorarioDeslogado(false);
       });
     }
@@ -200,25 +196,6 @@ export const SocketProvider = ({ children }) => {
     } catch (error) {
       return { erro: true, error };
     }
-  };
-
-  const formataAgendamentoRetornado = async (agendamentoRetornado) => {
-    const hora = horarios.find((h) => h.ID === agendamentoRetornado.HORARIO_ID);
-    const barbeiro = barbeiros.find(
-      (b) => b.ID === agendamentoRetornado.BARBEIRO_ID
-    );
-    const servico = servicos.find(
-      (s) => s.ID === agendamentoRetornado.SERVICO_ID
-    );
-    const agendamentoObj = {
-      ID: agendamentoRetornado.ID,
-      HORA: hora.HORA,
-      BARBEIRO: barbeiro,
-      RESERVADO: agendamentoRetornado?.RESERVADO,
-      SERVICO: servico,
-      DATA: agendamentoRetornado.DATA,
-    };
-    return agendamentoObj;
   };
 
   const cancelarMeuHorarioPendente = async (horario) => {
@@ -273,7 +250,7 @@ export const SocketProvider = ({ children }) => {
         setHorarios(horarioCancelado.horarios);
         // mudança de localStorage aciona um useEffect em HoraMarcada
         setHorariosMarcado(horarioCancelado.horariosMarcado);
-        setHorarios(horarioCancelado.horarios);
+        setHorarioMarcado();
         localStorage.setItem("agendamento", "{}");
         setServicoEscolhido({});
       });
@@ -295,6 +272,7 @@ export const SocketProvider = ({ children }) => {
 
   const finalizarHorarioAgendado = async (horarioAgendado) => {
     socketInstancia.emit("finalizarHorarioAgendado", horarioAgendado);
+    
     socketInstancia.on(
       "confirmarFinalizacaoHorarioAgendado",
       (horariosMarcado) => {
@@ -303,6 +281,11 @@ export const SocketProvider = ({ children }) => {
         }
       }
     );
+
+    socketInstancia.on("erroAoFinalizarAgendamento", (mensagem) => {
+      setErroFinalizarHorario(mensagem)
+    });
+
   };
 
   return (
@@ -311,13 +294,14 @@ export const SocketProvider = ({ children }) => {
         agendarViaSocket,
         cancelarMeuHorarioPendente,
         recusarHorarioPendente,
-        setBarbearia,
         aceitarHorarioPendente,
         cancelarMeuHorarioMarcado,
         cancelarHorarioMarcadoAdm,
         finalizarHorarioAgendado,
         storage,
         setStorage,
+        erroFinalizarHorario,
+        setErroFinalizarHorario,
       }}
     >
       {children}

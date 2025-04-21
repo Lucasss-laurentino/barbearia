@@ -1,12 +1,14 @@
-import { createContext, useState, useCallback } from "react";
+import { createContext, useState, useCallback, useEffect, useContext } from "react";
 import { http } from "../http";
 import { Bounce, toast } from "react-toastify";
+import { BarbeariaContext } from "./BarbeariaContext";
 
 export const ServicoContext = createContext();
 
 export const ServicoProvider = ({ children }) => {
-  const [servicos, setServicos] = useState([]);
 
+  // states
+  const [servicos, setServicos] = useState([]);
   const [servicoEscolhido, setServicoEscolhido] = useState();
   const [loadCriarServico, setLoadCriarServico] = useState(false);
   const [servicoAgendado, setServicoAgendado] = useState({});
@@ -14,6 +16,13 @@ export const ServicoProvider = ({ children }) => {
   const [showModalExcluirServico, setShowModalExcluirServico] = useState(false);
   const [editarServicoState, setEditarServicoState] = useState(null);
   const [servicoASerExcluido, setServicoASerExcluido] = useState();
+
+  // contexts
+  const { barbearia } = useContext(BarbeariaContext);
+
+  useEffect(() => { 
+    if(barbearia) pegarServicos(barbearia)
+  }, [barbearia]);
 
   const criarServico = async (data, imagem, setShow, setImagem) => {
     try {
@@ -50,6 +59,11 @@ export const ServicoProvider = ({ children }) => {
       console.log(error)
     }
   };
+
+  const pegarServico = (idServico) => {
+    const servico = servicos.find((s) => (s.ID === idServico));
+    return servico;
+  }
 
   const excluirServico = async (servico, setLoadExcluir) => {
     try {
@@ -134,7 +148,6 @@ export const ServicoProvider = ({ children }) => {
     setShowModalExcluirServico(false);
   });
 
-
   return (
     <ServicoContext.Provider
       value={{
@@ -148,20 +161,21 @@ export const ServicoProvider = ({ children }) => {
         editarServico,
         loadCriarServico,
         setLoadCriarServico,
-        servicoAgendado, 
+        servicoAgendado,
         setServicoAgendado,
-        showModalServico, 
+        showModalServico,
         setShowModalServico,
         showModalExcluirServico,
         setShowModalExcluirServico,
-        editarServicoState, 
+        editarServicoState,
         setEditarServicoState,
         handleCloseServico,
         handleCloseExcluirServico,
-        servicoASerExcluido, 
+        servicoASerExcluido,
         setServicoASerExcluido,
         verificarServicoEscolhido,
-        gerarErroToast
+        gerarErroToast,
+        pegarServico,
       }}
     >
       {children}

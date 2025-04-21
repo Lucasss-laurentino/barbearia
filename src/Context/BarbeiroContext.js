@@ -1,22 +1,30 @@
-import { createContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { http } from "../http";
+import { BarbeariaContext } from "./BarbeariaContext";
 
 export const BarbeiroContext = createContext();
 
 export const BarbeiroProvider = ({ children }) => {
-
   const [barbeiros, setBarbeiros] = useState([]);
   const [barbeiro, setBarbeiro] = useState({});
   const [imagem, setImagem] = useState();
   const [loadBarbeiro, setLoadBarbeiro] = useState(false);
   const [barbeiroSelecionado, setBarbeiroSelecionado] = useState(null); // props pras modais
   const [erroBarbeiro, setErroBarbeiro] = useState(null);
-  const [showModalPagamentoAgendamento, setShowModalPagamentoAgendamento] = useState(false);
+  const [showModalPagamentoAgendamento, setShowModalPagamentoAgendamento] =
+    useState(false);
   const [showHorariosBarbeiro, setShowHorariosBarbeiro] = useState(false);
   const [showModalEditar, setShowModalEditar] = useState(false);
   const [showModalExcluir, setShowModalExcluir] = useState(false);
   const [showModalCriarBarbeiro, setShowModalCriarBarbeiro] = useState(false);
+  const { barbearia } = useContext(BarbeariaContext);
   
+  useEffect(() => {
+    if (barbearia) {
+      pegarBarbeiros(barbearia);
+    }
+    }, [barbearia]);
+
   /* 
     Modal de exclusão serve pra excluir qualquer entidade, e eu tenho duas entidades no mesmo componente
     oque quer dizer que tanto excluir barbeiro ou excluir horario pode abrir esse modal
@@ -41,7 +49,7 @@ export const BarbeiroProvider = ({ children }) => {
       setLoadBarbeiro(false);
       setBarbeiroSelecionado(null);
       setValue("NOME", "");
-      setValue("IMAGEM", "");  
+      setValue("IMAGEM", "");
       setShow(false);
     } catch (error) {
       setErroBarbeiro(error?.response?.data);
@@ -99,7 +107,12 @@ export const BarbeiroProvider = ({ children }) => {
 
   const closeModalPagamentoAgendamento = () => {
     setShowModalPagamentoAgendamento(false);
-  }
+  };
+
+  const pegarBarbeiro = (idBarbeiro) => {
+    const barbeiro = barbeiros.find((b) => b.ID === idBarbeiro);
+    return barbeiro;
+  };
 
   const handleCloseModalEditar = () => setShowModalEditar(false);
 
@@ -142,6 +155,7 @@ export const BarbeiroProvider = ({ children }) => {
         handleShowModalBarbeiro,
         showModalCriarBarbeiro,
         setShowModalCriarBarbeiro,
+        pegarBarbeiro,
       }}
     >
       {children}

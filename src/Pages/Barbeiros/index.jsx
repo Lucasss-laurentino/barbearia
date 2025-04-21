@@ -1,40 +1,26 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./index.css";
 import { BarbeiroContext } from "../../Context/BarbeiroContext";
-import { useParams } from "react-router-dom";
 import { DadosBarbeiro } from "./DadosBarbeiro";
 import { ListaDeHorarios } from "./ListaDeHorarios";
 import { UserContext } from "../../Context/UserContext";
-import { HorarioContext } from "../../Context/HorarioContext";
 import { HoraMarcada } from "./HoraMarcada";
 import { HorarioMarcadoContext } from "../../Context/HorarioMarcadoContext";
 import { Modais } from "../../Components/Modais";
-import { SpanAddServico } from "../Servicos/SpanAddServico";
+import { SpanAdd } from "../../Components/SpanAdd";
+import { LocalStorageAgendamentoContext } from "../../Context/LocalStorageAgendamentoContext";
 
 export const Barbeiros = () => {
-  const { barbearia } = useParams();
-
-  const { pegarBarbeiros, barbeiros, handleShowModalBarbeiro } =
-    useContext(BarbeiroContext);
-
-  const { pegarHorarios } = useContext(HorarioContext);
-  const { horarioMarcado, pegarMeuHorarioMarcado } = useContext(
-    HorarioMarcadoContext
-  );
-
+  const { barbeiros, handleShowModalBarbeiro } = useContext(BarbeiroContext);
+  const { horarioMarcado } = useContext(HorarioMarcadoContext);
   const { user } = useContext(UserContext);
-
-  useEffect(() => {
-    pegarBarbeiros(barbearia);
-    pegarHorarios(barbearia);
-    pegarMeuHorarioMarcado();
-  }, []);
+  const { localStorageAgendamento } = useContext(LocalStorageAgendamentoContext);
 
   return (
     <>
       <Modais />
       {user?.ADM && (
-        <SpanAddServico handleShow={handleShowModalBarbeiro} barbeiros={barbeiros} />
+        <SpanAdd handleShow={handleShowModalBarbeiro} barbeiros={barbeiros} />
       )}
       <div className="container-fluid">
         <div className="row justify-content-center">
@@ -48,7 +34,10 @@ export const Barbeiros = () => {
                   >
                     <DadosBarbeiro barbeiro={barbeiro} />
                     <ListaDeHorarios barbeiro={barbeiro} />
-                    {horarioMarcado && <HoraMarcada barbeiro={barbeiro} /> }
+                    {horarioMarcado &&
+                      localStorageAgendamento?.ID === horarioMarcado.ID && (
+                        <HoraMarcada barbeiro={barbeiro} />
+                      )}
                   </li>
                 );
               })}

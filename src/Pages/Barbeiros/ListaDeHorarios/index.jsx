@@ -7,49 +7,28 @@ import { HorarioContext } from "../../../Context/HorarioContext";
 import { DataContext } from "../../../Context/DataContext";
 import { HorarioMarcadoContext } from "../../../Context/HorarioMarcadoContext";
 import { ItemDaLista } from "./ItemDaLista";
-import { useParams } from "react-router-dom";
 
 export const ListaDeHorarios = ({ barbeiro }) => {
-  const [horariosVagos, setHorariosVagos] = useState([]);
 
-  const { user } = useContext(UserContext);
-  const {
-    horarios,
-    horariosDesseBarbeiro,
-    filtraHorariosPelaHora,
-    filtraHorariosDisponiveis,
-  } = useContext(HorarioContext);
+  // contexts
+  const { user, verificandoUsuarioLogado } = useContext(UserContext);
+  const { setarHorariosDisponiveis, horariosDisponiveis } = useContext(HorarioContext);
   const { data, pegarDataDeHoje } = useContext(DataContext);
-  const { horariosMarcado, buscarHorariosAgendado } = useContext(
+  const { horariosMarcado } = useContext(
     HorarioMarcadoContext
   );
-  const { barbearia } = useParams();
+
+  const horariosDoBarbeiro = horariosDisponiveis.find(h => h.barbeiro.ID === barbeiro.ID)?.horarios || [];
+  
   useEffect(() => {
     pegarDataDeHoje();
-    buscarHorariosAgendado(barbearia);
   }, []);
 
   useEffect(() => {
-    const filtrarHorarios = async () => {
-      if (data) {
-        const horariosBarbeiro = await horariosDesseBarbeiro(barbeiro);
-        if (horariosBarbeiro.length > 0) {
-          const horariosFiltradoPelaHora = await filtraHorariosPelaHora(
-            horariosBarbeiro
-          );
-          if (horariosFiltradoPelaHora !== null) {
-            const horariosFiltrado = await filtraHorariosDisponiveis(
-              horariosFiltradoPelaHora,
-              horariosMarcado,
-              data
-            );
-            setHorariosVagos(horariosFiltrado);
-          }
-        }
-      }
-    };
-    filtrarHorarios();
-  }, [barbeiro, horarios, data, horariosMarcado]);
+    if (data && verificandoUsuarioLogado) {
+      setarHorariosDisponiveis(horariosMarcado);
+    }
+  }, [horariosMarcado, data, verificandoUsuarioLogado]);
 
   return (
     <>
@@ -57,10 +36,10 @@ export const ListaDeHorarios = ({ barbeiro }) => {
         <ul className="horarios-fechado" id={barbeiro.ID}>
           {user?.ADM && <AdicionarHorario barbeiro={barbeiro} />}
           <Data />
-          {horariosVagos.map((horarioFiltrado) => (
+          {horariosDoBarbeiro.map((horario) => (
             <ItemDaLista
-              horario={horarioFiltrado}
-              key={horarioFiltrado.ID}
+              horario={horario}
+              key={horario.ID}
               barbeiro={barbeiro}
             />
           ))}

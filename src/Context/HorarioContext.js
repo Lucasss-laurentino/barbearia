@@ -1,11 +1,19 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { http } from "../http";
 import { socket } from "../socket";
+import { BarbeariaContext } from "./BarbeariaContext";
+import { BarbeiroContext } from "./BarbeiroContext";
+import {
+  retornaBarbeirosComHorariosFiltrado,
+  retornaHorariosDisponiveisPraAgendamento,
+  filtraHorariosPorHoraEminuto,
+} from "../Utils/filtrarHorarios";
+import { UserContext } from "./UserContext";
 
 export const HorarioContext = createContext();
 
 export const HorarioProvider = ({ children }) => {
-  // STATES
+  // states
   const [horarios, setHorarios] = useState([]);
   const [limparHoraAposExclusao, setLimparHoraAposExclusao] = useState(false);
   const [errosHorarios, setErrosHorarios] = useState({
@@ -23,11 +31,16 @@ export const HorarioProvider = ({ children }) => {
   const [agendamento, setAgendamento] = useState({});
   const [showModalMarcarHorarioDeslogado, setShowModalMarcarHorarioDeslogado] =
     useState(false);
-  const [barbearia, setBarbearia] = useState("");
   const [showExcluirHorario, setExcluirHorario] = useState(false);
   const [horarioSelecionado, setHorarioSelecionado] = useState(null);
   const [showModalEditarHorarioBarbeiro, setShowModalEditarHorarioBarbeiro] =
     useState(false);
+  const [horariosDisponiveis, setHorariosDisponiveis] = useState([]);
+
+  // contexts
+  const { barbearia } = useContext(BarbeariaContext);
+  const { barbeiros } = useContext(BarbeiroContext);
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     if (Object.keys(marcarAlmocoState).length > 0) {
@@ -39,6 +52,10 @@ export const HorarioProvider = ({ children }) => {
       });
     }
   }, [marcarAlmocoState]);
+
+  useEffect(() => {
+    if (barbearia) pegarHorarios();
+  }, [barbearia]);
 
   const ordenarHorarios = async (horariosResponse) => {
     const horariosOrdenados = await horariosResponse.sort((a, b) => {
@@ -67,12 +84,17 @@ export const HorarioProvider = ({ children }) => {
     }
   };
 
-  const pegarHorarios = async (barbearia) => {
+  const pegarHorarios = async () => {
     try {
       const response = await http.get(`horario/pegarHorarios/${barbearia}`);
       if (!response) throw "Erro ao buscar horarios";
       ordenarHorarios(response.data);
     } catch (erro) {}
+  };
+
+  const pegarHorario = async (idHorario) => {
+    const horario = horarios.find((h) => h.ID === idHorario);
+    return horario;
   };
 
   const editarHorario = async (data, horario, setShow, setValue) => {
@@ -151,18 +173,58 @@ export const HorarioProvider = ({ children }) => {
     horariosMarcado,
     data
   ) => {
-    const horariosDisponiveis = horariosFiltradoPelaHora.filter(horarioFiltradoPelaHora => {
-      const horarioEncontrado = horariosMarcado.find(hM => (hM.HORARIO_ID === horarioFiltradoPelaHora.ID && data === hM.DATA));
-      if (!horarioEncontrado) {
-        return horarioFiltradoPelaHora;
+    const horariosDisponiveis = horariosFiltradoPelaHora.filter(
+      (horarioFiltradoPelaHora) => {
+        const horarioEncontrado = horariosMarcado.find(
+          (hM) =>
+            hM.HORARIO_ID === horarioFiltradoPelaHora.ID && data === hM.DATA
+        );
+        if (!horarioEncontrado) {
+          return horarioFiltradoPelaHora;
+        }
       }
-    })
+    );
     return horariosDisponiveis;
   };
 
   const handleCloseExcluirHorario = () => {
     setExcluirHorario(false);
     setHorarioSelecionado(null);
+  };
+
+  const setarHorariosDisponiveis = async (horariosMarcado) => {
+    try {
+
+      const barbeiroEhorariosFormatado = await filtraHorariosPorBarbeiros();
+      if (user?.ADM) {
+        setHorariosDisponiveis([...barbeiroEhorariosFormatado]);
+        return;
+      }
+
+      const horariosDisponiveisPraAgendamento = await filtraHorariosDisponiveisPraAgendamento(
+        barbeiroEhorariosFormatado,
+        horariosMarcado
+      );
+
+      const horariosFiltradoPorHoraEminuto = await filtraHorariosPorHoraEminuto(
+        horariosDisponiveisPraAgendamento
+      );
+      setHorariosDisponiveis([...horariosFiltradoPorHoraEminuto]);
+    } catch (error) {
+      setHorariosDisponiveis([]);      
+    }
+  };
+
+  const filtraHorariosPorBarbeiros = async () => {
+    if (!barbeiros) throw new Error("barbeiros não encontrados");
+    return await retornaBarbeirosComHorariosFiltrado(barbeiros, horarios);
+  };
+
+  const filtraHorariosDisponiveisPraAgendamento = async (barbeiroEhorariosFiltrado, horariosMarcado) => {
+    if (horariosMarcado.length < 1) {
+      return barbeiroEhorariosFiltrado;
+    }
+    return await retornaHorariosDisponiveisPraAgendamento(barbeiroEhorariosFiltrado, horariosMarcado);
   };
 
   return (
@@ -199,6 +261,10 @@ export const HorarioProvider = ({ children }) => {
         horariosDesseBarbeiro,
         filtraHorariosPelaHora,
         filtraHorariosDisponiveis,
+        pegarHorario,
+        setarHorariosDisponiveis,
+        horariosDisponiveis,
+        setHorariosDisponiveis,
       }}
     >
       {children}

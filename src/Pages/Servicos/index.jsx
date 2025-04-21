@@ -6,18 +6,16 @@ import { LoadServico } from "./LoadServico";
 import { SpanAddServico } from "./SpanAddServico";
 import { NomeImgPrazo } from "./NomeImgPrazo";
 import { PageEContratado } from "./PageEContratado";
-import { useParams } from "react-router-dom";
 import { ModalServico } from "./ModalServico";
 import { ModalExcluir } from "../../Components/ModalExcluir";
+import { HorarioMarcadoContext } from "../../Context/HorarioMarcadoContext";
 
 export const Servicos = () => {
-
-  const { 
+  const {
     servicos,
     servicoEscolhido,
-    setServicoEscolhido, 
-    loadCriarServico, 
-    pegarServicos,
+    setServicoEscolhido,
+    loadCriarServico,
     handleCloseServico,
     handleCloseExcluirServico,
     setServicoAgendado,
@@ -29,25 +27,16 @@ export const Servicos = () => {
     editarServicoState,
     verificarServicoEscolhido,
   } = useContext(ServicoContext);
-  
-  const { user } = useContext(UserContext);
-  const { barbearia } = useParams();
+  const { horarioMarcado } = useContext(HorarioMarcadoContext);
 
+  const { user } = useContext(UserContext);
   useEffect(() => {
     if (!servicoEscolhido?.id) setServicoAgendado({});
   }, [servicoEscolhido]);
 
-  useEffect(() => {
-    // se existir um horario agendado, seta servicoAgendado pra mostrar icone verificado em "escolher"
-    pegarServicos(barbearia);
-    if (
-      localStorage.getItem("agendamento") &&
-      localStorage.getItem("agendamento") !== "{}"
-    ) {
-      const obj = JSON.parse(localStorage.getItem("agendamento"));
-      setServicoAgendado(obj.SERVICO);
-    }
-  }, []);
+  const escolherServico = (servico) => {
+    if (!horarioMarcado) verificarServicoEscolhido(servico);
+  };
 
   return (
     <>
@@ -84,16 +73,12 @@ export const Servicos = () => {
                           <li
                             className="py-1 border-list-services text-claro"
                             id={`item-servico-${servico.ID}`}
-                            onClick={() => verificarServicoEscolhido(servico)}
+                            onClick={() => escolherServico(servico)}
                           >
                             <div className="d-flex justify-content-between align-items-center">
                               <NomeImgPrazo servico={servico} />
                               <PageEContratado
-                                user={user}
                                 servico={servico}
-                                servicoEscolhido={servicoEscolhido}
-                                servicoAgendado={servicoAgendado}
-                                setServicoEscolhido={setServicoEscolhido}
                               />
                             </div>
                           </li>

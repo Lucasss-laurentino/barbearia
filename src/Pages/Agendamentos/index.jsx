@@ -1,34 +1,20 @@
 import { useContext, useEffect, useState } from "react";
 import "./index.css";
 import { HorarioMarcadoContext } from "../../Context/HorarioMarcadoContext";
-import { ServicoContext } from "../../Context/ServicoContext";
-import { HorarioContext } from "../../Context/HorarioContext";
 import { Li } from "./Li";
-import { useParams } from "react-router-dom";
-import { BarbeiroContext } from "../../Context/BarbeiroContext";
 import { FinanceiroContext } from "../../Context/FinanceiroContext";
+import { ToastContainer, toast, Bounce } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { SocketContext } from "../../Context/SocketContext";
 
 export const Agendamentos = () => {
-  const {
-    horariosMarcado,
-    buscarHorariosAgendado,
-    ordenaAgendamentos,
-    agendamentosOrdenados,
-  } = useContext(HorarioMarcadoContext);
-  const { pegarServicos } = useContext(ServicoContext);
-  const { pegarHorarios } = useContext(HorarioContext);
-  const { pegarBarbeiros } = useContext(BarbeiroContext);
-  const { calculaFaturamentoPrevisto, lucroDiario } = useContext(FinanceiroContext);
-  const { barbearia } = useParams();
+  const { horariosMarcado, ordenaAgendamentos, agendamentosOrdenados } =
+    useContext(HorarioMarcadoContext);
+  const { calculaFaturamentoPrevisto, lucroDiario } =
+    useContext(FinanceiroContext);
   const [hoje] = useState(new Date());
-
-  useEffect(() => {
-    buscarHorariosAgendado(barbearia);
-    pegarHorarios(barbearia);
-    pegarServicos(barbearia);
-    pegarBarbeiros(barbearia);
-  }, []);
-
+  const { erroFinalizarHorario, setErroFinalizarHorario } =
+    useContext(SocketContext);
   useEffect(() => {
     calculaFaturamentoPrevisto();
   }, [horariosMarcado, agendamentosOrdenados]);
@@ -37,8 +23,39 @@ export const Agendamentos = () => {
     ordenaAgendamentos();
   }, [horariosMarcado, hoje]);
 
+  useEffect(() => {
+    if (erroFinalizarHorario) {
+      toast.error(erroFinalizarHorario, {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+      setErroFinalizarHorario();
+    }
+  }, [erroFinalizarHorario]);
+
   return (
     <>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        limit={1}
+        transition={Bounce}
+      />
       <div className="container-fluid tamanho-maximo">
         <div className="row justify-content-center">
           <div className="col-12 col-sm-10 col-md-8 d-flex justify-content-center align-items-center">
@@ -57,13 +74,18 @@ export const Agendamentos = () => {
           </div>
           <div className="col-12 col-sm-10 col-md-8 d-flex justify-content-center align-items-center">
             <ul className="col-12 m-0 p-0 list-style scroll-horarios">
-              {agendamentosOrdenados.length > 0 ? agendamentosOrdenados?.map((horario, index) => {
-                return (<Li key={index} horario={horario} />);
-              }) :
-                <div className="d-flex justify-content-center align-items-center" style={{ height: '200px' }}>
+              {agendamentosOrdenados.length > 0 ? (
+                agendamentosOrdenados?.map((horario, index) => {
+                  return <Li key={index} horario={horario} />;
+                })
+              ) : (
+                <div
+                  className="d-flex justify-content-center align-items-center"
+                  style={{ height: "200px" }}
+                >
                   <h3 className="text-white">Nenhum horário agendado</h3>
                 </div>
-              }
+              )}
             </ul>
           </div>
         </div>

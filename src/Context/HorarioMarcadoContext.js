@@ -1,21 +1,41 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { http } from "../http";
-import { UserContext } from "./UserContext";
+import { useFormatarHorarioMarcado } from "../Hooks/horarioMarcado";
+import { ServicoContext } from "./ServicoContext";
+import { BarbeiroContext } from "./BarbeiroContext";
+import { HorarioContext } from "./HorarioContext";
+import { BarbeariaContext } from "./BarbeariaContext";
 
 export const HorarioMarcadoContext = createContext();
 
 export const HorarioMarcadoProvider = ({ children }) => {
+  
+  // states
   const [horarioMarcado, setHorarioMarcado] = useState();
   const [meusHorarios, setMeusHorarios] = useState([]);
   const [horariosMarcado, setHorariosMarcado] = useState([]);
   const [agendamentosOrdenados, setAgendamentosOrdenados] = useState([]);
-  // sem esse gatilho re-renderiza PageDefault e nao aciona o item do menuFooter
-  const [
-    gatilhoPraDirecionarPraMeusHorarios,
-    setGatilhoPraDirecionarPraMeusHorarios,
-  ] = useState(false);
   const [hoje] = useState(new Date());
-  const { user } = useContext(UserContext);
+
+  // hooks
+  const { formatarHorarioMarcado } =
+    useFormatarHorarioMarcado();
+
+  // contexts
+  const { servicos } = useContext(ServicoContext);
+  const { barbeiros } = useContext(BarbeiroContext);
+  const { horarios } = useContext(HorarioContext);
+  const { barbearia } = useContext(BarbeariaContext);
+
+  useEffect(() => {
+    if (servicos.length > 0 && barbeiros.length > 0 && horarios.length > 0) {
+      pegarMeuHorarioMarcado();
+    }
+  }, [servicos, barbeiros, horarios])
+
+  useEffect(() => {
+    if (barbearia) buscarHorariosAgendado(barbearia);
+  }, [barbearia]);
 
   const ordenaAgendamentos = () => {
     if (horariosMarcado.length > 0) {
@@ -61,57 +81,25 @@ export const HorarioMarcadoProvider = ({ children }) => {
 
   const pegarMeuHorarioMarcado = async () => {
     try {
-      const objFormatado = await formatarObjePraEnvio();
-      if (objFormatado?.erro) throw new Error(objFormatado.mensagem);
-      const { objEnvio } = objFormatado;
+      const agendamento = await pegarHorarioMarcadoPeloLocalStorage();
+      if (!agendamento) throw new Error("Não tem horário marcado");
       const result = await http.post("/horario/buscarMeuHorarioMarcado", {
-        agendamento: objEnvio,
+        agendamento,
       });
       if (!result) throw new Error("");
-      if (!objEnvio.logado) setHorarioMarcado(result.data);
-     
-      // se usuario estiver logado, seta meusHorarios e chama uma função pra pegar a hora marcada e setar horarioMarcado
+      const agendamentoRetornado = result.data;
+      const agendamentoObj = await formatarHorarioMarcado(agendamentoRetornado);
+      localStorage.setItem("agendamento", JSON.stringify(agendamentoObj));
+      setHorarioMarcado(agendamentoObj);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const formatarObjePraEnvio = async () => {
-    try {
-      let objPraEnviarNaRequisicao;
-      if (!user?.ID)
-        objPraEnviarNaRequisicao = await pegarHorarioMarcadoDeslogado();
-      // se tem esse erro é porque alem de nao logado o usuario nao tem hora marcada
-      if (objPraEnviarNaRequisicao?.erro)
-        throw new Error(objPraEnviarNaRequisicao.mensagem);
-      if (user?.ID) {
-        objPraEnviarNaRequisicao.USER = user;
-        objPraEnviarNaRequisicao.logado = true;
-      }
-      return { erro: false, objEnvio: objPraEnviarNaRequisicao };
-    } catch (error) {
-      return { erro: false, mensagem: error.Mesage };
-    }
-  };
-
-  const pegarHorarioMarcadoDeslogado = async () => {
-    try {
-      const horarioAgendado = localStorage.getItem("agendamento");
-      if (Object.keys(horarioAgendado).length > 0) {
-        return {
-          erro: false,
-          horarioAgendado: JSON.parse(horarioAgendado),
-          logado: false,
-        };
-      }
-      return {
-        erro: true,
-        mensagem: "Agendamento não encontrado!",
-        logado: false,
-      };
-    } catch (error) {
-      return { erro: true, mensagem: error.Mesage, logado: false };
-    }
+  const pegarHorarioMarcadoPeloLocalStorage = () => {
+    const agendamento = localStorage.getItem("agendamento");
+    if (!agendamento || agendamento === "{}") return null;
+    return JSON.parse(agendamento);
   };
 
   return (
@@ -126,8 +114,6 @@ export const HorarioMarcadoProvider = ({ children }) => {
         setAgendamentosOrdenados,
         ordenaAgendamentos,
         pegarMeuHorarioMarcado,
-        gatilhoPraDirecionarPraMeusHorarios,
-        setGatilhoPraDirecionarPraMeusHorarios,
         meusHorarios,
         setMeusHorarios,
       }}

@@ -1,50 +1,46 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import "./index.css";
 import { SocketContext } from "../../../Context/SocketContext";
 
 export const CardHorarioMarcado = ({ horario }) => {
-  const [meuHorarioMarcado, setMeuHorarioMarcado] = useState();
   const { cancelarMeuHorarioPendente, cancelarMeuHorarioMarcado } = useContext(
     SocketContext
   );
 
-  useEffect(() => {
-    setMeuHorarioMarcado(horario);
-  }, [horario]);
 
   return (
     <div className="card-horario">
       <div className="card-header">
         <h3>Seu horário agendado</h3>
-        {meuHorarioMarcado?.reservado === 2 ? (
+        {horario?.RESERVADO === 2 ? (
           <span className="status-flag pendente">Pendente</span>
         ) : (
           <span className="status-flag aceito">Aceito</span>
         )}
       </div>
       <p>
-        <strong>Data:</strong> {meuHorarioMarcado?.data}
+        <strong>Data:</strong> {horario?.DATA}
       </p>
       <p>
-        <strong>Hora:</strong> {meuHorarioMarcado?.hora}
+        <strong>Hora:</strong> {horario?.HORA}
       </p>
       <p>
-        <strong>Serviço:</strong> {meuHorarioMarcado?.servico}
+        <strong>Serviço:</strong> {horario?.SERVICO}
       </p>
       <p>
         <strong>Preço:</strong>
-        {meuHorarioMarcado?.preco}
+        {horario?.PRECO}
       </p>
       <p>
-        <strong>Barbeiro:</strong> {meuHorarioMarcado?.barbeiroNome}
+        <strong>Barbeiro:</strong> {horario?.BARBEIRO_NOME}
       </p>
       <button
         className="btn-cancelar"
         onClick={() => {
-          if (meuHorarioMarcado?.reservado === 2) {
-            cancelarMeuHorarioPendente(meuHorarioMarcado);
-          } else if (meuHorarioMarcado?.reservado === 1) {
-            cancelarMeuHorarioMarcado(meuHorarioMarcado);
+          if (horario?.RESERVADO === 2) {
+            cancelarMeuHorarioPendente(horario);
+          } else if (horario?.RESERVADO === 1) {
+            cancelarMeuHorarioMarcado(horario);
           }
         }}
       >

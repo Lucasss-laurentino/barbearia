@@ -79,7 +79,7 @@ export const ListBarbeiros = () => {
 
   useEffect(() => {
     setHorariosAberto(false);
-    pegarBarbeiros(barbearia);
+   // pegarBarbeiros(barbearia);
     pegarHorarios(barbearia);
     buscarHorariosAgendado(barbearia);
   }, []);
