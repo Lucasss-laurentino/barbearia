@@ -12,7 +12,7 @@ export const ListaDeHorarios = ({ barbeiro }) => {
 
   // contexts
   const { user, verificandoUsuarioLogado } = useContext(UserContext);
-  const { setarHorariosDisponiveis, horariosDisponiveis } = useContext(HorarioContext);
+  const { setarHorariosDisponiveis, horariosDisponiveis, horarios } = useContext(HorarioContext);
   const { data, pegarDataDeHoje } = useContext(DataContext);
   const { horariosMarcado } = useContext(
     HorarioMarcadoContext
@@ -28,7 +28,7 @@ export const ListaDeHorarios = ({ barbeiro }) => {
     if (data && verificandoUsuarioLogado) {
       setarHorariosDisponiveis(horariosMarcado);
     }
-  }, [horariosMarcado, data, verificandoUsuarioLogado]);
+  }, [horariosMarcado, data, verificandoUsuarioLogado, horarios]);
 
   return (
     <>

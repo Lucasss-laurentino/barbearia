@@ -67,9 +67,11 @@ export const HorarioProvider = ({ children }) => {
   const criarHorario = async (data, barbeiro, setShow, setValue) => {
     try {
       setLoadHorarios(true);
+      const { erro, mensagem, horaFormatada } = await validarEntradaDeHorarioPraCadastro(data?.HORA);
+      if (erro) throw new Error(mensagem);
       const response = await http.post(
         "horario/criarHorario",
-        { horario: data, barbeiro },
+        { horario: horaFormatada, barbeiro },
         { withCredentials: true }
       );
       if (!response) throw "Erro ao criar horario";
@@ -81,6 +83,27 @@ export const HorarioProvider = ({ children }) => {
     } catch (erro) {
       setErrosHorarios({ erro: true, menssagem: erro?.response?.data });
       setLoadHorarios(false);
+    }
+  };
+
+  const validarEntradaDeHorarioPraCadastro = async (hora) => {
+    try {
+      const [h, m] = hora.split(":").map(Number);
+      const isValid =
+        Number.isInteger(h) &&
+        Number.isInteger(m) &&
+        h >= 0 &&
+        h <= 23 &&
+        m >= 0 &&
+        m <= 59;
+
+      if (!isValid) return null;
+      const horaFormatada = `${h.toString().padStart(2, "0")}:${m
+        .toString()
+        .padStart(2, "0")}`;
+      return { erro: false, horaFormatada, mensagem: null };
+    } catch (error) {
+      return { erro: true, horaFormatada: null, mensagem: "Hora inválida" };
     }
   };
 
@@ -123,7 +146,7 @@ export const HorarioProvider = ({ children }) => {
         `horario/excluirHorario/${horario.ID}`,
         { withCredentials: true }
       );
-      ordenarHorarios(response.data);
+      await ordenarHorarios(response.data);
       setLimparHoraAposExclusao(true);
       setLoadExcluir(false);
       handleCloseExcluirHorario();
@@ -194,24 +217,24 @@ export const HorarioProvider = ({ children }) => {
 
   const setarHorariosDisponiveis = async (horariosMarcado) => {
     try {
-
       const barbeiroEhorariosFormatado = await filtraHorariosPorBarbeiros();
       if (user?.ADM) {
         setHorariosDisponiveis([...barbeiroEhorariosFormatado]);
         return;
       }
 
-      const horariosDisponiveisPraAgendamento = await filtraHorariosDisponiveisPraAgendamento(
-        barbeiroEhorariosFormatado,
-        horariosMarcado
-      );
+      const horariosDisponiveisPraAgendamento =
+        await filtraHorariosDisponiveisPraAgendamento(
+          barbeiroEhorariosFormatado,
+          horariosMarcado
+        );
 
       const horariosFiltradoPorHoraEminuto = await filtraHorariosPorHoraEminuto(
         horariosDisponiveisPraAgendamento
       );
       setHorariosDisponiveis([...horariosFiltradoPorHoraEminuto]);
     } catch (error) {
-      setHorariosDisponiveis([]);      
+      setHorariosDisponiveis([]);
     }
   };
 
@@ -220,11 +243,17 @@ export const HorarioProvider = ({ children }) => {
     return await retornaBarbeirosComHorariosFiltrado(barbeiros, horarios);
   };
 
-  const filtraHorariosDisponiveisPraAgendamento = async (barbeiroEhorariosFiltrado, horariosMarcado) => {
+  const filtraHorariosDisponiveisPraAgendamento = async (
+    barbeiroEhorariosFiltrado,
+    horariosMarcado
+  ) => {
     if (horariosMarcado.length < 1) {
       return barbeiroEhorariosFiltrado;
     }
-    return await retornaHorariosDisponiveisPraAgendamento(barbeiroEhorariosFiltrado, horariosMarcado);
+    return await retornaHorariosDisponiveisPraAgendamento(
+      barbeiroEhorariosFiltrado,
+      horariosMarcado
+    );
   };
 
   return (
@@ -265,6 +294,7 @@ export const HorarioProvider = ({ children }) => {
         setarHorariosDisponiveis,
         horariosDisponiveis,
         setHorariosDisponiveis,
+        validarEntradaDeHorarioPraCadastro,
       }}
     >
       {children}
