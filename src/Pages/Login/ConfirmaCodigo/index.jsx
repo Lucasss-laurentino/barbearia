@@ -6,6 +6,7 @@ import { confirmarCodigoSchema } from "../../../validations/ConfirmarCodigo";
 import { MutatingDots } from "react-loader-spinner";
 import { Voltar } from "../Voltar";
 import { Input } from "../Input";
+import { ErrosFormLogin } from "../ErrosFormLogin";
 
 export const ConfirmaCodigo = ({ barbearia = null, plano_id = null, setFormAtivo }) => {
   const {
@@ -54,6 +55,7 @@ export const ConfirmaCodigo = ({ barbearia = null, plano_id = null, setFormAtivo
                   <></>
                 }
               />
+              {cadastroError && <ErrosFormLogin error={cadastroError} />}
               {loadLogin ? (
                 <MutatingDots
                   visible={true}

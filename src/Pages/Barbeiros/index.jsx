@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import "./index.css";
 import { BarbeiroContext } from "../../Context/BarbeiroContext";
 import { DadosBarbeiro } from "./DadosBarbeiro";
@@ -15,7 +15,7 @@ export const Barbeiros = () => {
   const { horarioMarcado } = useContext(HorarioMarcadoContext);
   const { user } = useContext(UserContext);
   const { localStorageAgendamento } = useContext(LocalStorageAgendamentoContext);
-
+  
   return (
     <>
       <Modais />

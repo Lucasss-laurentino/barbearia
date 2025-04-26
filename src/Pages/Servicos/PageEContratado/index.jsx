@@ -3,12 +3,15 @@ import { useContext } from "react";
 import { ServicoContext } from "../../../Context/ServicoContext";
 import { HorarioMarcadoContext } from "../../../Context/HorarioMarcadoContext";
 import { LocalStorageAgendamentoContext } from "../../../Context/LocalStorageAgendamentoContext";
+import { EditarExcluir } from "../EditarExcluir";
+import { UserContext } from "../../../Context/UserContext";
 
 export const PageEContratado = ({
   servico,
 }) => {
-  const { servicoEscolhido } = useContext(ServicoContext);
+  const { servicoEscolhido, setServicoASerExcluido, setShowModalExcluirServico } = useContext(ServicoContext);
   const { horarioMarcado } = useContext(HorarioMarcadoContext);
+  const { user } = useContext(UserContext);
   const { localStorageAgendamento } = useContext(
     LocalStorageAgendamentoContext
   );
@@ -34,6 +37,13 @@ export const PageEContratado = ({
             >
               Escolher
             </a>
+          )}
+          {user?.ADM && (
+            <EditarExcluir
+            servico={servico}
+            setServicoASerExcluido={setServicoASerExcluido}
+            setShowModalExcluirServico={setShowModalExcluirServico}
+          />
           )}
         </div>
       </div>

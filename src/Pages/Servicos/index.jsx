@@ -7,7 +7,6 @@ import { SpanAddServico } from "./SpanAddServico";
 import { NomeImgPrazo } from "./NomeImgPrazo";
 import { PageEContratado } from "./PageEContratado";
 import { ModalServico } from "./ModalServico";
-import { ModalExcluir } from "../../Components/ModalExcluir";
 import { HorarioMarcadoContext } from "../../Context/HorarioMarcadoContext";
 
 export const Servicos = () => {
@@ -17,11 +16,9 @@ export const Servicos = () => {
     setServicoEscolhido,
     loadCriarServico,
     handleCloseServico,
-    handleCloseExcluirServico,
     setServicoAgendado,
     showModalServico,
     setShowModalServico,
-    showModalExcluirServico,
     servicoAgendado,
     servicoASerExcluido,
     editarServicoState,
@@ -46,12 +43,7 @@ export const Servicos = () => {
         handleClose={handleCloseServico}
         servico={editarServicoState}
       />
-      <ModalExcluir
-        show={showModalExcluirServico}
-        handleClose={handleCloseExcluirServico}
-        itemParaExclusao={servicoASerExcluido}
-        idItemExclusao={1}
-      />
+     
       {loadCriarServico ? (
         <LoadServico />
       ) : (

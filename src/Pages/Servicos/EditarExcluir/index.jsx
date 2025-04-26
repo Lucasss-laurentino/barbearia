@@ -1,13 +1,26 @@
 import { useContext } from 'react';
 import './index.css';
 import { ServicoContext } from '../../../Context/ServicoContext';
+import { ModalExcluirServico } from '../ModalExcluirServico';
 
 export const EditarExcluir = ({servico, setServicoASerExcluido, setShowModalExcluirServico}) => {
   
-  const { setShowModalServico, setEditarServicoState } = useContext(ServicoContext);
+  const { 
+    setShowModalServico, 
+    setEditarServicoState,     
+    showModalExcluirServico,     
+    handleCloseExcluirServico,
+  } = useContext(ServicoContext);
   
   return (
     <>
+
+      <ModalExcluirServico
+        show={showModalExcluirServico}
+        handleClose={handleCloseExcluirServico}
+        servico={servico}
+      />
+
       <div className="d-flex justify-content-start align-items-center">
         <div
           className="edit m-0 p-0"

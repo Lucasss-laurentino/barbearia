@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import './index.css';
 import { UserContext } from '../../../../Context/UserContext';
 import { BtnIntervalo } from './BtnIntervalo';

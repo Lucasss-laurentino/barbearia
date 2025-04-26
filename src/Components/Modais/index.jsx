@@ -2,10 +2,10 @@ import { useContext, useEffect, useState } from "react";
 import { BarbeiroContext } from "../../Context/BarbeiroContext";
 import { HorarioContext } from "../../Context/HorarioContext";
 import { ModalMarcarHorarioDeslogado } from "../../Pages/Barbeiros/ModalMarcarHorarioDeslogado";
-import { ModalCriarHorarioBarbeiro } from "../../Pages/Barbeiros/ModalCriarHorarioBarbeiro";
 import { ModalEditarHorarioBarbeiro } from "../../Pages/Barbeiros/ModalEditarHorarioBarbeiro";
 import { ModalBarbeiroEditar } from "../ModalBarbeiroEditar";
 import { ModalExcluir } from "../ModalExcluir";
+import { ModalBarbeiro } from "../ModalBarbeiro";
 
 export const Modais = () => {
   const [propsModal, setPropsModal] = useState(null);
@@ -58,9 +58,10 @@ export const Modais = () => {
   
   return (
     <>
-      <ModalCriarHorarioBarbeiro
+
+      <ModalBarbeiro
         show={showModalCriarBarbeiro}
-        setShow={setShowModalCriarBarbeiro}
+        setShow={setShowModalCriarBarbeiro}      
       />
 
       <ModalEditarHorarioBarbeiro

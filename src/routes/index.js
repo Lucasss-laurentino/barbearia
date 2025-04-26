@@ -23,15 +23,12 @@ export default function appRouter() {
         {/* COMPONENTE AppProviders ENCAPSULA AS ROTAS COM OS PROVIDERS DOS CONTEXTS */}
         <Routes>
           <Route path="/" element={<BarbaCabeloEBigode />} />
-
           <Route path="/login/:plano_id" element={<Login />} />
-
           <Route
             path="/:barbearia"
             element={<PaginaPadrao />}
           >
             <Route index element={<IndexRedireciona />} />
-
             <Route element={<RotasProtegida />}>
               <Route
                 path="/:barbearia/agendamentos"
@@ -39,13 +36,11 @@ export default function appRouter() {
               />
               <Route path="/:barbearia/financeiro" element={<Finalizados />} />
             </Route>
-
             <Route path="/:barbearia/servicos" element={<Servicos />} />
             <Route path="/:barbearia/barbeiros" element={<Barbeiros />} />
             <Route path="/:barbearia/editarconta" element={<EditarUser />} />
             <Route path="/:barbearia/meusHorarios" element={<MeusHorarios />} />
           </Route>
-
           <Route path="/alterarSenha" element={<EditarSenha />} />
           <Route path="/:barbearia/login" element={<Login />} />
           <Route
