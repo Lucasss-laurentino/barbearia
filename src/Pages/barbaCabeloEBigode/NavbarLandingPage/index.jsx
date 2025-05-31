@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import "./index.css";
 
-export const NavbarLandingPage = ({planos}) => {
+export const NavbarLandingPage = () => {
 
   const navigate = useNavigate();
 
@@ -32,22 +32,13 @@ export const NavbarLandingPage = ({planos}) => {
                   Ínicio
                 </a>
               </li>
-              <li className="nav-item" onClick={() => window.scrollTo({top: 666, behavior: 'smooth'})}>
-                <a className="nav-link" href="#">
-                  Planos
-                </a>
-              </li>
               <li className="nav-item">
                 <a className="nav-link" href="#!">
-                  Contact
+                  Contato
                 </a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href=""  onClick={(e) => {
-                  e.preventDefault();
-                  navigate(`/login/1`, { state: { planos } })}
-                  }
-                >
+                <a className="nav-link" href="/login" >
                   Login
                 </a>
               </li>

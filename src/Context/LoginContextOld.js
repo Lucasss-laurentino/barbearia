@@ -82,22 +82,10 @@ export const LoginProvider = ({ children }) => {
     }
   };
 
-  const confirmarEmail = async (user, plano_id = null, barbearia = null) => {
+  const confirmarEmail = async (dados) => {
     try {
       setLoadLogin(true);
-      if (barbearia && barbearia !== null) {
-        user.NOME_BARBEARIA = barbearia;
-      }
-      user = await verificaPlano(user, plano_id);
-
       const result = await http.post("login/confirmarEmail", { user });
-      if (result.data.resultado) {
-        user.PLANO_ID = plano_id;
-        setUserCadastro(user);
-        setLoadLogin(false);
-        setFormAtivo(4);
-        setCadastroError(null);
-      }
     } catch (error) {
       setCadastroError(error?.response?.data);
       setLoadLogin(false);

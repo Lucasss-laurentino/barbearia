@@ -1,7 +1,7 @@
 import * as yup from "yup";
 
 export const confirmarCodigoSchema = yup.object({
-  CODIGO: yup
+  Codigo: yup
     .number()
     .transform((value, originalValue) =>
       originalValue === "" ? null : value

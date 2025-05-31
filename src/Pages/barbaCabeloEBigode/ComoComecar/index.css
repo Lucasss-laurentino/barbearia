@@ -1,0 +1,43 @@
+.section-title h3 {
+    font-size: 28px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .circle-icon {
+    background: #212529;
+    color: white;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  
+  .text-gray {
+    color: #6c757d;
+    font-size: 0.95rem;
+    margin-bottom: 0;
+  }
+  
+  .btn-header {
+    background-color: #212529;
+    color: white;
+    padding: 10px 20px;
+    font-weight: 600;
+    border-radius: 8px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: 0.3s ease-in-out;
+  }
+  
+  .btn-header:hover {
+    background-color: #212529;
+    color: #fff;
+  }
+  

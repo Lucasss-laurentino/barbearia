@@ -1,0 +1,23 @@
+.esqueci-senha, .texto-muda-formulario {
+    font-size: 14px;
+    color: #c4bebe;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.3s ease, transform 0.2s ease; 
+    margin-top: 10px;
+  }
+  
+  .esqueci-senha:hover, .texto-muda-formulario:hover {
+    color: #fff; 
+    text-decoration: underline; 
+    transform: translateY(-2px);
+  }
+  
+  .texto-muda-formulario {
+    text-align: center;
+  }
+  
+  .texto-muda-formulario strong {
+    font-weight: bold;
+    color: #aaa;
+  }
