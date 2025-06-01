@@ -1,11 +1,12 @@
 import { useContext } from "react";
 import { loginSchema } from "../../../validations/loginValidation";
-import { ErrosFormLogin } from "../../Login/ErrosFormLogin";
+import { ErrosFormLogin } from "../ErrosFormLogin";
 import "./index.css";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { CadastroEloginContext } from "../../../Context/CadastroEloginContext";
 import { MutatingDots } from "react-loader-spinner";
+import { BtnVoltarForm } from "../BtnVoltarForm";
 
 export const FormLogin = ({ setFormAtivo }) => {
   const {
@@ -16,7 +17,9 @@ export const FormLogin = ({ setFormAtivo }) => {
     resolver: yupResolver(loginSchema),
   });
 
-  const { loadLogin, login } = useContext(CadastroEloginContext);
+  const { loadLogin, login, erroLoginInvalido } = useContext(
+    CadastroEloginContext
+  );
 
   return (
     <>
@@ -25,6 +28,9 @@ export const FormLogin = ({ setFormAtivo }) => {
         className="col-12 formulario-page-login"
         onSubmit={handleSubmit((data) => login(data))}
       >
+
+        <BtnVoltarForm />
+        
         <div className="titulo-e-textos-form-login">
           <h3 className="titulo-form-login">Barba Cabelo & Bigode</h3>
           <h5 className="text-acesse-sua-conta">Entre na sua conta</h5>
@@ -82,6 +88,10 @@ export const FormLogin = ({ setFormAtivo }) => {
             <ErrosFormLogin error={errors["SenhaLogin"].message} />
           )}
         </div>
+
+        {erroLoginInvalido !== null && (
+          <ErrosFormLogin error={erroLoginInvalido} />
+        )}
 
         {loadLogin ? (
           <MutatingDots

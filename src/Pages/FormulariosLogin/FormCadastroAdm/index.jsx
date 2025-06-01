@@ -2,12 +2,13 @@ import "./index.css";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { createUserSchemaADM } from "../../../validations/createUserValidation";
-import { ErrosFormLogin } from "../../Login/ErrosFormLogin";
+import { ErrosFormLogin } from "../ErrosFormLogin";
 import InputMask from "react-input-mask";
 import { useContext } from "react";
 import { MutatingDots } from "react-loader-spinner";
 import { CadastroEloginContext } from "../../../Context/CadastroEloginContext";
 import { useNavigate } from "react-router-dom";
+import { BtnVoltarForm } from "../BtnVoltarForm";
 
 export const FormCadastroAdm = () => {
   const {
@@ -18,7 +19,8 @@ export const FormCadastroAdm = () => {
     resolver: yupResolver(createUserSchemaADM),
   });
 
-  const { confirmarEmail, loadLogin } = useContext(CadastroEloginContext);
+  const { confirmarEmail, loadLogin, erroLoginInvalido } =
+    useContext(CadastroEloginContext);
   const navigate = useNavigate();
 
   const handleConfirmarEmail = async (dados) => {
@@ -44,24 +46,8 @@ export const FormCadastroAdm = () => {
                     handleConfirmarEmail(dados)
                   )}
                 >
-                  <div className="col-12 p-2 d-flex">
-                    <div
-                      className="voltar"
-                      onClick={() => navigate("/")}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="20"
-                        height="20"
-                        fill="#fff"
-                        className="bi bi-arrow-left-square-fill"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M16 14a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2zm-4.5-6.5H5.707l2.147-2.146a.5.5 0 1 0-.708-.708l-3 3a.5.5 0 0 0 0 .708l3 3a.5.5 0 0 0 .708-.708L5.707 8.5H11.5a.5.5 0 0 0 0-1" />
-                      </svg>
-                    </div>
-                  </div>
-                  
+                  <BtnVoltarForm/>
+
                   <div className="titulo-e-textos-form-login">
                     <h3 className="titulo-form-login">Barba Cabelo & Bigode</h3>
                     <h5 className="text-acesse-sua-conta">Crie uma conta</h5>
@@ -193,7 +179,7 @@ export const FormCadastroAdm = () => {
                         <path d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2M2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2" />
                       </svg>
                       <input
-                        type="text"
+                        type="password"
                         className="input-form-login"
                         placeholder="Digite sua senha"
                         {...register("Senha")}
@@ -217,6 +203,10 @@ export const FormCadastroAdm = () => {
                       wrapperStyle={{}}
                       wrapperClass="justify-content-center my-2"
                     />
+                  )}
+
+                  {erroLoginInvalido !== null && (
+                    <ErrosFormLogin error={erroLoginInvalido} />
                   )}
 
                   {/* Btn cadastrar */}

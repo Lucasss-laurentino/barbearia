@@ -4,7 +4,7 @@ import { recuperarSenhaSchema } from "../../../validations/recuperarSenha";
 import { useContext } from "react";
 import { MutatingDots } from "react-loader-spinner";
 import { CadastroEloginContext } from "../../../Context/CadastroEloginContext";
-import { ErrosFormLogin } from "../../Login/ErrosFormLogin";
+import { ErrosFormLogin } from "../ErrosFormLogin";
 import { useNavigate } from "react-router-dom";
 
 export const FormEsqueciSenha = ({ setFormAtivo }) => {

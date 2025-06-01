@@ -2,7 +2,7 @@ import { MutatingDots } from "react-loader-spinner";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { confirmarCodigoSchema } from "../../../validations/ConfirmarCodigo";
-import { ErrosFormLogin } from "../../Login/ErrosFormLogin";
+import { ErrosFormLogin } from "../ErrosFormLogin";
 import { useContext } from "react";
 import { CadastroEloginContext } from "../../../Context/CadastroEloginContext";
 import { useNavigate } from "react-router-dom";
@@ -20,8 +20,12 @@ export const ConfirmarCodigo = () => {
   const navigate = useNavigate();
   const { endpoint } = useParams();
 
-  const { loadLogin, confirmarCodigoEcriaUsuario, confirmarCodigoTrocarSenha } =
-    useContext(CadastroEloginContext);
+  const {
+    loadLogin,
+    confirmarCodigoEcriaUsuario,
+    confirmarCodigoTrocarSenha,
+    erroLoginInvalido,
+  } = useContext(CadastroEloginContext);
 
   const confirmarCodigo = async (dados) => {
     try {
@@ -83,6 +87,10 @@ export const ConfirmarCodigo = () => {
                       <ErrosFormLogin error={errors["Codigo"].message} />
                     )}
                   </div>
+
+                  {erroLoginInvalido !== null && (
+                    <ErrosFormLogin error={erroLoginInvalido} />
+                  )}
 
                   {loadLogin ? (
                     <MutatingDots

@@ -5,13 +5,14 @@ export const CadastroEloginContext = createContext();
 
 export const CadastroEloginProvider = ({ children }) => {
   const [loadLogin, setLoadLogin] = useState(false);
+  const [erroLoginInvalido, setErroLoginInvalido] = useState(null);
 
   const confirmarEmail = async (dados) => {
     try {
       setLoadLogin(true);
       await http.post("auth/usuarioTemporarioAdm", dados);
     } catch (error) {
-      console.log(error);
+      setErroLoginInvalido(error.response.data.detail);
       throw error;
     } finally {
       setLoadLogin(false);
@@ -38,7 +39,7 @@ export const CadastroEloginProvider = ({ children }) => {
       console.log(resposta);
       setLoadLogin(false);
     } catch (error) {
-      console.log(error);
+      setErroLoginInvalido(error.response.data.detail);
       setLoadLogin(false);
     }
   };
@@ -61,7 +62,9 @@ export const CadastroEloginProvider = ({ children }) => {
       if (!result) throw false;
       setLoadLogin(false);
     } catch (error) {
+      setErroLoginInvalido(error.response.data.detail);
       setLoadLogin(false);
+      throw error;
     }
   };
 
@@ -87,6 +90,8 @@ export const CadastroEloginProvider = ({ children }) => {
         solicitarTrocarSenha,
         confirmarCodigoTrocarSenha,
         trocarSenha,
+        erroLoginInvalido,
+        setErroLoginInvalido,
       }}
     >
       {children}

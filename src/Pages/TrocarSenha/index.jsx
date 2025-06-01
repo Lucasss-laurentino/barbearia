@@ -6,7 +6,7 @@ import { useContext } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import { MutatingDots } from "react-loader-spinner";
 import { CadastroEloginContext } from "../../Context/CadastroEloginContext";
-import { ErrosFormLogin } from "../Login/ErrosFormLogin";
+import { ErrosFormLogin } from "../FormulariosLogin/ErrosFormLogin";
 import { useNavigate } from "react-router-dom";
 
 export const TrocarSenha = () => {
