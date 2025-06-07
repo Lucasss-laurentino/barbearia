@@ -53,7 +53,6 @@ export const ServicoProvider = ({ children }) => {
       }));
 
       setShow(false);
-
     } catch (error) {
       setLoadServico(false);
       console.log(error);
@@ -74,105 +73,39 @@ export const ServicoProvider = ({ children }) => {
     return formData;
   };
 
-  // const pegarServicos = async (barbearia) => {
-  //   try {
-  //     setLoadCriarServico(true)
-  //     const response = await http.get(`servico/pegarServicos/${barbearia}`);
-  //     setServicos([...response.data]);
-  //     setLoadCriarServico(false);
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // };
+  const editarServico = async (data, setShow) => {
+    try {
+      setLoadServico(true);
+      const formData = formatarFormData(data);
 
-  // const pegarServico = (idServico) => {
-  //   const servico = servicos.find((s) => (s.ID === idServico));
-  //   return servico;
-  // }
+      const response = await http.put(
+        `servico/${servicoEscolhido.id}`,
+        formData,
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
-  // const excluirServico = async (servico, setLoadExcluir) => {
-  //   try {
-  //     setLoadExcluir(true);
-  //     const response = await http.delete(
-  //       `servico/excluirServico/${servico.ID}`,
-  //       { withCredentials: true }
-  //     );
-  //     setServicos([...response.data]);
-  //     setLoadExcluir(false);
-  //   } catch (error) {}
-  // };
+      substituirServicoEditado(response.data);
+      setLoadServico(false);
+      setShow(false);
+    } catch (error) {
+      setLoadServico(false);
+      if(error.response?.data === 'Token não encontrado!') window.location.href = '/login';
+    }
+  };
 
-  // const editarServico = async (data, imagem, setShow, servico, setImagem) => {
-  //   try {
-  //     setLoadCriarServico(true);
-  //     const formData = new FormData();
+  const substituirServicoEditado = (servico) => {
+    setBarbearia((prev) => ({
+      ...prev,
+      servicos: prev.servicos.map((s) => (s.id === servico.id ? servico : s)),
+    }));
+  };
 
-  //     formData.append("NOME_SERVICO", data.NOME_SERVICO);
-  //     formData.append("PRAZO", data.PRAZO);
-  //     formData.append("PRECO", data.PRECO);
-  //     formData.append("IMAGEM_SERVICO", imagem);
-
-  //     const response = await http.put(
-  //       `servico/editarServico/${servico.ID}`,
-  //       formData,
-  //       {
-  //         withCredentials: true,
-  //         headers: {
-  //           "Content-Type": "multipart/form-data",
-  //         },
-  //       }
-  //     );
-  //     setServicos([...response.data]);
-  //     setLoadCriarServico(false);
-  //     setImagem(undefined);
-  //     setShow(false);
-  //   } catch (error) {}
-  // };
-
-  // const verificarServicoEscolhido = (servico) => {
-  //   if(!servicoEscolhido || Object.keys(servicoEscolhido).length < 1) {
-  //     setServicoEscolhido({
-  //       id: servico.ID,
-  //       contratado: true,
-  //     })
-  //   } else if(servicoEscolhido) {
-  //     if(servico.ID === servicoEscolhido.id) {
-  //       setServicoEscolhido({})
-  //     } else {
-  //       setServicoEscolhido({
-  //         id: servico.ID,
-  //         contratado: true,
-  //       })
-  //     }
-  //   }
-  // }
-
-  // const gerarErroToast = () => {
-  //   toast.error(
-  //     "Escolha um serviço antes de agendar um horário !",
-  //     {
-  //       position: "bottom-right",
-  //       autoClose: 5000,
-  //       hideProgressBar: false,
-  //       closeOnClick: true,
-  //       pauseOnHover: true,
-  //       draggable: true,
-  //       progress: undefined,
-  //       theme: "colored",
-  //       transition: Bounce,
-  //     }
-  //   );
-  // }
-
-  // const handleCloseServico = useCallback(() => {
-  //   setEditarServicoState(null);
-  //   setShowModalServico(false);
-  // });
-
-  // const handleCloseExcluirServico = useCallback(() => {
-  //   setShowModalExcluirServico(false);
-  // });
-
+ 
   return (
     <ServicoContext.Provider
       value={{
@@ -183,26 +116,7 @@ export const ServicoProvider = ({ children }) => {
         servicoEscolhido,
         setServicoEscolhido,
         criarServico,
-        // pegarServicos,
-        // excluirServico,
-        // editarServico,
-        // loadCriarServico,
-        // setLoadCriarServico,
-        // servicoAgendado,
-        // setServicoAgendado,
-        // showModalServico,
-        // setShowModalServico,
-        // showModalExcluirServico,
-        // setShowModalExcluirServico,
-        // editarServicoState,
-        // setEditarServicoState,
-        // handleCloseServico,
-        // handleCloseExcluirServico,
-        // servicoASerExcluido,
-        // setServicoASerExcluido,
-        // verificarServicoEscolhido,
-        // gerarErroToast,
-        // pegarServico,
+        editarServico,
       }}
     >
       {children}

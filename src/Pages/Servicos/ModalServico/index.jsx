@@ -26,7 +26,7 @@ export const ModalServico = ({ show, setShow, servico = null }) => {
     },
   });
 
-  const { loadServico, criarServico } = useContext(ServicoContext);
+  const { loadServico, criarServico, editarServico } = useContext(ServicoContext);
 
   const [imagem, setImagem] = useState();
 
@@ -86,7 +86,7 @@ export const ModalServico = ({ show, setShow, servico = null }) => {
             className="form-servico"
             onSubmit={handleSubmit((data) => {
               if (servico) {
-                //editarServico(data, imagem, setShow, servico, setImagem);
+                editarServico(data, setShow);
               } else {
                 criarServico(data, setShow);
               }
@@ -158,7 +158,7 @@ export const ModalServico = ({ show, setShow, servico = null }) => {
                 {...register("Imagem")}
                 onChange={(e) => setImagem(e.target?.files[0])}
               />
-              {errors.IMAGEM_SERVICO && (
+              {errors.Imagem && (
                 <p className="m-0 my-1 text-danger">*{errors.Imagem.message}</p>
               )}
             </div>

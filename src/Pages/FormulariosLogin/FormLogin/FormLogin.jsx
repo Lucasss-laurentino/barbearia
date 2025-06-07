@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { CadastroEloginContext } from "../../../Context/CadastroEloginContext";
 import { MutatingDots } from "react-loader-spinner";
 import { BtnVoltarForm } from "../BtnVoltarForm";
+import { useNavigate } from "react-router-dom";
 
 export const FormLogin = ({ setFormAtivo }) => {
   const {
@@ -21,12 +22,19 @@ export const FormLogin = ({ setFormAtivo }) => {
     CadastroEloginContext
   );
 
+  const navigate = useNavigate();
+
+  const handleLogin = async (data) => {
+    const result = await login(data)
+    console.log(result);
+  }
+
   return (
     <>
       <form
         action=""
         className="col-12 formulario-page-login"
-        onSubmit={handleSubmit((data) => login(data))}
+        onSubmit={handleSubmit((data) => handleLogin(data))}
       >
 
         <BtnVoltarForm />

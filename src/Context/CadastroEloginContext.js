@@ -46,9 +46,11 @@ export const CadastroEloginProvider = ({ children }) => {
       const resposta = await http.post("/auth/login", dados);
       setBarbearia(resposta.data.barbearia);
       setLoadLogin(false);
+      return true;
     } catch (error) {
       setErroLoginInvalido(error.response.data.detail);
       setLoadLogin(false);
+      return false;
     }
   };
 

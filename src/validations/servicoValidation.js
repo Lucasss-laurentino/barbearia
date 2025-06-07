@@ -18,21 +18,19 @@ export const servicoSchema = yup.object({
 });
 
 export const servicoEditarSchema = yup.object({
-  NOME_SERVICO: yup.string().required("Campo obrigatório"),
-  PRAZO: yup.string().required("Campo obrigatório"),
-  PRECO: yup.string().required("Campo obrigatório"),
-  IMAGEM_SERVICO: yup
+  Nome: yup.string().required("Campo obrigatório"),
+  Prazo: yup.string().required("Campo obrigatório"),
+  Preco: yup.string().required("Campo obrigatório"),
+  Imagem: yup
     .mixed()
-    .nullable() // Permite null
-    .notRequired() // Torna o campo não obrigatório
+    .nullable()
+    .notRequired()
     .test(
       "fileType",
       "Apenas arquivos de imagem ou URLs de imagem são permitidos",
       (value) => {
-        // Verifica se o valor é nulo ou undefined
-        if (!value) return true; // Aceita null ou undefined
+        if (!value) return true;
 
-        // Se for um arquivo
         if (value[0] instanceof File) {
           return (
             value[0].type === "image/jpeg" ||
@@ -40,8 +38,6 @@ export const servicoEditarSchema = yup.object({
             value[0].type === "image/jpg"
           );
         }
-
-        // Se for uma string, verifica se tem a extensão permitida
         if (typeof value === "string") {
           return (
             value.endsWith(".jpeg") ||
@@ -50,7 +46,7 @@ export const servicoEditarSchema = yup.object({
           );
         }
 
-        return false; // Se não for um arquivo ou uma string válida, retorna false
+        return false;
       }
     ),
 });
