@@ -1,55 +1,63 @@
-.heiht-scroll {
-    max-height: 530px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding: 0;
-    margin-top: 4%;
-    padding-bottom: 20%;
+.pagina-servicos {
+  padding-bottom: 90px; /* espaço extra pro footer */
+  overflow-y: auto;
+  height: 100%;
 }
-.height-servicos {
-    height: 98vh;
-}
-.border-list-services {
-    margin: 0px 0px 10px 0px;
-    border-top: 1px solid rgb(107, 107, 107);
-    border-bottom: 1px solid rgb(107, 107, 107);
-    background-color:rgb(63,62,70, 0.4);
-    cursor: pointer;
-}
-.list-style {
-    list-style: none;
-}
-.text-claro {
-    color: rgb(246,243,243);
-}
-.border-radius-personalizada {
-    width: 25%;
-    height: 70px;
-    border-radius: 50%;
-    overflow: hidden;
-}
-.img-corte {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-.list-servicos-tamanho {
-    height: 80vh;
-    margin: 0;
-    list-style: none;
-    padding-bottom: 20%;
-    padding-left: 0px;
-    overflow-y: scroll;
-}
-.list-servicos-tamanho-sem-margin-bottom {
-    height: 80vh;
-    margin: 0;
-    list-style: none;
-    padding-bottom: 10%;
-    padding-left: 0px;
-    overflow-y: scroll;
 
+.servicos-container {
+  padding: 20px 16px;
+  color: white;
 }
-.h-loader {
-    height: 70vh;
+
+.lista-servicos {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.item-servico {
+  display: flex;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  padding: 12px;
+  gap: 16px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.imagem-servico {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
+}
+
+.info-servico {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.nome-servico {
+  font-size: 1.1rem;
+  margin: 0;
+  font-weight: bold;
+  color: #fff;
+}
+
+.prazo-servico {
+  margin: 2px 0;
+  font-size: 0.95rem;
+  color: #cfcfcf;
+}
+
+.preco-servico {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #00e676;
 }

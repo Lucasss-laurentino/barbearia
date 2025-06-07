@@ -1,10 +1,10 @@
 import * as yup from "yup";
 
 export const servicoSchema = yup.object({
-  NOME_SERVICO: yup.string().required("Campo obrigatório"),
-  PRAZO: yup.string().required("Campo obrigatório"),
-  PRECO: yup.string().required("Campo obrigatório"),
-  IMAGEM_SERVICO: yup
+  Nome: yup.string().required("Campo obrigatório"),
+  Prazo: yup.string().required("Campo obrigatório"),
+  Preco: yup.string().required("Campo obrigatório"),
+  Imagem: yup
     .mixed()
     .required("Campo obrigatório")
     .test("fileType", "Apenas arquivos de imagem são permitidos", (value) => {

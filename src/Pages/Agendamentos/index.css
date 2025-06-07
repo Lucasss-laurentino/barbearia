@@ -76,3 +76,33 @@
   font-size: 14px;
   margin: 4px 0px;
 }
+
+.estado-vazio-agendamento {
+  height: 47vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.05); /* leve destaque */
+  border-radius: 8px;
+}
+
+.imagem-vazia {
+  width: 120px;
+  margin-bottom: 16px;
+  opacity: 0.7;
+}
+
+.mensagem-vazia {
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+.subtexto-vazio {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  margin-top: 4px;
+}

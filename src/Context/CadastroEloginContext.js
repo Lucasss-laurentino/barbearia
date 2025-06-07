@@ -1,11 +1,16 @@
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { http } from "../http";
+import { BarbeariaContext } from "./BarbeariaContext";
+import { UserContext } from "./UserContext";
 
 export const CadastroEloginContext = createContext();
 
 export const CadastroEloginProvider = ({ children }) => {
   const [loadLogin, setLoadLogin] = useState(false);
   const [erroLoginInvalido, setErroLoginInvalido] = useState(null);
+
+  const { setBarbearia } = useContext(BarbeariaContext);
+  const { formatarUsuario } = useContext(UserContext);
 
   const confirmarEmail = async (dados) => {
     try {
@@ -23,7 +28,10 @@ export const CadastroEloginProvider = ({ children }) => {
     try {
       setLoadLogin(true);
       const result = await http.post("auth/cadastroAdm", dados);
-      console.log(result);
+      var barbearia = result.data.barbearia;
+      formatarUsuario(result);
+      setBarbearia(barbearia);
+      return barbearia;
     } catch (error) {
       console.log(error);
       throw error;
@@ -36,7 +44,7 @@ export const CadastroEloginProvider = ({ children }) => {
     try {
       setLoadLogin(true);
       const resposta = await http.post("/auth/login", dados);
-      console.log(resposta);
+      setBarbearia(resposta.data.barbearia);
       setLoadLogin(false);
     } catch (error) {
       setErroLoginInvalido(error.response.data.detail);

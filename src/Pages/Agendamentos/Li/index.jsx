@@ -1,35 +1,6 @@
-import { useContext, useEffect, useState } from "react";
 import "./index.css";
-import { BarbeiroContext } from "../../../Context/BarbeiroContext";
-import { ServicoContext } from "../../../Context/ServicoContext";
-import { HorarioContext } from "../../../Context/HorarioContext";
-import { SocketContext } from "../../../Context/SocketContext";
 
-export const Li = ({
-  horario,
-}) => {
-
-  const { barbeiros } = useContext(BarbeiroContext);
-  const { servicos } = useContext(ServicoContext);
-  const { horarios } = useContext(HorarioContext);
-  const { 
-    recusarHorarioPendente,
-    aceitarHorarioPendente,
-    cancelarHorarioMarcadoAdm,
-    finalizarHorarioAgendado,
-  } = useContext(SocketContext);
-
-  const [hora, setHora] = useState();
-  const [servico, setServico] = useState();
-
-  useEffect(() => {
-    const horaFind = horarios.find(h => (h.ID === horario.HORARIO_ID));
-    setHora(horaFind);
-
-    const servicoFind = servicos.find(servico => servico.ID === horario.SERVICO_ID);
-    setServico(servicoFind)
-  }, [horarios, servicos])
-
+export const Li = ({ agendamento }) => {
   return (
     <li className="py-1 border-list-services text-claro">
       <div className="col-12 d-flex justify-content-between align-items-center flex-column">
@@ -50,9 +21,7 @@ export const Li = ({
                 </svg>
               </div>
               <div className="hr">
-                <p className="m-0">
-                  {horario.DATA} - {hora?.HORA}
-                </p>
+                <p className="m-0"></p>
               </div>
             </div>
           </div>
@@ -76,14 +45,14 @@ export const Li = ({
         <div className="col-12 d-flex">
           <div className="col-8 d-flex justify-content-center">
             <div className="container p-0">
-              <h6 className="mx-2 my-1 texto-responsivo">Cliente: {horario?.USER_NOME}</h6>
-              <p className="mx-2 texto-responsivo">Serviço: {servico?.NOME_SERVICO}</p>
+              <h6 className="mx-2 my-1 texto-responsivo">Cliente: Nome</h6>
+              <p className="mx-2 texto-responsivo">Serviço: Nome</p>
             </div>
           </div>
           <div className="col-4">
             <div className="container d-flex justify-content-center align-items-end flex-column">
-              <h6 className="my-2 texto-responsivo">{servico?.PRECO}</h6>
-              <p className="m-0 texto-responsivo">{servico?.PRAZO}</p>
+              <h6 className="my-2 texto-responsivo">Preço</h6>
+              <p className="m-0 texto-responsivo">Prazo</p>
             </div>
           </div>
         </div>
@@ -91,76 +60,11 @@ export const Li = ({
       <hr className="my-1" />
       <div className="col-12 d-flex justify-content-around align-items-center personalizar-div-foto">
         <div className="col-2 d-flex justify-content-center align-items-center">
-          {barbeiros.map((barbeiro) => {
-            if (barbeiro.ID === horario.BARBEIRO_ID) {
-              return (
-                <div className="div-redonda-horarios" key={barbeiro.ID}>
-                  <img
-                    src={process.env.REACT_APP_API_URL + barbeiro.IMAGEM}
-                    className="img-fluid"
-                    alt=""
-                    width="100%"
-                  />
-                </div>
-              );
-            }
-          })}
         </div>
         <div className="col-8 d-flex justify-content-end align-items-center">
-          {barbeiros.map((barbeiro) => {
-            if (barbeiro?.ID === horario?.BARBEIRO_ID) {
-              return (
-                <h6 className="mx-4 texto-responsivo" key={barbeiro?.ID}>
-                  {barbeiro.NOME}
-                </h6>
-              );
-            }
-          })}
         </div>
       </div>
       <div className="col-12 d-flex justify-content-between align-items-center flex-column">
-        {horario?.RESERVADO === 2 && (
-          <>
-            <div className="row row-agendamento-pendente mt-1 col-12">
-              <div className="col-12 d-flex justify-content-center">
-                <p className="p-agendamento-pendente">Agendamento pendente</p>
-              </div>
-
-              <div className="col-12 d-flex justify-content-around align-items-center my-2">
-                <button
-                  className="btn btn-sm btn-success"
-                  onClick={() => aceitarHorarioPendente(horario)}
-                >
-                  Aceitar
-                </button>
-                <button
-                  className="btn btn-sm btn-danger"
-                  onClick={() => recusarHorarioPendente(horario)}
-                >
-                  Recusar
-                </button>
-              </div>
-            </div>
-          </>
-        )}
-        {horario?.RESERVADO === 1 && horario?.RESERVADO !== 0 && (
-          <>
-            <div className="col-12 d-flex justify-content-around align-items-center my-3">
-              <button
-                className="btn btn-sm btn-success"
-                onClick={() => finalizarHorarioAgendado(horario)}
-              >
-                Finalizar
-              </button>
-              <button
-                className="btn btn-sm btn-danger"
-                onClick={() => cancelarHorarioMarcadoAdm(horario)}
-              >
-                Cancelar
-              </button>
-            </div>
-          </>
-        )}
       </div>
     </li>
   );

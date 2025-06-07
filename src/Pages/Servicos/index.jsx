@@ -1,97 +1,38 @@
+import { useContext, useEffect, useState } from "react";
 import "./index.css";
-import { Fragment, useContext, useEffect } from "react";
-import { ServicoContext } from "../../Context/ServicoContext";
-import { UserContext } from "../../Context/UserContext";
-import { LoadServico } from "./LoadServico";
 import { SpanAddServico } from "./SpanAddServico";
-import { NomeImgPrazo } from "./NomeImgPrazo";
-import { PageEContratado } from "./PageEContratado";
+import { ServicoContext } from "../../Context/ServicoContext";
 import { ModalServico } from "./ModalServico";
-import { ModalExcluir } from "../../Components/ModalExcluir";
-import { HorarioMarcadoContext } from "../../Context/HorarioMarcadoContext";
 
 export const Servicos = () => {
-  const {
-    servicos,
-    servicoEscolhido,
-    setServicoEscolhido,
-    loadCriarServico,
-    handleCloseServico,
-    handleCloseExcluirServico,
-    setServicoAgendado,
-    showModalServico,
-    setShowModalServico,
-    showModalExcluirServico,
-    servicoAgendado,
-    servicoASerExcluido,
-    editarServicoState,
-    verificarServicoEscolhido,
-  } = useContext(ServicoContext);
-  const { horarioMarcado } = useContext(HorarioMarcadoContext);
-
-  const { user } = useContext(UserContext);
-  useEffect(() => {
-    if (!servicoEscolhido?.id) setServicoAgendado({});
-  }, [servicoEscolhido]);
-
-  const escolherServico = (servico) => {
-    if (!horarioMarcado) verificarServicoEscolhido(servico);
-  };
+  const { servicos } = useContext(ServicoContext);
+  const [showModalServico, setShowModalServico] = useState(false);
 
   return (
     <>
-      <ModalServico
-        show={showModalServico}
-        setShow={setShowModalServico}
-        handleClose={handleCloseServico}
-        servico={editarServicoState}
-      />
-      <ModalExcluir
-        show={showModalExcluirServico}
-        handleClose={handleCloseExcluirServico}
-        itemParaExclusao={servicoASerExcluido}
-        idItemExclusao={1}
-      />
-      {loadCriarServico ? (
-        <LoadServico />
-      ) : (
-        <>
-          {user?.ADM && (
-            <SpanAddServico
-              setShowModalServico={setShowModalServico}
-              servicos={servicos}
-            />
-          )}
-          <>
-            <div className="container-fluid">
-              <div className="row justify-content-center">
-                <div className="col-12 col-sm-10 d-flex justify-content-center align-items-center">
-                  <ul className="col-12 list-style heiht-scroll">
-                    {servicos.map((servico) => {
-                      return (
-                        <Fragment key={servico.ID}>
-                          <li
-                            className="py-1 border-list-services text-claro"
-                            id={`item-servico-${servico.ID}`}
-                            onClick={() => escolherServico(servico)}
-                          >
-                            <div className="d-flex justify-content-between align-items-center">
-                              <NomeImgPrazo servico={servico} />
-                              <PageEContratado
-                                servico={servico}
-                              />
-                            </div>
-                          </li>
-                        </Fragment>
-                      );
-                    })}
-                  </ul>
+      <ModalServico show={showModalServico} setShow={setShowModalServico} />
+
+      <div className="pagina-servicos">
+        <div className="servicos-container">
+          <ul className="lista-servicos">
+            {servicos.map((servico) => (
+              <li key={servico.id} className="item-servico">
+                <img
+                  src={servico.caminhoImagem}
+                  alt={servico.nome}
+                  className="imagem-servico"
+                />
+                <div className="info-servico">
+                  <h4 className="nome-servico">{servico.nome}</h4>
+                  <p className="prazo-servico">{servico.prazo}</p>
+                  <p className="preco-servico">R${servico.preco},00</p>
                 </div>
-              </div>
-            </div>
-          </>
-        </>
-      )}
+              </li>
+            ))}
+          </ul>
+          <SpanAddServico setShow={setShowModalServico} />
+        </div>
+      </div>
     </>
   );
 };

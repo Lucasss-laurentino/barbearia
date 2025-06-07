@@ -1,30 +1,33 @@
 import "./index.css";
 import { useContext } from "react";
-import { MenuContext } from "../../Context/MenuContext";
 import { UserContext } from "../../Context/UserContext";
-import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { BarbeariaContext } from "../../Context/BarbeariaContext";
 
-export const Navbar = () => {
-  const { setClassMenu, classMenu } = useContext(MenuContext);
-  const { user, logout, logo } = useContext(UserContext);
-  const { barbearia } = useParams();
+export const Navbar = ({setClassMenu, classMenu}) => {
+
+  const { usuario } = useContext(UserContext);
+  const { barbearia } = useContext(BarbeariaContext);
+  const navigate = useNavigate();
 
   return (
     <>
-      <div className="container-fluid per-nav-bar">
+      <div className="container-fluid p-0 per-nav-bar">
         <div className="row">
           <div className="col-12 py-2 d-flex justify-content-between align-items-center">
             <div className="img-logo">
-              {logo ? (
-                <img src={`${process.env.REACT_APP_API_LOGO}${logo}`} className="btn-home" onClick={() => window.location.href = `/${barbearia}`} width="100%" alt="" />
-              ) : (
-                <img src="/logo-fotor.png" width="100%" alt=""  className="btn-home" onClick={() => window.location.href = `/${barbearia}`}/>
-              )}
+              <img
+                src="/logo-fotor.png"
+                width="100%"
+                alt=""
+                className="btn-home"
+                onClick={() => navigate(`/${barbearia.nome}`)}
+              />
             </div>
-            {user?.ID && (
+           
               <div
                 className="icon-menu col-2 d-flex justify-content-center"
-                onClick={() => setClassMenu(!classMenu)}
+                onClick={() => (setClassMenu(!classMenu))}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -40,7 +43,7 @@ export const Navbar = () => {
                   />
                 </svg>
               </div>
-            )}
+            
           </div>
         </div>
       </div>

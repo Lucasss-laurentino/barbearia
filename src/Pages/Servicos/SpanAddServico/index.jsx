@@ -1,33 +1,22 @@
-import "./index.css"; // Para garantir que o CSS personalizado seja carregado
+import { useContext, useEffect } from "react";
+import { Balao } from "../../../Components/Balao";
+import "./index.css";
+import { ServicoContext } from "../../../Context/ServicoContext";
 
-export const SpanAddServico = ({ setShowModalServico, servicos }) => {
+export const SpanAddServico = ({setShow}) => {
+
+  const { servicos } = useContext(ServicoContext);
+
   return (
     <>
-      <span
-        className="adc-barbeiro d-flex justify-content-center align-items-end flex-column"
-        onClick={() => setShowModalServico(true)}
-      >
-        {servicos.length < 1 && (
-          <div className="balloon">
-            <p className="msg-balloon">Cadastre um Serviço aqui !</p>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="30"
-              height="30"
-              fill="#fff"
-              className="bi bi-caret-down-fill position-get-on-balloon"
-              viewBox="0 0 16 16"
-            >
-              <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
-            </svg>
-          </div>
-        )}
+      <span className="adc-servico-fixo" onClick={() => setShow(true)}>
+        { servicos.length < 1 && <Balao texto={"Cadastre um serviço aqui!"} /> }
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="45"
           height="45"
           fill="#fff"
-          className="bi bi-plus-circle bg-embacado"
+          className="bi bi-plus-circle"
           viewBox="0 0 16 16"
         >
           <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
