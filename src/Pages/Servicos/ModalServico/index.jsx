@@ -54,12 +54,12 @@ export const ModalServico = ({ show, setShow, servico = null }) => {
 
   useEffect(() => {
     if (servico) {
-      setValue("Nome", servico.NOME_SERVICO);
-      setValue("Prazo", servico.PRAZO);
-      setValue("Preco", servico.PRECO);
+      setValue("Nome", servico.nome);
+      setValue("Prazo", servico.prazo);
+      setValue("Preco", servico.preco);
       setValue("Imagem", imagem);
     }
-  }, [servico, setValue]);
+  }, [servico, setValue, show]);
 
   useEffect(() => {
     if (!show) limparCampos();

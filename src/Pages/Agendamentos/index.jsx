@@ -29,7 +29,7 @@ export const Agendamentos = () => {
               </div>
               <div className="col-12 col-sm-10 col-md-8 d-flex justify-content-center align-items-center">
                 <ul className="col-12 m-0 p-0 list-style scroll-horarios">
-                  {agendamentos.length > 0 ? (
+                  {agendamentos ? (
                     agendamentos.map((horario, index) => {
                       return <Li key={index} horario={horario} />;
                     })

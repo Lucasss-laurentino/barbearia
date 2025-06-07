@@ -16,7 +16,7 @@ export const ServicoContext = createContext();
 export const ServicoProvider = ({ children }) => {
   // states
   const [servicos, setServicos] = useState([]);
-  // const [servicoEscolhido, setServicoEscolhido] = useState();
+  const [servicoEscolhido, setServicoEscolhido] = useState(null);
   const [loadServico, setLoadServico] = useState(false);
   // const [servicoAgendado, setServicoAgendado] = useState({});
   // const [showModalServico, setShowModalServico] = useState(false);
@@ -180,8 +180,8 @@ export const ServicoProvider = ({ children }) => {
         setServicos,
         loadServico,
         setLoadServico,
-        // servicoEscolhido,
-        // setServicoEscolhido,
+        servicoEscolhido,
+        setServicoEscolhido,
         criarServico,
         // pegarServicos,
         // excluirServico,

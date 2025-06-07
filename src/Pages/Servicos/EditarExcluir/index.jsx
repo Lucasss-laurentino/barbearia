@@ -2,18 +2,20 @@ import { useContext } from 'react';
 import './index.css';
 import { ServicoContext } from '../../../Context/ServicoContext';
 
-export const EditarExcluir = ({servico, setServicoASerExcluido, setShowModalExcluirServico}) => {
+export const EditarExcluir = ({servico, setShowModalServico }) => {
   
-  const { setShowModalServico, setEditarServicoState } = useContext(ServicoContext);
+  const { setServicoEscolhido } = useContext(ServicoContext);
   
   return (
     <>
-      <div className="d-flex justify-content-start align-items-center">
+      <div className="d-flex justify-content-end align-items-center">
         <div
-          className="edit m-0 p-0"
+          className="edit m-0 p-0 mx-2"
           onClick={() => {
-            setEditarServicoState(servico);
-            setShowModalServico(true);
+            if(servico) {
+              setServicoEscolhido(servico);
+              setShowModalServico(true);
+            }
           }}
         >
           <svg
@@ -32,10 +34,9 @@ export const EditarExcluir = ({servico, setServicoASerExcluido, setShowModalExcl
           </svg>
         </div>
         <div
-          className="trash m-0 p-0"
+          className="trash m-0 p-0 mx-1"
           onClick={() => {
-            setServicoASerExcluido(servico);
-            setShowModalExcluirServico(true);
+           
           }}
         >
           <svg
