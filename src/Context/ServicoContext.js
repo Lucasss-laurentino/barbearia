@@ -77,7 +77,6 @@ export const ServicoProvider = ({ children }) => {
     try {
       setLoadServico(true);
       const formData = formatarFormData(data);
-
       const response = await http.put(
         `servico/${servicoEscolhido.id}`,
         formData,
@@ -88,7 +87,6 @@ export const ServicoProvider = ({ children }) => {
           },
         }
       );
-
       substituirServicoEditado(response.data);
       setLoadServico(false);
       setShow(false);
@@ -99,10 +97,16 @@ export const ServicoProvider = ({ children }) => {
   };
 
   const substituirServicoEditado = (servico) => {
-    setBarbearia((prev) => ({
-      ...prev,
-      servicos: prev.servicos.map((s) => (s.id === servico.id ? servico : s)),
-    }));
+    setBarbearia((prev) => {
+      const novosServicos = prev.servicos.$values.map((s) => s.id === servico.id ? servico : s);
+      return {
+        ...prev,
+        servicos: {
+          ...prev.servicos,
+          $values: novosServicos
+        }
+      }
+    });
   };
 
  

@@ -11,7 +11,11 @@ export const Servicos = () => {
 
   return (
     <>
-      <ModalServico show={showModalServico} setShow={setShowModalServico} servico={servicoEscolhido} />
+      <ModalServico
+        show={showModalServico}
+        setShow={setShowModalServico}
+        servico={servicoEscolhido}
+      />
 
       <div className="pagina-servicos">
         <div className="servicos-container">
@@ -19,12 +23,15 @@ export const Servicos = () => {
             {servicos.map((servico) => (
               <li key={servico.id} className="item-servico">
                 <img
-                  src={servico.caminhoImagem}
+                  src={`${process.env.REACT_APP_IMG_PATH_SERVER}/${servico.caminhoImagem}`}
                   alt={servico.nome}
                   className="imagem-servico"
                 />
                 <div className="info-servico">
-                  <EditarExcluir servico={servico} setShowModalServico={setShowModalServico}/>
+                  <EditarExcluir
+                    servico={servico}
+                    setShowModalServico={setShowModalServico}
+                  />
                   <h4 className="nome-servico">{servico.nome}</h4>
                   <p className="prazo-servico">{servico.prazo}</p>
                   <p className="preco-servico">R${servico.preco},00</p>

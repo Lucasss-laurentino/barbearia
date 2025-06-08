@@ -15,7 +15,7 @@ export const CadastroEloginProvider = ({ children }) => {
   const confirmarEmail = async (dados) => {
     try {
       setLoadLogin(true);
-      await http.post("auth/usuarioTemporarioAdm", dados);
+      await http.post("auth/usuarioTemporario", dados);
     } catch (error) {
       setErroLoginInvalido(error.response.data.detail);
       throw error;
@@ -27,7 +27,7 @@ export const CadastroEloginProvider = ({ children }) => {
   const confirmarCodigoEcriaUsuario = async (dados) => {
     try {
       setLoadLogin(true);
-      const result = await http.post("auth/cadastroAdm", dados);
+      const result = await http.post("auth/cadastro", dados);
       var barbearia = result.data.barbearia;
       formatarUsuario(result);
       setBarbearia(barbearia);
@@ -44,13 +44,13 @@ export const CadastroEloginProvider = ({ children }) => {
     try {
       setLoadLogin(true);
       const resposta = await http.post("/auth/login", dados);
-      setBarbearia(resposta.data.barbearia);
+      var barbearia = resposta.data.barbearia;
+      setBarbearia(barbearia);
       setLoadLogin(false);
-      return true;
+      return barbearia;
     } catch (error) {
       setErroLoginInvalido(error.response.data.detail);
       setLoadLogin(false);
-      return false;
     }
   };
 

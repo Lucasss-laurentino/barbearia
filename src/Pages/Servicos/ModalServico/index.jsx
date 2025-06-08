@@ -15,7 +15,9 @@ export const ModalServico = ({ show, setShow, servico = null }) => {
   const {
     register,
     handleSubmit,
+    reset,
     setValue,
+    clearErrors,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(
@@ -26,7 +28,7 @@ export const ModalServico = ({ show, setShow, servico = null }) => {
     },
   });
 
-  const { loadServico, criarServico, editarServico } = useContext(ServicoContext);
+  const { loadServico, criarServico, editarServico, setServicoEscolhido } = useContext(ServicoContext);
 
   const [imagem, setImagem] = useState();
 
@@ -45,10 +47,14 @@ export const ModalServico = ({ show, setShow, servico = null }) => {
   };
 
   const limparCampos = () => {
-    setValue("Nome", "");
-    setValue("Prazo", "");
-    setValue("Preco", "");
-    setValue("Imagem", "");
+    reset({
+      Nome: "",
+      Prazo: "00:00:00",
+      Preco: "",
+      Imagem: "",
+    });
+    setServicoEscolhido(null);
+    clearErrors();
     setShow(false);
   };
 
