@@ -1,10 +1,10 @@
 import { useContext, useState } from "react";
 import "./index.css";
-import { SpanAddServico } from "./SpanAddServico";
 import { ServicoContext } from "../../Context/ServicoContext";
 import { ModalServico } from "./ModalServico";
 import { EditarExcluir } from "./EditarExcluir";
 import { ModalExcluir } from "../../Components/ModalExcluir";
+import { SpanAdd } from "../../Components/SpanAdd";
 
 export const Servicos = () => {
   const { servicos, servicoEscolhido, excluirServico } = useContext(ServicoContext);
@@ -50,7 +50,7 @@ export const Servicos = () => {
               </li>
             ))}
           </ul>
-          <SpanAddServico setShow={setShowModalServico} />
+          <SpanAdd setShow={setShowModalServico} entity={servicos} text={"Cadastre um serviço aqui!"}/>
         </div>
       </div>
     </>

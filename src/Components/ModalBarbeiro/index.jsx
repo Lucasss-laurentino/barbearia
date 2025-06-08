@@ -3,11 +3,11 @@ import Modal from "react-bootstrap/Modal";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { barbeiroSchema } from "../../validations/barbeiroValidation";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { BarbeiroContext } from "../../Context/BarbeiroContext";
 import { MutatingDots } from "react-loader-spinner";
 
-export const ModalBarbeiro = ({ show, setShow}) => {
+export const ModalBarbeiro = ({ show, setShow, barbeiro = null}) => {
  
   const {
     register,
@@ -20,13 +20,14 @@ export const ModalBarbeiro = ({ show, setShow}) => {
 
   const {
     criarBarbeiro, 
-    setImagem, 
     loadBarbeiro, 
   } = useContext(BarbeiroContext);
   
+  const [imagem, setImagem] = useState(null);
+
   const limparCampos = () => {
-    setValue("NOME", "");
-    setValue("IMAGEM", "");
+    setValue("Nome", "");
+    setValue("Imagem", "");
     setImagem(undefined);
     setShow(false);
   };
@@ -48,7 +49,13 @@ export const ModalBarbeiro = ({ show, setShow}) => {
         <Modal.Body>
           <form
             encType="multipart/form-data"
-            onSubmit={handleSubmit((data) => criarBarbeiro(data, setShow, setValue))}
+            onSubmit={handleSubmit((data) => {
+              if (barbeiro) {
+                
+              } else {
+                criarBarbeiro(data, setShow);
+              }
+            })}
           >
             <div className="form-group">
               <label>Nome</label>
@@ -57,10 +64,10 @@ export const ModalBarbeiro = ({ show, setShow}) => {
                 className="form-control"
                 aria-describedby="emailHelp"
                 placeholder="Nome"
-                {...register("NOME")}
+                {...register("Nome")}
               />
-              {errors.NOME && (
-                <p className="m-0 my-1 text-danger">*{errors.NOME.message}</p>
+              {errors.Nome && (
+                <p className="m-0 my-1 text-danger">*{errors.Nome.message}</p>
               )}
             </div>
             <div className="form-group">
@@ -70,12 +77,12 @@ export const ModalBarbeiro = ({ show, setShow}) => {
                   className="form-control form-control-sm"
                   id="formFileSm"
                   type="file"
-                  {...register("IMAGEM")}
+                  {...register("Imagem")}
                   onChange={(e) => setImagem(e.target?.files[0])}
                 />
-                {errors.IMAGEM && (
+                {errors.Imagem && (
                   <p className="m-0 my-1 text-danger">
-                    *{errors.IMAGEM.message}
+                    *{errors.Imagem.message}
                   </p>
                 )}
               </div>

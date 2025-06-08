@@ -1,25 +1,12 @@
-export const SpanAdd = ({ handleShow, barbeiros }) => {
+import { Balao } from "../Balao";
+import "./index.css";
+
+export const SpanAdd = ({setShow, entity, text}) => {
+
   return (
     <>
-      <span
-        className="adc-barbeiro d-flex justify-content-end align-items-end flex-column"
-        onClick={() => handleShow()}
-      >
-        {barbeiros.length < 1 && (
-          <div className="balloon">
-            <p className="msg-balloon">Cadastre um Barbeiro aqui !</p>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="30"
-              height="30"
-              fill="#fff"
-              className="bi bi-caret-down-fill position-get-on-balloon"
-              viewBox="0 0 16 16"
-            >
-              <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
-            </svg>
-          </div>
-        )}
+      <span className="adc-servico-fixo" onClick={() => setShow(true)}>
+        { entity && entity.length < 1 && <Balao texto={text} /> }
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="45"

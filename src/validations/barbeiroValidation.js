@@ -1,8 +1,8 @@
 import * as yup from "yup";
 
 export const barbeiroSchema = yup.object({
-  NOME: yup.string().required("Campo obrigatório"),
-  IMAGEM: yup
+  Nome: yup.string().required("Campo obrigatório"),
+  Imagem: yup
     .mixed()
     .required("Campo obrigatório")
     .test("fileType", "Apenas arquivos de imagem são permitidos", (value) => {
@@ -16,8 +16,8 @@ export const barbeiroSchema = yup.object({
 });
 
 export const barbeiroEditarSchema = yup.object({
-  NOME: yup.string().required("Campo obrigatório"),
-  IMAGEM: yup
+  Nome: yup.string().required("Campo obrigatório"),
+  Imagem: yup
     .mixed()
     .nullable() 
     .notRequired()

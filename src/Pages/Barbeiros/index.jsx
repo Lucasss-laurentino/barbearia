@@ -1,24 +1,45 @@
 import { useContext, useEffect, useState } from "react";
+import { SpanAdd } from "../../Components/SpanAdd";
 import "./index.css";
 import { BarbeiroContext } from "../../Context/BarbeiroContext";
-import { DadosBarbeiro } from "./DadosBarbeiro";
-import { ListaDeHorarios } from "./ListaDeHorarios";
-import { UserContext } from "../../Context/UserContext";
-import { HoraMarcada } from "./HoraMarcada";
-import { HorarioMarcadoContext } from "../../Context/HorarioMarcadoContext";
-import { Modais } from "../../Components/Modais";
-import { SpanAdd } from "../../Components/SpanAdd";
-import { LocalStorageAgendamentoContext } from "../../Context/LocalStorageAgendamentoContext";
+import { ModalBarbeiro } from "../../Components/ModalBarbeiro";
+// import { DadosBarbeiro } from "./DadosBarbeiro";
+// import { ListaDeHorarios } from "./ListaDeHorarios";
+// import { UserContext } from "../../Context/UserContext";
+// import { HoraMarcada } from "./HoraMarcada";
+// import { HorarioMarcadoContext } from "../../Context/HorarioMarcadoContext";
+// import { Modais } from "../../Components/Modais";
+// import { LocalStorageAgendamentoContext } from "../../Context/LocalStorageAgendamentoContext";
 
 export const Barbeiros = () => {
-  const { barbeiros, handleShowModalBarbeiro } = useContext(BarbeiroContext);
-  const { horarioMarcado } = useContext(HorarioMarcadoContext);
-  const { user } = useContext(UserContext);
-  const { localStorageAgendamento } = useContext(LocalStorageAgendamentoContext);
+  const { barbeiros } = useContext(BarbeiroContext);
+  const [showModalCriarBarbeiro, setShowModalCriarBarbeiro] = useState(false);
+  // const { horarioMarcado } = useContext(HorarioMarcadoContext);
+  // const { user } = useContext(UserContext);
+  // const { localStorageAgendamento } = useContext(LocalStorageAgendamentoContext);
 
   return (
     <>
-      <Modais />
+      
+      <ModalBarbeiro
+        show={showModalCriarBarbeiro}
+        setShow={setShowModalCriarBarbeiro}
+      />
+
+      <div className="pagina-servicos">
+        <div className="servicos-container">
+          <ul className="lista-servicos">
+            {barbeiros.map((barbeiro) => (
+              <li key={barbeiro.id} className="item-servico">
+                
+              </li>
+            ))}
+          </ul>
+          <SpanAdd setShow={setShowModalCriarBarbeiro} entity={barbeiros} text={"Cadastre um barbeiro aqui!"} />
+        </div>
+      </div>
+
+      {/* <Modais />
       {user?.ADM && (
         <SpanAdd handleShow={handleShowModalBarbeiro} barbeiros={barbeiros} />
       )}
@@ -44,7 +65,7 @@ export const Barbeiros = () => {
             </ul>
           </div>
         </div>
-      </div>
+      </div> */}
     </>
   );
 };
