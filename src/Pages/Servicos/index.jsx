@@ -1,13 +1,15 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import "./index.css";
 import { SpanAddServico } from "./SpanAddServico";
 import { ServicoContext } from "../../Context/ServicoContext";
 import { ModalServico } from "./ModalServico";
 import { EditarExcluir } from "./EditarExcluir";
+import { ModalExcluir } from "../../Components/ModalExcluir";
 
 export const Servicos = () => {
-  const { servicos, servicoEscolhido } = useContext(ServicoContext);
+  const { servicos, servicoEscolhido, excluirServico } = useContext(ServicoContext);
   const [showModalServico, setShowModalServico] = useState(false);
+  const [showModalExcluir, setShowModalExcluir] = useState(false);
 
   return (
     <>
@@ -15,6 +17,14 @@ export const Servicos = () => {
         show={showModalServico}
         setShow={setShowModalServico}
         servico={servicoEscolhido}
+      />
+
+      <ModalExcluir
+        show={showModalExcluir}
+        setShow={setShowModalExcluir}
+        itemParaExclusao={servicoEscolhido}
+        nomeItemExclusao={"Serviço"}
+        funcExcluir={excluirServico}
       />
 
       <div className="pagina-servicos">
@@ -31,6 +41,7 @@ export const Servicos = () => {
                   <EditarExcluir
                     servico={servico}
                     setShowModalServico={setShowModalServico}
+                    setShowModalExcluir={setShowModalExcluir}
                   />
                   <h4 className="nome-servico">{servico.nome}</h4>
                   <p className="prazo-servico">{servico.prazo}</p>

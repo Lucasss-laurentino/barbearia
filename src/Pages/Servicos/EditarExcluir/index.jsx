@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import './index.css';
 import { ServicoContext } from '../../../Context/ServicoContext';
 
-export const EditarExcluir = ({servico, setShowModalServico }) => {
+export const EditarExcluir = ({servico, setShowModalServico, setShowModalExcluir }) => {
   
   const { setServicoEscolhido } = useContext(ServicoContext);
   
@@ -36,7 +36,8 @@ export const EditarExcluir = ({servico, setShowModalServico }) => {
         <div
           className="trash m-0 p-0 mx-1"
           onClick={() => {
-           
+            setShowModalExcluir(true);
+            setServicoEscolhido(servico)
           }}
         >
           <svg

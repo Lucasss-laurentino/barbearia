@@ -14,8 +14,15 @@ export const ModalExcluir = ({
 
   const [loadExcluir, setLoadExcluir] = useState(false);
 
-  const excluirEFecharModal = () => {
-    funcExcluir(itemParaExclusao, setLoadExcluir, setShow);
+  const excluirEFecharModal = async () => {
+    setLoadExcluir(true);
+    var resposta = await funcExcluir();
+    if (resposta) {
+      setLoadExcluir(false);
+      setShow(false);
+    } else {
+      setLoadExcluir(false);
+    }
   };
 
   return (

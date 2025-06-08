@@ -1,15 +1,11 @@
 import {
   createContext,
   useState,
-  useCallback,
   useEffect,
   useContext,
 } from "react";
 import { BarbeariaContext } from "./BarbeariaContext";
 import { http } from "../http";
-// import { http } from "../http";
-// import { Bounce, toast } from "react-toastify";
-// import { BarbeariaContext } from "./BarbeariaContext";
 
 export const ServicoContext = createContext();
 
@@ -18,11 +14,6 @@ export const ServicoProvider = ({ children }) => {
   const [servicos, setServicos] = useState([]);
   const [servicoEscolhido, setServicoEscolhido] = useState(null);
   const [loadServico, setLoadServico] = useState(false);
-  // const [servicoAgendado, setServicoAgendado] = useState({});
-  // const [showModalServico, setShowModalServico] = useState(false);
-  // const [showModalExcluirServico, setShowModalExcluirServico] = useState(false);
-  // const [editarServicoState, setEditarServicoState] = useState(null);
-  // const [servicoASerExcluido, setServicoASerExcluido] = useState();
 
   // contexts
   const { barbearia, setBarbearia } = useContext(BarbeariaContext);
@@ -109,6 +100,39 @@ export const ServicoProvider = ({ children }) => {
     });
   };
 
+  const excluirServico = async () => {
+    try {
+      await http.delete(
+        `servico/${servicoEscolhido.id}`,
+        {
+          withCredentials: true
+        }
+      );
+
+      await retirarServicoExcluido();
+      setServicoEscolhido(null);
+      return true;
+    } catch (error) {
+      setLoadServico(false);
+      if (error.response?.data === "Token não encontrado!")
+        window.location.href = "/login";
+    }
+  };
+
+  const retirarServicoExcluido = async () =>
+  {
+    setBarbearia((prev) => {
+      const servicosAtt = prev.servicos.$values.filter((s) => s.id !== servicoEscolhido.id);      
+      return {
+        ...prev,
+        servicos: {
+          ...prev.servicos,
+          $values: servicosAtt
+        }
+      }
+    });
+  }
+
  
   return (
     <ServicoContext.Provider
@@ -121,6 +145,7 @@ export const ServicoProvider = ({ children }) => {
         setServicoEscolhido,
         criarServico,
         editarServico,
+        excluirServico,
       }}
     >
       {children}

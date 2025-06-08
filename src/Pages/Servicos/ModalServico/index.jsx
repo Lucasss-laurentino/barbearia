@@ -65,6 +65,12 @@ export const ModalServico = ({ show, setShow, servico = null }) => {
       setValue("Preco", servico.preco);
       setValue("Imagem", imagem);
     }
+    if (!servico) {
+      setValue("Nome", "");
+      setValue("Prazo", "00:00:00");
+      setValue("Preco", "");
+      setValue("Imagem", null);
+    }
   }, [servico, setValue, show]);
 
   useEffect(() => {
