@@ -1,0 +1,180 @@
+.pagina-barbeiros {
+  padding-bottom: 90px; /* espaço extra pro footer */
+  overflow-y: auto;
+  height: 100%;
+}
+
+.barbeiros-container {
+  padding: 20px 16px;
+  color: white;
+}
+
+.lista-barbeiros {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.item-barbeiro {
+  background-color: rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  padding: 12px;
+  gap: 16px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.imagem-barbeiro {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
+  flex-shrink: 0; /* Evita que a imagem diminua */
+}
+
+.info-barbeiro {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%; /* Garante que ocupa todo o espaço */
+}
+
+.nome-barbeiro {
+  font-size: 1.1rem;
+  margin: 0;
+  font-weight: bold;
+  color: #fff;
+  margin-left: 13px;
+}
+
+.prazo-barbeiro {
+  margin: 2px 0;
+  font-size: 0.95rem;
+  color: #cfcfcf;
+}
+
+.preco-barbeiro {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #00e676;
+}
+
+/* Estilos para a seção de horários */
+.horarios-barbeiro {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  color: white;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  max-height: 0;
+  opacity: 0;
+  padding: 0 10px;
+  margin-top: 0;
+}
+
+.horarios-barbeiro.expanded {
+  max-height: 500px; /* Valor maior que o necessário */
+  opacity: 1;
+  padding: 10px;
+  margin-top: 8px;
+}
+
+.horarios-barbeiro h5 {
+  margin: 0 0 8px 0;
+  font-size: 0.9rem;
+  color: #cfcfcf;
+}
+
+.horarios-barbeiro ul {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.horarios-barbeiro li {
+  font-size: 0.85rem;
+  padding: 2px 0;
+  color: #fff;
+}
+
+/* Estilos para o ícone de relógio */
+.cursor {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.cursor:hover {
+  color: #0d6efd;
+  transform: scale(1.1);
+}
+
+/* Efeito de rotação quando expandido */
+.cursor.expanded {
+  transform: rotate(30deg);
+}
+
+/* Estilos para quando não há horários */
+.sem-horarios {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+}
+
+.sem-horarios p {
+  margin: 0;
+  color: #aaa;
+  font-size: 0.9rem;
+}
+
+/* Estilos do botão de adicionar horário */
+.btn-adicionar-horario {
+  background-color: #0d6efd;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-adicionar-horario:hover {
+  background-color: #0b5ed7;
+  transform: translateY(-1px);
+}
+
+.btn-adicionar-horario:active {
+  transform: translateY(0);
+}
+
+.btn-adicionar-horario.secundario {
+  background-color: transparent;
+  border: 1px solid #0d6efd;
+  color: #0d6efd;
+  margin-top: 10px;
+}
+
+.btn-adicionar-horario.secundario:hover {
+  background-color: rgba(13, 110, 253, 0.1);
+}
+
+.btn-adicionar-horario svg {
+  margin-right: 4px;
+}
+
+.horarios-text {
+  font-size: 10px;
+}

@@ -2,35 +2,60 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { barbeiroSchema } from "../../validations/barbeiroValidation";
-import { useContext, useState } from "react";
+import {
+  barbeiroEditarSchema,
+  barbeiroSchema,
+} from "../../validations/barbeiroValidation";
+import { useContext, useEffect, useState } from "react";
 import { BarbeiroContext } from "../../Context/BarbeiroContext";
 import { MutatingDots } from "react-loader-spinner";
 
-export const ModalBarbeiro = ({ show, setShow, barbeiro = null}) => {
- 
+export const ModalBarbeiro = ({ show, setShow, barbeiro = null }) => {
   const {
     register,
     handleSubmit,
+    reset,
     setValue,
     formState: { errors },
   } = useForm({
-      resolver: yupResolver(barbeiroSchema),
+    resolver: yupResolver(
+      barbeiro === null ? barbeiroSchema : barbeiroEditarSchema
+    ),
   });
 
   const {
-    criarBarbeiro, 
-    loadBarbeiro, 
+    criarBarbeiro,
+    loadBarbeiro,
+    setBarbeiroSelecionado,
+    editarBarbeiro,
   } = useContext(BarbeiroContext);
-  
-  const [imagem, setImagem] = useState(null);
+
+  const [imagem, setImagem] = useState();
 
   const limparCampos = () => {
-    setValue("Nome", "");
-    setValue("Imagem", "");
+    reset({
+      Nome: "",
+      Imagem: "",
+    });
     setImagem(undefined);
     setShow(false);
+    setBarbeiroSelecionado(null);
   };
+
+  useEffect(() => {
+    if (barbeiro) {
+      setValue("Nome", barbeiro.nome);
+      setValue("Imagem", imagem);
+    }
+    if (!barbeiro) {
+      setValue("Nome", "");
+      setValue("Imagem", null);
+    }
+  }, [barbeiro, setValue, show]);
+
+  useEffect(() => {
+    if (!show) limparCampos();
+  }, [show]);
 
   return (
     <>
@@ -43,7 +68,7 @@ export const ModalBarbeiro = ({ show, setShow, barbeiro = null}) => {
       >
         <Modal.Header closeButton>
           <Modal.Title>
-            Cadastre um Barbeiro
+            {barbeiro ? "Editar barbeiro" : "Cadastrar Barbeiro"}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -51,7 +76,7 @@ export const ModalBarbeiro = ({ show, setShow, barbeiro = null}) => {
             encType="multipart/form-data"
             onSubmit={handleSubmit((data) => {
               if (barbeiro) {
-                
+                editarBarbeiro(data, setShow);
               } else {
                 criarBarbeiro(data, setShow);
               }
@@ -107,10 +132,7 @@ export const ModalBarbeiro = ({ show, setShow, barbeiro = null}) => {
           </form>
         </Modal.Body>
         <Modal.Footer>
-          <Button
-            variant="secondary"
-            onClick={() => limparCampos()}
-          >
+          <Button variant="secondary" onClick={() => limparCampos()}>
             Fechar
           </Button>
         </Modal.Footer>

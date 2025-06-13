@@ -1,5 +1,5 @@
 import "./index.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { MutatingDots } from "react-loader-spinner";
@@ -11,7 +11,6 @@ export const ModalExcluir = ({
   nomeItemExclusao,
   funcExcluir,
 }) => {
-
   const [loadExcluir, setLoadExcluir] = useState(false);
 
   const excluirEFecharModal = async () => {
@@ -63,8 +62,12 @@ export const ModalExcluir = ({
             </div>
           ) : (
             <>
-              <Button variant="secondary" onClick={() => setShow(false)}>Não</Button>
-              <Button variant="danger" onClick={() => excluirEFecharModal()}>Sim</Button>
+              <Button variant="secondary" onClick={() => setShow(false)}>
+                Não
+              </Button>
+              <Button variant="danger" onClick={() => excluirEFecharModal()}>
+                Sim
+              </Button>
             </>
           )}
         </Modal.Footer>

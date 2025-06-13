@@ -6,17 +6,8 @@ export const BarbeiroContext = createContext();
 
 export const BarbeiroProvider = ({ children }) => {
   const [barbeiros, setBarbeiros] = useState([]);
-  // const [barbeiro, setBarbeiro] = useState({});
-  // const [imagem, setImagem] = useState();
   const [loadBarbeiro, setLoadBarbeiro] = useState(false);
-  // const [barbeiroSelecionado, setBarbeiroSelecionado] = useState(null); // props pras modais
-  // const [erroBarbeiro, setErroBarbeiro] = useState(null);
-  // const [showModalPagamentoAgendamento, setShowModalPagamentoAgendamento] =
-  //   useState(false);
-  // const [showHorariosBarbeiro, setShowHorariosBarbeiro] = useState(false);
-  // const [showModalEditar, setShowModalEditar] = useState(false);
-  // const [showModalExcluir, setShowModalExcluir] = useState(false);
-  // const [showModalCriarBarbeiro, setShowModalCriarBarbeiro] = useState(false);
+  const [barbeiroSelecionado, setBarbeiroSelecionado] = useState(null);
   const { barbearia, setBarbearia } = useContext(BarbeariaContext);
 
   useEffect(() => {
@@ -24,13 +15,6 @@ export const BarbeiroProvider = ({ children }) => {
       setBarbeiros(barbearia.barbeiros.$values);
     }
   }, [barbearia]);
-
-  /* 
-    Modal de exclusão serve pra excluir qualquer entidade, e eu tenho duas entidades no mesmo componente
-    oque quer dizer que tanto excluir barbeiro ou excluir horario pode abrir esse modal
-    entao esse componente identifica quem está abrindo o modal de exclusão pra passar as props certas.
-  */
-  // const [quemAcionouModalExcluir, setQuemAcionouModalExcluir] = useState(false); // 0 = barbeiro, 1 = horario
 
   const criarBarbeiro = async (data, setShow) => {
     try {
@@ -65,66 +49,77 @@ export const BarbeiroProvider = ({ children }) => {
     return formData;
   };
 
-  // const pegarBarbeiros = async (barbearia) => {
-  //   try {
-  //     const response = await http.get(`barbeiro/pegarBarbeiros/${barbearia}`);
-  //     if (!response) throw "Erro ao buscar barbeiros";
-  //     setBarbeiros([...response.data.barbeiros]);
-  //   } catch (erro) {}
-  // };
+  const editarBarbeiro = async (data, setShow) => {
+    try {
+      setLoadBarbeiro(true);
+      const formData = formatarFormData(data);
+      const response = await http.put(
+        `barbeiro/${barbeiroSelecionado.id}`,
+        formData,
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      substituirBarbeiroEditado(response.data);
+      setLoadBarbeiro(false);
+      setShow(false);
+      setBarbeiroSelecionado(null);
+    } catch (error) {
+      setLoadBarbeiro(false);
+      console.log(error);
+    }
+  };
 
-  // const editarBarbeiro = async (barbeiro, data, setShow) => {
-  //   try {
-  //     setLoadBarbeiro(true);
-  //     const formData = new FormData();
-  //     formData.append("NOME", data.NOME);
-  //     formData.append("IMAGEM", imagem);
-  //     const response = await http.put(
-  //       `barbeiro/editarBarbeiro/${barbeiro.ID}`,
-  //       formData,
-  //       {
-  //         withCredentials: true,
-  //         headers: {
-  //           "Content-Type": "multipart/form-data",
-  //         },
-  //       }
-  //     );
-  //     setBarbeiros([...response.data]);
-  //     setLoadBarbeiro(false);
-  //     setShow(false);
-  //     setImagem(undefined);
-  //     setBarbeiroSelecionado(null);
-  //   } catch (error) {}
-  // };
+  const substituirBarbeiroEditado = (barbeiro) => {
+    setBarbearia((prev) => {
+      const novosBarbeiros = prev.barbeiros.$values.map((b) =>
+        b.id === barbeiro.id ? barbeiro : b
+      );
+      return {
+        ...prev,
+        barbeiros: {
+          ...prev.barbeiros,
+          $values: novosBarbeiros,
+        },
+      };
+    });
+  };
 
-  // const excluirBarbeiro = async (barbeiro, setLoadExcluir, setShow) => {
-  //   try {
-  //     setLoadExcluir(true);
-  //     const response = await http.delete(
-  //       `barbeiro/excluirBarbeiro/${barbeiro.ID}`,
-  //       { withCredentials: true }
-  //     );
-  //     setBarbeiros([...response.data]);
-  //     setLoadExcluir(false);
-  //     setBarbeiroSelecionado(null);
-  //     setShow(false);
-  //   } catch (error) {}
-  // };
+  const excluirBarbeiro = async () => {
+    try {
+      setLoadBarbeiro(true);
+      const response = await http.delete(`barbeiro/${barbeiroSelecionado.id}`, {
+        withCredentials: true,
+      });
+      await retirarBarbeiroExcluido(response.data);
+      setLoadBarbeiro(false);
+      setBarbeiroSelecionado(null);
+      return true;
+    } catch (error) {
+      setLoadBarbeiro(false);
+      if (error.response?.data === "Token não encontrado!")
+        window.location.href = "/login";
+      return false;
+    }
+  };
 
-  // const closeModalPagamentoAgendamento = () => {
-  //   setShowModalPagamentoAgendamento(false);
-  // };
-
-  // const pegarBarbeiro = (idBarbeiro) => {
-  //   const barbeiro = barbeiros.find((b) => b.ID === idBarbeiro);
-  //   return barbeiro;
-  // };
-
-  // const handleCloseModalEditar = () => setShowModalEditar(false);
-
-  // const handleCloseModalExcluir = () => setShowModalExcluir(false);
-
-  // const handleShowModalBarbeiro = () => setShowModalCriarBarbeiro(true);
+  const retirarBarbeiroExcluido = async () => {
+    setBarbearia((prev) => {
+      const barbeiroAtt = prev.barbeiros.$values.filter(
+        (s) => s.id !== barbeiroSelecionado.id
+      );
+      return {
+        ...prev,
+        barbeiros: {
+          ...prev.barbeiros,
+          $values: barbeiroAtt,
+        },
+      };
+    });
+  };
 
   return (
     <BarbeiroContext.Provider
@@ -132,36 +127,12 @@ export const BarbeiroProvider = ({ children }) => {
         barbeiros,
         setBarbeiros,
         criarBarbeiro,
-        // imagem,
-        // setImagem,
-        // pegarBarbeiros,
         loadBarbeiro,
         setLoadBarbeiro,
-        // editarBarbeiro,
-        // excluirBarbeiro,
-        // barbeiroSelecionado,
-        // setBarbeiroSelecionado,
-        // erroBarbeiro,
-        // setErroBarbeiro,
-        // showModalPagamentoAgendamento,
-        // setShowModalPagamentoAgendamento,
-        // closeModalPagamentoAgendamento,
-        // showHorariosBarbeiro,
-        // setShowHorariosBarbeiro,
-        // barbeiro,
-        // setBarbeiro,
-        // showModalEditar,
-        // setShowModalEditar,
-        // handleCloseModalEditar,
-        // showModalExcluir,
-        // setShowModalExcluir,
-        // handleCloseModalExcluir,
-        // quemAcionouModalExcluir,
-        // setQuemAcionouModalExcluir,
-        // handleShowModalBarbeiro,
-        // showModalCriarBarbeiro,
-        // setShowModalCriarBarbeiro,
-        // pegarBarbeiro,
+        barbeiroSelecionado,
+        setBarbeiroSelecionado,
+        editarBarbeiro,
+        excluirBarbeiro,
       }}
     >
       {children}

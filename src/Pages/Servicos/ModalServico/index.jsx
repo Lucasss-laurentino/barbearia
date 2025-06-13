@@ -9,7 +9,6 @@ import {
 } from "../../../validations/servicoValidation";
 import { ServicoContext } from "../../../Context/ServicoContext";
 import { MutatingDots } from "react-loader-spinner";
-import InputMask from "react-input-mask";
 
 export const ModalServico = ({ show, setShow, servico = null }) => {
   const {
@@ -23,14 +22,16 @@ export const ModalServico = ({ show, setShow, servico = null }) => {
     resolver: yupResolver(
       servico !== null ? servicoEditarSchema : servicoSchema
     ),
-    defaultValues: {
-      Prazo: "00:00:00",
-    },
+    // defaultValues: {
+    //   Prazo: "00:00",
+    // },
   });
 
-  const { loadServico, criarServico, editarServico, setServicoEscolhido } = useContext(ServicoContext);
+  const { loadServico, criarServico, editarServico, setServicoEscolhido } =
+    useContext(ServicoContext);
 
   const [imagem, setImagem] = useState();
+  const [prazo, setPrazo] = useState("");
 
   const formatCurrency = (event) => {
     const value = event.target.value
@@ -58,6 +59,17 @@ export const ModalServico = ({ show, setShow, servico = null }) => {
     setShow(false);
   };
 
+  const handlePrazoChange = (e) => {
+    let value = e.target.value.replace(/\D/g, "");
+    if (value.length >= 3) {
+      value = value.slice(0, 4);
+      value = `${value.slice(0, 2)}:${value.slice(2, 4)}`;
+    } else if (value.length >= 1 && value.length <= 2) {
+      value = `${value}`;
+    }
+    setPrazo(value);
+  };
+
   useEffect(() => {
     if (servico) {
       setValue("Nome", servico.nome);
@@ -67,7 +79,7 @@ export const ModalServico = ({ show, setShow, servico = null }) => {
     }
     if (!servico) {
       setValue("Nome", "");
-      setValue("Prazo", "00:00:00");
+      setValue("Prazo", "");
       setValue("Preco", "");
       setValue("Imagem", null);
     }
@@ -120,29 +132,15 @@ export const ModalServico = ({ show, setShow, servico = null }) => {
             {/* Prazo */}
             <div className="form-group my-2">
               <label>Prazo de conclusão</label>
-              <InputMask
-                mask="99:99:99"
-                maskChar={null}
-                alwaysShowMask
-                {...register("Prazo", {
-                  required: "Prazo é obrigatório",
-                  pattern: {
-                    value: /^\d{2}:\d{2}:\d{2}$/,
-                    message: "Formato deve ser HH:mm:ss",
-                  },
-                })}
-                defaultValue="00:00:00"
-              >
-                {(inputProps) => (
-                  <input
-                    {...inputProps}
-                    type="text"
-                    className="form-control input-servico"
-                    placeholder="00:00:00"
-                  />
-                )}
-              </InputMask>
-
+              <input
+                type="text"
+                className="form-control input-servico"
+                {...register("Prazo")}
+                value={prazo}
+                placeholder="HH:mm"
+                onChange={handlePrazoChange}
+                maxLength={5}
+              />
               {errors.Prazo && (
                 <p className="m-0 my-1 text-danger">*{errors.Prazo.message}</p>
               )}
