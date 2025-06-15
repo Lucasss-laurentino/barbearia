@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { http } from "../http";
+import { BarbeariaContext } from "./BarbeariaContext";
 // import { socket } from "../socket";
 // import { BarbeariaContext } from "./BarbeariaContext";
 // import { BarbeiroContext } from "./BarbeiroContext";
@@ -13,6 +14,8 @@ import { http } from "../http";
 export const HorarioContext = createContext();
 
 export const HorarioProvider = ({ children }) => {
+
+  const { setBarbearia, barbearia } = useContext(BarbeariaContext);
   // states
   // const [horarios, setHorarios] = useState([]);
   // const [limparHoraAposExclusao, setLimparHoraAposExclusao] = useState(false);
@@ -70,9 +73,10 @@ export const HorarioProvider = ({ children }) => {
       data.IdBarbeiro = barbeiro.id;
       const response = await http.post(
         "horario",
-        { data },
+        data,
         { withCredentials: true }
       );
+      await atualizaHorariosBarbearia();
       setLoadHorarios(false);
       setShow(false);
     } catch (erro) {
@@ -80,6 +84,22 @@ export const HorarioProvider = ({ children }) => {
       setLoadHorarios(false);
     }
   };
+
+  const atualizaHorariosBarbearia = async () => {
+    setBarbearia((prev) => {
+      const novaBarbearia = structuredClone(prev);
+      const barbeiroIndex = barbearia.barbeiros.$values.findIndex(
+        (b) => b.id === barbeiro.id
+      );
+      if (barbeiroIndex !== -1) {
+        novaBarbearia.barbeiros.$values[barbeiroIndex].horarios.$values.push(
+          response.data
+        );
+      }
+      return novaBarbearia;
+    });
+
+   }
 
   // const editarHorario = async (data, horario, setShow, setValue) => {
   //   try {
