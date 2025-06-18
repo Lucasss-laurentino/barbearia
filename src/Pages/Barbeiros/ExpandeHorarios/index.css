@@ -1,0 +1,147 @@
+.horarios-barbeiro {
+  max-height: 240px;
+  padding: 10px 12px;
+  background-color: rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
+  color: white;
+  overflow-y: auto;
+}
+
+.titulo-horarios {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 10px;
+  color: #ddd;
+}
+
+.lista-horarios {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.btn-adicionar-horario {
+  width: 100%;
+  background-color: rgb(255, 255, 255, 0.09);
+  color: #00e676;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-adicionar-horario:hover {
+  background-color: rgba(0, 230, 118, 0.1);
+  cursor: pointer;
+}
+
+.sem-horarios {
+  text-align: center;
+  color: #999;
+  font-size: 0.9rem;
+}
+
+.horario-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 12px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+}
+
+.horario-hora {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #fff;
+}
+
+.horario-acoes {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.btn-horario {
+  background-color: transparent;
+  color: #00e676;
+  border: none;
+  border-radius: 8px;
+  padding: 6px;
+  font-size: 0.7rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 64px;
+  transition: background-color 0.2s ease;
+}
+
+.encapsula-btns {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-horario:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+}
+
+.btn-horario svg {
+  font-size: 1.1rem;
+  margin-bottom: 2px;
+}
+
+.btn-horario span {
+  font-size: 0.7rem;
+  text-align: center;
+}
+
+.btn-almoco {
+  color: #ff9800;
+}
+
+.botoes-bottom {
+  display: flex;
+  margin-top: 10px;
+  gap: 2px;
+}
+
+.btn-bottom {
+  flex: 1;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: none;
+  border-radius: 6px;
+  padding: 6px 0;
+  color: #ccc;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-bottom:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+}
+
+.btn-bottom.editar {
+  color: #4caf50;
+}
+
+.btn-bottom.excluir {
+  color: #f44336;
+}

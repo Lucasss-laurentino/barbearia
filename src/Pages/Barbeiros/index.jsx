@@ -7,14 +7,17 @@ import { AcoesADM } from "./AcoesADM";
 import { ExpandeHorarios } from "./ExpandeHorarios";
 import { ModalExcluir } from "../../Components/ModalExcluir";
 import { ModalCriarHorarioBarbeiro } from "../../Components/ModalCriarHorarioBarbeiro";
+import { HorarioContext } from "../../Context/HorarioContext";
 
 export const Barbeiros = () => {
   const { barbeiros, barbeiroSelecionado, excluirBarbeiro } = useContext(BarbeiroContext);
+  const { excluirHorario, horarioOuBarbeiroPraExcluir, horarioSelecionado } = useContext(HorarioContext)
   const [showModalCriarBarbeiro, setShowModalCriarBarbeiro] = useState(false);
   const [showModalDeletarBarbeiro, setShowModalDeletarBarbeiro] = useState(false);
   const [showModalCriarHorarioBarbeiro, setShowModalCriarHorarioBarbeiro] = useState(false);
+  const [showModalDeletarHorario, setShowModalDeletarHorario] = useState(false);
   const [expandedBarbeiroId, setExpandedBarbeiroId] = useState(null);
-
+  
   const toggleHorarios = (id) => {
     setExpandedBarbeiroId(expandedBarbeiroId === id ? null : id);
   };
@@ -28,15 +31,16 @@ export const Barbeiros = () => {
       />
 
       <ModalExcluir 
-        show={showModalDeletarBarbeiro}
-        setShow={setShowModalDeletarBarbeiro}
-        nomeItemExclusao={"Barbeiro"}
-        funcExcluir={excluirBarbeiro}
+        show={horarioOuBarbeiroPraExcluir ? showModalDeletarHorario : showModalDeletarBarbeiro}
+        setShow={horarioOuBarbeiroPraExcluir ? setShowModalDeletarHorario : setShowModalDeletarBarbeiro}
+        nomeItemExclusao={horarioOuBarbeiroPraExcluir ? "Horário" : "Barbeiro"}
+        funcExcluir={horarioOuBarbeiroPraExcluir ? excluirHorario : excluirBarbeiro}
       />
 
       <ModalCriarHorarioBarbeiro
         show={showModalCriarHorarioBarbeiro}
         setShow={setShowModalCriarHorarioBarbeiro}
+        horario={horarioSelecionado}
       />
 
       <div className="pagina-barbeiros">
@@ -75,12 +79,12 @@ export const Barbeiros = () => {
                     </div>
                   </div>
                 </div>
-                {/* Movido para dentro de info-barbeiro */}
                 {expandedBarbeiroId === barbeiro.id && (
                   <ExpandeHorarios
                     expandedBarbeiroId={expandedBarbeiroId}
                     barbeiro={barbeiro}
                     setShow={setShowModalCriarHorarioBarbeiro}
+                    setShowModalDeletarHorario={setShowModalDeletarHorario}
                   />
                 )}
               </li>

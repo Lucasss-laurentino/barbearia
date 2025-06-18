@@ -8,7 +8,11 @@ import { HorarioContext } from "../../Context/HorarioContext";
 import { MutatingDots } from "react-loader-spinner";
 import { BarbeiroContext } from "../../Context/BarbeiroContext";
 
-export const ModalCriarHorarioBarbeiro = ({ show, setShow }) => {
+export const ModalCriarHorarioBarbeiro = ({
+  show,
+  setShow,
+  horario = null,
+}) => {
   const {
     register,
     handleSubmit,
@@ -18,7 +22,8 @@ export const ModalCriarHorarioBarbeiro = ({ show, setShow }) => {
     resolver: yupResolver(horariosSchema),
   });
 
-  const { loadHorarios, criarHorario } = useContext(HorarioContext);
+  const { loadHorarios, criarHorario, editarHorario, setHorarioSelecionado } =
+    useContext(HorarioContext);
 
   const { barbeiroSelecionado } = useContext(BarbeiroContext);
 
@@ -32,27 +37,29 @@ export const ModalCriarHorarioBarbeiro = ({ show, setShow }) => {
   };
 
   const handleHorario = async (data) => {
-    await criarHorario(data, barbeiroSelecionado, setShow);
-    setValue("Hora", "")
-  }
+    if (horario === null) {
+      await criarHorario(data, setShow);
+    } else {
+      await editarHorario(data);
+    }
+    setShow(false);
+  };
 
   useEffect(() => {
     if (!show) {
       setValue("Hora", "");
+      setHorarioSelecionado(null);
     }
   }, [show]);
 
-  // useEffect(() => {
-  //   if (limparHoraAposExclusao) {
-  //     setValue("HORA", "");
-  //     setLimparHoraAposExclusao(false);
-  //   }
-  // }, [limparHoraAposExclusao]);
-
-  // const limparErroEFechar = () => {
-  //   setErrosHorarios({ erro: false, menssagem: "" });
-  //   handleClose();
-  // }
+  useEffect(() => {
+    if (horario) {
+      setValue("Hora", horario.hora);
+    }
+    if (!horario) {
+      setValue("Hora", "");
+    }
+  }, [horario, setValue, show]);
 
   return (
     <>
@@ -100,7 +107,7 @@ export const ModalCriarHorarioBarbeiro = ({ show, setShow }) => {
               />
             ) : (
               <button type="submit" className="btn btn-primary">
-                Cadastrar
+                {horario ? "Editar" : "Cadastrar"}
               </button>
             )}
           </form>
