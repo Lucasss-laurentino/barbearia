@@ -10,7 +10,7 @@ export const CadastroEloginProvider = ({ children }) => {
   const [erroLoginInvalido, setErroLoginInvalido] = useState(null);
 
   const { setBarbearia } = useContext(BarbeariaContext);
-  const { formatarUsuario } = useContext(UserContext);
+  const { setUsuario } = useContext(UserContext);
 
   const confirmarEmail = async (dados) => {
     try {
@@ -24,13 +24,15 @@ export const CadastroEloginProvider = ({ children }) => {
     }
   };
 
-  const confirmarCodigoEcriaUsuario = async (dados) => {
+  const confirmarCodigoEcriaUsuario = async (dados, barbeariaParametro) => {
     try {
       setLoadLogin(true);
       const result = await http.post("auth/cadastro", dados);
       var barbearia = result.data.barbearia;
-      formatarUsuario(result);
-      setBarbearia(barbearia);
+      setUsuario(result.data.usuario);
+      if (barbearia !== null) {
+        setBarbearia(barbearia);
+      }
       return barbearia;
     } catch (error) {
       console.log(error);
@@ -89,6 +91,12 @@ export const CadastroEloginProvider = ({ children }) => {
     }
   };
 
+  const logout = async () => {
+    try {
+      setUsuario(null);
+    } catch (error) {}
+  };
+
   return (
     <CadastroEloginContext.Provider
       value={{
@@ -97,6 +105,7 @@ export const CadastroEloginProvider = ({ children }) => {
         loadLogin,
         confirmarCodigoEcriaUsuario,
         login,
+        logout,
         solicitarTrocarSenha,
         confirmarCodigoTrocarSenha,
         trocarSenha,

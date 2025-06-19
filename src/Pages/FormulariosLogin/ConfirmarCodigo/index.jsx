@@ -20,6 +20,7 @@ export const ConfirmarCodigo = () => {
 
   const navigate = useNavigate();
   const { endpoint } = useParams();
+  const { barbearia } = useParams();
 
   const {
     loadLogin,
@@ -31,10 +32,13 @@ export const ConfirmarCodigo = () => {
   const confirmarCodigo = async (dados) => {
     try {
       if (endpoint === "cadastro") {
-        const barbearia = await confirmarCodigoEcriaUsuario(dados);
-        navigate(`/${barbearia.nome}/agendamentos`);
+        const barbeariaRetorno = await confirmarCodigoEcriaUsuario(dados);
+        if(barbeariaRetorno !== null) {
+          navigate(`/${barbeariaRetorno.nome}/agendamentos`);
+          return;
+        }
+        navigate(`/${barbearia}/servicos`);
       }
-
       if (endpoint === "mudarSenha") {
         await confirmarCodigoTrocarSenha(dados);
         navigate("/redefinirSenha");

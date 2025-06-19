@@ -10,6 +10,7 @@ import { LayoutPadraoFormularios } from "../Components/LayoutPadraoFormularios";
 import { LayoutPadraoUsuarioAdm } from "../Components/LayoutPadraoUsuarioAdm";
 import { Servicos } from "../Pages/Servicos";
 import { Barbeiros } from "../Pages/Barbeiros";
+import { RotaPrivadaAdm } from "./RotaPrivadaAdm";
 
 export default function appRouter() {
   return (
@@ -20,15 +21,25 @@ export default function appRouter() {
           {/* Formularios login e cadastro adm */}
           <Route element={<LayoutPadraoFormularios />}>
             <Route path="/cadastro" element={<FormCadastroAdm />} />
-            <Route path="/confirmarCodigo/:endpoint" element={<ConfirmarCodigo />} />
+            <Route
+              path="/confirmarCodigo/:endpoint"
+              element={<ConfirmarCodigo />}
+            />
             <Route path="/login" element={<Form />} />
             <Route path="/redefinirSenha" element={<TrocarSenha />} />
           </Route>
           {/* Paginas barbearia Adm */}
-          <Route element={<LayoutPadraoUsuarioAdm/>}>
-            <Route path="/:barbearia/agendamentos" element={<Agendamentos />} />
+          <Route element={<LayoutPadraoUsuarioAdm />}>
+            <Route
+              path="/:barbearia/agendamentos"
+              element={
+                <RotaPrivadaAdm>
+                  <Agendamentos />
+                </RotaPrivadaAdm>
+              }
+            />
             <Route path="/:barbearia/servicos" element={<Servicos />} />
-            <Route path="/:barbearia/barbeiros" element={<Barbeiros/>} /> 
+            <Route path="/:barbearia/barbeiros" element={<Barbeiros />} />
           </Route>
         </Routes>
       </AppProviders>

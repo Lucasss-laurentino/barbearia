@@ -5,11 +5,14 @@ import { ModalServico } from "./ModalServico";
 import { EditarExcluir } from "./EditarExcluir";
 import { ModalExcluir } from "../../Components/ModalExcluir";
 import { SpanAdd } from "../../Components/SpanAdd";
+import { UserContext } from "../../Context/UserContext";
 
 export const Servicos = () => {
-  const { servicos, servicoEscolhido, excluirServico } = useContext(ServicoContext);
+  const { servicos, servicoEscolhido, excluirServico } =
+    useContext(ServicoContext);
   const [showModalServico, setShowModalServico] = useState(false);
   const [showModalExcluir, setShowModalExcluir] = useState(false);
+  const { usuario } = useContext(UserContext);
 
   return (
     <>
@@ -50,7 +53,13 @@ export const Servicos = () => {
               </li>
             ))}
           </ul>
-          <SpanAdd setShow={setShowModalServico} entity={servicos} text={"Cadastre um serviço aqui!"}/>
+          {usuario?.adm && (
+            <SpanAdd
+              setShow={setShowModalServico}
+              entity={servicos}
+              text={"Cadastre um serviço aqui!"}
+            />
+          )}
         </div>
       </div>
     </>

@@ -22,7 +22,7 @@ export const ModalCriarHorarioBarbeiro = ({
     resolver: yupResolver(horariosSchema),
   });
 
-  const { loadHorarios, criarHorario, editarHorario, setHorarioSelecionado } =
+  const { loadHorarios, criarHorario, editarHorario, setHorarioSelecionado, errosHorarios, setErrosHorarios } =
     useContext(HorarioContext);
 
   const { barbeiroSelecionado } = useContext(BarbeiroContext);
@@ -34,13 +34,15 @@ export const ModalCriarHorarioBarbeiro = ({
       value = `${value.slice(0, 2)}:${value.slice(2)}`;
     }
     setValue("Hora", value);
+    setErrosHorarios(null);
   };
 
   const handleHorario = async (data) => {
     if (horario === null) {
       await criarHorario(data, setShow);
     } else {
-      await editarHorario(data);
+      const resposta = await editarHorario(data);
+      if(!resposta) return;
     }
     setShow(false);
   };
@@ -49,6 +51,7 @@ export const ModalCriarHorarioBarbeiro = ({
     if (!show) {
       setValue("Hora", "");
       setHorarioSelecionado(null);
+      setErrosHorarios(null);
     }
   }, [show]);
 
@@ -91,7 +94,7 @@ export const ModalCriarHorarioBarbeiro = ({
               {errors.Hora && (
                 <p className="m-0 my-1 text-danger">*{errors.Hora.message}</p>
               )}
-              {/* {errosHorarios.erro && <p className="m-0 my-1 text-danger">*{errosHorarios.menssagem}</p>} */}
+              {errosHorarios && <p className="m-0 my-1 text-danger">*{errosHorarios}</p>}
             </div>
             {loadHorarios ? (
               <MutatingDots

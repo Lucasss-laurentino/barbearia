@@ -11,6 +11,7 @@ export const HorarioProvider = ({ children }) => {
 
   const [loadHorario, setLoadHorario] = useState(false);
   const [loadHorarios, setLoadHorarios] = useState(false);
+  const [errosHorarios, setErrosHorarios] = useState(null);
   const [horarioSelecionado, setHorarioSelecionado] = useState(null);
   const [horarioOuBarbeiroPraExcluir, setHorarioOuBarbeiroPraExcluir] =
     useState(false); // false = barbeiro, true = horario
@@ -50,6 +51,7 @@ export const HorarioProvider = ({ children }) => {
   };
 
   const editarHorario = async (data) => {
+    data.IdBarbeiro = horarioSelecionado.idBarbeiro;
     try {
       const response = await http.put(
         `horario/${horarioSelecionado.id}`,
@@ -59,9 +61,16 @@ export const HorarioProvider = ({ children }) => {
         }
       );
       setHorarioSelecionado(null);
-      // atualizar lista de horarios em barbearia
+      await substituirHorarioEditado(response.data);
+      return true;
     } catch (error) {
-      console.log(error);
+      if (
+        error.response.data.detail ===
+        "Esse horário já existe pra esse barbeiro!"
+      ) {
+        setErrosHorarios("Esse horário já existe pra esse barbeiro!");
+      }
+      return false;
     }
   };
 
@@ -72,6 +81,7 @@ export const HorarioProvider = ({ children }) => {
       });
       await retirarHorarioExcluido();
       setHorarioOuBarbeiroPraExcluir(false);
+      setHorarioSelecionado(null);
     } catch (error) {
       console.log(error);
     }
@@ -86,6 +96,24 @@ export const HorarioProvider = ({ children }) => {
         );
       }
     });
+    setBarbearia(novaBarbearia);
+  };
+
+  const substituirHorarioEditado = async (horarioAtualizado) => {
+    const novaBarbearia = structuredClone(barbearia);
+
+    novaBarbearia.barbeiros.$values.forEach((barbeiro) => {
+      if (barbeiro.horarios && barbeiro.horarios.$values) {
+        const index = barbeiro.horarios.$values.findIndex(
+          (h) => h.id === horarioAtualizado.id
+        );
+
+        if (index !== -1) {
+          barbeiro.horarios.$values[index] = horarioAtualizado;
+        }
+      }
+    });
+
     setBarbearia(novaBarbearia);
   };
 
@@ -115,6 +143,8 @@ export const HorarioProvider = ({ children }) => {
         setHorarioSelecionado,
         horarioOuBarbeiroPraExcluir,
         setHorarioOuBarbeiroPraExcluir,
+        errosHorarios,
+        setErrosHorarios,
       }}
     >
       {children}
