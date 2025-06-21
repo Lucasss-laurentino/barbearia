@@ -1,29 +1,103 @@
-import { createContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { createContext, useContext, useEffect, useState } from "react";
+import { BarbeariaContext } from "./BarbeariaContext";
+import { UserContext } from "./UserContext";
+import AgendamentoIcon from "../Components/MenuFooter/Icones/agendamento/calendar-add-svgrepo-com.svg";
+import AgendamentoIconDark from "../Components/MenuFooter/Icones/agendamento/agendamento-dark.svg";
+import ServiceIcon from "../Components/MenuFooter/Icones/services/services.svg";
+import ServiceIconDark from "../Components/MenuFooter/Icones/services/services-dark.svg";
+import BarbeiroIcon from "../Components/MenuFooter/Icones/barbeiros/barbeiro.svg";
+import BarbeiroIconWhite from "../Components/MenuFooter/Icones/barbeiros/barbeiroIconWhite.svg";
+import FinanceiroIconDark from "../Components/MenuFooter/Icones/financeiro/financial-bars-stats-svgrepo-com.svg";
+import FinanceiroIcon from "../Components/MenuFooter/Icones/financeiro/financial-white.svg";
+import MeusHorariosIcon from "../Components/MenuFooter/Icones/meusHorarios/clock-three-svgrepo-com.svg";
+import MeusHorariosIconDark from "../Components/MenuFooter/Icones/meusHorarios/meusHorarios-dark.svg";
+import LoginIcon from "../Components/MenuFooter/Icones/login/login-3-svgrepo-com.svg";
+import LoginIconDark from "../Components/MenuFooter/Icones/login/login-dark.svg";
 
 export const MenuFooterContext = createContext();
 
-export const MenuFooterProvider = ({children}) => {
- 
-  const [subRota, setSubRota] = useState("");
-  // esse state é usado pra voltar a pagina no form login pra ser direcionado pra pagina que estava antes de ir pra login
-  const [rotaAnterior, setRotaAnterior] = useState("");
-    const navigate = useNavigate();
+export const MenuFooterProvider = ({ children }) => {
+  const { barbearia } = useContext(BarbeariaContext);
+  const { usuario } = useContext(UserContext);
+  const [itensMenu, setItemsMenu] = useState([]);
 
-    const ativarPagina = (item) => {
-      navigate(item.url)
-      setSubRota(item.url);
+  useEffect(() => {
+    constroyMenu();
+  }, [barbearia]);
+
+  const constroyMenu = () => {
+    if (barbearia?.nome) {
+      if (usuario && usuario?.adm) {
+        setItemsMenu([
+          {
+            rota: "agendamentos",
+            text: "Agendamentos",
+            svg: AgendamentoIcon,
+            svgDark: AgendamentoIconDark,
+            url: `/${barbearia?.nome}/agendamentos`,
+          },
+          {
+            rota: "servicos",
+            text: "Serviços",
+            svg: ServiceIcon,
+            svgDark: ServiceIconDark,
+            url: `/${barbearia?.nome}/servicos`,
+          },
+          {
+            rota: "barbeiros",
+            text: "Barbeiros",
+            svg: BarbeiroIconWhite,
+            svgDark: BarbeiroIcon,
+            url: `/${barbearia?.nome}/barbeiros`,
+          },
+          {
+            rota: "financeiro",
+            text: "Financeiro",
+            svg: FinanceiroIcon,
+            svgDark: FinanceiroIconDark,
+            url: `/${barbearia?.nome}/financeiro`,
+          },
+        ]);
+      }
+      if (!usuario || !usuario?.adm) {
+        setItemsMenu([
+          {
+            rota: "servicos",
+            text: "Serviços",
+            svg: ServiceIcon,
+            svgDark: ServiceIconDark,
+            url: `/${barbearia?.nome}/servicos`,
+          },
+          {
+            rota: "barbeiros",
+            text: "Barbeiros",
+            svg: BarbeiroIconWhite,
+            svgDark: BarbeiroIcon,
+            url: `/${barbearia?.nome}/barbeiros`,
+          },
+
+          {
+            rota: "meusHorarios",
+            text: "Meus Horários",
+            svg: MeusHorariosIcon,
+            svgDark: MeusHorariosIconDark,
+            url: `/${barbearia?.nome}/meusHorarios`,
+          },
+          {
+            rota: "login",
+            text: "Login",
+            svg: LoginIcon,
+            svgDark: LoginIconDark,
+            url: `/${barbearia?.nome}/login`,
+          },
+        ]);
+      }
     }
+  };
 
-    return (
-        <MenuFooterContext.Provider value={{
-          subRota,
-          setSubRota, 
-          ativarPagina,
-          rotaAnterior,
-          setRotaAnterior
-        }}>
-            {children}
-        </MenuFooterContext.Provider>
-    )
-}
+  return (
+    <MenuFooterContext.Provider value={{ itensMenu, setItemsMenu }}>
+      {children}
+    </MenuFooterContext.Provider>
+  );
+};

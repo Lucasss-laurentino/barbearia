@@ -8,16 +8,22 @@ import { ExpandeHorarios } from "./ExpandeHorarios";
 import { ModalExcluir } from "../../Components/ModalExcluir";
 import { ModalCriarHorarioBarbeiro } from "../../Components/ModalCriarHorarioBarbeiro";
 import { HorarioContext } from "../../Context/HorarioContext";
+import { UserContext } from "../../Context/UserContext";
 
 export const Barbeiros = () => {
-  const { barbeiros, barbeiroSelecionado, excluirBarbeiro } = useContext(BarbeiroContext);
-  const { excluirHorario, horarioOuBarbeiroPraExcluir, horarioSelecionado } = useContext(HorarioContext)
+  const { barbeiros, barbeiroSelecionado, excluirBarbeiro } =
+    useContext(BarbeiroContext);
+  const { excluirHorario, horarioOuBarbeiroPraExcluir, horarioSelecionado } =
+    useContext(HorarioContext);
+  const { usuario } = useContext(UserContext);
   const [showModalCriarBarbeiro, setShowModalCriarBarbeiro] = useState(false);
-  const [showModalDeletarBarbeiro, setShowModalDeletarBarbeiro] = useState(false);
-  const [showModalCriarHorarioBarbeiro, setShowModalCriarHorarioBarbeiro] = useState(false);
+  const [showModalDeletarBarbeiro, setShowModalDeletarBarbeiro] =
+    useState(false);
+  const [showModalCriarHorarioBarbeiro, setShowModalCriarHorarioBarbeiro] =
+    useState(false);
   const [showModalDeletarHorario, setShowModalDeletarHorario] = useState(false);
   const [expandedBarbeiroId, setExpandedBarbeiroId] = useState(null);
-  
+
   const toggleHorarios = (id) => {
     setExpandedBarbeiroId(expandedBarbeiroId === id ? null : id);
   };
@@ -30,11 +36,21 @@ export const Barbeiros = () => {
         barbeiro={barbeiroSelecionado}
       />
 
-      <ModalExcluir 
-        show={horarioOuBarbeiroPraExcluir ? showModalDeletarHorario : showModalDeletarBarbeiro}
-        setShow={horarioOuBarbeiroPraExcluir ? setShowModalDeletarHorario : setShowModalDeletarBarbeiro}
+      <ModalExcluir
+        show={
+          horarioOuBarbeiroPraExcluir
+            ? showModalDeletarHorario
+            : showModalDeletarBarbeiro
+        }
+        setShow={
+          horarioOuBarbeiroPraExcluir
+            ? setShowModalDeletarHorario
+            : setShowModalDeletarBarbeiro
+        }
         nomeItemExclusao={horarioOuBarbeiroPraExcluir ? "Horário" : "Barbeiro"}
-        funcExcluir={horarioOuBarbeiroPraExcluir ? excluirHorario : excluirBarbeiro}
+        funcExcluir={
+          horarioOuBarbeiroPraExcluir ? excluirHorario : excluirBarbeiro
+        }
       />
 
       <ModalCriarHorarioBarbeiro
@@ -55,11 +71,13 @@ export const Barbeiros = () => {
                     className="imagem-barbeiro"
                   />
                   <div className="info-barbeiro">
-                    <AcoesADM 
-                      barbeiro={barbeiro}
-                      setShow={setShowModalCriarBarbeiro}
-                      setShowExcluir={setShowModalDeletarBarbeiro}
-                    />
+                    {usuario?.adm && (
+                      <AcoesADM
+                        barbeiro={barbeiro}
+                        setShow={setShowModalCriarBarbeiro}
+                        setShowExcluir={setShowModalDeletarBarbeiro}
+                      />
+                    )}
                     <div className="d-flex justify-content-between align-items-start">
                       <h4 className="nome-barbeiro">{barbeiro.nome}</h4>
                       <div className="d-flex flex-column justify-content-center align-items-center">
@@ -90,11 +108,13 @@ export const Barbeiros = () => {
               </li>
             ))}
           </ul>
-          <SpanAdd
-            setShow={setShowModalCriarBarbeiro}
-            entity={barbeiros}
-            text={"Cadastre um barbeiro aqui!"}
-          />
+          {usuario?.adm && (
+            <SpanAdd
+              setShow={setShowModalCriarBarbeiro}
+              entity={barbeiros}
+              text={"Cadastre um barbeiro aqui!"}
+            />
+          )}
         </div>
       </div>
     </>

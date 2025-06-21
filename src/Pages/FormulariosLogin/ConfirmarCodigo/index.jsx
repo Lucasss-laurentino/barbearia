@@ -3,10 +3,11 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { confirmarCodigoSchema } from "../../../validations/ConfirmarCodigo";
 import { ErrosFormLogin } from "../ErrosFormLogin";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { CadastroEloginContext } from "../../../Context/CadastroEloginContext";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { BtnVoltarForm } from "../BtnVoltarForm";
 
 export const ConfirmarCodigo = () => {
  
@@ -28,6 +29,10 @@ export const ConfirmarCodigo = () => {
     confirmarCodigoTrocarSenha,
     erroLoginInvalido,
   } = useContext(CadastroEloginContext);
+
+  useEffect(() => {
+    console.log(barbearia)
+  }, [barbearia]);
 
   const confirmarCodigo = async (dados) => {
     try {
@@ -53,6 +58,9 @@ export const ConfirmarCodigo = () => {
         className="col-12 formulario-page-login"
         onSubmit={handleSubmit((dados) => confirmarCodigo(dados))}
       >
+
+        <BtnVoltarForm/>
+
         <div className="titulo-e-textos-form-login">
           <h3 className="titulo-form-login">Barba Cabelo & Bigode</h3>
           <p className="m-0 p-form-login">

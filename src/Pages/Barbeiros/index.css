@@ -42,6 +42,7 @@
 .info-barbeiro {
   flex: 1;
   display: flex;
+  justify-content: center;
   flex-direction: column;
   gap: 8px;
   width: 100%; /* Garante que ocupa todo o espaço */

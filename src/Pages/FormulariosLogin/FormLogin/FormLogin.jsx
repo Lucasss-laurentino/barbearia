@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { CadastroEloginContext } from "../../../Context/CadastroEloginContext";
 import { MutatingDots } from "react-loader-spinner";
 import { BtnVoltarForm } from "../BtnVoltarForm";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export const FormLogin = ({ setFormAtivo }) => {
   const {
@@ -23,13 +23,14 @@ export const FormLogin = ({ setFormAtivo }) => {
   );
 
   const navigate = useNavigate();
+  const { barbearia: barbeariaParametro } = useParams();
 
   const handleLogin = async (data) => {
-    const barbearia = await login(data)
-    if (barbearia) {
-      navigate(`/${barbearia.nome}/agendamentos`)      
+    const barbeariaRetorno = await login(data);
+    if (barbeariaRetorno) {
+      navigate(`/${barbeariaRetorno.nome}/agendamentos`);
     }
-  }
+  };
 
   return (
     <>
@@ -38,11 +39,16 @@ export const FormLogin = ({ setFormAtivo }) => {
         className="col-12 formulario-page-login"
         onSubmit={handleSubmit((data) => handleLogin(data))}
       >
-
         <BtnVoltarForm />
-        
+
         <div className="titulo-e-textos-form-login">
-          <h3 className="titulo-form-login">Barba Cabelo & Bigode</h3>
+          <h3 className="titulo-form-login">
+            {barbeariaParametro
+              ? barbeariaParametro
+                  .replace(/-/g, " ")
+                  .replace(/\b\w/g, (l) => l.toUpperCase())
+              : "Barba Cabelo & Bigode"}
+          </h3>
           <h5 className="text-acesse-sua-conta">Entre na sua conta</h5>
         </div>
 
@@ -123,6 +129,13 @@ export const FormLogin = ({ setFormAtivo }) => {
             <p className="esqueci-senha" onClick={() => setFormAtivo(2)}>
               Esqueci minha senha
             </p>
+            {barbeariaParametro && (
+              <p className="esqueci-senha" onClick={() => {
+                navigate(`/${barbeariaParametro}/cadastroCliente`)}
+                }>
+                Não possui uma conta? <strong>Criar uma</strong>
+              </p>
+            )}
           </>
         )}
       </form>

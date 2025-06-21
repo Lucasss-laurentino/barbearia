@@ -41,11 +41,13 @@ export const Servicos = () => {
                   className="imagem-servico"
                 />
                 <div className="info-servico">
-                  <EditarExcluir
-                    servico={servico}
-                    setShowModalServico={setShowModalServico}
-                    setShowModalExcluir={setShowModalExcluir}
-                  />
+                  {usuario?.adm && (
+                    <EditarExcluir
+                      servico={servico}
+                      setShowModalServico={setShowModalServico}
+                      setShowModalExcluir={setShowModalExcluir}
+                    />
+                  )}
                   <h4 className="nome-servico">{servico.nome}</h4>
                   <p className="prazo-servico">{servico.prazo}</p>
                   <p className="preco-servico">R${servico.preco},00</p>
