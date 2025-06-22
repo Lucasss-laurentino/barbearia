@@ -1,7 +1,10 @@
 import "./index.css";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { createUserSchema, createUserSchemaADM } from "../../../validations/createUserValidation";
+import {
+  createUserSchema,
+  createUserSchemaADM,
+} from "../../../validations/createUserValidation";
 import { ErrosFormLogin } from "../ErrosFormLogin";
 import InputMask from "react-input-mask";
 import { useContext } from "react";
@@ -19,7 +22,9 @@ export const FormCadastro = () => {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(barbeariaParametro ? createUserSchema : createUserSchemaADM),
+    resolver: yupResolver(
+      barbeariaParametro ? createUserSchema : createUserSchemaADM
+    ),
   });
 
   const { confirmarEmail, loadLogin, erroLoginInvalido } = useContext(
@@ -29,6 +34,10 @@ export const FormCadastro = () => {
   const handleConfirmarEmail = async (dados) => {
     try {
       await confirmarEmail(dados);
+      if (barbeariaParametro) {
+        navigate(`/${barbeariaParametro}/confirmarCodigo/cadastro`);
+        return;
+      }
       navigate("/confirmarCodigo/cadastro");
     } catch (error) {}
   };

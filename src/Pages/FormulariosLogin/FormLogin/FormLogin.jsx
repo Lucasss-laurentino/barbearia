@@ -27,8 +27,12 @@ export const FormLogin = ({ setFormAtivo }) => {
 
   const handleLogin = async (data) => {
     const barbeariaRetorno = await login(data);
-    if (barbeariaRetorno) {
-      navigate(`/${barbeariaRetorno.nome}/agendamentos`);
+    if (barbeariaRetorno.barbearia && !barbeariaRetorno.erro) {
+      navigate(`/${barbeariaRetorno.barbearia.nome}/agendamentos`);
+      return;
+    }
+    if (!barbeariaRetorno.barbearia && !barbeariaRetorno.erro && barbeariaParametro) {
+      navigate(`/${barbeariaParametro}/servicos`);
     }
   };
 
@@ -130,9 +134,12 @@ export const FormLogin = ({ setFormAtivo }) => {
               Esqueci minha senha
             </p>
             {barbeariaParametro && (
-              <p className="esqueci-senha" onClick={() => {
-                navigate(`/${barbeariaParametro}/cadastroCliente`)}
-                }>
+              <p
+                className="esqueci-senha"
+                onClick={() => {
+                  navigate(`/${barbeariaParametro}/cadastroCliente`);
+                }}
+              >
                 Não possui uma conta? <strong>Criar uma</strong>
               </p>
             )}

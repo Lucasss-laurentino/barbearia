@@ -13,6 +13,8 @@ import MeusHorariosIcon from "../Components/MenuFooter/Icones/meusHorarios/clock
 import MeusHorariosIconDark from "../Components/MenuFooter/Icones/meusHorarios/meusHorarios-dark.svg";
 import LoginIcon from "../Components/MenuFooter/Icones/login/login-3-svgrepo-com.svg";
 import LoginIconDark from "../Components/MenuFooter/Icones/login/login-dark.svg";
+import PerfilIcon from "../Components/MenuFooter/Icones/perfil/perfilBranco.svg";
+import PerfilIconDark from "../Components/MenuFooter/Icones/perfil/perfilPreto.svg";
 
 export const MenuFooterContext = createContext();
 
@@ -23,7 +25,7 @@ export const MenuFooterProvider = ({ children }) => {
 
   useEffect(() => {
     constroyMenu();
-  }, [barbearia]);
+  }, [barbearia, usuario]);
 
   const constroyMenu = () => {
     if (barbearia?.nome) {
@@ -58,8 +60,9 @@ export const MenuFooterProvider = ({ children }) => {
             url: `/${barbearia?.nome}/financeiro`,
           },
         ]);
+        return;
       }
-      if (!usuario || !usuario?.adm) {
+      if (!usuario) {
         setItemsMenu([
           {
             rota: "servicos",
@@ -91,6 +94,41 @@ export const MenuFooterProvider = ({ children }) => {
             url: `/${barbearia?.nome}/login`,
           },
         ]);
+        return;
+      }
+      if (usuario && !usuario.Adm) {
+        setItemsMenu([
+          {
+            rota: "servicos",
+            text: "Serviços",
+            svg: ServiceIcon,
+            svgDark: ServiceIconDark,
+            url: `/${barbearia?.nome}/servicos`,
+          },
+          {
+            rota: "barbeiros",
+            text: "Barbeiros",
+            svg: BarbeiroIconWhite,
+            svgDark: BarbeiroIcon,
+            url: `/${barbearia?.nome}/barbeiros`,
+          },
+
+          {
+            rota: "meusHorarios",
+            text: "Meus Horários",
+            svg: MeusHorariosIcon,
+            svgDark: MeusHorariosIconDark,
+            url: `/${barbearia?.nome}/meusHorarios`,
+          },
+          {
+            rota: "minhaConta",
+            text: "Perfil",
+            svg: PerfilIcon,
+            svgDark: PerfilIconDark,
+            url: `/${barbearia?.nome}/minhaConta`,
+          },
+        ]);
+        return;
       }
     }
   };

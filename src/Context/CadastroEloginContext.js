@@ -24,7 +24,7 @@ export const CadastroEloginProvider = ({ children }) => {
     }
   };
 
-  const confirmarCodigoEcriaUsuario = async (dados, barbeariaParametro) => {
+  const confirmarCodigoEcriaUsuario = async (dados) => {
     try {
       setLoadLogin(true);
       const result = await http.post("auth/cadastro", dados);
@@ -47,12 +47,15 @@ export const CadastroEloginProvider = ({ children }) => {
       setLoadLogin(true);
       const resposta = await http.post("/auth/login", dados);
       var barbearia = resposta.data.barbearia;
+      var usuario = resposta.data.usuario;
+      setUsuario(usuario);
       setBarbearia(barbearia);
       setLoadLogin(false);
-      return barbearia;
+      return { barbearia, erro: false };
     } catch (error) {
       setErroLoginInvalido(error.response.data.detail);
       setLoadLogin(false);
+      return { barbearia: null, erro: true };
     }
   };
 
@@ -92,9 +95,8 @@ export const CadastroEloginProvider = ({ children }) => {
   };
 
   const logout = async () => {
-    try {
-      setUsuario(null);
-    } catch (error) {}
+    await http.post("/auth/logout");
+    setUsuario(null);
   };
 
   return (

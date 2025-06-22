@@ -1,12 +1,10 @@
 import "./index.css";
 import { useContext } from "react";
-import { UserContext } from "../../Context/UserContext";
 import { useNavigate } from "react-router-dom";
 import { BarbeariaContext } from "../../Context/BarbeariaContext";
 
 export const Navbar = ({setClassMenu, classMenu}) => {
 
-  const { usuario } = useContext(UserContext);
   const { barbearia } = useContext(BarbeariaContext);
   const navigate = useNavigate();
 

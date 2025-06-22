@@ -2,12 +2,22 @@ import { useContext } from "react";
 import "./index.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { UserContext } from "../../Context/UserContext";
+import { CadastroEloginContext } from "../../Context/CadastroEloginContext";
 
 export const Menu = ({ setClassMenu, classMenu }) => {
   const { barbearia } = useParams();
   const { usuario } = useContext(UserContext);
+  const { logout } = useContext(CadastroEloginContext);
 
   const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    if (barbearia) {
+      await logout();
+      navigate(`/${barbearia}/servicos`);
+      setClassMenu(!classMenu);
+    }
+  };
 
   return (
     <>
@@ -20,7 +30,7 @@ export const Menu = ({ setClassMenu, classMenu }) => {
               <div className="p-0">
                 <ul className="list-menu">
                   {/* MINHA CONTA */}
-                  {usuario?.adm && (
+                  {usuario && (
                     <li
                       className="col-12 px-4 d-flex justify-content-between align-items-center cursor"
                       onClick={() => {
@@ -52,8 +62,11 @@ export const Menu = ({ setClassMenu, classMenu }) => {
                     <img src="/whatsapp.png" className="col-1" alt="" />
                   </li>
                   {/* SAIR */}
-                  {usuario?.adm && (
-                    <li className="col-12 px-4 d-flex justify-content-between align-items-center cursor">
+                  {usuario && (
+                    <li
+                      className="col-12 px-4 d-flex justify-content-between align-items-center cursor"
+                      onClick={() => handleLogout()}
+                    >
                       <p className="m-0">Sair</p>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

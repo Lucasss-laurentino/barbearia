@@ -30,10 +30,6 @@ export const ConfirmarCodigo = () => {
     erroLoginInvalido,
   } = useContext(CadastroEloginContext);
 
-  useEffect(() => {
-    console.log(barbearia)
-  }, [barbearia]);
-
   const confirmarCodigo = async (dados) => {
     try {
       if (endpoint === "cadastro") {

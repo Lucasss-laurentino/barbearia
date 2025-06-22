@@ -26,6 +26,10 @@ export default function appRouter() {
               path="/confirmarCodigo/:endpoint"
               element={<ConfirmarCodigo />}
             />
+             <Route
+              path="/:barbearia/confirmarCodigo/:endpoint"
+              element={<ConfirmarCodigo />}
+            />
             <Route path="/login" element={<Form />} />
             <Route path="/redefinirSenha" element={<TrocarSenha />} />
             <Route path="/:barbearia/login" element={<Form/>}/>
