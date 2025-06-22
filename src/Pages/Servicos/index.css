@@ -19,13 +19,31 @@
 }
 
 .item-servico {
+  height: 120px;
   display: flex;
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.07);
+  background-color: rgba(0, 0, 0, 0.6);
   border-radius: 12px;
-  padding: 12px;
-  gap: 16px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.item-servico-ativo {
+  height: 120px;
+  display: flex;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.6);
+  border: 1px solid #00e676;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.encapsula-servico {
+  width: 80%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .imagem-servico {
@@ -40,6 +58,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  padding-left: 10px;
 }
 
 .nome-servico {
@@ -60,4 +79,32 @@
   font-size: 1rem;
   font-weight: bold;
   color: #00e676;
+}
+
+.botao-escolher-servico {
+  width: 20%;
+  height: 120px;
+  padding: 0 5px;
+  background-color: rgba(0, 0, 0, 0.85);
+  border: none;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  color: #aaa;
+  cursor: not-allowed;
+  font-size: 10px;
+  font-weight: bold;
+  border-radius: 0 12px 12px 0;
+}
+
+.botao-escolher-servico-ativado {
+  width: 20%;
+  height: 120px;
+  padding: 0 5px;
+  background-color: #00e676;
+  border: none;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  cursor: not-allowed;
+  font-size: 10px;
+  font-weight: bold;
+  border-radius: 0 12px 12px 0;
 }

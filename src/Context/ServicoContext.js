@@ -34,7 +34,6 @@ export const ServicoProvider = ({ children }) => {
         },
       });
       setLoadServico(false);
-
       setBarbearia((prev) => ({
         ...prev,
         servicos: {
@@ -42,11 +41,10 @@ export const ServicoProvider = ({ children }) => {
           $values: [...prev.servicos.$values, response.data],
         },
       }));
-
       setShow(false);
+      setServicoEscolhido(null);
     } catch (error) {
       setLoadServico(false);
-      console.log(error);
     }
   };
 
@@ -81,6 +79,7 @@ export const ServicoProvider = ({ children }) => {
       substituirServicoEditado(response.data);
       setLoadServico(false);
       setShow(false);
+      setServicoEscolhido(null);
     } catch (error) {
       setLoadServico(false);
       if(error.response?.data === 'Token não encontrado!') window.location.href = '/login';

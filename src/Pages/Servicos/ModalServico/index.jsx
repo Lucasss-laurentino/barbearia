@@ -85,10 +85,6 @@ export const ModalServico = ({ show, setShow, servico = null }) => {
     }
   }, [servico, setValue, show]);
 
-  useEffect(() => {
-    if (!show) limparCampos();
-  }, [show]);
-
   return (
     <>
       <Modal

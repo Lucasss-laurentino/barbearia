@@ -11,6 +11,7 @@ import { LayoutPadrao } from "../Components/LayoutPadrao";
 import { Servicos } from "../Pages/Servicos";
 import { Barbeiros } from "../Pages/Barbeiros";
 import { RotaPrivadaAdm } from "./RotaPrivadaAdm";
+import { MeusHorarios } from "../Pages/MeusHorarios";
 
 export default function appRouter() {
   return (
@@ -46,6 +47,7 @@ export default function appRouter() {
             />
             <Route path="/:barbearia/servicos" element={<Servicos />} />
             <Route path="/:barbearia/barbeiros" element={<Barbeiros />} />
+            <Route path="/:barbearia/meusHorarios" element={<MeusHorarios/>}/>
           </Route>
         </Routes>
       </AppProviders>

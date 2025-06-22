@@ -1,7 +1,7 @@
 .horarios-barbeiro {
   max-height: 240px;
   padding: 10px 12px;
-  background-color: rgba(255, 255, 255, 0.03);
+  background-color: rgba(0, 0, 0, 0.6);
   border-radius: 10px;
   color: white;
   overflow-y: auto;
@@ -87,10 +87,10 @@
 }
 
 .encapsula-btns {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .btn-horario:hover {

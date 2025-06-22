@@ -10,7 +10,6 @@
   overflow-y: auto;
 }
 
-
 .card-horario {
   background-color: rgba(0, 0, 0, 0.8); /* fundo mais escuro */
   border-radius: 1rem;
@@ -35,4 +34,17 @@
 .muted {
   opacity: 0.5;
   transition: all 0.3s ease-in-out;
+}
+
+.estado-vazio-meusHorarios {
+  height: 47vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 8px;
 }

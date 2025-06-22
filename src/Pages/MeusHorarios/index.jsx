@@ -1,28 +1,25 @@
-import { useContext, useEffect } from "react";
 import "./index.css";
-import { HorarioMarcadoContext } from "../../Context/HorarioMarcadoContext";
-import { CardHorarioMarcado } from "./CardHorarioMarcado";
-import { CardHorariosMarcadosAnterior } from "./CardHorariosMarcadosAnterior";
+// import { CardHorarioMarcado } from "./CardHorarioMarcado";
+import { useContext } from "react";
+import { UserContext } from "../../Context/UserContext";
 
 export const MeusHorarios = () => {
-  const {
-    gatilhoPraDirecionarPraMeusHorarios,
-    setGatilhoPraDirecionarPraMeusHorarios,
-    pegarMeuHorarioMarcado,
-    horarioMarcado
-  } = useContext(HorarioMarcadoContext);
 
-  useEffect(() => {
-    if (gatilhoPraDirecionarPraMeusHorarios)
-      setGatilhoPraDirecionarPraMeusHorarios(false);
-    pegarMeuHorarioMarcado();
-  }, [gatilhoPraDirecionarPraMeusHorarios]);
+  const { usuario } = useContext(UserContext);
 
   return (
     <>
       <div className="container-horarios">
-        {horarioMarcado && <CardHorarioMarcado horario={horarioMarcado} />}
-        {/*<CardHorariosMarcadosAnterior />  // testar quando criar um usuario e agendar um horario logado.     */}
+        {/* <CardHorarioMarcado /> */}
+        <div className="estado-vazio-meusHorarios">
+            <h4 className="mensagem-vazia">
+              Nenhum horário agendado até o momento
+            </h4>
+            <p className="subtexto-vazio">
+              {!usuario && "Faça login e acesse seu histórico de agendamentos."}
+              {usuario && "Você ainda não agendou nenhum horário."}
+            </p>
+        </div>
       </div>
     </>
   );
