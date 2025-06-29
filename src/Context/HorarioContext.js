@@ -15,6 +15,7 @@ export const HorarioProvider = ({ children }) => {
   const [horarioSelecionado, setHorarioSelecionado] = useState(null);
   const [horarioOuBarbeiroPraExcluir, setHorarioOuBarbeiroPraExcluir] =
     useState(false); // false = barbeiro, true = horario
+  const [horariosFiltrado, setHorariosFiltrado] = useState([]);
 
   useEffect(() => {
     ordenaHorariosPelaHora();
@@ -129,6 +130,22 @@ export const HorarioProvider = ({ children }) => {
     }
   };
 
+  const atualizarHorariosFiltrado = (barbeiro) => {
+    const horaAtual = new Date();
+    const horariosFuturo = barbeiro.horarios.$values.filter((horario) => {
+      const [hora, minuto, segundo] = horario.hora.split(":").map(Number);
+      const horarioFormatado = new Date();
+      horarioFormatado.setHours(hora, minuto, segundo || 0, 0);
+      return horarioFormatado > horaAtual;
+    });
+    setHorariosFiltrado([...horariosFuturo]);
+  };
+
+  const filtrarHorarios = (barbeiro) => {
+    atualizarHorariosFiltrado(barbeiro);
+    ordenaHorariosPelaHora();
+  }
+
   return (
     <HorarioContext.Provider
       value={{
@@ -145,6 +162,11 @@ export const HorarioProvider = ({ children }) => {
         setHorarioOuBarbeiroPraExcluir,
         errosHorarios,
         setErrosHorarios,
+        atualizarHorariosFiltrado,
+        horariosFiltrado,
+        setHorariosFiltrado,
+        ordenaHorariosPelaHora,
+        filtrarHorarios
       }}
     >
       {children}

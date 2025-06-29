@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { SpanAdd } from "../../Components/SpanAdd";
 import "./index.css";
 import { BarbeiroContext } from "../../Context/BarbeiroContext";
@@ -9,6 +9,8 @@ import { ModalExcluir } from "../../Components/ModalExcluir";
 import { ModalCriarHorarioBarbeiro } from "../../Components/ModalCriarHorarioBarbeiro";
 import { HorarioContext } from "../../Context/HorarioContext";
 import { UserContext } from "../../Context/UserContext";
+import { ToastContainer, toast, Bounce } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const Barbeiros = () => {
   const { barbeiros, barbeiroSelecionado, excluirBarbeiro } =
@@ -16,6 +18,7 @@ export const Barbeiros = () => {
   const { excluirHorario, horarioOuBarbeiroPraExcluir, horarioSelecionado } =
     useContext(HorarioContext);
   const { usuario } = useContext(UserContext);
+
   const [showModalCriarBarbeiro, setShowModalCriarBarbeiro] = useState(false);
   const [showModalDeletarBarbeiro, setShowModalDeletarBarbeiro] =
     useState(false);
@@ -57,6 +60,21 @@ export const Barbeiros = () => {
         show={showModalCriarHorarioBarbeiro}
         setShow={setShowModalCriarHorarioBarbeiro}
         horario={horarioSelecionado}
+      />
+
+      <ToastContainer
+        position="bottom-right"
+        autoClose={7000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        limit={1}
+        transition={Bounce}
       />
 
       <div className="pagina-barbeiros">

@@ -1,41 +1,102 @@
-.lista-calendario {
-  width: 70%;
+.wrapper-calendario {
   display: flex;
-  justify-content: space-between;
-  list-style: none;
-
-  padding: 0;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
-.lista-calendario > li {
+/* Botão que mostra a data */
+.botao-data {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #00e676;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.botao-data:hover {
+  background-color: rgba(0, 230, 118, 0.1);
+  cursor: pointer;
+}
+
+/* Overlay que cobre toda a tela */
+.calendario-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(15, 15, 15, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  z-index: 1000;
+  padding: 0 16px; /* garante espaço lateral em telas pequenas */
+}
+
+/* Quando ativo (calendário visível) */
+.calendario-overlay.ativo {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: all;
+}
+
+/* Quando inativo (calendário escondido) */
+.calendario-overlay.inativo {
+  opacity: 0;
+  transform: scale(0.9);
+  pointer-events: none;
+}
+
+/* Caixa central que envolve o calendário */
+.calendario-central {
+  background-color: #1e1e1e;
+  border-radius: 12px;
+  padding: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  width: 100%;
+  max-width: 360px; /* se adapta até esse limite em telas grandes */
+}
+
+/* Calendário em si (React Calendar) */
+.meu-calendario {
+  background-color: #1e1e1e;
+  color: white;
+  border-radius: 10px;
+  border: none;
+  width: 100%;
+}
+
+.meu-calendario abbr {
   color: white;
 }
 
-.lista-calendario > li > p {
-  text-align: center;
+/* Botões dentro do calendário */
+.meu-calendario button {
+  background: none;
+  border: none;
+  color: #ddd;
 }
 
-.lista-dias {
-  padding: 0;
-  list-style: none;
+/* Hover nos dias */
+.meu-calendario button:enabled:hover {
+  background-color: rgba(0, 230, 118, 0.1);
+  cursor: pointer;
+  border-radius: 6px;
 }
 
-.calendario-header {
-  border-top: 1px solid rgb(82, 81, 81);
-  border-right: 1px solid rgb(82, 81, 81);
-  border-left: 1px solid rgb(82, 81, 81);
-}
-
-.calendario {
-  top: 28%;
-  position: absolute;
-  transition: top 700ms;
-  z-index: 2;
-}
-
-.calendario-hidden {
-  top: -100%;
-  position: absolute;
-  transition: top 700ms;
-  z-index: 2;
+/* Dia selecionado */
+.meu-calendario .react-calendar__tile--active {
+  background: #00e676;
+  color: #000;
+  border-radius: 6px;
 }

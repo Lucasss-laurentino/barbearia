@@ -2,6 +2,7 @@ import { AgendamentoProvider } from "../../Context/AgendamentoContext";
 import { BarbeariaProvider } from "../../Context/BarbeariaContext";
 import { BarbeiroProvider } from "../../Context/BarbeiroContext";
 import { CadastroEloginProvider } from "../../Context/CadastroEloginContext";
+import { CalendarioProvider } from "../../Context/CalendarioContext";
 import { HorarioProvider } from "../../Context/HorarioContext";
 import { MenuFooterProvider } from "../../Context/MenuFooterContext";
 import { ServicoProvider } from "../../Context/ServicoContext";
@@ -9,20 +10,22 @@ import { UserProvider } from "../../Context/UserContext";
 
 export function AppProviders({ children }) {
   return (
-    <UserProvider>
-      <BarbeariaProvider>
-        <AgendamentoProvider>
+    <CalendarioProvider>
+      <UserProvider>
+        <BarbeariaProvider>
           <ServicoProvider>
             <BarbeiroProvider>
               <HorarioProvider>
                 <MenuFooterProvider>
-                  <CadastroEloginProvider>{children}</CadastroEloginProvider>
+                  <AgendamentoProvider>
+                    <CadastroEloginProvider>{children}</CadastroEloginProvider>
+                  </AgendamentoProvider>
                 </MenuFooterProvider>
               </HorarioProvider>
             </BarbeiroProvider>
           </ServicoProvider>
-        </AgendamentoProvider>
-      </BarbeariaProvider>
-    </UserProvider>
+        </BarbeariaProvider>
+      </UserProvider>
+    </CalendarioProvider>
   );
 }
