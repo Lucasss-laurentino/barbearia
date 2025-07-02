@@ -37,7 +37,7 @@ export const Servicos = () => {
               <li
                 key={servico.id}
                 className={
-                  servicoEscolhido ? "item-servico-ativo" : "item-servico"
+                  servicoEscolhido && servicoEscolhido.id === servico.id ? "item-servico-ativo" : "item-servico"
                 }
               >
                 <div className="encapsula-servico">
@@ -61,19 +61,24 @@ export const Servicos = () => {
                 </div>
                 <button
                   className={
-                    servicoEscolhido
+                    servicoEscolhido && servicoEscolhido.id === servico.id
                       ? "botao-escolher-servico-ativado"
                       : "botao-escolher-servico"
                   }
                   onClick={() => {
-                    if (servicoEscolhido) {
+                    if (servicoEscolhido?.id === servico.id) {
                       setServicoEscolhido(null);
                       return;
+                    }
+                    if(servicoEscolhido?.id !== servico.id){
+                      setServicoEscolhido(servico);
                     }
                     setServicoEscolhido(servico);
                   }}
                 >
-                  {servicoEscolhido ? "Escolhido" : "Escolher"}
+                  {servicoEscolhido && servicoEscolhido.id === servico.id
+                    ? "Escolhido"
+                    : "Escolher"}
                 </button>
               </li>
             ))}

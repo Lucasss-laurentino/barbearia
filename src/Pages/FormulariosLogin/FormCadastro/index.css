@@ -12,7 +12,6 @@
 
 .formulario-page-login {
   width: 100%;
-  max-height: 650px;
   overflow-y: auto;
 
   background-color: rgba(81, 81, 87, 0.7);
@@ -38,6 +37,7 @@
 
   background-color: rgb(19, 19, 30, 0.4);
 }
+
 .titulo-e-textos-form-login {
   display: flex;
   flex-direction: column;
@@ -127,12 +127,14 @@
   color: white;
   margin: 0;
 }
+
 .p-form-login {
   color: #acaaaa;
   font-size: 15px;
   font-weight: lighter;
   padding: 4px;
 }
+
 @media (max-width: 500px) {
   .titulo-form-login {
     font-size: 20px;

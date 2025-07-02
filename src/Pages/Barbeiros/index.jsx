@@ -11,6 +11,8 @@ import { HorarioContext } from "../../Context/HorarioContext";
 import { UserContext } from "../../Context/UserContext";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ServicoContext } from "../../Context/ServicoContext";
+import { AgendamentoContext } from "../../Context/AgendamentoContext";
 
 export const Barbeiros = () => {
   const { barbeiros, barbeiroSelecionado, excluirBarbeiro } =
@@ -18,6 +20,8 @@ export const Barbeiros = () => {
   const { excluirHorario, horarioOuBarbeiroPraExcluir, horarioSelecionado } =
     useContext(HorarioContext);
   const { usuario } = useContext(UserContext);
+  const { servicoEscolhido } = useContext(ServicoContext);
+  const { erroAgendamento, setErroAgendamento } = useContext(AgendamentoContext);
 
   const [showModalCriarBarbeiro, setShowModalCriarBarbeiro] = useState(false);
   const [showModalDeletarBarbeiro, setShowModalDeletarBarbeiro] =
@@ -30,6 +34,24 @@ export const Barbeiros = () => {
   const toggleHorarios = (id) => {
     setExpandedBarbeiroId(expandedBarbeiroId === id ? null : id);
   };
+
+  useEffect(() => {
+    if (servicoEscolhido && erroAgendamento !== null) {
+      toast.error(erroAgendamento, {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+      setErroAgendamento(null);
+      return;
+    }
+  }, [erroAgendamento]);
 
   return (
     <>

@@ -28,7 +28,6 @@ export const AgendamentoProvider = ({ children }) => {
       });
       console.log(response);
     } catch (error) {
-      console.log(error);
       if(error.response.data.detail === 'Usuário não autenticado.'){
         setErroAgendamento("Faça login pra agendar um horário!");
       }

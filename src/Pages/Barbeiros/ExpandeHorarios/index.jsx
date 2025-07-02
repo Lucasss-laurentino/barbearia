@@ -89,20 +89,6 @@ export const ExpandeHorarios = ({
 
   return (
     <>
-      <ToastContainer
-        position="bottom-right"
-        autoClose={7000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-        limit={1}
-        transition={Bounce}
-      />
       <div
         className={`horarios-barbeiro ${
           expandedBarbeiroId === barbeiro.id ? "expanded" : ""
