@@ -13,6 +13,7 @@ import { ToastContainer, toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ServicoContext } from "../../Context/ServicoContext";
 import { AgendamentoContext } from "../../Context/AgendamentoContext";
+import { AgendamentoFeedBack } from "../../Components/AgendamentoFeedBack";
 
 export const Barbeiros = () => {
   const { barbeiros, barbeiroSelecionado, excluirBarbeiro } =
@@ -21,7 +22,8 @@ export const Barbeiros = () => {
     useContext(HorarioContext);
   const { usuario } = useContext(UserContext);
   const { servicoEscolhido } = useContext(ServicoContext);
-  const { erroAgendamento, setErroAgendamento } = useContext(AgendamentoContext);
+  const { erroAgendamento, setErroAgendamento } =
+    useContext(AgendamentoContext);
 
   const [showModalCriarBarbeiro, setShowModalCriarBarbeiro] = useState(false);
   const [showModalDeletarBarbeiro, setShowModalDeletarBarbeiro] =
@@ -30,7 +32,7 @@ export const Barbeiros = () => {
     useState(false);
   const [showModalDeletarHorario, setShowModalDeletarHorario] = useState(false);
   const [expandedBarbeiroId, setExpandedBarbeiroId] = useState(null);
-
+  const agendamento = JSON.parse(localStorage.getItem("agendamento"));
   const toggleHorarios = (id) => {
     setExpandedBarbeiroId(expandedBarbeiroId === id ? null : id);
   };
@@ -144,6 +146,9 @@ export const Barbeiros = () => {
                     setShow={setShowModalCriarHorarioBarbeiro}
                     setShowModalDeletarHorario={setShowModalDeletarHorario}
                   />
+                )}
+                {agendamento.idBarbeiro === barbeiro.id && (
+                  <AgendamentoFeedBack agendamento={agendamento} />
                 )}
               </li>
             ))}

@@ -1,0 +1,42 @@
+.agendamento-feedback {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-top: 12px;
+  color: #ffffff;
+  font-size: 0.9rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.agendamento-conteudo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.linha-info {
+  display: flex;
+  justify-content: space-between;
+}
+
+.label {
+  font-weight: bold;
+  color: #ccc;
+}
+
+.status {
+  font-weight: bold;
+}
+
+.agendamento-feedback-linha {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  color: white;
+  font-size: 0.95rem;
+  padding: 4px 10px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+}

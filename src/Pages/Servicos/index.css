@@ -9,6 +9,14 @@
   color: white;
 }
 
+.div-load-barbearia {
+  width: 100%;
+  height: 70vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .lista-servicos {
   list-style: none;
   padding: 0;

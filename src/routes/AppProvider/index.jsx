@@ -6,6 +6,7 @@ import { CalendarioProvider } from "../../Context/CalendarioContext";
 import { HorarioProvider } from "../../Context/HorarioContext";
 import { MenuFooterProvider } from "../../Context/MenuFooterContext";
 import { ServicoProvider } from "../../Context/ServicoContext";
+import { SignalRProvider } from "../../Context/SignalRContext";
 import { UserProvider } from "../../Context/UserContext";
 
 export function AppProviders({ children }) {
@@ -18,7 +19,11 @@ export function AppProviders({ children }) {
               <HorarioProvider>
                 <MenuFooterProvider>
                   <AgendamentoProvider>
-                    <CadastroEloginProvider>{children}</CadastroEloginProvider>
+                    <SignalRProvider>
+                      <CadastroEloginProvider>
+                        {children}
+                      </CadastroEloginProvider>
+                    </SignalRProvider>
                   </AgendamentoProvider>
                 </MenuFooterProvider>
               </HorarioProvider>

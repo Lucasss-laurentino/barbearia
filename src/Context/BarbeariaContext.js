@@ -6,10 +6,12 @@ export const BarbeariaContext = createContext();
 
 export const BarbeariaProvider = ({ children }) => {
   const [barbearia, setBarbearia] = useState();
+  const [loadData, setLoadData] = useState(false);
   const { setUsuario } = useContext(UserContext);
 
   const getBarbearia = async (barbeariaNome) => {
     try {
+      setLoadData(true);
       const nome = { Nome: barbeariaNome };
       const resposta = await http.post(
         "barbearia/buscarBarbeariaPeloNome",
@@ -22,12 +24,14 @@ export const BarbeariaProvider = ({ children }) => {
       if (error.response && error.response.status === 404) {
         window.location.href = "/notFound";
       }
+    } finally {
+      setLoadData(false);
     }
   };
 
   return (
     <BarbeariaContext.Provider
-      value={{ barbearia, setBarbearia, getBarbearia }}
+      value={{ barbearia, setBarbearia, getBarbearia, loadData, setLoadData }}
     >
       {children}
     </BarbeariaContext.Provider>

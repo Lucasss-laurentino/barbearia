@@ -138,13 +138,33 @@ export const HorarioProvider = ({ children }) => {
       horarioFormatado.setHours(hora, minuto, segundo || 0, 0);
       return horarioFormatado > horaAtual;
     });
-    setHorariosFiltrado([...horariosFuturo]);
+    return horariosFuturo;
   };
 
-  const filtrarHorarios = (barbeiro) => {
-    atualizarHorariosFiltrado(barbeiro);
+  const filtrarPorAgendamento = (dataSelecionada, horariosFuturo) => {
+    const dataSelecionadaFormatada = dataSelecionada
+      .toISOString()
+      .split("T")[0];
+    const horariosSemAgendamento = horariosFuturo.filter((horario) => {
+      const agendamentos = horario.agendamentos?.$values || [];
+
+      const temAgendamentoMesmaData = agendamentos.some((agendamento) => {
+        const dataAgendamento = new Date(agendamento.data)
+          .toISOString()
+          .split("T")[0];
+        return dataAgendamento === dataSelecionadaFormatada;
+      });
+
+      return !temAgendamentoMesmaData;
+    });
+    setHorariosFiltrado([...horariosSemAgendamento]);
+  };
+
+  const filtrarHorarios = (barbeiro, dataSelecionada) => {
+    const horariosFuturo = atualizarHorariosFiltrado(barbeiro);
     ordenaHorariosPelaHora();
-  }
+    filtrarPorAgendamento(dataSelecionada, horariosFuturo);
+  };
 
   return (
     <HorarioContext.Provider
@@ -166,7 +186,7 @@ export const HorarioProvider = ({ children }) => {
         horariosFiltrado,
         setHorariosFiltrado,
         ordenaHorariosPelaHora,
-        filtrarHorarios
+        filtrarHorarios,
       }}
     >
       {children}

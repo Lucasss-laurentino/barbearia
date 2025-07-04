@@ -1,13 +1,15 @@
 import "./index.css";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { BarbeiroContext } from "../../../Context/BarbeiroContext";
 import { HorarioContext } from "../../../Context/HorarioContext";
 import { UserContext } from "../../../Context/UserContext";
 import { ServicoContext } from "../../../Context/ServicoContext";
-import { ToastContainer, toast, Bounce } from "react-toastify";
+import { toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AgendamentoContext } from "../../../Context/AgendamentoContext";
 import { Calendario } from "../../../Components/Calendario";
+import { CalendarioContext } from "../../../Context/CalendarioContext";
+import { useAtualizarAgendamentoSignalR } from "../../../SignalR/agendamentoSignalR";
 
 export const ExpandeHorarios = ({
   expandedBarbeiroId,
@@ -27,6 +29,7 @@ export const ExpandeHorarios = ({
   const { usuario } = useContext(UserContext);
   const { agendar, erroAgendamento, setErroAgendamento } =
     useContext(AgendamentoContext);
+  const { dataSelecionada } = useContext(CalendarioContext);
 
   const handleAdicionarHorario = () => {
     setBarbeiroSelecionado(barbeiro);
@@ -79,13 +82,15 @@ export const ExpandeHorarios = ({
 
   useEffect(() => {
     if (!usuario?.adm) {
-      filtrarHorarios(barbeiro);
+      filtrarHorarios(barbeiro, dataSelecionada);
       return;
     }
     if (barbeiro.horarios.$values.length > 0) {
       setHorariosFiltrado([...barbeiro.horarios.$values]);
     }
   }, [expandedBarbeiroId, barbeiro.horarios.$values]);
+
+  useAtualizarAgendamentoSignalR();
 
   return (
     <>
