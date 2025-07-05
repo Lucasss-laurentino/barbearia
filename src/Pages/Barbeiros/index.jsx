@@ -37,6 +37,8 @@ export const Barbeiros = () => {
     setExpandedBarbeiroId(expandedBarbeiroId === id ? null : id);
   };
 
+  const hoje = new Date();
+
   useEffect(() => {
     if (servicoEscolhido && erroAgendamento !== null) {
       toast.error(erroAgendamento, {
@@ -147,9 +149,7 @@ export const Barbeiros = () => {
                     setShowModalDeletarHorario={setShowModalDeletarHorario}
                   />
                 )}
-                {agendamento.idBarbeiro === barbeiro.id && (
-                  <AgendamentoFeedBack agendamento={agendamento} />
-                )}
+                <AgendamentoFeedBack agendamento={agendamento} barbeiro={barbeiro} />
               </li>
             ))}
           </ul>

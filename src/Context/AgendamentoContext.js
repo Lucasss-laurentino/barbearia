@@ -8,6 +8,7 @@ export const AgendamentoContext = createContext();
 
 export const AgendamentoProvider = ({ children }) => {
   const [agendamentos, setAgendamentos] = useState([]);
+  const [meusAgendamentos, setMeusAgendamentos] = useState();
   const { barbearia, setBarbearia } = useContext(BarbeariaContext);
   const { servicoEscolhido } = useContext(ServicoContext);
   const { dataSelecionada } = useContext(CalendarioContext);
@@ -28,8 +29,8 @@ export const AgendamentoProvider = ({ children }) => {
       });
       localStorage.setItem("agendamento", JSON.stringify(response.data));
     } catch (error) {
-      if (error.response.data.detail === "Usuário não autenticado.") {
-        setErroAgendamento("Faça login pra agendar um horário!");
+      if (error.response.data.detail) {
+        setErroAgendamento(error.response.data.detail);
       }
     }
   };
@@ -90,6 +91,26 @@ export const AgendamentoProvider = ({ children }) => {
     }));
   };
 
+  const verificaValidadeAgendamento = (agendamento) => {
+    if (!agendamento) return false;
+    const dataISO = new Date(agendamento.data);
+    const ano = dataISO.getFullYear();
+    const mes = dataISO.getMonth();
+    const dia = dataISO.getDate();
+    const [hora, minuto, segundo] = agendamento.hora.split(":").map(Number);
+    const dataHoraAgendada = new Date(ano, mes, dia, hora, minuto, segundo);
+    const agora = new Date();
+    return dataHoraAgendada > agora;
+  };
+
+  const getMeusAgendamentos = async () => {
+    try {
+      const response = await http.get("agendamento/meusAgendamentos", {
+        withCredentials: true,
+      });
+    } catch (error) {}
+  };
+
   return (
     <AgendamentoContext.Provider
       value={{
@@ -99,6 +120,10 @@ export const AgendamentoProvider = ({ children }) => {
         erroAgendamento,
         setErroAgendamento,
         atualizarAgendamento,
+        verificaValidadeAgendamento,
+        meusAgendamentos,
+        setMeusAgendamentos,
+        getMeusAgendamentos,
       }}
     >
       {children}

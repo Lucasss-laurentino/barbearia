@@ -1,7 +1,19 @@
+import { useContext, useEffect, useState } from "react";
 import "./index.css";
+import { AgendamentoContext } from "../../Context/AgendamentoContext";
 
-export const AgendamentoFeedBack = ({ agendamento }) => {
-  if (!agendamento) return null;
+export const AgendamentoFeedBack = ({ agendamento, barbeiro }) => {
+
+  const { verificaValidadeAgendamento } = useContext(AgendamentoContext); 
+  const [render, setRender] = useState(false);
+
+  useEffect(() => {
+    const verify = verificaValidadeAgendamento(agendamento, barbeiro);
+    setRender(verify);
+  }, [agendamento, barbeiro]);
+
+  if (!agendamento) return null
+  if (!render) return null;
 
   const formatarData = (dataString) => {
     const data = new Date(dataString);
@@ -21,7 +33,6 @@ export const AgendamentoFeedBack = ({ agendamento }) => {
   };
 
   const status = statusInfo[agendamento.status];
-
   return (
     <div className="agendamento-feedback-linha">
       <span>{agendamento.hora}</span>{" "}
