@@ -1,14 +1,22 @@
 import "./index.css";
 // import { CardHorarioMarcado } from "./CardHorarioMarcado";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../Context/UserContext";
 import { AgendamentoContext } from "../../Context/AgendamentoContext";
 import { CardHorarioMarcado } from "./CardHorarioMarcado";
+import { CardHorariosMarcadosAnterior } from "./CardHorariosMarcadosAnterior";
 
 export const MeusHorarios = () => {
+  const [agendamentosFiltrado, setAgendamentosFiltrado] = useState([]);
+
   const { usuario } = useContext(UserContext);
-  const { getMeusAgendamentos, meusAgendamentos } =
-    useContext(AgendamentoContext);
+  const {
+    getMeusAgendamentos,
+    meusAgendamentos,
+    setMeusAgendamentos,
+    meuAgendamento,
+    setMeuAgendamento,
+  } = useContext(AgendamentoContext);
 
   useEffect(() => {
     const pegaAgendamentos = async () => {
@@ -17,10 +25,17 @@ export const MeusHorarios = () => {
     pegaAgendamentos();
   }, []);
 
+  useEffect(() => {
+    const agendamentos = meusAgendamentos.filter(
+      (mA) => mA.id !== meuAgendamento.id
+    );
+    setAgendamentosFiltrado([...agendamentos]);
+  }, [meusAgendamentos, meuAgendamento]);
+
   return (
     <>
-      {!meusAgendamentos && meusAgendamentos.length < 1 && (
-        <div className="container-horarios">
+      {meusAgendamentos.length < 1 && (
+        <div className="encapsula-horarios">
           {/* <CardHorarioMarcado /> */}
           <div className="estado-vazio-meusHorarios">
             <h4 className="mensagem-vazia">
@@ -33,10 +48,13 @@ export const MeusHorarios = () => {
           </div>
         </div>
       )}
-      {meusAgendamentos.length > 0 &&
-        meusAgendamentos.map((agendamento) => {
-          return <CardHorarioMarcado agendamento={agendamento}/>;
-        })}
+      <div className="encapsula-horarios">
+        {meuAgendamento && <CardHorarioMarcado />}
+        {agendamentosFiltrado.length > 0 &&
+          agendamentosFiltrado.map((agendamento) => (
+            <CardHorariosMarcadosAnterior agendamento={agendamento} />
+          ))}
+      </div>
     </>
   );
 };

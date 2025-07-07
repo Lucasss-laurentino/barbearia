@@ -5,6 +5,7 @@ import "./index.css";
 import { CalendarioContext } from "../../Context/CalendarioContext";
 
 export const Calendario = () => {
+  
   const {
     formatarData,
     handleSelecionarData,

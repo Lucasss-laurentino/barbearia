@@ -9,6 +9,7 @@ export const AgendamentoContext = createContext();
 export const AgendamentoProvider = ({ children }) => {
   const [agendamentos, setAgendamentos] = useState([]);
   const [meusAgendamentos, setMeusAgendamentos] = useState([]);
+  const [meuAgendamento, setMeuAgendamento] = useState(null);
   const { barbearia, setBarbearia } = useContext(BarbeariaContext);
   const { servicoEscolhido } = useContext(ServicoContext);
   const { dataSelecionada } = useContext(CalendarioContext);
@@ -20,6 +21,12 @@ export const AgendamentoProvider = ({ children }) => {
       setAgendamentos([...barbearia.agendamentos.$values]);
     }
   }, [barbearia?.agendamentos]);
+
+  useEffect(() => {
+    if (localStorage.getItem("agendamento")) {
+      setMeuAgendamento(JSON.parse(localStorage.getItem("agendamento")));
+    }
+  }, [localStorage.getItem("agendamento")]);
 
   const agendar = async (barbeiro, horario) => {
     try {
@@ -44,6 +51,21 @@ export const AgendamentoProvider = ({ children }) => {
       idBarbearia: barbearia.id,
     };
     return agendamento;
+  };
+
+  const pegarAgendamentosPelaData = async (barbeiro) => {
+    try {
+      const dadosAgendamento = {
+        data: dataSelecionada,
+        idBarbeiro: barbeiro.id,
+      };
+      const resposta = await http.get("/agendamento/getByDate", {
+        dadosAgendamento,
+      });
+      console.log(resposta);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const atualizarAgendamento = (agendamentoRecebido) => {
@@ -74,7 +96,6 @@ export const AgendamentoProvider = ({ children }) => {
                   // Adiciona novo agendamento
                   novosAgendamentos = [...ags, agendamentoRecebido];
                 }
-
                 return {
                   ...horario,
                   agendamentos: {
@@ -92,7 +113,7 @@ export const AgendamentoProvider = ({ children }) => {
   };
 
   const verificaValidadeAgendamento = (agendamento, barbeiro) => {
-    if(agendamento?.idBarbeiro !== barbeiro.id) {
+    if (agendamento?.idBarbeiro !== barbeiro.id) {
       return false;
     }
     if (!agendamento) return false;
@@ -112,7 +133,9 @@ export const AgendamentoProvider = ({ children }) => {
         withCredentials: true,
       });
       setMeusAgendamentos([...response.data.$values]);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -128,6 +151,8 @@ export const AgendamentoProvider = ({ children }) => {
         meusAgendamentos,
         setMeusAgendamentos,
         getMeusAgendamentos,
+        meuAgendamento,
+        setMeuAgendamento,
       }}
     >
       {children}
