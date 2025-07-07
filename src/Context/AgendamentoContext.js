@@ -8,7 +8,7 @@ export const AgendamentoContext = createContext();
 
 export const AgendamentoProvider = ({ children }) => {
   const [agendamentos, setAgendamentos] = useState([]);
-  const [meusAgendamentos, setMeusAgendamentos] = useState();
+  const [meusAgendamentos, setMeusAgendamentos] = useState([]);
   const { barbearia, setBarbearia } = useContext(BarbeariaContext);
   const { servicoEscolhido } = useContext(ServicoContext);
   const { dataSelecionada } = useContext(CalendarioContext);
@@ -91,7 +91,10 @@ export const AgendamentoProvider = ({ children }) => {
     }));
   };
 
-  const verificaValidadeAgendamento = (agendamento) => {
+  const verificaValidadeAgendamento = (agendamento, barbeiro) => {
+    if(agendamento?.idBarbeiro !== barbeiro.id) {
+      return false;
+    }
     if (!agendamento) return false;
     const dataISO = new Date(agendamento.data);
     const ano = dataISO.getFullYear();
@@ -108,6 +111,7 @@ export const AgendamentoProvider = ({ children }) => {
       const response = await http.get("agendamento/meusAgendamentos", {
         withCredentials: true,
       });
+      setMeusAgendamentos([...response.data.$values]);
     } catch (error) {}
   };
 

@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import "./index.css";
 
-export const CardHorarioMarcado = () => {
+export const CardHorarioMarcado = ({agendamento}) => {
 
   return (
     <div className="card-horario">

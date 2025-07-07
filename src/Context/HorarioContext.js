@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { http } from "../http";
 import { BarbeariaContext } from "./BarbeariaContext";
 import { BarbeiroContext } from "./BarbeiroContext";
+import { CalendarioContext } from "./CalendarioContext";
 
 export const HorarioContext = createContext();
 
@@ -16,6 +17,8 @@ export const HorarioProvider = ({ children }) => {
   const [horarioOuBarbeiroPraExcluir, setHorarioOuBarbeiroPraExcluir] =
     useState(false); // false = barbeiro, true = horario
   const [horariosFiltrado, setHorariosFiltrado] = useState([]);
+
+  const { dataSelecionada } = useContext(CalendarioContext);
 
   useEffect(() => {
     ordenaHorariosPelaHora();
@@ -141,29 +144,32 @@ export const HorarioProvider = ({ children }) => {
     return horariosFuturo;
   };
 
-  const filtrarPorAgendamento = (dataSelecionada, horariosFuturo) => {
-    const dataSelecionadaFormatada = dataSelecionada
-      .toISOString()
-      .split("T")[0];
+  const filtrarPorAgendamento = (horariosFuturo) => {
+    const dataSelecionadaFormatada =
+      dataSelecionada.toLocaleDateString("pt-BR");
     const horariosSemAgendamento = horariosFuturo.filter((horario) => {
       const agendamentos = horario.agendamentos?.$values || [];
-
-      const temAgendamentoMesmaData = agendamentos.some((agendamento) => {
-        const dataAgendamento = new Date(agendamento.data)
-          .toISOString()
-          .split("T")[0];
-        return dataAgendamento === dataSelecionadaFormatada;
-      });
-
-      return !temAgendamentoMesmaData;
+      const existeAgendamentoMesmaDataHora = agendamentos.some(
+        (agendamento) => {
+          const dataAgendamento = new Date(agendamento.data).toLocaleDateString(
+            "pt-BR"
+          );
+          return (
+            dataAgendamento === dataSelecionadaFormatada &&
+            agendamento.hora === horario.hora
+          );
+        }
+      );
+      return !existeAgendamentoMesmaDataHora;
     });
+
     setHorariosFiltrado([...horariosSemAgendamento]);
   };
 
-  const filtrarHorarios = (barbeiro, dataSelecionada) => {
+  const filtrarHorarios = (barbeiro) => {
     const horariosFuturo = atualizarHorariosFiltrado(barbeiro);
     ordenaHorariosPelaHora();
-    filtrarPorAgendamento(dataSelecionada, horariosFuturo);
+    filtrarPorAgendamento(horariosFuturo);
   };
 
   return (
