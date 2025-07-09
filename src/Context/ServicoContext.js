@@ -1,9 +1,4 @@
-import {
-  createContext,
-  useState,
-  useEffect,
-  useContext,
-} from "react";
+import { createContext, useState, useEffect, useContext } from "react";
 import { BarbeariaContext } from "./BarbeariaContext";
 import { http } from "../http";
 
@@ -13,6 +8,7 @@ export const ServicoProvider = ({ children }) => {
   // states
   const [servicos, setServicos] = useState([]);
   const [servicoEscolhido, setServicoEscolhido] = useState(null);
+  const [escolhido, setEscolhido] = useState(false);
   const [loadServico, setLoadServico] = useState(false);
 
   // contexts
@@ -82,31 +78,31 @@ export const ServicoProvider = ({ children }) => {
       setServicoEscolhido(null);
     } catch (error) {
       setLoadServico(false);
-      if(error.response?.data === 'Token não encontrado!') window.location.href = '/login';
+      if (error.response?.data === "Token não encontrado!")
+        window.location.href = "/login";
     }
   };
 
   const substituirServicoEditado = (servico) => {
     setBarbearia((prev) => {
-      const novosServicos = prev.servicos.$values.map((s) => s.id === servico.id ? servico : s);
+      const novosServicos = prev.servicos.$values.map((s) =>
+        s.id === servico.id ? servico : s
+      );
       return {
         ...prev,
         servicos: {
           ...prev.servicos,
-          $values: novosServicos
-        }
-      }
+          $values: novosServicos,
+        },
+      };
     });
   };
 
   const excluirServico = async () => {
     try {
-      await http.delete(
-        `servico/${servicoEscolhido.id}`,
-        {
-          withCredentials: true
-        }
-      );
+      await http.delete(`servico/${servicoEscolhido.id}`, {
+        withCredentials: true,
+      });
 
       await retirarServicoExcluido();
       setServicoEscolhido(null);
@@ -118,19 +114,20 @@ export const ServicoProvider = ({ children }) => {
     }
   };
 
-  const retirarServicoExcluido = async () =>
-  {
+  const retirarServicoExcluido = async () => {
     setBarbearia((prev) => {
-      const servicosAtt = prev.servicos.$values.filter((s) => s.id !== servicoEscolhido.id);      
+      const servicosAtt = prev.servicos.$values.filter(
+        (s) => s.id !== servicoEscolhido.id
+      );
       return {
         ...prev,
         servicos: {
           ...prev.servicos,
-          $values: servicosAtt
-        }
-      }
+          $values: servicosAtt,
+        },
+      };
     });
-  }
+  };
 
   return (
     <ServicoContext.Provider
@@ -144,6 +141,8 @@ export const ServicoProvider = ({ children }) => {
         criarServico,
         editarServico,
         excluirServico,
+        escolhido,
+        setEscolhido,
       }}
     >
       {children}

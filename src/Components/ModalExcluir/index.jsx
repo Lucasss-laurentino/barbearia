@@ -19,6 +19,7 @@ export const ModalExcluir = ({
     if (resposta) {
       setLoadExcluir(false);
       setShow(false);
+      
     } else {
       setLoadExcluir(false);
     }

@@ -5,3 +5,17 @@
 .trash:hover {
   cursor: pointer;
 }
+
+.li-excluir-icon {
+  cursor: pointer;
+  color: #7a1c24;
+  padding: 2px;
+  transition: color 0.2s ease;
+}
+
+.li-edit-icon {
+  cursor: pointer;
+  color: #19692c;
+  padding: 2px;
+  transition: color 0.2s ease;
+}

@@ -1,15 +1,15 @@
-.pagina-servicos {
-  padding-bottom: 90px; /* espaço extra pro footer */
+.li-servicos-pagina {
+  padding-bottom: 90px;
   overflow-y: auto;
   height: 100%;
+  background-color: transparent;
 }
 
-.servicos-container {
+.li-servicos-container {
   padding: 20px 16px;
-  color: white;
 }
 
-.div-load-barbearia {
+.li-servico-load {
   width: 100%;
   height: 70vh;
   display: flex;
@@ -17,102 +17,129 @@
   align-items: center;
 }
 
-.lista-servicos {
+.li-servicos-lista {
   list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
 }
 
-.item-servico {
+.li-servico-item {
   height: 120px;
   display: flex;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(255, 255, 255, 0.85);
   border-radius: 12px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  color: #222;
 }
 
-.item-servico-ativo {
+.li-servico-item:hover {
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Card ativo */
+.li-servico-item-ativo {
   height: 120px;
   display: flex;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.6);
-  border: 1px solid #00e676;
+  background-color: rgba(220, 255, 220, 0.9);
+  border: 2px solid #00e676;
   border-radius: 12px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 10px rgba(0, 230, 118, 0.6);
+  color: #19692c;
 }
 
-.encapsula-servico {
+/* Encapsulador da imagem e info */
+.li-servico-encapsula {
   width: 80%;
   height: 100%;
   display: flex;
   align-items: center;
   padding: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-.imagem-servico {
+/* Imagem circular */
+.li-servico-imagem {
   width: 70px;
   height: 70px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #fff;
+  border: 2px solid #19692c;
 }
 
-.info-servico {
+/* Info textual */
+.li-servico-info {
   flex: 1;
   display: flex;
   flex-direction: column;
   padding-left: 10px;
 }
 
-.nome-servico {
+/* Nome do serviço */
+.li-servico-nome {
   font-size: 1.1rem;
   margin: 0;
   font-weight: bold;
-  color: #fff;
+  color: inherit;
 }
 
-.prazo-servico {
+/* Prazo */
+.li-servico-prazo {
   margin: 2px 0;
   font-size: 0.95rem;
-  color: #cfcfcf;
+  color: #666;
 }
 
-.preco-servico {
+/* Preço */
+.li-servico-preco {
   margin: 0;
   font-size: 1rem;
   font-weight: bold;
-  color: #00e676;
+  color: #19692c;
 }
 
-.botao-escolher-servico {
+/* Botão escolher padrão */
+.li-servico-btn-escolher {
   width: 20%;
   height: 120px;
   padding: 0 5px;
-  background-color: rgba(0, 0, 0, 0.85);
+  background-color: rgba(0, 0, 0, 0.1);
   border: none;
-  border-left: 1px solid rgba(255, 255, 255, 0.1);
-  color: #aaa;
-  cursor: not-allowed;
-  font-size: 10px;
+  border-left: 1px solid rgba(0, 0, 0, 0.05);
+  color: #444;
+  cursor: pointer;
+  font-size: 14px;
   font-weight: bold;
   border-radius: 0 12px 12px 0;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.botao-escolher-servico-ativado {
+/* Botão escolher ativo */
+.li-servico-btn-escolher-ativo {
   width: 20%;
   height: 120px;
   padding: 0 5px;
   background-color: #00e676;
   border: none;
-  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
   color: white;
-  cursor: not-allowed;
-  font-size: 10px;
+  cursor: default;
+  font-size: 14px;
   font-weight: bold;
   border-radius: 0 12px 12px 0;
 }
+
+/* ---------------------------- */
+/* Estilização para o componente EditarExcluir */
+.li-edit-excluir-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+}
+
+

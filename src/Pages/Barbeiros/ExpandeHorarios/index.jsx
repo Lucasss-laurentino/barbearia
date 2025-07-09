@@ -8,7 +8,7 @@ import { toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AgendamentoContext } from "../../../Context/AgendamentoContext";
 import { Calendario } from "../../../Components/Calendario";
-import { useAtualizarAgendamentoSignalR } from "../../../SignalR/agendamentoSignalR";
+import { CalendarioContext } from "../../../Context/CalendarioContext";
 
 export const ExpandeHorarios = ({
   expandedBarbeiroId,
@@ -26,8 +26,13 @@ export const ExpandeHorarios = ({
   } = useContext(HorarioContext);
   const { servicoEscolhido } = useContext(ServicoContext);
   const { usuario } = useContext(UserContext);
-  const { agendar, erroAgendamento, setErroAgendamento } =
-    useContext(AgendamentoContext);
+  const {
+    agendar,
+    erroAgendamento,
+    setErroAgendamento,
+    pegarAgendamentosPelaData,
+  } = useContext(AgendamentoContext);
+  const { dataSelecionada } = useContext(CalendarioContext);
 
   const handleAdicionarHorario = () => {
     setBarbeiroSelecionado(barbeiro);
@@ -90,7 +95,12 @@ export const ExpandeHorarios = ({
     setHorariosFiltrado([]);
   }, [expandedBarbeiroId, barbeiro.horarios.$values]);
 
-  useAtualizarAgendamentoSignalR();
+  useEffect(() => {
+    const pegarAgendamentos = async () => {
+      await pegarAgendamentosPelaData(barbeiro);
+    };
+    pegarAgendamentos();
+  }, [dataSelecionada]);
 
   return (
     <>

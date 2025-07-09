@@ -11,7 +11,7 @@ export const AgendamentoProvider = ({ children }) => {
   const [meusAgendamentos, setMeusAgendamentos] = useState([]);
   const [meuAgendamento, setMeuAgendamento] = useState(null);
   const { barbearia, setBarbearia } = useContext(BarbeariaContext);
-  const { servicoEscolhido } = useContext(ServicoContext);
+  const { servicoEscolhido, setServicoEscolhido } = useContext(ServicoContext);
   const { dataSelecionada } = useContext(CalendarioContext);
 
   const [erroAgendamento, setErroAgendamento] = useState(null);
@@ -35,6 +35,7 @@ export const AgendamentoProvider = ({ children }) => {
         withCredentials: true,
       });
       localStorage.setItem("agendamento", JSON.stringify(response.data));
+      setServicoEscolhido(null);
     } catch (error) {
       if (error.response.data.detail) {
         setErroAgendamento(error.response.data.detail);
@@ -55,14 +56,11 @@ export const AgendamentoProvider = ({ children }) => {
 
   const pegarAgendamentosPelaData = async (barbeiro) => {
     try {
-      const dadosAgendamento = {
+      const resposta = await http.post("/agendamento/getByDate", {
         data: dataSelecionada,
         idBarbeiro: barbeiro.id,
-      };
-      const resposta = await http.get("/agendamento/getByDate", {
-        dadosAgendamento,
       });
-      console.log(resposta);
+      atualizarAgendamento(resposta.data.$values);
     } catch (error) {
       console.log(error);
     }
@@ -138,6 +136,47 @@ export const AgendamentoProvider = ({ children }) => {
     }
   };
 
+  const cancelarAgendamentoPendente = async () => {
+    try {
+      await http.post(
+        "agendamento/cancelarAgendamentoPendente",
+        { idAgendamento: meuAgendamento.id }
+      );
+      localStorage.removeItem("agendamento");
+      setMeuAgendamento(null);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deletarAgendamentoState = (idAgendamento) => {
+    setBarbearia((prevBarbearia) => ({
+      ...prevBarbearia,
+      barbeiros: {
+        ...prevBarbearia.barbeiros,
+        $values: prevBarbearia.barbeiros.$values.map((barbeiro) => ({
+          ...barbeiro,
+          horarios: {
+            ...barbeiro.horarios,
+            $values: barbeiro.horarios.$values.map((horario) => {
+              const ags = horario.agendamentos?.$values || [];
+              const novosAgendamentos = ags.filter(
+                (agendamento) => agendamento.id !== idAgendamento
+              );
+              return {
+                ...horario,
+                agendamentos: {
+                  ...horario.agendamentos,
+                  $values: novosAgendamentos,
+                },
+              };
+            }),
+          },
+        })),
+      },
+    }));
+  };
+
   return (
     <AgendamentoContext.Provider
       value={{
@@ -153,6 +192,9 @@ export const AgendamentoProvider = ({ children }) => {
         getMeusAgendamentos,
         meuAgendamento,
         setMeuAgendamento,
+        pegarAgendamentosPelaData,
+        cancelarAgendamentoPendente,
+        deletarAgendamentoState,
       }}
     >
       {children}

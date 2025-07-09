@@ -2,17 +2,17 @@ import { useContext, useEffect, useState } from "react";
 import "./index.css";
 import { AgendamentoContext } from "../../Context/AgendamentoContext";
 
-export const AgendamentoFeedBack = ({ agendamento, barbeiro }) => {
+export const AgendamentoFeedBack = ({ barbeiro }) => {
 
-  const { verificaValidadeAgendamento } = useContext(AgendamentoContext); 
+  const { verificaValidadeAgendamento, meuAgendamento } = useContext(AgendamentoContext); 
   const [render, setRender] = useState(false);
 
   useEffect(() => {
-    const verify = verificaValidadeAgendamento(agendamento, barbeiro);
+    const verify = verificaValidadeAgendamento(meuAgendamento, barbeiro);
     setRender(verify);
-  }, [agendamento, barbeiro]);
+  }, [meuAgendamento, barbeiro]);
 
-  if (!agendamento) return null
+  if (!meuAgendamento) return null
   if (!render) return null;
 
   const formatarData = (dataString) => {
@@ -32,11 +32,11 @@ export const AgendamentoFeedBack = ({ agendamento, barbeiro }) => {
     4: { texto: "Finalizado", cor: "#0d6efd" },
   };
 
-  const status = statusInfo[agendamento.status];
+  const status = statusInfo[meuAgendamento.status];
   return (
     <div className="agendamento-feedback-linha">
-      <span>{agendamento.hora}</span>{" "}
-      <span>{formatarData(agendamento.data)}</span>{" "}
+      <span>{meuAgendamento.hora}</span>{" "}
+      <span>{formatarData(meuAgendamento.data)}</span>{" "}
       <span style={{ color: status.cor, fontWeight: "bold" }}>
         {status.texto}
       </span>

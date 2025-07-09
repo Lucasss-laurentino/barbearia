@@ -6,10 +6,13 @@ import { Outlet, useLocation } from "react-router-dom";
 import { BarbeariaContext } from "../../Context/BarbeariaContext";
 import { buildConnection } from "../../SignalR/connection";
 import { SignalRContext } from "../../Context/SignalRContext";
+import { useAtualizarAgendamentoSignalR } from "../../SignalR/agendamentoSignalR";
 
 export const LayoutPadrao = () => {
   const [classMenu, setClassMenu] = useState(false);
   const url = useLocation();
+
+  useAtualizarAgendamentoSignalR();
 
   const { getBarbearia, barbearia } = useContext(BarbeariaContext);
   const { setConnection } = useContext(SignalRContext);

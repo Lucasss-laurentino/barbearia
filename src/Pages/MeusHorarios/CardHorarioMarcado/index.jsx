@@ -5,7 +5,8 @@ import { AgendamentoContext } from "../../../Context/AgendamentoContext";
 export const CardHorarioMarcado = () => {
   const [data, setData] = useState(null);
   const [hoje, setHoje] = useState(new Date().toLocaleDateString("pt-BR"));
-  const { meuAgendamento } = useContext(AgendamentoContext);
+  const { meuAgendamento, cancelarAgendamentoPendente } =
+    useContext(AgendamentoContext);
 
   useEffect(() => {
     if (meuAgendamento && meuAgendamento?.data) {
@@ -43,13 +44,11 @@ export const CardHorarioMarcado = () => {
       {hoje <= data && (
         <button
           className="btn-cancelar"
-          // onClick={() => {
-          //   if (horario?.RESERVADO === 2) {
-          //     cancelarMeuHorarioPendente(horario);
-          //   } else if (horario?.RESERVADO === 1) {
-          //     cancelarMeuHorarioMarcado(horario);
-          //   }
-          // }}
+          onClick={() => {
+            if(meuAgendamento?.status === 0) {
+              cancelarAgendamentoPendente();
+            }
+          }}
         >
           Cancelar
         </button>

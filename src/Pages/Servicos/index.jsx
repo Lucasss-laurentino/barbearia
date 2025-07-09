@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import "./index.css";
 import { ServicoContext } from "../../Context/ServicoContext";
 import { ModalServico } from "./ModalServico";
@@ -9,12 +9,8 @@ import { UserContext } from "../../Context/UserContext";
 import { BarbeariaContext } from "../../Context/BarbeariaContext";
 
 export const Servicos = () => {
-  const {
-    servicos,
-    servicoEscolhido,
-    setServicoEscolhido,
-    excluirServico,
-  } = useContext(ServicoContext);
+  const { servicos, servicoEscolhido, setServicoEscolhido, excluirServico, escolhido, setEscolhido } =
+    useContext(ServicoContext);
   const [showModalServico, setShowModalServico] = useState(false);
   const [showModalExcluir, setShowModalExcluir] = useState(false);
   const { usuario } = useContext(UserContext);
@@ -36,27 +32,26 @@ export const Servicos = () => {
         funcExcluir={excluirServico}
       />
 
-      <div className="pagina-servicos">
-        <div className="servicos-container">
-          <ul className="lista-servicos">
-            {/* Card serviço */}
+      <div className="li-servicos-pagina">
+        <div className="li-servicos-container">
+          <ul className="li-servicos-lista">
             {!loadData &&
               servicos.map((servico) => (
                 <li
                   key={servico.id}
                   className={
-                    servicoEscolhido && servicoEscolhido.id === servico.id
-                      ? "item-servico-ativo"
-                      : "item-servico"
+                    escolhido && servicoEscolhido && servicoEscolhido.id === servico.id
+                      ? "li-servico-item-ativo"
+                      : "li-servico-item"
                   }
                 >
-                  <div className="encapsula-servico">
+                  <div className="li-servico-encapsula">
                     <img
                       src={`${process.env.REACT_APP_IMG_PATH_SERVER}/${servico.caminhoImagem}`}
                       alt={servico.nome}
-                      className="imagem-servico"
+                      className="li-servico-imagem"
                     />
-                    <div className="info-servico">
+                    <div className="li-servico-info">
                       {usuario?.adm && (
                         <EditarExcluir
                           servico={servico}
@@ -64,38 +59,36 @@ export const Servicos = () => {
                           setShowModalExcluir={setShowModalExcluir}
                         />
                       )}
-                      <h4 className="nome-servico">{servico.nome}</h4>
-                      <p className="prazo-servico">{servico.prazo}</p>
-                      <p className="preco-servico">R${servico.preco},00</p>
+                      <h4 className="li-servico-nome">{servico.nome}</h4>
+                      <p className="li-servico-prazo">{servico.prazo}</p>
+                      <p className="li-servico-preco">R${servico.preco},00</p>
                     </div>
                   </div>
                   <button
                     className={
-                      servicoEscolhido && servicoEscolhido.id === servico.id
-                        ? "botao-escolher-servico-ativado"
-                        : "botao-escolher-servico"
+                      escolhido && servicoEscolhido && servicoEscolhido.id === servico.id
+                        ? "li-servico-btn-escolher-ativo"
+                        : "li-servico-btn-escolher"
                     }
                     onClick={() => {
                       if (servicoEscolhido?.id === servico.id) {
                         setServicoEscolhido(null);
+                        setEscolhido(false);
                         return;
                       }
-                      if (servicoEscolhido?.id !== servico.id) {
-                        setServicoEscolhido(servico);
-                      }
                       setServicoEscolhido(servico);
+                      setEscolhido(true);
                     }}
                   >
-                    {servicoEscolhido && servicoEscolhido.id === servico.id
+                    {escolhido && servicoEscolhido && servicoEscolhido.id === servico.id
                       ? "Escolhido"
                       : "Escolher"}
                   </button>
                 </li>
               ))}
-            {/* Icone load */}
             {loadData && (
-              <li className="div-load-barbearia">
-                <img src="/load.gif" alt="" />
+              <li className="li-servico-load">
+                <img src="/load.gif" alt="Carregando..." />
               </li>
             )}
           </ul>

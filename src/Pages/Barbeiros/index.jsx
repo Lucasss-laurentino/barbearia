@@ -32,7 +32,6 @@ export const Barbeiros = () => {
     useState(false);
   const [showModalDeletarHorario, setShowModalDeletarHorario] = useState(false);
   const [expandedBarbeiroId, setExpandedBarbeiroId] = useState(null);
-  const agendamento = JSON.parse(localStorage.getItem("agendamento"));
   const toggleHorarios = (id) => {
     setExpandedBarbeiroId(expandedBarbeiroId === id ? null : id);
   };
@@ -129,7 +128,7 @@ export const Barbeiros = () => {
                           xmlns="http://www.w3.org/2000/svg"
                           width="20"
                           height="20"
-                          fill="#fff"
+                          fill="#000"
                           className="bi bi-clock-fill mx-1 cursor"
                           viewBox="0 0 16 16"
                           onClick={() => toggleHorarios(barbeiro.id)}
@@ -149,7 +148,7 @@ export const Barbeiros = () => {
                     setShowModalDeletarHorario={setShowModalDeletarHorario}
                   />
                 )}
-                <AgendamentoFeedBack agendamento={agendamento} barbeiro={barbeiro} />
+                <AgendamentoFeedBack barbeiro={barbeiro} />
               </li>
             ))}
           </ul>

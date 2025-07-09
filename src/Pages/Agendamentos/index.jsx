@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import "./index.css";
 import { Li } from "./Li";
 import "react-toastify/dist/ReactToastify.css";
@@ -30,8 +30,8 @@ export const Agendamentos = () => {
               <div className="col-12 col-sm-10 col-md-8 d-flex justify-content-center align-items-center">
                 <ul className="col-12 m-0 p-0 list-style scroll-horarios">
                   {agendamentos && agendamentos.length > 0 ? (
-                    agendamentos.map((horario, index) => {
-                      return <Li key={index} horario={horario} />;
+                    agendamentos.map((agendamento, index) => {
+                      return <Li key={index} agendamento={agendamento} />;
                     })
                   ) : (
                     <div className="estado-vazio-agendamento">

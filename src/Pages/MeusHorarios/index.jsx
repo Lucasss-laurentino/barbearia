@@ -26,10 +26,12 @@ export const MeusHorarios = () => {
   }, []);
 
   useEffect(() => {
-    const agendamentos = meusAgendamentos.filter(
-      (mA) => mA.id !== meuAgendamento.id
-    );
-    setAgendamentosFiltrado([...agendamentos]);
+    if (meuAgendamento) {
+      const agendamentos = meusAgendamentos.filter(
+        (mA) => mA.id !== meuAgendamento?.id
+      );
+      setAgendamentosFiltrado([...agendamentos]);
+    }
   }, [meusAgendamentos, meuAgendamento]);
 
   return (

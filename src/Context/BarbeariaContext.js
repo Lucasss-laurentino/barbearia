@@ -7,7 +7,7 @@ export const BarbeariaContext = createContext();
 export const BarbeariaProvider = ({ children }) => {
   const [barbearia, setBarbearia] = useState();
   const [loadData, setLoadData] = useState(false);
-  const { setUsuario } = useContext(UserContext);
+  const { setUsuario, setCarregado } = useContext(UserContext);
 
   const getBarbearia = async (barbeariaNome) => {
     try {
@@ -26,6 +26,7 @@ export const BarbeariaProvider = ({ children }) => {
       }
     } finally {
       setLoadData(false);
+      setCarregado(true);
     }
   };
 

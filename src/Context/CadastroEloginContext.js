@@ -10,7 +10,7 @@ export const CadastroEloginProvider = ({ children }) => {
   const [erroLoginInvalido, setErroLoginInvalido] = useState(null);
 
   const { setBarbearia } = useContext(BarbeariaContext);
-  const { setUsuario } = useContext(UserContext);
+  const { setUsuario, setCarregado } = useContext(UserContext);
 
   const confirmarEmail = async (dados) => {
     try {
@@ -39,6 +39,7 @@ export const CadastroEloginProvider = ({ children }) => {
       throw error;
     } finally {
       setLoadLogin(false);
+      setCarregado(true);
     }
   };
 
@@ -56,6 +57,8 @@ export const CadastroEloginProvider = ({ children }) => {
       setErroLoginInvalido(error.response.data.detail);
       setLoadLogin(false);
       return { barbearia: null, erro: true };
+    } finally {
+      setCarregado(true);
     }
   };
 

@@ -1,12 +1,12 @@
 .pagina-barbeiros {
-  padding-bottom: 90px; /* espaço extra pro footer */
+  padding-bottom: 90px;
   overflow-y: auto;
   height: 100%;
 }
 
 .barbeiros-container {
   padding: 20px 16px;
-  color: white;
+  color: #333;
 }
 
 .lista-barbeiros {
@@ -19,15 +19,16 @@
 }
 
 .item-barbeiro {
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(255, 255, 255, 0.8);
   border-radius: 12px;
-  padding: 12px;
+  padding: 16px;
   gap: 16px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s ease;
 }
 
-.horarios-text {
-  font-size: 10px;
+.item-barbeiro:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .imagem-barbeiro {
@@ -35,8 +36,8 @@
   height: 70px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #fff;
-  flex-shrink: 0; /* Evita que a imagem diminua */
+  border: 2px solid #ddd;
+  flex-shrink: 0;
 }
 
 .info-barbeiro {
@@ -45,43 +46,33 @@
   justify-content: center;
   flex-direction: column;
   gap: 8px;
-  width: 100%; /* Garante que ocupa todo o espaço */
+  width: 100%;
 }
 
 .nome-barbeiro {
   font-size: 1.1rem;
   margin: 0;
   font-weight: bold;
-  color: #fff;
+  color: #333;
   margin-left: 13px;
 }
 
-.prazo-barbeiro {
-  margin: 2px 0;
-  font-size: 0.95rem;
-  color: #cfcfcf;
+.horarios-text {
+  font-size: 10px;
+  color: #666;
 }
 
-.preco-barbeiro {
-  margin: 0;
-  font-size: 1rem;
-  font-weight: bold;
-  color: #00e676;
-}
-
-/* Estilos para o ícone de relógio */
 .cursor {
   cursor: pointer;
   transition: transform 0.2s ease;
 }
 
 .cursor:hover {
-  color: #0d6efd;
+  color: #00c853;
   transform: scale(1.1);
 }
 
-/* Efeito de rotação quando expandido */
 .cursor.expanded {
   transform: rotate(30deg);
+  color: #00c853;
 }
-
