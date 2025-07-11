@@ -27,12 +27,12 @@ export const Agendamentos = () => {
                   </div>
                 </div>
               </div>
-              <div className="col-12 col-sm-10 col-md-8 d-flex justify-content-center align-items-center">
-                <ul className="col-12 m-0 p-0 list-style scroll-horarios">
+              <div className="div-lista-agendamentos">
+                <ul className="col-12 m-0 p-0 list-style lista-agendamentos-scroll">
                   {agendamentos && agendamentos.length > 0 ? (
-                    agendamentos.map((agendamento, index) => {
-                      return <Li key={index} agendamento={agendamento} />;
-                    })
+                    agendamentos.map((agendamento, index) => (
+                      <Li key={index} agendamento={agendamento} />
+                    ))
                   ) : (
                     <div className="estado-vazio-agendamento">
                       <h4 className="mensagem-vazia">

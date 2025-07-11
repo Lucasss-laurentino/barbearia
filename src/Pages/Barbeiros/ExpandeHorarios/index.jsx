@@ -16,7 +16,7 @@ export const ExpandeHorarios = ({
   setShow,
   setShowModalDeletarHorario,
 }) => {
-  const { setBarbeiroSelecionado } = useContext(BarbeiroContext);
+  const { setBarbeiroSelecionado, barbeiros } = useContext(BarbeiroContext);
   const {
     setHorarioSelecionado,
     setHorarioOuBarbeiroPraExcluir,
@@ -88,12 +88,12 @@ export const ExpandeHorarios = ({
       filtrarHorarios(barbeiro);
       return;
     }
-    if (barbeiro.horarios.$values.length > 0) {
-      setHorariosFiltrado([...barbeiro.horarios.$values]);
+    if (barbeiro.horarios.length > 0) {
+      setHorariosFiltrado([...barbeiro.horarios]);
       return;
     }
     setHorariosFiltrado([]);
-  }, [expandedBarbeiroId, barbeiro.horarios.$values]);
+  }, [expandedBarbeiroId, barbeiros]);
 
   useEffect(() => {
     const pegarAgendamentos = async () => {
@@ -149,28 +149,10 @@ export const ExpandeHorarios = ({
                     className="btn-horario"
                     onClick={() => handleAgendamento(barbeiro, horario)}
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      viewBox="0 0 16 16"
-                    >
-                      <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-                    </svg>
                     <span>Agendar</span>
                   </button>
                   {usuario?.adm && (
                     <button className="btn-horario btn-almoco">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        fill="currentColor"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M2 2v12h12V2H2zm11 11H3V3h10v10z" />
-                      </svg>
                       <span>Almoço</span>
                     </button>
                   )}

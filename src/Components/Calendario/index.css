@@ -3,20 +3,22 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  border: 1px solid #19692c;
+  border-radius: 12px;
+  background-color: white;
 }
 
 /* Botão que mostra a data */
 .botao-data {
-  background-color: rgba(255, 255, 255, 0.05);
-  color: #00e676;
+  color: #19692c;
+    background-color: white;
   border: none;
   padding: 8px 14px;
-  border-radius: 8px;
   font-size: 0.9rem;
+  font-weight: 700;
   display: flex;
   align-items: center;
   gap: 8px;
-  transition: background-color 0.2s ease;
 }
 
 .botao-data:hover {

@@ -1,17 +1,17 @@
 .encapsula-horarios {
+
+  height: 60%;
+
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1.5rem;
-  padding-bottom: 80px; /* espaço pro footer */
-  color: white;
-  font-family: sans-serif;
-  height: calc(100vh - 100px);
+
   overflow-y: auto;
 }
 
 .card-horario {
-  background-color: rgba(0, 0, 0, 0.85);
+  background-color: rgba(255, 255, 255);
+  color: #333;
   border-radius: 1rem;
   padding: 1.2rem 1.5rem;
   margin-bottom: 1rem;
@@ -19,13 +19,6 @@
   max-width: 500px;
   box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
   transition: transform 0.2s ease;
-}
-
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
 }
 
 .card-horario h3 {
@@ -38,7 +31,18 @@
   font-size: 1rem;
 }
 
-/* Flag de status com fundo bonito */
+.muted {
+  opacity: 0.7;
+  transition: all 0.3s ease-in-out;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
 .status-flag {
   font-size: 0.85rem;
   padding: 0.25rem 0.7rem;
@@ -48,13 +52,11 @@
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Amarelo bonito para "pendente" */
 .status-flag.pendente {
   background-color: #ffe082; /* amarelo suave */
   color: #333;
 }
 
-/* Verde bonito para "aceito" */
 .status-flag.aceito {
   background-color: #81c784;
   color: white;
@@ -77,7 +79,6 @@
   background-color: #e60000;
 }
 
-/* Responsividade extra (opcional) */
 @media (max-width: 400px) {
   .card-horario {
     padding: 1rem;

@@ -1,6 +1,11 @@
+import { useEffect } from "react";
 import "./index.css";
 
 export const Li = ({ agendamento }) => {
+  useEffect(() => {
+    console.log(agendamento);
+  }, [agendamento]);
+
   const statusTexto = {
     0: "Pendente",
     1: "Confirmado",
@@ -8,39 +13,47 @@ export const Li = ({ agendamento }) => {
   };
 
   const statusClasse = {
-    0: "li-agendamento-badge-pendente",
-    1: "li-agendamento-badge-confirmado",
+    0: "status-flag pendente",
+    1: "status-flag aceito",
     2: "li-agendamento-badge-recusado",
-  };
-
-  const handleAceitar = () => {
-    console.log("Aceitar agendamento:", agendamento.id);
-  };
-
-  const handleRecusar = () => {
-    console.log("Recusar agendamento:", agendamento.id);
   };
 
   return (
     <li className="li-agendamento-item">
       <div className="li-agendamento-header">
         <div className="li-agendamento-info">
-          <h5 className="li-agendamento-nome-servico">{agendamento.servicoNome}</h5>
-          <p className="li-agendamento-preco-servico">R$ {agendamento.servicoPreco},00</p>
+          <h5 className="li-agendamento-nome-servico">
+            {agendamento.servicoNome}
+          </h5>
+          <p className="li-agendamento-preco-servico">
+            R$ {agendamento.servicoPreco},00
+          </p>
+          <p className="li-agendamento-preco-servico">
+            <strong>Barbeiro:</strong> {agendamento.barbeiroNome}
+          </p>
+          <p className="li-agendamento-preco-servico">
+            <strong>Cliente:</strong> {agendamento.usuarioNome}
+          </p>
+          <p className="li-agendamento-preco-servico">
+            <strong>Data:</strong> {new Date(agendamento.data).toLocaleDateString("pt-BR")}
+          </p>
+          <p className="li-agendamento-preco-servico">
+            <strong>Hora:</strong> {agendamento.hora}
+          </p>
         </div>
-        <span className={`li-agendamento-status ${statusClasse[agendamento.status]}`}>
+        <span
+          className={`li-agendamento-status ${
+            statusClasse[agendamento.status]
+          }`}
+        >
           {statusTexto[agendamento.status]}
         </span>
       </div>
 
       {agendamento.status === 0 && (
         <div className="li-agendamento-botoes">
-          <button className="li-agendamento-btn aceitar" onClick={handleAceitar}>
-            Aceitar
-          </button>
-          <button className="li-agendamento-btn recusar" onClick={handleRecusar}>
-            Recusar
-          </button>
+          <button className="li-agendamento-btn aceitar">Aceitar</button>
+          <button className="li-agendamento-btn recusar">Recusar</button>
         </div>
       )}
     </li>

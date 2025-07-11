@@ -13,23 +13,23 @@ export function AppProviders({ children }) {
   return (
     <CalendarioProvider>
       <UserProvider>
-        <BarbeariaProvider>
-          <ServicoProvider>
-            <BarbeiroProvider>
-              <HorarioProvider>
-                <MenuFooterProvider>
-                  <AgendamentoProvider>
+        <ServicoProvider>
+          <BarbeiroProvider>
+            <HorarioProvider>
+              <AgendamentoProvider>
+                <BarbeariaProvider>
+                  <MenuFooterProvider>
                     <SignalRProvider>
                       <CadastroEloginProvider>
                         {children}
                       </CadastroEloginProvider>
                     </SignalRProvider>
-                  </AgendamentoProvider>
-                </MenuFooterProvider>
-              </HorarioProvider>
-            </BarbeiroProvider>
-          </ServicoProvider>
-        </BarbeariaProvider>
+                  </MenuFooterProvider>
+                </BarbeariaProvider>
+              </AgendamentoProvider>
+            </HorarioProvider>
+          </BarbeiroProvider>
+        </ServicoProvider>
       </UserProvider>
     </CalendarioProvider>
   );

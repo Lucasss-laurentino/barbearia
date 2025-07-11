@@ -1,8 +1,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { BarbeariaContext } from "./BarbeariaContext";
 import { http } from "../http";
 import { ServicoContext } from "./ServicoContext";
 import { CalendarioContext } from "./CalendarioContext";
+import { BarbeiroContext } from "./BarbeiroContext";
 
 export const AgendamentoContext = createContext();
 
@@ -10,17 +10,11 @@ export const AgendamentoProvider = ({ children }) => {
   const [agendamentos, setAgendamentos] = useState([]);
   const [meusAgendamentos, setMeusAgendamentos] = useState([]);
   const [meuAgendamento, setMeuAgendamento] = useState(null);
-  const { barbearia, setBarbearia } = useContext(BarbeariaContext);
   const { servicoEscolhido, setServicoEscolhido } = useContext(ServicoContext);
   const { dataSelecionada } = useContext(CalendarioContext);
+  const { setBarbeiros, barbeiros } = useContext(BarbeiroContext);
 
   const [erroAgendamento, setErroAgendamento] = useState(null);
-
-  useEffect(() => {
-    if (barbearia && barbearia.agendamentos) {
-      setAgendamentos([...barbearia.agendamentos.$values]);
-    }
-  }, [barbearia?.agendamentos]);
 
   useEffect(() => {
     if (localStorage.getItem("agendamento")) {
@@ -49,7 +43,7 @@ export const AgendamentoProvider = ({ children }) => {
       idHorario: horario.id,
       idServico: servicoEscolhido.id,
       idBarbeiro: barbeiro.id,
-      idBarbearia: barbearia.id,
+      idBarbearia: barbeiro.idBarbearia,
     };
     return agendamento;
   };
@@ -60,54 +54,48 @@ export const AgendamentoProvider = ({ children }) => {
         data: dataSelecionada,
         idBarbeiro: barbeiro.id,
       });
-      atualizarAgendamento(resposta.data.$values);
+      mudarAgendamentosPorData(resposta.data.$values, barbeiro.id);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const atualizarAgendamento = (agendamentoRecebido) => {
-    setBarbearia((prevBarbearia) => ({
-      ...prevBarbearia,
-      barbeiros: {
-        ...prevBarbearia.barbeiros,
-        $values: prevBarbearia.barbeiros.$values.map((barbeiro) => ({
-          ...barbeiro,
-          horarios: {
-            ...barbeiro.horarios,
-            $values: barbeiro.horarios.$values.map((horario) => {
-              if (horario.id === agendamentoRecebido.idHorario) {
-                const ags = horario.agendamentos?.$values || [];
-                const index = ags.findIndex(
-                  (a) => a.id === agendamentoRecebido.id
-                );
+  const mudarAgendamentosPorData = (agendamentosParametro, idBarbeiro) => {
+    const novosBarbeiros = barbeiros.map((barbeiro) => {
+      if (barbeiro.id !== idBarbeiro) return barbeiro;
+      const novosHorarios = barbeiro.horarios.map((horario) => {
+        const novosAgendamentos =
+          agendamentosParametro?.filter((a) => a.idHorario === horario.id) ||
+          [];
+        return {
+          ...horario,
+          agendamentos: [...novosAgendamentos],
+        };
+      });
+      return {
+        ...barbeiro,
+        horarios: novosHorarios,
+      };
+    });
+    setBarbeiros(novosBarbeiros);
+  };
 
-                let novosAgendamentos;
-                if (index !== -1) {
-                  // Atualiza agendamento existente
-                  novosAgendamentos = [...ags];
-                  novosAgendamentos[index] = {
-                    ...novosAgendamentos[index],
-                    ...agendamentoRecebido,
-                  };
-                } else {
-                  // Adiciona novo agendamento
-                  novosAgendamentos = [...ags, agendamentoRecebido];
-                }
-                return {
-                  ...horario,
-                  agendamentos: {
-                    ...horario.agendamentos,
-                    $values: novosAgendamentos,
-                  },
-                };
-              }
-              return horario;
-            }),
-          },
-        })),
-      },
-    }));
+  const inserirNovoAgendamento = (agendamentoRecebido) => {
+    setAgendamentos([...agendamentos, agendamentoRecebido]);
+    const novosBarbeiros = barbeiros.map((b) => {
+      if (b.id === agendamentoRecebido.idBarbeiro) {
+        b.horarios.map((h) => {
+          if (h.id === agendamentoRecebido.idHorario) {
+            h.agendamentos = [...agendamentos, agendamentoRecebido];
+            return h;
+          }
+          return h;
+        });
+        return b;
+      }
+      return b;
+    });
+    setBarbeiros(novosBarbeiros);
   };
 
   const verificaValidadeAgendamento = (agendamento, barbeiro) => {
@@ -138,10 +126,13 @@ export const AgendamentoProvider = ({ children }) => {
 
   const cancelarAgendamentoPendente = async () => {
     try {
-      await http.post(
-        "agendamento/cancelarAgendamentoPendente",
-        { idAgendamento: meuAgendamento.id }
+      await http.post("agendamento/cancelarAgendamentoPendente", {
+        idAgendamento: meuAgendamento.id,
+      });
+      const agendamentos = meusAgendamentos.filter(
+        (mA) => mA.id !== meuAgendamento?.id
       );
+      setMeusAgendamentos([...agendamentos]);
       localStorage.removeItem("agendamento");
       setMeuAgendamento(null);
     } catch (error) {
@@ -150,31 +141,21 @@ export const AgendamentoProvider = ({ children }) => {
   };
 
   const deletarAgendamentoState = (idAgendamento) => {
-    setBarbearia((prevBarbearia) => ({
-      ...prevBarbearia,
-      barbeiros: {
-        ...prevBarbearia.barbeiros,
-        $values: prevBarbearia.barbeiros.$values.map((barbeiro) => ({
-          ...barbeiro,
-          horarios: {
-            ...barbeiro.horarios,
-            $values: barbeiro.horarios.$values.map((horario) => {
-              const ags = horario.agendamentos?.$values || [];
-              const novosAgendamentos = ags.filter(
-                (agendamento) => agendamento.id !== idAgendamento
-              );
-              return {
-                ...horario,
-                agendamentos: {
-                  ...horario.agendamentos,
-                  $values: novosAgendamentos,
-                },
-              };
-            }),
-          },
-        })),
-      },
-    }));
+    const novosAgendamentos = agendamentos.filter(
+      (a) => a.id !== idAgendamento
+    );
+    setAgendamentos(novosAgendamentos);
+    const novosBarbeiros = barbeiros.map((b) => {
+      const novosHorarios = b.horarios.map((h) => ({
+        ...h,
+        agendamentos: h.agendamentos.filter((a) => a.id !== idAgendamento),
+      }));
+      return {
+        ...b,
+        horarios: novosHorarios,
+      };
+    });
+    setBarbeiros(novosBarbeiros);
   };
 
   return (
@@ -185,7 +166,7 @@ export const AgendamentoProvider = ({ children }) => {
         agendar,
         erroAgendamento,
         setErroAgendamento,
-        atualizarAgendamento,
+        inserirNovoAgendamento,
         verificaValidadeAgendamento,
         meusAgendamentos,
         setMeusAgendamentos,

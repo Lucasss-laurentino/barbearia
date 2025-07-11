@@ -25,19 +25,16 @@ export const AgendamentoFeedBack = ({ barbeiro }) => {
   };
 
   const statusInfo = {
-    0: { texto: "Pendente", cor: "#f1c40f" },
-    1: { texto: "Aceito", cor: "#00e676" },
-    2: { texto: "Recusado", cor: "#ff4d4f" },
-    3: { texto: "Cancelado", cor: "#b0b0b0" },
-    4: { texto: "Finalizado", cor: "#0d6efd" },
+    0: { texto: "Pendente", classe: "status-flag pendente" },
+    1: { texto: "Aceito", classe: "status-flag aceito" },
   };
 
   const status = statusInfo[meuAgendamento.status];
   return (
     <div className="agendamento-feedback-linha">
-      <span>{meuAgendamento.hora}</span>{" "}
+      <span className="">{meuAgendamento.hora}</span>{" "}
       <span>{formatarData(meuAgendamento.data)}</span>{" "}
-      <span style={{ color: status.cor, fontWeight: "bold" }}>
+      <span className={status.classe}>
         {status.texto}
       </span>
     </div>

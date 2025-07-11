@@ -7,8 +7,9 @@ import { CalendarioContext } from "./CalendarioContext";
 export const HorarioContext = createContext();
 
 export const HorarioProvider = ({ children }) => {
-  const { setBarbearia, barbearia } = useContext(BarbeariaContext);
-  const { barbeiroSelecionado } = useContext(BarbeiroContext);
+  // const { setBarbearia, barbearia } = useContext(BarbeariaContext);
+  const { barbeiroSelecionado, barbeiros, setBarbeiros } =
+    useContext(BarbeiroContext);
 
   const [loadHorario, setLoadHorario] = useState(false);
   const [loadHorarios, setLoadHorarios] = useState(false);
@@ -22,7 +23,7 @@ export const HorarioProvider = ({ children }) => {
 
   useEffect(() => {
     ordenaHorariosPelaHora();
-  }, [barbearia]);
+  }, [barbeiros]);
 
   const criarHorario = async (data) => {
     try {
@@ -31,7 +32,7 @@ export const HorarioProvider = ({ children }) => {
       const response = await http.post("horario", data, {
         withCredentials: true,
       });
-      await atualizaHorariosBarbearia(response);
+      atualizaHorariosBarbearia(response.data);
       setLoadHorarios(false);
     } catch (erro) {
       // setErrosHorarios({ erro: true, menssagem: erro?.response?.data });
@@ -39,19 +40,20 @@ export const HorarioProvider = ({ children }) => {
     }
   };
 
-  const atualizaHorariosBarbearia = async (response) => {
-    setBarbearia((prev) => {
-      const novaBarbearia = structuredClone(prev);
-      const barbeiroIndex = barbearia.barbeiros.$values.findIndex(
-        (b) => b.id === barbeiroSelecionado.id
-      );
-      if (barbeiroIndex !== -1) {
-        novaBarbearia.barbeiros.$values[barbeiroIndex].horarios.$values.push(
-          response.data
-        );
+  const atualizaHorariosBarbearia = async (horario) => {
+    const novosBarbeiros = barbeiros.map((b) => {
+      if (b.id === horario.idBarbeiro) {
+        b.horarios = [...b.horarios, horario];
+        b.horarios.map((h) => {
+          h.agendamentos = h.agendamentos?.$values
+            ? [...h.agendamentos.$values]
+            : [...h.agendamentos];
+          return h;
+        });
       }
-      return novaBarbearia;
+      return b;
     });
+    setBarbeiros(novosBarbeiros);
   };
 
   const editarHorario = async (data) => {
@@ -83,7 +85,7 @@ export const HorarioProvider = ({ children }) => {
       await http.delete(`horario/${horarioSelecionado.id}`, {
         withCredentials: true,
       });
-      await retirarHorarioExcluido();
+      retirarHorarioExcluido();
       setHorarioOuBarbeiroPraExcluir(false);
       setHorarioSelecionado(null);
     } catch (error) {
@@ -91,51 +93,54 @@ export const HorarioProvider = ({ children }) => {
     }
   };
 
-  const retirarHorarioExcluido = async () => {
-    const novaBarbearia = structuredClone(barbearia);
-    novaBarbearia.barbeiros.$values.forEach((barbeiro) => {
-      if (barbeiro.horarios && barbeiro.horarios.$values) {
-        barbeiro.horarios.$values = barbeiro.horarios.$values.filter(
-          (horario) => horario.id !== horarioSelecionado.id
+  const retirarHorarioExcluido = () => {
+    const novosBarbeiros = barbeiros.map((b) => {
+      if (b.id === horarioSelecionado.idBarbeiro) {
+        const novosHorarios = b.horarios.filter(
+          (h) => h.id !== horarioSelecionado.id
         );
+        b.horarios = novosHorarios;
       }
+      return b;
     });
-    setBarbearia(novaBarbearia);
+    setBarbeiros(novosBarbeiros);
   };
 
   const substituirHorarioEditado = async (horarioAtualizado) => {
-    const novaBarbearia = structuredClone(barbearia);
+    // const novaBarbearia = structuredClone(barbearia);
+    // novaBarbearia.barbeiros.$values.forEach((barbeiro) => {
+    //   if (barbeiro.horarios && barbeiro.horarios.$values) {
+    //     const index = barbeiro.horarios.$values.findIndex(
+    //       (h) => h.id === horarioAtualizado.id
+    //     );
+    //     if (index !== -1) {
+    //       barbeiro.horarios.$values[index] = horarioAtualizado;
+    //     }
+    //   }
+    // });
+    // setBarbearia(novaBarbearia);
+  };
 
-    novaBarbearia.barbeiros.$values.forEach((barbeiro) => {
-      if (barbeiro.horarios && barbeiro.horarios.$values) {
-        const index = barbeiro.horarios.$values.findIndex(
-          (h) => h.id === horarioAtualizado.id
-        );
-
-        if (index !== -1) {
-          barbeiro.horarios.$values[index] = horarioAtualizado;
-        }
-      }
-    });
-
-    setBarbearia(novaBarbearia);
+  const ehHoje = (data) => {
+    const hoje = new Date();
+    return (
+      data.getDate() === hoje.getDate() &&
+      data.getMonth() === hoje.getMonth() &&
+      data.getFullYear() === hoje.getFullYear()
+    );
   };
 
   const ordenaHorariosPelaHora = () => {
-    if (barbearia && barbearia.barbeiros?.$values) {
-      barbearia.barbeiros.$values.forEach((barbeiro) => {
-        if (barbeiro.horarios?.$values?.length) {
-          barbeiro.horarios.$values.sort((a, b) =>
-            a.hora.localeCompare(b.hora)
-          );
-        }
-      });
-    }
+    barbeiros.forEach((barbeiro) => {
+      if (barbeiro.horarios?.length) {
+        barbeiro.horarios.sort((a, b) => a.hora.localeCompare(b.hora));
+      }
+    });
   };
 
   const atualizarHorariosFiltrado = (barbeiro) => {
     const horaAtual = new Date();
-    const horariosFuturo = barbeiro.horarios.$values.filter((horario) => {
+    const horariosFuturo = barbeiro.horarios.filter((horario) => {
       const [hora, minuto, segundo] = horario.hora.split(":").map(Number);
       const horarioFormatado = new Date();
       horarioFormatado.setHours(hora, minuto, segundo || 0, 0);
@@ -148,7 +153,7 @@ export const HorarioProvider = ({ children }) => {
     const dataSelecionadaFormatada =
       dataSelecionada.toLocaleDateString("pt-BR");
     const horariosSemAgendamento = horariosFuturo.filter((horario) => {
-      const agendamentos = horario.agendamentos?.$values || [];
+      const agendamentos = horario.agendamentos || [];
       const existeAgendamentoMesmaDataHora = agendamentos.some(
         (agendamento) => {
           const dataAgendamento = new Date(agendamento.data).toLocaleDateString(
@@ -162,14 +167,18 @@ export const HorarioProvider = ({ children }) => {
       );
       return !existeAgendamentoMesmaDataHora;
     });
-
     setHorariosFiltrado([...horariosSemAgendamento]);
   };
 
   const filtrarHorarios = (barbeiro) => {
-    const horariosFuturo = atualizarHorariosFiltrado(barbeiro);
-    ordenaHorariosPelaHora();
-    filtrarPorAgendamento(horariosFuturo);
+    if (ehHoje(dataSelecionada)) {
+      const horariosFuturo = atualizarHorariosFiltrado(barbeiro);
+      ordenaHorariosPelaHora();
+      filtrarPorAgendamento(horariosFuturo);
+    } else {
+      ordenaHorariosPelaHora();
+      filtrarPorAgendamento(barbeiro.horarios);
+    }
   };
 
   return (

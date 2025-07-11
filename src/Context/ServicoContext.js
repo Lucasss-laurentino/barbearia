@@ -1,5 +1,4 @@
-import { createContext, useState, useEffect, useContext } from "react";
-import { BarbeariaContext } from "./BarbeariaContext";
+import { createContext, useState } from "react";
 import { http } from "../http";
 
 export const ServicoContext = createContext();
@@ -10,14 +9,6 @@ export const ServicoProvider = ({ children }) => {
   const [servicoEscolhido, setServicoEscolhido] = useState(null);
   const [escolhido, setEscolhido] = useState(false);
   const [loadServico, setLoadServico] = useState(false);
-
-  // contexts
-  const { barbearia, setBarbearia } = useContext(BarbeariaContext);
-
-  useEffect(() => {
-    if (barbearia && barbearia.servicos)
-      setServicos(barbearia.servicos.$values);
-  }, [barbearia?.servicos]);
 
   const criarServico = async (data, setShow) => {
     try {
@@ -30,13 +21,7 @@ export const ServicoProvider = ({ children }) => {
         },
       });
       setLoadServico(false);
-      setBarbearia((prev) => ({
-        ...prev,
-        servicos: {
-          ...prev.servicos,
-          $values: [...prev.servicos.$values, response.data],
-        },
-      }));
+      setServicos([...servicos, response.data]);
       setShow(false);
       setServicoEscolhido(null);
     } catch (error) {
@@ -84,18 +69,13 @@ export const ServicoProvider = ({ children }) => {
   };
 
   const substituirServicoEditado = (servico) => {
-    setBarbearia((prev) => {
-      const novosServicos = prev.servicos.$values.map((s) =>
-        s.id === servico.id ? servico : s
-      );
-      return {
-        ...prev,
-        servicos: {
-          ...prev.servicos,
-          $values: novosServicos,
-        },
-      };
+    const novosServicos = servicos.map((s) => {
+      if (s.id === servico.id) {
+        return servico;
+      }
+      return s;
     });
+    setServicos([...novosServicos]);
   };
 
   const excluirServico = async () => {
@@ -104,7 +84,7 @@ export const ServicoProvider = ({ children }) => {
         withCredentials: true,
       });
 
-      await retirarServicoExcluido();
+      retirarServicoExcluido();
       setServicoEscolhido(null);
       return true;
     } catch (error) {
@@ -114,19 +94,9 @@ export const ServicoProvider = ({ children }) => {
     }
   };
 
-  const retirarServicoExcluido = async () => {
-    setBarbearia((prev) => {
-      const servicosAtt = prev.servicos.$values.filter(
-        (s) => s.id !== servicoEscolhido.id
-      );
-      return {
-        ...prev,
-        servicos: {
-          ...prev.servicos,
-          $values: servicosAtt,
-        },
-      };
-    });
+  const retirarServicoExcluido = () => {
+    const novosServicos = servicos.filter((s) => s.id !== servicoEscolhido.id);
+    setServicos(novosServicos);
   };
 
   return (

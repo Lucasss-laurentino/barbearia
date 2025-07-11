@@ -24,112 +24,112 @@ export const MenuFooterProvider = ({ children }) => {
   const [itensMenu, setItemsMenu] = useState([]);
 
   useEffect(() => {
-    constroyMenu();
+    if (barbearia) {
+      constroyMenu();
+    }
   }, [barbearia, usuario]);
 
   const constroyMenu = () => {
-    if (barbearia?.nome) {
-      if (usuario && usuario?.adm) {
-        setItemsMenu([
-          {
-            rota: "agendamentos",
-            text: "Agendamentos",
-            svg: AgendamentoIcon,
-            svgDark: AgendamentoIconDark,
-            url: `/${barbearia?.nome}/agendamentos`,
-          },
-          {
-            rota: "servicos",
-            text: "Serviços",
-            svg: ServiceIcon,
-            svgDark: ServiceIconDark,
-            url: `/${barbearia?.nome}/servicos`,
-          },
-          {
-            rota: "barbeiros",
-            text: "Barbeiros",
-            svg: BarbeiroIconWhite,
-            svgDark: BarbeiroIcon,
-            url: `/${barbearia?.nome}/barbeiros`,
-          },
-          {
-            rota: "financeiro",
-            text: "Financeiro",
-            svg: FinanceiroIcon,
-            svgDark: FinanceiroIconDark,
-            url: `/${barbearia?.nome}/financeiro`,
-          },
-        ]);
-        return;
-      }
-      if (!usuario) {
-        setItemsMenu([
-          {
-            rota: "servicos",
-            text: "Serviços",
-            svg: ServiceIcon,
-            svgDark: ServiceIconDark,
-            url: `/${barbearia?.nome}/servicos`,
-          },
-          {
-            rota: "barbeiros",
-            text: "Barbeiros",
-            svg: BarbeiroIconWhite,
-            svgDark: BarbeiroIcon,
-            url: `/${barbearia?.nome}/barbeiros`,
-          },
+    if (usuario && usuario?.adm) {
+      setItemsMenu([
+        {
+          rota: "agendamentos",
+          text: "Agendamentos",
+          svg: AgendamentoIcon,
+          svgDark: AgendamentoIconDark,
+          url: `/${barbearia?.nome}/agendamentos`,
+        },
+        {
+          rota: "servicos",
+          text: "Serviços",
+          svg: ServiceIcon,
+          svgDark: ServiceIconDark,
+          url: `/${barbearia?.nome}/servicos`,
+        },
+        {
+          rota: "barbeiros",
+          text: "Barbeiros",
+          svg: BarbeiroIconWhite,
+          svgDark: BarbeiroIcon,
+          url: `/${barbearia?.nome}/barbeiros`,
+        },
+        {
+          rota: "financeiro",
+          text: "Financeiro",
+          svg: FinanceiroIcon,
+          svgDark: FinanceiroIconDark,
+          url: `/${barbearia?.nome}/financeiro`,
+        },
+      ]);
+      return;
+    }
+    if (!usuario) {
+      setItemsMenu([
+        {
+          rota: "servicos",
+          text: "Serviços",
+          svg: ServiceIcon,
+          svgDark: ServiceIconDark,
+          url: `/${barbearia?.nome}/servicos`,
+        },
+        {
+          rota: "barbeiros",
+          text: "Barbeiros",
+          svg: BarbeiroIconWhite,
+          svgDark: BarbeiroIcon,
+          url: `/${barbearia?.nome}/barbeiros`,
+        },
 
-          {
-            rota: "meusHorarios",
-            text: "Meus Horários",
-            svg: MeusHorariosIcon,
-            svgDark: MeusHorariosIconDark,
-            url: `/${barbearia?.nome}/meusHorarios`,
-          },
-          {
-            rota: "login",
-            text: "Login",
-            svg: LoginIcon,
-            svgDark: LoginIconDark,
-            url: `/${barbearia?.nome}/login`,
-          },
-        ]);
-        return;
-      }
-      if (usuario && !usuario.Adm) {
-        setItemsMenu([
-          {
-            rota: "servicos",
-            text: "Serviços",
-            svg: ServiceIcon,
-            svgDark: ServiceIconDark,
-            url: `/${barbearia?.nome}/servicos`,
-          },
-          {
-            rota: "barbeiros",
-            text: "Barbeiros",
-            svg: BarbeiroIconWhite,
-            svgDark: BarbeiroIcon,
-            url: `/${barbearia?.nome}/barbeiros`,
-          },
+        {
+          rota: "meusHorarios",
+          text: "Meus Horários",
+          svg: MeusHorariosIcon,
+          svgDark: MeusHorariosIconDark,
+          url: `/${barbearia?.nome}/meusHorarios`,
+        },
+        {
+          rota: "login",
+          text: "Login",
+          svg: LoginIcon,
+          svgDark: LoginIconDark,
+          url: `/${barbearia?.nome}/login`,
+        },
+      ]);
+      return;
+    }
+    if (usuario && !usuario.Adm) {
+      setItemsMenu([
+        {
+          rota: "servicos",
+          text: "Serviços",
+          svg: ServiceIcon,
+          svgDark: ServiceIconDark,
+          url: `/${barbearia?.nome}/servicos`,
+        },
+        {
+          rota: "barbeiros",
+          text: "Barbeiros",
+          svg: BarbeiroIconWhite,
+          svgDark: BarbeiroIcon,
+          url: `/${barbearia?.nome}/barbeiros`,
+        },
 
-          {
-            rota: "meusHorarios",
-            text: "Meus Horários",
-            svg: MeusHorariosIcon,
-            svgDark: MeusHorariosIconDark,
-            url: `/${barbearia?.nome}/meusHorarios`,
-          },
-          {
-            rota: "minhaConta",
-            text: "Perfil",
-            svg: PerfilIcon,
-            svgDark: PerfilIconDark,
-            url: `/${barbearia?.nome}/minhaConta`,
-          },
-        ]);
-        return;
-      }
+        {
+          rota: "meusHorarios",
+          text: "Meus Horários",
+          svg: MeusHorariosIcon,
+          svgDark: MeusHorariosIconDark,
+          url: `/${barbearia?.nome}/meusHorarios`,
+        },
+        {
+          rota: "minhaConta",
+          text: "Perfil",
+          svg: PerfilIcon,
+          svgDark: PerfilIconDark,
+          url: `/${barbearia?.nome}/minhaConta`,
+        },
+      ]);
+      return;
     }
   };
 

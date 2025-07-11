@@ -1,6 +1,5 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
 import { http } from "../http";
-import { BarbeariaContext } from "./BarbeariaContext";
 
 export const BarbeiroContext = createContext();
 
@@ -8,13 +7,6 @@ export const BarbeiroProvider = ({ children }) => {
   const [barbeiros, setBarbeiros] = useState([]);
   const [loadBarbeiro, setLoadBarbeiro] = useState(false);
   const [barbeiroSelecionado, setBarbeiroSelecionado] = useState(null);
-  const { barbearia, setBarbearia } = useContext(BarbeariaContext);
-
-  useEffect(() => {
-    if (barbearia) {
-      setBarbeiros(barbearia.barbeiros.$values);
-    }
-  }, [barbearia]);
 
   const criarBarbeiro = async (data, setShow) => {
     try {
@@ -27,18 +19,20 @@ export const BarbeiroProvider = ({ children }) => {
         },
       });
       setLoadBarbeiro(false);
-      setBarbearia((prev) => ({
-        ...prev,
-        barbeiros: {
-          ...prev.barbeiros,
-          $values: [...prev.barbeiros.$values, response.data],
-        },
-      }));
+      inserirBarbeiro(response.data);
       setShow(false);
     } catch (error) {
       console.log(error);
     }
   };
+
+  const inserirBarbeiro = (barbeiroParametro) => {
+    barbeiroParametro.horarios = [...barbeiroParametro.horarios.$values];
+    barbeiroParametro.horarios.map((h) => {
+      h.agendamentos = [...h.agendamentos.$values];
+    });
+    setBarbeiros([...barbeiros, barbeiroParametro])
+  }
 
   const formatarFormData = (data) => {
     const formData = new FormData();
@@ -74,27 +68,22 @@ export const BarbeiroProvider = ({ children }) => {
   };
 
   const substituirBarbeiroEditado = (barbeiro) => {
-    setBarbearia((prev) => {
-      const novosBarbeiros = prev.barbeiros.$values.map((b) =>
-        b.id === barbeiro.id ? barbeiro : b
-      );
-      return {
-        ...prev,
-        barbeiros: {
-          ...prev.barbeiros,
-          $values: novosBarbeiros,
-        },
-      };
+    const novosBarbeiros = barbeiros.map((b) => {
+      if(b.id === barbeiro.id){
+        return barbeiro
+      }
+      return b;
     });
+    setBarbeiros([...novosBarbeiros]);
   };
 
   const excluirBarbeiro = async () => {
     try {
       setLoadBarbeiro(true);
-      const response = await http.delete(`barbeiro/${barbeiroSelecionado.id}`, {
+      await http.delete(`barbeiro/${barbeiroSelecionado.id}`, {
         withCredentials: true,
       });
-      await retirarBarbeiroExcluido(response.data);
+      retirarBarbeiroExcluido();
       setLoadBarbeiro(false);
       setBarbeiroSelecionado(null);
       return true;
@@ -106,19 +95,9 @@ export const BarbeiroProvider = ({ children }) => {
     }
   };
 
-  const retirarBarbeiroExcluido = async () => {
-    setBarbearia((prev) => {
-      const barbeiroAtt = prev.barbeiros.$values.filter(
-        (s) => s.id !== barbeiroSelecionado.id
-      );
-      return {
-        ...prev,
-        barbeiros: {
-          ...prev.barbeiros,
-          $values: barbeiroAtt,
-        },
-      };
-    });
+  const retirarBarbeiroExcluido = () => {
+    const novosBarbeiros = barbeiros.filter((b) => b.id !== barbeiroSelecionado.id);
+    setBarbeiros(novosBarbeiros);
   };
 
   return (

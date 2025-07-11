@@ -7,7 +7,6 @@ import { CardHorarioMarcado } from "./CardHorarioMarcado";
 import { CardHorariosMarcadosAnterior } from "./CardHorariosMarcadosAnterior";
 
 export const MeusHorarios = () => {
-  const [agendamentosFiltrado, setAgendamentosFiltrado] = useState([]);
 
   const { usuario } = useContext(UserContext);
   const {
@@ -25,38 +24,39 @@ export const MeusHorarios = () => {
     pegaAgendamentos();
   }, []);
 
-  useEffect(() => {
-    if (meuAgendamento) {
-      const agendamentos = meusAgendamentos.filter(
-        (mA) => mA.id !== meuAgendamento?.id
-      );
-      setAgendamentosFiltrado([...agendamentos]);
-    }
-  }, [meusAgendamentos, meuAgendamento]);
-
   return (
     <>
       {meusAgendamentos.length < 1 && (
-        <div className="encapsula-horarios">
-          {/* <CardHorarioMarcado /> */}
-          <div className="estado-vazio-meusHorarios">
-            <h4 className="mensagem-vazia">
+        <div className="card-sem-agendamentos">
+          <div className="mensagem-centralizada">
+            <h4 className="titulo-sem-agendamentos">
               Nenhum horário agendado até o momento
             </h4>
-            <p className="subtexto-vazio">
+            <p className="texto-secundario">
               {!usuario && "Faça login e acesse seu histórico de agendamentos."}
               {usuario && "Você ainda não agendou nenhum horário."}
             </p>
           </div>
         </div>
       )}
-      <div className="encapsula-horarios">
-        {meuAgendamento && <CardHorarioMarcado />}
-        {agendamentosFiltrado.length > 0 &&
-          agendamentosFiltrado.map((agendamento) => (
-            <CardHorariosMarcadosAnterior agendamento={agendamento} />
-          ))}
-      </div>
+
+      {meusAgendamentos.length > 0 && (
+        <ul className="lista-agendamentos">
+          {meuAgendamento && (
+            <li>
+              <CardHorarioMarcado agendamento={meuAgendamento} />
+            </li>
+          )}
+
+          {meusAgendamentos
+            .filter((agendamento) => agendamento.id !== meuAgendamento?.id)
+            .map((agendamento) => (
+              <li key={agendamento.id}>
+                <CardHorariosMarcadosAnterior agendamento={agendamento} />
+              </li>
+            ))}
+        </ul>
+      )}
     </>
   );
 };

@@ -18,13 +18,14 @@ export const CalendarioProvider = ({ children }) => {
     }
   };
 
-  const formatarData = (data) =>
-    data.toLocaleDateString("pt-BR", {
+  const formatarData = (data) => {
+    return data.toLocaleDateString("pt-BR", {
       weekday: "short",
       day: "2-digit",
       month: "short",
       year: "numeric",
     });
+  };
 
   return (
     <CalendarioContext.Provider
