@@ -13,14 +13,15 @@ export const AgendamentoProvider = ({ children }) => {
   const { servicoEscolhido, setServicoEscolhido } = useContext(ServicoContext);
   const { dataSelecionada } = useContext(CalendarioContext);
   const { setBarbeiros, barbeiros } = useContext(BarbeiroContext);
-
   const [erroAgendamento, setErroAgendamento] = useState(null);
 
   useEffect(() => {
-    if (localStorage.getItem("agendamento")) {
+    if(localStorage.getItem("agendamento")){
       setMeuAgendamento(JSON.parse(localStorage.getItem("agendamento")));
+    } else {
+      setMeuAgendamento(null);
     }
-  }, [localStorage.getItem("agendamento")]);
+  }, [localStorage.getItem("agendamento")])
 
   const agendar = async (barbeiro, horario) => {
     try {
@@ -118,23 +119,48 @@ export const AgendamentoProvider = ({ children }) => {
       const response = await http.get("agendamento/meusAgendamentos", {
         withCredentials: true,
       });
-      setMeusAgendamentos([...response.data.$values]);
+      separarAgendamentoAtual(response.data.$values);
     } catch (error) {
-      console.log(error);
+      if (error.response.data.detail === "Usuário não autenticado.") {
+        setMeuAgendamento([]);
+      }
     }
   };
 
-  const cancelarAgendamentoPendente = async () => {
+  const separarAgendamentoAtual = (agendamentosParametro) => {
+    const dataSelecionadaSemHora = new Date(dataSelecionada);
+    dataSelecionadaSemHora.setHours(0, 0, 0, 0);
+
+    const agendamentoAtual = agendamentosParametro.find((agendamento) => {
+      const dataAgendamento = new Date(agendamento.data);
+      dataAgendamento.setHours(0, 0, 0, 0);
+      return dataAgendamento >= dataSelecionadaSemHora;
+    });
+
+    if (!agendamentoAtual) {
+      setMeusAgendamentos([...agendamentosParametro]);
+      setMeuAgendamento(null);
+      return;
+    }
+    const agendamentosAnteriores = agendamentosParametro.filter(
+      (a) => a.id !== agendamentoAtual.id
+    );
+
+    setMeusAgendamentos([...agendamentosAnteriores]);
+    setMeuAgendamento(agendamentoAtual);
+  };
+
+  const cancelarAgendamentoPendente = async (agendamento) => {
     try {
-      await http.post("agendamento/cancelarAgendamentoPendente", {
-        idAgendamento: meuAgendamento.id,
-      });
+      await http.post(
+        "agendamento/cancelarAgendamentoPendente",
+        { idAgendamento: agendamento.id },
+        { withCredentials: true }
+      );
       const agendamentos = meusAgendamentos.filter(
         (mA) => mA.id !== meuAgendamento?.id
       );
       setMeusAgendamentos([...agendamentos]);
-      localStorage.removeItem("agendamento");
-      setMeuAgendamento(null);
     } catch (error) {
       console.log(error);
     }
@@ -158,6 +184,44 @@ export const AgendamentoProvider = ({ children }) => {
     setBarbeiros(novosBarbeiros);
   };
 
+  const verificaDeletaAgendamentoLocalStorage = (idAgendamento) => {
+    // por algum motivo meuAgendamento ta nullo aqui, precisei pegar localStorage direto
+    const agendamento = JSON.parse(localStorage.getItem("agendamento"));
+    if (agendamento.id === idAgendamento) {
+      setMeuAgendamento(null);
+      localStorage.removeItem("agendamento");
+    }
+  };
+
+  const aceitarPendente = async (agendamentoPendente) => {
+    try {
+      const resposta = await http.post(
+        "agendamento/aceitarAgendamentoPendente",
+        { idAgendamento: agendamentoPendente.id },
+        { withCredentials: true }
+      );
+      console.log(resposta);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const marcarStatusAceito = (idAgendamento) => {
+    setAgendamentos((prevAgendamentos) =>
+      prevAgendamentos.map((agendamento) =>
+        agendamento.id === idAgendamento
+          ? { ...agendamento, status: 1 }
+          : agendamento
+      )
+    );
+    const agendamentoLS = JSON.parse(localStorage.getItem("agendamento"));
+    if (agendamentoLS?.id === idAgendamento) {
+      agendamentoLS.status = 1;
+      localStorage.setItem("agendamento", JSON.stringify(agendamentoLS));
+      setMeuAgendamento(agendamentoLS);
+    }
+  };
+
   return (
     <AgendamentoContext.Provider
       value={{
@@ -176,6 +240,9 @@ export const AgendamentoProvider = ({ children }) => {
         pegarAgendamentosPelaData,
         cancelarAgendamentoPendente,
         deletarAgendamentoState,
+        aceitarPendente,
+        verificaDeletaAgendamentoLocalStorage,
+        marcarStatusAceito,
       }}
     >
       {children}

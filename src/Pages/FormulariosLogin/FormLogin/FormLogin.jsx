@@ -31,7 +31,11 @@ export const FormLogin = ({ setFormAtivo }) => {
       navigate(`/${barbeariaRetorno.barbearia.nome}/agendamentos`);
       return;
     }
-    if (!barbeariaRetorno.barbearia && !barbeariaRetorno.erro && barbeariaParametro) {
+    if (
+      !barbeariaRetorno.barbearia &&
+      !barbeariaRetorno.erro &&
+      barbeariaParametro
+    ) {
       navigate(`/${barbeariaParametro}/servicos`);
     }
   };
@@ -44,7 +48,6 @@ export const FormLogin = ({ setFormAtivo }) => {
         onSubmit={handleSubmit((data) => handleLogin(data))}
       >
         <BtnVoltarForm />
-
         <div className="titulo-e-textos-form-login">
           <h3 className="titulo-form-login">
             {barbeariaParametro
@@ -130,6 +133,24 @@ export const FormLogin = ({ setFormAtivo }) => {
             <button className="btn-form-login" type="submit">
               Entrar
             </button>
+            <button className="btn-form-login btn-google" type="button">
+              <img
+                src="/google.png"
+                alt="Google"
+                className="icon"
+              />
+              Entrar com Google
+            </button>
+
+            <button className="btn-form-login btn-facebook" type="button">
+              <img
+                src="/facebook.png"
+                alt="Facebook"
+                className="icon"
+              />
+              Entrar com Facebook
+            </button>
+
             <p className="esqueci-senha" onClick={() => setFormAtivo(2)}>
               Esqueci minha senha
             </p>

@@ -1,10 +1,10 @@
-import { useEffect } from "react";
+import { useContext } from "react";
 import "./index.css";
+import { AgendamentoContext } from "../../../Context/AgendamentoContext";
 
 export const Li = ({ agendamento }) => {
-  useEffect(() => {
-    console.log(agendamento);
-  }, [agendamento]);
+
+  const { aceitarPendente, cancelarAgendamentoPendente } = useContext(AgendamentoContext);
 
   const statusTexto = {
     0: "Pendente",
@@ -52,8 +52,8 @@ export const Li = ({ agendamento }) => {
 
       {agendamento.status === 0 && (
         <div className="li-agendamento-botoes">
-          <button className="li-agendamento-btn aceitar">Aceitar</button>
-          <button className="li-agendamento-btn recusar">Recusar</button>
+          <button className="li-agendamento-btn aceitar" onClick={() => aceitarPendente(agendamento)}>Aceitar</button>
+          <button className="li-agendamento-btn recusar" onClick={() => cancelarAgendamentoPendente(agendamento)}>Recusar</button>
         </div>
       )}
     </li>

@@ -45,8 +45,8 @@ export const CardHorarioMarcado = () => {
         <button
           className="btn-cancelar"
           onClick={() => {
-            if(meuAgendamento?.status === 0) {
-              cancelarAgendamentoPendente();
+            if(meuAgendamento?.status === 0 || meuAgendamento?.status === 1) {
+              cancelarAgendamentoPendente(meuAgendamento);
             }
           }}
         >

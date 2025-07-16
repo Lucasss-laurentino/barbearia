@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import "./index.css";
 import { Li } from "./Li";
 import "react-toastify/dist/ReactToastify.css";

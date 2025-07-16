@@ -1,23 +1,51 @@
-.esqueci-senha, .texto-muda-formulario {
-    font-size: 14px;
-    color: #c4bebe;
-    cursor: pointer;
-    text-decoration: none;
-    transition: color 0.3s ease, transform 0.2s ease; 
-    margin-top: 10px;
-  }
-  
-  .esqueci-senha:hover, .texto-muda-formulario:hover {
-    color: #fff; 
-    text-decoration: underline; 
-    transform: translateY(-2px);
-  }
-  
-  .texto-muda-formulario {
-    text-align: center;
-  }
-  
-  .texto-muda-formulario strong {
-    font-weight: bold;
-    color: #aaa;
-  }
+.esqueci-senha,
+.texto-muda-formulario {
+  font-size: 14px;
+  color: #c4bebe;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.3s ease, transform 0.2s ease;
+  margin-top: 10px;
+}
+
+.esqueci-senha:hover,
+.texto-muda-formulario:hover {
+  color: #fff;
+  text-decoration: underline;
+  transform: translateY(-2px);
+}
+
+.texto-muda-formulario {
+  text-align: center;
+}
+
+.texto-muda-formulario strong {
+  font-weight: bold;
+  color: #aaa;
+}
+
+/* Ícones dentro do botão */
+.btn-form-login .icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+/* Google */
+.btn-google {
+  background-color: #db4437; /* Cor Google */
+}
+
+.btn-google:hover {
+  background-color: #c33d2f;
+}
+
+/* Facebook */
+.btn-facebook {
+  background-color: #3b5998; /* Cor Facebook */
+}
+
+.btn-facebook:hover {
+  background-color: #334f88;
+}

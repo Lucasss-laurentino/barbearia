@@ -149,10 +149,10 @@ export const HorarioProvider = ({ children }) => {
     return horariosFuturo;
   };
 
-  const filtrarPorAgendamento = (horariosFuturo) => {
+  const filtrarPorAgendamento = (horariosParametro) => {
     const dataSelecionadaFormatada =
       dataSelecionada.toLocaleDateString("pt-BR");
-    const horariosSemAgendamento = horariosFuturo.filter((horario) => {
+    const horariosSemAgendamento = horariosParametro.filter((horario) => {
       const agendamentos = horario.agendamentos || [];
       const existeAgendamentoMesmaDataHora = agendamentos.some(
         (agendamento) => {
